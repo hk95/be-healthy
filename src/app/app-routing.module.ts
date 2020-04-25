@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: 'top',
     loadChildren: () => import('./top/top.module').then(m => m.TopModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./edit/edit.module').then(m => m.EditModule)
   }
 ];
 
