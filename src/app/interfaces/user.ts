@@ -3,5 +3,5 @@ export interface User {
   name: string;
   weight: number;
   fat: number;
-  totalFat: number;
+  totalCal: number;
 }

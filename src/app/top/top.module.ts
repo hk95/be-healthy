@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { TopRoutingModule } from './top-routing.module';
 import { TopComponent } from './top/top.component';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
-  declarations: [TopComponent],
+  declarations: [TopComponent, UserComponent],
   imports: [
     CommonModule,
     TopRoutingModule

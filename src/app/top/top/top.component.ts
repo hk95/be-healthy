@@ -12,7 +12,7 @@ user: User = {
   name: 'hk',
   weight: 65,
   fat: 13.4,
-  totalFat: 2000
+  totalCal: 2000
 };
 
   constructor() { }

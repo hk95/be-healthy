@@ -1,0 +1,11 @@
+.container {
+  padding: 0 40px;
+}
+.user{
+  &__body{
+    display: flex;
+  }
+  &__weight{
+    margin-right: 40px;
+  }
+}
