@@ -1,1 +1,22 @@
-<p>edit works!</p>
+<div class="container">
+  <h1>今日の情報入力画面</h1>
+
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>体重</mat-label>
+      <input formControlName="weight" type="number" matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>体脂肪</mat-label>
+      <input formControlName="fat" type="number" matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>食べ物</mat-label>
+      <input formControlName="meal" type="text" matInput />
+    </mat-form-field>
+
+    <button [disabled]="form.invalid" mat-stroked-button color="primary">
+      登録する
+    </button>
+  </form>
+</div>
