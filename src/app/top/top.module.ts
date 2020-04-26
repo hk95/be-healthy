@@ -5,12 +5,16 @@ import { TopRoutingModule } from './top-routing.module';
 import { TopComponent } from './top/top.component';
 import { UserComponent } from './user/user.component';
 
+import {MatButtonModule} from '@angular/material/button';
+
+
 
 @NgModule({
   declarations: [TopComponent, UserComponent],
   imports: [
     CommonModule,
-    TopRoutingModule
+    TopRoutingModule,
+    MatButtonModule
   ]
 })
 export class TopModule { }
