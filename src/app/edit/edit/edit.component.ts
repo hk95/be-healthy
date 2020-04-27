@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DailyInfoService } from 'src/app/services/daily-info.service';
 
 @Component({
   selector: 'app-edit',
@@ -13,7 +14,21 @@ export class EditComponent implements OnInit {
     meal: ['', [Validators.required]],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private dailyInfoService: DailyInfoService
+  ) {}
 
   ngOnInit(): void {}
+
+  submit() {
+    const formData = this.form.value;
+    this.dailyInfoService.editDailyInfo({
+      id: 1,
+      name: 'test',
+      weight: formData.weight,
+      fat: formData.fat,
+      totalCal: formData.meal,
+    });
+  }
 }
