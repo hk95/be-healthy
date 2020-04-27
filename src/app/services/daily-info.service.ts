@@ -38,7 +38,7 @@ export class DailyInfoService {
       .pipe(
         map((dailyinfos) => {
           if (dailyinfos.length) {
-            return dailyinfos[0];
+            return dailyinfos[2];
           } else {
             return null;
           }
