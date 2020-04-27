@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-edit',
@@ -16,7 +17,8 @@ export class EditComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dailyInfoService: DailyInfoService
+    private dailyInfoService: DailyInfoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {}
@@ -24,8 +26,7 @@ export class EditComponent implements OnInit {
   submit() {
     const formData = this.form.value;
     this.dailyInfoService.editDailyInfo({
-      id: 1,
-      name: 'test',
+      userId: this.authService.uid,
       weight: formData.weight,
       fat: formData.fat,
       totalCal: formData.meal,

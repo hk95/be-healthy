@@ -1,6 +1,5 @@
 export interface User {
-  id: number;
-  name: string;
+  userId: string;
   weight: number;
   fat: number;
   totalCal: number;
