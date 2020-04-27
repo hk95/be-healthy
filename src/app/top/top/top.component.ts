@@ -7,13 +7,6 @@ import { User } from 'src/app/interfaces/user';
   styleUrls: ['./top.component.scss']
 })
 export class TopComponent implements OnInit {
-user: User = {
-  id: 1,
-  name: 'hk',
-  weight: 65,
-  fat: 13.4,
-  totalCal: 2000
-};
 
   constructor() { }
 
