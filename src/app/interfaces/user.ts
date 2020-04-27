@@ -3,4 +3,5 @@ export interface User {
   weight: number;
   fat: number;
   totalCal: number;
+  today: number;
 }

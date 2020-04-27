@@ -14,7 +14,7 @@ export class EditComponent implements OnInit {
     fat: ['', [Validators.required]],
     meal: ['', [Validators.required]],
   });
-
+  today: number = Date.now();
   constructor(
     private fb: FormBuilder,
     private dailyInfoService: DailyInfoService,
@@ -30,6 +30,7 @@ export class EditComponent implements OnInit {
       weight: formData.weight,
       fat: formData.fat,
       totalCal: formData.meal,
+      today: this.today,
     });
   }
 }
