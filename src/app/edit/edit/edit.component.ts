@@ -15,6 +15,7 @@ export class EditComponent implements OnInit {
     meal: ['', [Validators.required]],
   });
   today: number = Date.now();
+  id: string;
   constructor(
     private fb: FormBuilder,
     private dailyInfoService: DailyInfoService,
@@ -23,9 +24,9 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  submit() {
+  CreateSubmit() {
     const formData = this.form.value;
-    this.dailyInfoService.editDailyInfo({
+    this.dailyInfoService.createDailyInfo({
       userId: this.authService.uid,
       weight: formData.weight,
       fat: formData.fat,

@@ -1,7 +1,7 @@
 <div class="container">
   <h1>今日の情報入力画面</h1>
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
+  <form [formGroup]="form" (ngSubmit)="CreateSubmit()">
     <mat-form-field>
       <mat-label>体重</mat-label>
       <input formControlName="weight" type="number" matInput />
