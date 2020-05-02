@@ -1,17 +1,18 @@
 <div class="container">
   <div class="user">
-    <h1>{{ user.today | date:'yy.MM.dd（E）'}}</h1>
-    <div class="user__base">
+    <h1>{{ user.today | date: "yy.MM.dd（E）" }}</h1>
 
-    </div>
+      <button [routerLink]="['/update']"
+      [queryParams]="{ id: user.id }" mat-stroked-button color="primary">
+        更新する
+      </button>
+
     <div class="user__body">
       <p class="user__weight">体重：{{ user.weight }} kg</p>
-      <p class="user__fat">体脂肪率：{{ user.fat }} %</p>
+      <p class="user__fat">体脂肪率：{{  user.fat }} %</p>
     </div>
     <div class="user__cal">
-      <p>カロリー：{{user.totalCal}} kcal</p>
+      <p>カロリー：{{ user.totalCal }} kcal</p>
     </div>
   </div>
-  <button routerLink="/edit" mat-stroked-button color="primary">今日の情報を登録する</button>
 </div>
-

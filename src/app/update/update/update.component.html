@@ -1,0 +1,23 @@
+<div class="container">
+  <h1>今日の情報入力画面</h1>
+
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>体重</mat-label>
+      <input formControlName="weight" type="number"  matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>体脂肪</mat-label>
+      <input formControlName="fat" type="number" matInput />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>食べ物</mat-label>
+      <input formControlName="totalCal" type="number" matInput />
+    </mat-form-field>
+
+    <button (click)="updateSubmit()" [disabled]="form.invalid" mat-stroked-button color="primary">
+      更新
+    </button>
+  </form>
+  <button routerLink="/top" mat-stroked-button color="primary">戻る</button>
+</div>

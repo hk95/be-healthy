@@ -3,8 +3,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '../interfaces/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, take, tap, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +16,11 @@ export class DailyInfoService {
     private router: Router
   ) {}
 
-  editDailyInfo(dailyInfo: User) {
-    const dailyId = this.db.createId();
+  createDailyInfo(dailyInfo: any) {
+    const id = this.db.createId();
     return this.db
-      .doc(`dailyInfos/${dailyId}`)
-      .set(dailyInfo)
+      .doc(`dailyInfos/${id}`)
+      .set({ id, ...dailyInfo })
       .then(() => {
         this.snackBar.open('登録しました', null, {
           duration: 2000,
@@ -29,20 +29,31 @@ export class DailyInfoService {
       });
   }
 
-  getDailyInfo(userId: string): Observable<User> {
+  getDailyInfos(userId: string): Observable<User[]> {
     return this.db
       .collection<User>('dailyInfos', (ref) =>
         ref.where('userId', '==', userId)
       )
-      .valueChanges()
-      .pipe(
-        map((dailyinfos) => {
-          if (dailyinfos.length) {
-            return dailyinfos[2];
-          } else {
-            return null;
-          }
-        })
-      );
+      .valueChanges();
+  }
+  getDailyInfo(id: string): Observable<User> {
+    console.log(id);
+    console.log(this.db.doc<User>(`dailyInfos/${id}`));
+    return this.db.doc<User>(`dailyInfos/${id}`).valueChanges();
+  }
+
+  upadateDailyInfo(dailyInfo: any): Promise<void> {
+    console.log(dailyInfo.id);
+    return this.db
+      .doc(`dailyInfos/${dailyInfo.id}`)
+      .set(dailyInfo, {
+        merge: true,
+      })
+      .then(() => {
+        this.snackBar.open('変更しました', null, {
+          duration: 2000,
+        });
+        this.router.navigateByUrl('/top');
+      });
   }
 }
