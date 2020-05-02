@@ -1,2 +1,7 @@
-<app-user [user]="dailyInfo$ | async"></app-user>
+<button routerLink="/edit" mat-stroked-button color="primary">今日の情報を登録する</button>
+<div *ngIf="dailyInfos$ | async as dailyInfos">
+  <div *ngFor="let user of dailyInfos">
+      <app-user [user]="user"></app-user>
+  </div>
+</div>
 

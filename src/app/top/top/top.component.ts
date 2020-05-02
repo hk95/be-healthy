@@ -16,7 +16,7 @@ export class TopComponent implements OnInit {
     private dailyInfoService: DailyInfoService,
     private authService: AuthService
   ) {}
-  dailyInfo$: Observable<User> = this.dailyInfoService.getDailyInfo(
+  dailyInfos$: Observable<User[]> = this.dailyInfoService.getDailyInfos(
     this.authService.uid
   );
 

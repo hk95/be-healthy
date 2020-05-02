@@ -20,8 +20,15 @@ const routes: Routes = [
     path: 'welcome',
     loadChildren: () =>
       import('./welcome/welcome.module').then((m) => m.WelcomeModule),
-      canLoad: [GuestGuard],
-      canActivate: [GuestGuard]
+    canLoad: [GuestGuard],
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'update',
+    loadChildren: () =>
+      import('./update/update.module').then((m) => m.UpdateModule),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 ];
 
