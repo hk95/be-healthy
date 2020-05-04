@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit',
@@ -14,15 +15,20 @@ export class EditComponent implements OnInit {
     fat: ['', [Validators.required]],
     meal: ['', [Validators.required]],
   });
-  today: number = Date.now();
+  today: string = this.getDate();
   id: string;
   constructor(
     private fb: FormBuilder,
     private dailyInfoService: DailyInfoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private datepipe: DatePipe
   ) {}
 
   ngOnInit(): void {}
+  getDate() {
+    const d = new Date();
+    return this.datepipe.transform(d, 'yy.MM.dd(E)');
+  }
 
   CreateSubmit() {
     const formData = this.form.value;
