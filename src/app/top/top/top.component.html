@@ -1,7 +1,16 @@
-<button routerLink="/edit" mat-stroked-button color="primary">今日の情報を登録する</button>
+<h1>{{ today }}</h1>
+
+<ng-container *ngIf="isToday$ | async as isToday; else deafult">
+  あるよ
+</ng-container>
+<ng-template #deafult
+  ><button routerLink="/edit" mat-stroked-button color="primary">
+    今日の情報を登録する
+  </button></ng-template>
+
 <div *ngIf="dailyInfos$ | async as dailyInfos">
   <div *ngFor="let user of dailyInfos">
-      <app-user [user]="user"></app-user>
+    <app-user [user]="user"></app-user>
   </div>
 </div>
 
