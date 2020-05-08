@@ -5,7 +5,8 @@ import { GuestGuard } from './guards/guest.guard';
 
 const routes: Routes = [
   {
-    path: 'top',
+    path: '',
+    pathMatch: 'full',
     loadChildren: () => import('./top/top.module').then((m) => m.TopModule),
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],
