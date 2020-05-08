@@ -1,0 +1,33 @@
+<h1>{{ today }}</h1>
+
+<ng-container *ngIf="isToday$ | async as isToday; else deafult">
+  あるよ
+</ng-container>
+<ng-template #deafult
+  ><button routerLink="/edit" mat-stroked-button color="primary">
+    今日の情報を登録する
+  </button></ng-template
+>
+
+<div *ngIf="dailyInfos$ | async as dailyInfos">
+  <div *ngFor="let user of dailyInfos">
+    <div class="daily-card">
+      <mat-card>
+        <mat-card-title>{{ user.today }}</mat-card-title>
+        <div class="wrapper">
+          <mat-card-content>
+            <p class="daily-card__weight">体重：{{ user.weight }} kg</p>
+            <p class="daily-card__fat">体脂肪率：{{ user.fat }} %</p>
+            <p class="daily-card__cal">カロリー：{{ user.totalCal }} kcal</p>
+          </mat-card-content>
+          <div class="spacer"></div>
+          <mat-card-actions>
+
+            <button [routerLink]="['/update']"
+            [queryParams]="{ id: user.id }" mat-fab color="primary">＋</button>
+          </mat-card-actions>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
