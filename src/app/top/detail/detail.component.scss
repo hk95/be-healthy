@@ -1,0 +1,11 @@
+.daily-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.wrapper{
+display: flex;
+}
+.spacer{
+  flex: 1;
+}
