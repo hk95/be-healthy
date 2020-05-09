@@ -26,7 +26,7 @@ export class DailyInfoService {
         this.snackBar.open('登録しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/top');
+        this.router.navigateByUrl('');
       });
   }
 
@@ -68,7 +68,7 @@ export class DailyInfoService {
         this.snackBar.open('変更しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/top');
+        this.router.navigateByUrl('');
       });
   }
 }
