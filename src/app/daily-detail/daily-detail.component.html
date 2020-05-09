@@ -1,0 +1,10 @@
+<div class="dailyInfo" *ngIf="dailyInfo$ | async as dailyInfo; else deafult">
+  <p class="daily-card__weight">体重：{{ dailyInfo.weight }} kg</p>
+  <p class="daily-card__fat">体脂肪率：{{ dailyInfo.fat }} %</p>
+  <p class="daily-card__cal">カロリー：{{ dailyInfo.totalCal }} kcal</p>
+  <p class="daily-card__">タンパク質：{{ dailyInfo.p }} kcal</p>
+  <p class="daily-card__">資質：{{ dailyInfo.f }} kcal</p>
+  <p class="daily-card__">糖質：{{ dailyInfo.c }} kcal</p>
+</div>
+
+<ng-template #deafult>ページが見つかりません</ng-template>
