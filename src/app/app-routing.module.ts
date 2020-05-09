@@ -31,6 +31,15 @@ const routes: Routes = [
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],
   },
+  {
+    path: 'daily-detail/:id',
+    loadChildren: () =>
+      import('./daily-detail/daily-detail.module').then(
+        (m) => m.DailyDetailModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

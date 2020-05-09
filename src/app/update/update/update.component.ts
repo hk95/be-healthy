@@ -31,7 +31,7 @@ export class UpdateComponent implements OnInit {
           this.form.patchValue(user);
           console.log('wataru');
         } else {
-          console.log('errore');
+          console.log('error');
         }
       });
     });
@@ -44,7 +44,7 @@ export class UpdateComponent implements OnInit {
       weight: formData.weight,
       fat: formData.fat,
       totalCal: formData.totalCal,
-      id: this.id
+      id: this.id,
     });
   }
 }
