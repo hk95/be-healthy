@@ -5,6 +5,16 @@
   <p class="daily-card__">タンパク質：{{ dailyInfo.p }} kcal</p>
   <p class="daily-card__">資質：{{ dailyInfo.f }} kcal</p>
   <p class="daily-card__">糖質：{{ dailyInfo.c }} kcal</p>
+  <button
+    [routerLink]="['/update']"
+    [queryParams]="{ id: dailyInfo.id }"
+    mat-fab
+    color="primary"
+  >
+    ＋
+  </button>
 </div>
 
 <ng-template #deafult>ページが見つかりません</ng-template>
+
+<button [routerLink]="['']" mat-stroked-button color="primary">戻る</button>

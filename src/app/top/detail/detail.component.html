@@ -22,9 +22,13 @@
           </mat-card-content>
           <div class="spacer"></div>
           <mat-card-actions>
-
-            <button [routerLink]="['/update']"
-            [queryParams]="{ id: user.id }" mat-fab color="primary">＋</button>
+            <button
+              [routerLink]="['/daily-detail', user.id]"
+              mat-fab
+              color="primary"
+            >
+              ＋
+            </button>
           </mat-card-actions>
         </div>
       </mat-card>
