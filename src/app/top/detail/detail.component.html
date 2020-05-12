@@ -1,7 +1,5 @@
-<h1>{{ today }}</h1>
-
 <ng-container *ngIf="isToday$ | async as isToday; else deafult">
-  あるよ
+  今日は登録済み
 </ng-container>
 <ng-template #deafult
   ><button routerLink="/edit" mat-stroked-button color="primary">

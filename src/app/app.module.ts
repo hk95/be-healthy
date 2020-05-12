@@ -11,14 +11,20 @@ import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 import localeJa from '@angular/common/locales/ja';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, DatePipe } from '@angular/common';
+import { HeaderComponent } from './header/header.component';
 
 registerLocaleData(localeJa);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -29,8 +35,14 @@ registerLocaleData(localeJa);
     AngularFirestoreModule,
     AngularFireAuthModule,
     MatSnackBarModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   providers: [
+    DatePipe,
     {
       provide: LOCALE_ID,
       useValue: 'ja-JP',
