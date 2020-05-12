@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  styleUrls: ['./detail.component.scss'],
 })
 export class DetailComponent implements OnInit {
   @Input() user: User;
@@ -16,7 +16,7 @@ export class DetailComponent implements OnInit {
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
     private datepipe: DatePipe
-  ) { }
+  ) {}
   today: string = this.getDate();
   dailyInfos$: Observable<User[]> = this.dailyInfoService.getDailyInfos(
     this.authService.uid
@@ -26,7 +26,5 @@ export class DetailComponent implements OnInit {
     const d = new Date();
     return this.datepipe.transform(d, 'yy.MM.dd(E)');
   }
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
