@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import {
+  CanActivate,
+  CanLoad,
+  Route,
+  UrlSegment,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+  Router,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { map, take, tap } from 'rxjs/operators';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GuestGuard implements CanActivate, CanLoad {
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ){}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -27,7 +31,7 @@ export class GuestGuard implements CanActivate, CanLoad {
       map((user) => !user),
       tap((isGuest) => {
         if (!isGuest) {
-          this.router.navigateByUrl('/top');
+          this.router.navigateByUrl('/');
         }
       })
     );
@@ -38,7 +42,12 @@ export class GuestGuard implements CanActivate, CanLoad {
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.authService.afUser$.pipe(
       map((user) => !user),
-      take(1)
+      take(1),
+      tap((isGuest) => {
+        if (!isGuest) {
+          this.router.navigateByUrl('/');
+        }
+      })
     );
   }
 }

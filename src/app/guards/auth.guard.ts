@@ -42,7 +42,12 @@ export class AuthGuard implements CanActivate, CanLoad {
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.authService.afUser$.pipe(
       map((user) => !!user),
-      take(1)
+      take(1),
+      tap((isLoggedIn) => {
+        if (!isLoggedIn) {
+          this.router.navigateByUrl('/welcome');
+        }
+      })
     );
   }
 }
