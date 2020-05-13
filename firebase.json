@@ -12,12 +12,8 @@
   "hosting": [
     {
       "target": "my-app",
-      "public": "dist/my-app",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "public": "dist/healthy_management",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "**",
