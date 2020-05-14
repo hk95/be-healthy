@@ -20,11 +20,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import localeJa from '@angular/common/locales/ja';
 import { registerLocaleData, DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 registerLocaleData(localeJa);
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, ToolbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
