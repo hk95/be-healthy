@@ -20,6 +20,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import localeJa from '@angular/common/locales/ja';
 import { registerLocaleData, DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 registerLocaleData(localeJa);
 
@@ -40,6 +41,7 @@ registerLocaleData(localeJa);
     MatSidenavModule,
     MatIconModule,
     MatMenuModule,
+    FullCalendarModule,
   ],
   providers: [
     DatePipe,
