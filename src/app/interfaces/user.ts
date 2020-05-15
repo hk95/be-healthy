@@ -1,8 +1,6 @@
 export interface User {
-  id: string;
   userId: string;
-  weight: number;
-  fat: number;
-  totalCal: number;
-  today: string;
+  userName: string;
+  goalWeight: number;
+  goalFat: number;
 }
