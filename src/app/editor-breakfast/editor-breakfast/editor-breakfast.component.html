@@ -1,0 +1,68 @@
+<button (click)="back()">
+  今日の一覧へ
+</button>
+<h1>朝食入力ページ</h1>
+<input class="search" type="text" />
+
+<div class="tab">
+  <mat-tab-group [disablePagination]="true">
+    <mat-tab class="tab__list" label="マイセット">
+      <div class="meal__card">
+        <div class="meal__name">
+          <p class="name">イチゴ</p>
+          <p class="amountper">XXX個/kcal</p>
+        </div>
+        <p class="spacer"></p>
+        <p class="amount">（XXX個）</p>
+        <p class="meal__cal">XXXkcal</p>
+        <button>追加</button>
+      </div>
+      <div class="meal__card">
+        <div class="meal__name">
+          <p class="name">イチゴ</p>
+          <p class="amountper">XXX個/kcal</p>
+        </div>
+        <p class="spacer"></p>
+        <p class="amount">（XXX個）</p>
+        <p class="meal__cal">XXXkcal</p>
+        <button>追加</button>
+      </div>
+      <div class="meal__card">
+        <div class="meal__name">
+          <p class="name">イチゴ</p>
+          <p class="amountper">XXX個/kcal</p>
+        </div>
+        <p class="spacer"></p>
+        <p class="amount">（XXX個）</p>
+        <p class="meal__cal">XXXkcal</p>
+        <button>追加</button>
+      </div>
+    </mat-tab>
+    <mat-tab class="tab__list" label="検索">kensaku</mat-tab>
+    <mat-tab class="tab__list" label="履歴">rireki</mat-tab>
+    <mat-tab class="tab__list" label="選択項目">
+      <div class="nyuuryoku">
+        <p>朝食摂取カロリー:XXX kcal</p>
+        <p class="border"></p>
+        <div class="meal__card">
+          <p class="meal__name">イチゴ</p>
+          <p class="spacer"></p>
+          <p class="amount">（XXX個）</p>
+          <p class="meal__cal">XXXkcal</p>
+        </div>
+        <div class="meal__card">
+          <p class="meal__name">イチゴ</p>
+          <p class="spacer"></p>
+          <p class="amount">（XXX個）</p>
+          <p class="meal__cal">XXXkcal</p>
+        </div>
+        <div class="meal__card">
+          <p class="meal__name">イチゴ</p>
+          <p class="spacer"></p>
+          <p class="amount">（XXX個）</p>
+          <p class="meal__cal">XXXkcal</p>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

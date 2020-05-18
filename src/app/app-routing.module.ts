@@ -40,6 +40,15 @@ const routes: Routes = [
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],
   },
+  {
+    path: 'editor-breakfast/:id',
+    loadChildren: () =>
+      import('./editor-breakfast/editor-breakfast.module').then(
+        (m) => m.EditorBreakfastModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
