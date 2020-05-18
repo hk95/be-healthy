@@ -11,3 +11,15 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+.border {
+  margin-top: 0;
+  border-top: 1px solid rgba($color: #000000, $alpha: 0.7);
+}
+
+.meal__card {
+  display: flex;
+  align-items: center;
+  .spacer {
+    flex: 1;
+  }
+}
