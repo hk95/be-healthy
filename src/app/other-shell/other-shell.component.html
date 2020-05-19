@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar-row class="header" class="toolbar__content">
+    <ng-container *ngIf="(title$ | async) == 'その他'; else other">
+    </ng-container>
+    <ng-template #other>
+      <button mat-icon-button routerLink="/more" class="toolbar__back">
+        <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
+      </button>
+    </ng-template>
+    <p class="toolbar__title">{{ title$ | async }}</p>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<router-outlet></router-outlet>

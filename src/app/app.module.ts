@@ -22,11 +22,19 @@ import { registerLocaleData, DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { MainShellComponent } from './main-shell/main-shell.component';
+import { OtherShellComponent } from './other-shell/other-shell.component';
 
 registerLocaleData(localeJa);
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, ToolbarComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    ToolbarComponent,
+    MainShellComponent,
+    OtherShellComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

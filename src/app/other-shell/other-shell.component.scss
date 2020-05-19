@@ -1,0 +1,13 @@
+.toolbar {
+  &__content {
+    display: flex;
+    justify-content: center;
+  }
+  &__back {
+    position: fixed;
+    left: 16px;
+  }
+  &__title {
+    font-size: 18px;
+  }
+}

@@ -2,52 +2,72 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { GuestGuard } from './guards/guest.guard';
+import { MainShellComponent } from './main-shell/main-shell.component';
+import { OtherShellComponent } from './other-shell/other-shell.component';
 
 const routes: Routes = [
   {
+    path: 'more',
+    component: OtherShellComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./more/more.module').then((m) => m.MoreModule),
+      },
+    ],
+  },
+  {
     path: '',
-    pathMatch: 'full',
-    loadChildren: () => import('./top/top.module').then((m) => m.TopModule),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'edit',
-    loadChildren: () => import('./edit/edit.module').then((m) => m.EditModule),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'welcome',
-    loadChildren: () =>
-      import('./welcome/welcome.module').then((m) => m.WelcomeModule),
-    canLoad: [GuestGuard],
-    canActivate: [GuestGuard],
-  },
-  {
-    path: 'update',
-    loadChildren: () =>
-      import('./update/update.module').then((m) => m.UpdateModule),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'daily-detail/:id',
-    loadChildren: () =>
-      import('./daily-detail/daily-detail.module').then(
-        (m) => m.DailyDetailModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'editor-breakfast/:id',
-    loadChildren: () =>
-      import('./editor-breakfast/editor-breakfast.module').then(
-        (m) => m.EditorBreakfastModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
+    component: MainShellComponent,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadChildren: () => import('./top/top.module').then((m) => m.TopModule),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'edit',
+        loadChildren: () =>
+          import('./edit/edit.module').then((m) => m.EditModule),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'welcome',
+        loadChildren: () =>
+          import('./welcome/welcome.module').then((m) => m.WelcomeModule),
+        canLoad: [GuestGuard],
+        canActivate: [GuestGuard],
+      },
+      {
+        path: 'update',
+        loadChildren: () =>
+          import('./update/update.module').then((m) => m.UpdateModule),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'daily-detail/:id',
+        loadChildren: () =>
+          import('./daily-detail/daily-detail.module').then(
+            (m) => m.DailyDetailModule
+          ),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'editor-breakfast/:id',
+        loadChildren: () =>
+          import('./editor-breakfast/editor-breakfast.module').then(
+            (m) => m.EditorBreakfastModule
+          ),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
+    ],
   },
 ];
 
