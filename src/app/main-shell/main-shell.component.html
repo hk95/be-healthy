@@ -1,0 +1,7 @@
+<app-header></app-header>
+
+<router-outlet></router-outlet>
+
+<footer>
+  <button *ngIf="user$ | async" (click)="logout()">ログアウト</button>
+</footer>
