@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { GuestGuard } from './guards/guest.guard';
 import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
+import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,19 @@ const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./more/more.module').then((m) => m.MoreModule),
+      },
+    ],
+  },
+  {
+    path: 'welcome',
+    component: WelcomeShellComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./welcome/welcome.module').then((m) => m.WelcomeModule),
+        canLoad: [GuestGuard],
+        canActivate: [GuestGuard],
       },
     ],
   },
@@ -35,13 +49,7 @@ const routes: Routes = [
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
       },
-      {
-        path: 'welcome',
-        loadChildren: () =>
-          import('./welcome/welcome.module').then((m) => m.WelcomeModule),
-        canLoad: [GuestGuard],
-        canActivate: [GuestGuard],
-      },
+
       {
         path: 'update',
         loadChildren: () =>

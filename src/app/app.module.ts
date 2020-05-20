@@ -24,6 +24,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
+import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
 
 registerLocaleData(localeJa);
 
@@ -34,6 +35,7 @@ registerLocaleData(localeJa);
     ToolbarComponent,
     MainShellComponent,
     OtherShellComponent,
+    WelcomeShellComponent,
   ],
   imports: [
     BrowserModule,
