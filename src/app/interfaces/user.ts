@@ -1,6 +1,7 @@
 export interface User {
+  name: string;
+  avatarURL: string;
+  email: string;
+  createdAt: Date;
   userId: string;
-  userName: string;
-  goalWeight: number;
-  goalFat: number;
 }
