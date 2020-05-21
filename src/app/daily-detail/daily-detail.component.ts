@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DailyInfoService } from '../services/daily-info.service';
 import { Observable } from 'rxjs';
-import { User } from '../interfaces/user';
+import { DailyInfo } from '../interfaces/daily-info';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-daily-detail',
@@ -11,16 +12,20 @@ import { User } from '../interfaces/user';
   styleUrls: ['./daily-detail.component.scss'],
 })
 export class DailyDetailComponent implements OnInit {
-  @Input() user: User;
-  dailyInfo$: Observable<User>;
+  @Input() dailyInfo: DailyInfo;
+  dailyInfo$: Observable<DailyInfo>;
 
   constructor(
     private route: ActivatedRoute,
-    private dailyInfoService: DailyInfoService
+    private dailyInfoService: DailyInfoService,
+    private authService: AuthService
   ) {
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      this.dailyInfo$ = this.dailyInfoService.getDailyInfo(id);
+      const dailyId = params.get('id');
+      this.dailyInfo$ = this.dailyInfoService.getDailyInfo(
+        this.authService.uid,
+        dailyId
+      );
     });
   }
 
