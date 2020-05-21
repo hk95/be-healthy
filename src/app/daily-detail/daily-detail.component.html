@@ -1,15 +1,15 @@
 <div class="dailyInfo" *ngIf="dailyInfo$ | async as dailyInfo; else deafult">
-  <p class="daily-card__weight">体重：{{ dailyInfo.weight }} kg</p>
-  <p class="daily-card__fat">体脂肪率：{{ dailyInfo.fat }} %</p>
+  <p class="daily-card__weight">体重：{{ dailyInfo.currentWeight }} kg</p>
+  <p class="daily-card__fat">体脂肪率：{{ dailyInfo.currentFat }} %</p>
   <button
     [routerLink]="['/update']"
-    [queryParams]="{ id: dailyInfo.id }"
+    [queryParams]="{ id: dailyInfo.dailyId }"
     mat-mini-fab
     color="primary"
   >
     ＋
   </button>
-  <p class="daily-card__cal">カロリー：{{ dailyInfo.totalCal }} kcal</p>
+  <p class="daily-card__cal">カロリー：XXX kcal</p>
   <p class="daily-card__">タンパク質：XXX kcal</p>
   <p class="daily-card__">資質：XXX kcal</p>
   <p class="daily-card__">糖質：XXX kcal</p>
@@ -22,7 +22,7 @@
         <p>摂取カロリー:XXXkcal</p>
       </div>
       <div class="meal__head-right">
-        <button [routerLink]="['/editor-breakfast', dailyInfo.id]">
+        <button [routerLink]="['/editor-breakfast', dailyInfo.dailyId]">
           編集する
         </button>
       </div>
