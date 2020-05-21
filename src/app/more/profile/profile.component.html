@@ -1,1 +1,88 @@
-<p>profile works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="profile">
+    <p class="profile__title">プロフィール</p>
+    <div class="profile__content">
+      <div class="profile__card">
+        <dl>
+          <dt>名前</dt>
+          <dd>
+            <input
+              formControlName="userName"
+              class="profile__form-text"
+              type="text"
+            />
+          </dd>
+        </dl>
+      </div>
+      <div class="profile__card">
+        <dl>
+          <dt>性別</dt>
+          <dd class="profile__form">
+            <select formControlName="gender">
+              <option value="other">未選択</option>
+              <option value="male">男性</option>
+              <option value="female">女性</option>
+            </select>
+          </dd>
+        </dl>
+      </div>
+      <div class="profile__card">
+        <dl>
+          <dt>身長</dt>
+          <dd>
+            <input
+              formControlName="height"
+              class="profile__form-text"
+              type="text"
+            /><span>cm</span>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="profile">
+    <p class="profile__title">目標</p>
+    <div class="profile__content">
+      <div class="profile__card">
+        <dl>
+          <dt>目標体重</dt>
+          <dd>
+            <input
+              formControlName="goalWeight"
+              class="profile__form-text"
+              type="text"
+            /><span>kg</span>
+          </dd>
+        </dl>
+      </div>
+      <div class="profile__card">
+        <div class="profile__card">
+          <dl>
+            <dt>目標体脂肪率</dt>
+            <dd>
+              <input
+                formControlName="goalFat"
+                class="profile__form-text"
+                type="text"
+              /><span>%</span>
+            </dd>
+          </dl>
+        </div>
+        <div class="profile__card">
+          <dl>
+            <dt>目標摂取カロリー</dt>
+            <dd>
+              <input
+                formControlName="goalCal"
+                class="profile__form-text"
+                type="text"
+              /><span>kcal</span>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary">更新する</button>
+</form>
