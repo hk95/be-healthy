@@ -1,4 +1,4 @@
-<ng-container *ngIf="isToday$ | async as isToday; else deafult">
+<ng-container *ngIf="isTodayDailyInfo$ | async as isToday; else deafult">
   今日は登録済み
 </ng-container>
 <ng-template #deafult
@@ -8,20 +8,24 @@
 >
 
 <div *ngIf="dailyInfos$ | async as dailyInfos">
-  <div *ngFor="let user of dailyInfos">
+  <div *ngFor="let dailyInfo of dailyInfos">
     <div class="daily-card">
       <mat-card>
-        <mat-card-title>{{ user.today }}</mat-card-title>
+        <mat-card-title>{{ dailyInfo.date }}</mat-card-title>
         <div class="wrapper">
           <mat-card-content>
-            <p class="daily-card__weight">体重：{{ user.weight }} kg</p>
-            <p class="daily-card__fat">体脂肪率：{{ user.fat }} %</p>
-            <p class="daily-card__cal">カロリー：{{ user.totalCal }} kcal</p>
+            <p class="daily-card__weight">
+              体重：{{ dailyInfo.currentWeight }} kg
+            </p>
+            <p class="daily-card__fat">
+              体脂肪率：{{ dailyInfo.currentFat }} %
+            </p>
+            <p class="daily-card__cal">カロリー：2000kcal</p>
           </mat-card-content>
           <div class="spacer"></div>
           <mat-card-actions>
             <button
-              [routerLink]="['/daily-detail', user.id]"
+              [routerLink]="['/daily-detail', dailyInfo.dailyId]"
               mat-fab
               color="primary"
             >
