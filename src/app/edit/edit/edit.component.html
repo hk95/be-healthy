@@ -4,15 +4,15 @@
   <form [formGroup]="form" (ngSubmit)="CreateSubmit()">
     <mat-form-field>
       <mat-label>体重</mat-label>
-      <input formControlName="weight" type="number" matInput />
+      <input formControlName="currentWeight" type="number" matInput />
     </mat-form-field>
     <mat-form-field>
       <mat-label>体脂肪</mat-label>
-      <input formControlName="fat" type="number" matInput />
+      <input formControlName="currentFat" type="number" matInput />
     </mat-form-field>
     <mat-form-field>
       <mat-label>食べ物</mat-label>
-      <input formControlName="meal" type="number" matInput />
+      <input formControlName="dailyMemo" type="text" matInput />
     </mat-form-field>
 
     <button [disabled]="form.invalid" mat-stroked-button color="primary">

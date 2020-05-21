@@ -11,12 +11,11 @@ import { DatePipe } from '@angular/common';
 })
 export class EditComponent implements OnInit {
   form = this.fb.group({
-    weight: ['', [Validators.required]],
-    fat: ['', [Validators.required]],
-    meal: ['', [Validators.required]],
+    currentWeight: ['', [Validators.required]],
+    currentFat: ['', [Validators.required]],
+    dailyMemo: [''],
   });
-  today: string = this.getDate();
-  id: string;
+  date: string = this.getDate();
   constructor(
     private fb: FormBuilder,
     private dailyInfoService: DailyInfoService,
@@ -33,11 +32,11 @@ export class EditComponent implements OnInit {
   CreateSubmit() {
     const formData = this.form.value;
     this.dailyInfoService.createDailyInfo({
-      userId: this.authService.uid,
-      weight: formData.weight,
-      fat: formData.fat,
-      totalCal: formData.meal,
-      today: this.today,
+      authorId: this.authService.uid,
+      date: this.date,
+      currentWeight: formData.currentWeight,
+      currentFat: formData.currentFat,
+      dailyMemo: formData.dailyMemo,
     });
   }
 }
