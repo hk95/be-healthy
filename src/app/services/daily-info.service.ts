@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import { map, take, tap, switchMap } from 'rxjs/operators';
+import { DailyInfo } from '../interfaces/daily-info';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +18,16 @@ export class DailyInfoService {
     private router: Router
   ) {}
 
-  createDailyInfo(dailyInfo: any) {
-    const id = this.db.createId();
+  createDailyInfo(
+    dailyInfo: Omit<DailyInfo, 'dailyId' | 'breakfast' | 'lunch' | 'dener'>
+  ): Promise<void> {
+    const dailyId = this.db.createId();
     return this.db
-      .doc(`dailyInfos/${id}`)
-      .set({ id, ...dailyInfo })
+      .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyId}`)
+      .set({
+        dailyId,
+        ...dailyInfo,
+      })
       .then(() => {
         this.snackBar.open('登録しました', null, {
           duration: 2000,
@@ -30,27 +36,31 @@ export class DailyInfoService {
       });
   }
 
-  getDailyInfos(userId: string): Observable<User[]> {
+  getDailyInfos(authorId: string): Observable<DailyInfo[]> {
     return this.db
-      .collection<User>('dailyInfos', (ref) =>
-        ref.where('userId', '==', userId)
-      .orderBy('today', 'desc').limit(7))
+      .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
+        ref.where('authorId', '==', authorId).orderBy('date', 'desc').limit(7)
+      )
       .valueChanges();
   }
-  getDailyInfo(id: string): Observable<User> {
-    console.log(id);
-    console.log(this.db.doc<User>(`dailyInfos/${id}`));
-    return this.db.doc<User>(`dailyInfos/${id}`).valueChanges();
-  }
-  isToday(today: string): Observable<User> {
+  getDailyInfo(authorId: string, id: string): Observable<DailyInfo> {
     return this.db
-      .collection<User>('dailyInfos', (ref) => ref.where('today', '==', today))
+      .doc<DailyInfo>(`users/${authorId}/dailyInfos/${id}`)
+      .valueChanges();
+  }
+
+  isTodayDailyInfo(userId: string, date: string): Observable<DailyInfo> {
+    return this.db
+      .collection<DailyInfo>(`users/${userId}/dailyInfos`, (ref) =>
+        ref.where('date', '==', date)
+      )
       .valueChanges()
       .pipe(
-        map((istoday) => {
-          if (istoday.length) {
-            return istoday[0];
+        map((isTodayDailyInfo) => {
+          if (isTodayDailyInfo.length) {
+            return isTodayDailyInfo[0];
           } else {
+            console.log(date);
             return null;
           }
         })
