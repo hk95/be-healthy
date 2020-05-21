@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface DailyInfo {
   dailyId: string;
   date: string;
@@ -7,5 +9,9 @@ export interface DailyInfo {
   lunch: number;
   dener: number;
   dailyMemo: string;
-  autherId: string;
+  authorId: string;
+}
+
+interface UserWithAuthor extends User {
+  author: User;
 }
