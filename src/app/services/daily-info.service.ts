@@ -67,18 +67,19 @@ export class DailyInfoService {
       );
   }
 
-  upadateDailyInfo(dailyInfo: any): Promise<void> {
-    console.log(dailyInfo.id);
+  updateDailyInfo(
+    dailyInfo: Omit<DailyInfo, 'date' | 'breakfast' | 'lunch' | 'dener'>
+  ): Promise<void> {
+    console.log(dailyInfo.authorId);
     return this.db
-      .doc(`dailyInfos/${dailyInfo.id}`)
+      .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.dailyId}`)
       .set(dailyInfo, {
         merge: true,
       })
       .then(() => {
-        this.snackBar.open('変更しました', null, {
+        this.snackBar.open('更新しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('');
       });
   }
 }
