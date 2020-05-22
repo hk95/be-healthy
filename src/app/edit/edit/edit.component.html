@@ -3,11 +3,16 @@
     <div class="form-body__body">
       <mat-form-field class="form-body__weight">
         <mat-label>体重</mat-label>
-        <input formControlName="currentWeight" type="number" matInput />
+        <input
+          formControlName="currentWeight"
+          type="number"
+          matInput
+          required
+        />
       </mat-form-field>
       <mat-form-field class="form-body__fat">
         <mat-label>体脂肪</mat-label>
-        <input formControlName="currentFat" type="number" matInput />
+        <input formControlName="currentFat" type="number" matInput required />
       </mat-form-field>
     </div>
 
@@ -21,7 +26,7 @@
     </mat-form-field>
   </div>
 
-  <button (click)="CreateSubmit()" mat-stroked-button color="primary">
+  <button (click)="createSubmit()" mat-stroked-button color="primary">
     登録する
   </button>
 </form>

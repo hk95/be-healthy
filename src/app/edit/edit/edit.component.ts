@@ -30,7 +30,7 @@ export class EditComponent implements OnInit {
     return this.datepipe.transform(d, 'yy.MM.dd(E)');
   }
 
-  CreateSubmit() {
+  createSubmit() {
     const formData = this.form.value;
     this.dailyInfoService.createDailyInfo({
       authorId: this.authService.uid,
