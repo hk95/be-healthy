@@ -1,23 +1,28 @@
-<div class="container">
-  <h1>今日の情報入力画面</h1>
+<form [formGroup]="form">
+  <div class="form-body">
+    <div class="form-body__body">
+      <mat-form-field class="form-body__weight">
+        <mat-label>体重</mat-label>
+        <input formControlName="currentWeight" type="number" matInput />
+      </mat-form-field>
+      <mat-form-field class="form-body__fat">
+        <mat-label>体脂肪</mat-label>
+        <input formControlName="currentFat" type="number" matInput />
+      </mat-form-field>
+    </div>
 
-  <form [formGroup]="form" (ngSubmit)="CreateSubmit()">
-    <mat-form-field>
-      <mat-label>体重</mat-label>
-      <input formControlName="currentWeight" type="number" matInput />
+    <mat-form-field class="form-body__memo">
+      <mat-label>1日メモ</mat-label>
+      <textarea
+        class="form-body__memo-textarea"
+        formControlName="dailyMemo"
+        matInput
+      ></textarea>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>体脂肪</mat-label>
-      <input formControlName="currentFat" type="number" matInput />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>食べ物</mat-label>
-      <input formControlName="dailyMemo" type="text" matInput />
-    </mat-form-field>
+  </div>
 
-    <button [disabled]="form.invalid" mat-stroked-button color="primary">
-      登録する
-    </button>
-  </form>
-  <button routerLink="/top" mat-stroked-button color="primary">戻る</button>
-</div>
+  <button (click)="CreateSubmit()" mat-stroked-button color="primary">
+    登録する
+  </button>
+</form>
+<button (click)="back()" mat-stroked-button color="primary">戻る</button>

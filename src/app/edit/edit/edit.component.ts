@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit',
@@ -20,7 +20,8 @@ export class EditComponent implements OnInit {
     private fb: FormBuilder,
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private location: Location
   ) {}
 
   ngOnInit(): void {}
@@ -38,5 +39,8 @@ export class EditComponent implements OnInit {
       currentFat: formData.currentFat,
       dailyMemo: formData.dailyMemo,
     });
+  }
+  back() {
+    this.location.back();
   }
 }
