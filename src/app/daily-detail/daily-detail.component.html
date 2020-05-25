@@ -1,18 +1,33 @@
 <div class="dailyInfo" *ngIf="dailyInfo$ | async as dailyInfo; else deafult">
-  <p class="daily-card__weight">体重：{{ dailyInfo.currentWeight }} kg</p>
-  <p class="daily-card__fat">体脂肪率：{{ dailyInfo.currentFat }} %</p>
-  <button
-    [routerLink]="['/update']"
-    [queryParams]="{ id: dailyInfo.dailyId }"
-    mat-mini-fab
-    color="primary"
-  >
-    ＋
-  </button>
-  <p class="daily-card__cal">カロリー：XXX kcal</p>
-  <p class="daily-card__">タンパク質：XXX kcal</p>
-  <p class="daily-card__">資質：XXX kcal</p>
-  <p class="daily-card__">糖質：XXX kcal</p>
+  <div class="result">
+    <div class="result__record">
+      <div class="result__body">
+        <p class="result__weight">体重：{{ dailyInfo.currentWeight }} kg</p>
+        <p class="result__fat">体脂肪率：{{ dailyInfo.currentFat }} %</p>
+      </div>
+      <button
+        [routerLink]="['/update', dailyInfo.dailyId]"
+        mat-icon-button
+        color="primary"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <div class="border"></div>
+    <div class="result__nutrial">
+      <p class="result__cal">カロリー：XXX kcal</p>
+      <p>タンパク質：XXX kcal</p>
+      <p>資質：XXX kcal</p>
+      <p>糖質：XXX kcal</p>
+    </div>
+    <div class="result__memo" *ngIf="dailyInfo.dailyMemo; else noMemo">
+      <div class="border"></div>
+      <p class="result__memo-title">1日のメモ</p>
+      <p class="result__memo-textarea">{{ dailyInfo.dailyMemo }}</p>
+    </div>
+    <ng-template class="result__memo--noMemo" #noMemo> </ng-template>
+  </div>
+
   <p>パイチャート</p>
 
   <div class="meal">
