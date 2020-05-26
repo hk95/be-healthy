@@ -7,7 +7,7 @@ export interface DailyInfo {
   currentFat: number;
   breakfast: number;
   lunch: number;
-  dener: number;
+  denner: number;
   dailyMemo: string;
   authorId: string;
 }
