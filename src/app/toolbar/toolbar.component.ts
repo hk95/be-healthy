@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { DailyInfoService } from '../services/daily-info.service';
+import { AuthService } from '../services/auth.service';
+import { DailyInfo } from '../interfaces/daily-info';
 
 @Component({
   selector: 'app-toolbar',
@@ -6,7 +10,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
-  constructor() {}
+  @Input() dailyInfo: DailyInfo;
+  date: string = this.getDate();
+  constructor(
+    private dailyInfoService: DailyInfoService,
+    private authService: AuthService,
+    private datepipe: DatePipe
+  ) {}
+  getDate() {
+    const d = new Date();
+    return this.datepipe.transform(d, 'yy.MM.dd(E)');
+  }
+  createDailyInfo() {
+    this.dailyInfoService.createDailyInfo({
+      authorId: this.authService.uid,
+      date: this.date,
+    });
+  }
 
   ngOnInit(): void {}
 }

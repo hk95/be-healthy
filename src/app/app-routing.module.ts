@@ -51,7 +51,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'update/:id',
+        path: 'update/:date',
         loadChildren: () =>
           import('./update/update.module').then((m) => m.UpdateModule),
         canLoad: [AuthGuard],
@@ -67,7 +67,16 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'editor-breakfast/:id',
+        path: 'editor-list',
+        loadChildren: () =>
+          import('./editor-list/editor-list.module').then(
+            (m) => m.EditorListModule
+          ),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'editor-breakfast/:date',
         loadChildren: () =>
           import('./editor-breakfast/editor-breakfast.module').then(
             (m) => m.EditorBreakfastModule

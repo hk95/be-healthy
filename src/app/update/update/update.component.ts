@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 })
 export class UpdateComponent implements OnInit {
   @Input() dailyInfo: DailyInfo;
-  dailyId: string;
+  date: string;
   dailyInfo$: Observable<DailyInfo>;
 
   form = this.fb.group({
@@ -32,39 +32,24 @@ export class UpdateComponent implements OnInit {
     private location: Location
   ) {
     this.route.paramMap.subscribe((params) => {
-      this.dailyId = params.get('id');
+      this.date = params.get('date');
       this.dailyInfoService
-        .getDailyInfo(this.authService.uid, this.dailyId)
+        .getDailyInfo(this.authService.uid, this.date)
         .subscribe((dailyInfo) => {
           if (dailyInfo) {
             this.form.patchValue(dailyInfo);
-            console.log('wataru');
           } else {
             console.log('error');
           }
         });
     });
-    // this.route.queryParamMap.subscribe((params) => {
-    //   const id = params.get('id');
-
-    //   this.dailyInfoService
-    //     .getDailyInfo(this.authService.uid, id)
-    //     .subscribe((user) => {
-    //       if (user) {
-    //         this.form.patchValue(user);
-    //         console.log('wataru');
-    //       } else {
-    //         console.log('error');
-    //       }
-    //     });
-    // });
   }
   ngOnInit() {}
 
   updateSubmit() {
     const formData = this.form.value;
-    this.dailyInfoService.updateDailyInfo({
-      dailyId: this.dailyId,
+    this.dailyInfoService.updateDailyInfoBody({
+      date: this.date,
       currentWeight: formData.currentWeight,
       currentFat: formData.currentFat,
       dailyMemo: formData.dailyMemo,

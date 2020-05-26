@@ -2,7 +2,7 @@
   今日は登録済み
 </ng-container>
 <ng-template #deafult
-  ><button routerLink="/edit" mat-stroked-button color="primary">
+  ><button (click)="createDailyInfo()" mat-stroked-button color="primary">
     今日の情報を登録する
   </button></ng-template
 >
@@ -25,7 +25,7 @@
           <div class="spacer"></div>
           <mat-card-actions>
             <button
-              [routerLink]="['/daily-detail', dailyInfo.dailyId]"
+              [routerLink]="['/daily-detail', dailyInfo.date]"
               mat-icon-button
               color="primary"
             >

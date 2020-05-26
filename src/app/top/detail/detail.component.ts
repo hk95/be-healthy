@@ -29,5 +29,11 @@ export class DetailComponent implements OnInit {
     const d = new Date();
     return this.datepipe.transform(d, 'yy.MM.dd(E)');
   }
+  createDailyInfo() {
+    this.dailyInfoService.createDailyInfo({
+      authorId: this.authService.uid,
+      date: this.date,
+    });
+  }
   ngOnInit(): void {}
 }
