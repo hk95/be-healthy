@@ -18,24 +18,6 @@ export class DailyInfoService {
     private router: Router
   ) {}
 
-  createDailyInfo(
-    dailyInfo: Omit<DailyInfo, 'dailyId' | 'breakfast' | 'lunch' | 'dener'>
-  ): Promise<void> {
-    const dailyId = this.db.createId();
-    return this.db
-      .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyId}`)
-      .set({
-        dailyId,
-        ...dailyInfo,
-      })
-      .then(() => {
-        this.snackBar.open('登録しました', null, {
-          duration: 2000,
-        });
-        this.router.navigateByUrl('');
-      });
-  }
-
   getDailyInfos(authorId: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
@@ -43,9 +25,9 @@ export class DailyInfoService {
       )
       .valueChanges();
   }
-  getDailyInfo(authorId: string, id: string): Observable<DailyInfo> {
+  getDailyInfo(authorId: string, date: string): Observable<DailyInfo> {
     return this.db
-      .doc<DailyInfo>(`users/${authorId}/dailyInfos/${id}`)
+      .doc<DailyInfo>(`users/${authorId}/dailyInfos/${date}`)
       .valueChanges();
   }
 
@@ -67,12 +49,44 @@ export class DailyInfoService {
       );
   }
 
-  updateDailyInfo(
-    dailyInfo: Omit<DailyInfo, 'date' | 'breakfast' | 'lunch' | 'dener'>
+  createDailyInfo(
+    dailyInfo: Omit<
+      DailyInfo,
+      | 'dailyId'
+      | 'currentWeight'
+      | 'currentFat'
+      | 'breakfast'
+      | 'lunch'
+      | 'denner'
+      | 'dailyMemo'
+    >
+  ) {
+    this.getDailyInfo(dailyInfo.authorId, dailyInfo.date).subscribe((isdoc) => {
+      if (!isdoc) {
+        console.log('empty');
+        const dailyId = this.db.createId();
+        return this.db
+          .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
+          .set({
+            dailyId,
+            ...dailyInfo,
+          })
+          .then(() => {
+            this.router.navigateByUrl('editor-list');
+          });
+      } else {
+        console.log('isdoc');
+        this.router.navigateByUrl('editor-list');
+      }
+    });
+  }
+
+  updateDailyInfoBody(
+    dailyInfo: Omit<DailyInfo, 'dailyId' | 'breakfast' | 'lunch' | 'denner'>
   ): Promise<void> {
     console.log(dailyInfo.authorId);
     return this.db
-      .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.dailyId}`)
+      .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
       .set(dailyInfo, {
         merge: true,
       })
