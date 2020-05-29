@@ -23,13 +23,10 @@ body {
   margin-bottom: 56px;
 }
 
-.food__card {
-  display: flex;
-  align-items: center;
-  .spacer {
-    flex: 1;
-  }
+.spacer {
+  flex: 1;
 }
+
 app-toolbar {
   width: 100%;
   height: auto;

@@ -8,7 +8,7 @@
     <mat-tab-group [disablePagination]="true">
       <mat-tab class="tab__list" label="マイセット">
         <input class="search" type="text" />
-        <div class="food__card">
+        <div class="food">
           <div class="food__name">
             <p class="food__name--with-amount">イチゴ</p>
             <p class="food__amountper">XXX個/kcal</p>
@@ -24,7 +24,7 @@
         <input class="search" type="text" />
         <div *ngIf="foods$ | async as foods">
           <div *ngFor="let food of foods">
-            <div class="food__card">
+            <div class="food">
               <div class="food__name">
                 <p class="food__name--with-amount">{{ food.foodName }}</p>
                 <span class="food__amountper">
@@ -68,7 +68,7 @@
         <div *ngIf="breakfastFoods$ | async as breakfastFoods">
           <div *ngFor="let breakfastFood of breakfastFoods">
             <p class="border"></p>
-            <div class="food__card">
+            <div class="food">
               <p class="food__name">{{ breakfastFood.meal.foodName }}</p>
               <p class="spacer"></p>
               <p class="food__amount">（{{ breakfastFood.amount }}個）</p>
