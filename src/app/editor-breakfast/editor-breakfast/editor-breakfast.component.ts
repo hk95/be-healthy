@@ -56,11 +56,6 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
     );
   }
 
-  // switchMap(breakfastFoods => {
-  //   breakfastFoods.reduce(
-  //   (total, food) =>
-  //     total + food.amount * food.meal.calPerAmount, 0);
-
   addDailyInfoFood(amount: number, foodId: string) {
     this.dailyInfoService.addDailyInfoBreakfast({
       date: this.date,
