@@ -13,23 +13,23 @@ body {
   background-color: #fafafafa;
 }
 .border {
-  margin-top: 0;
+  margin: 0;
   border-top: 1px solid #000;
   opacity: 0.2;
 }
 .container {
   padding: 0 8px;
+  background: #fff;
+  margin-bottom: 56px;
 }
 
-.meal__card {
-  display: flex;
-  align-items: center;
-  .spacer {
-    flex: 1;
-  }
+.spacer {
+  flex: 1;
 }
+
 app-toolbar {
   width: 100%;
+  height: auto;
   z-index: 10;
   bottom: 0px;
   right: 0px;

@@ -2,68 +2,89 @@
   今日の一覧へ
 </button>
 <h1>朝食入力ページ</h1>
-<input class="search" type="text" />
 
-<div class="tab">
-  <mat-tab-group [disablePagination]="true">
-    <mat-tab class="tab__list" label="マイセット">
-      <div class="meal__card">
-        <div class="meal__name">
-          <p class="meal__name--with-amount">イチゴ</p>
-          <p class="meal__amountper">XXX個/kcal</p>
+<div class="container">
+  <div class="tab">
+    <mat-tab-group [disablePagination]="true">
+      <mat-tab class="tab__list" label="マイセット">
+        <input class="search" type="text" />
+        <div class="food">
+          <div class="food__name">
+            <p class="food__name--with-amount">イチゴ</p>
+            <p class="food__amountper">XXX個/kcal</p>
+          </div>
+          <p class="spacer"></p>
+          <p class="food__amount">（XXX個）</p>
+          <p class="food__cal">XXXkcal</p>
+          <button>追加</button>
         </div>
-        <p class="spacer"></p>
-        <p class="meal__amount">（XXX個）</p>
-        <p class="meal__cal">XXXkcal</p>
-        <button>追加</button>
-      </div>
-      <div class="meal__card">
-        <div class="meal__name">
-          <p class="meal__name--with-amount">イチゴ</p>
-          <p class="meal__amountper">XXX個/kcal</p>
-        </div>
-        <p class="spacer"></p>
-        <p class="meal__amount">（XXX個）</p>
-        <p class="meal__cal">XXXkcal</p>
-        <button>追加</button>
-      </div>
-      <div class="meal__card">
-        <div class="meal__name">
-          <p class="meal__name--with-amount">イチゴ</p>
-          <p class="meal__amountper">XXX個/kcal</p>
-        </div>
-        <p class="spacer"></p>
-        <p class="meal__amount">（XXX個）</p>
-        <p class="meal__cal">XXXkcal</p>
-        <button>追加</button>
-      </div>
-    </mat-tab>
+      </mat-tab>
 
-    <mat-tab class="tab__list" label="検索">kensaku</mat-tab>
-    <mat-tab class="tab__list" label="履歴">rireki</mat-tab>
-    <mat-tab class="tab__list" label="選択項目">
-      <div class="nyuuryoku">
-        <p>朝食摂取カロリー:XXX kcal</p>
-        <p class="border"></p>
-        <div class="meal__card">
-          <p class="meal__name">イチゴ</p>
-          <p class="spacer"></p>
-          <p class="meal__amount">（XXX個）</p>
-          <p class="meal__cal">XXXkcal</p>
+      <mat-tab class="tab__list" label="検索">
+        <input class="search" type="text" />
+        <div *ngIf="foods$ | async as foods">
+          <div *ngFor="let food of foods">
+            <div class="food">
+              <div class="food__name">
+                <p class="food__name--with-amount">{{ food.foodName }}</p>
+                <span class="food__amountper">
+                  {{ food.calPerAmount }}kcal/{{ food.unit }}
+                </span>
+              </div>
+
+              <input
+                class="food__amount-form"
+                max="100"
+                min="0"
+                step="0.1"
+                [(ngModel)]="amout[food.foodId]"
+                type="number"
+              />
+              <span>{{ food.unit }}</span>
+              <p class="spacer"></p>
+              <p class="food__cal">
+                {{
+                  food.calPerAmount * amout[food.foodId] | number: '1.1-1'
+                }}kcal
+              </p>
+
+              <button
+                (click)="addDailyInfoFood(amout[food.foodId], food.foodId)"
+              >
+                追加
+              </button>
+            </div>
+          </div>
+        </div></mat-tab
+      >
+      <mat-tab class="tab__list" label="履歴">
+        <input class="search" type="text" />
+        rireki</mat-tab
+      >
+      <mat-tab class="tab__list" label="選択項目">
+        <p *ngIf="totalCal$ | async as totalCal">
+          朝食摂取カロリー:{{ totalCal | number: '1.1-1' }} kcal
+        </p>
+        <div *ngIf="breakfastFoods$ | async as breakfastFoods">
+          <div *ngFor="let breakfastFood of breakfastFoods">
+            <p class="border"></p>
+            <div class="food">
+              <p class="food__name">{{ breakfastFood.meal.foodName }}</p>
+              <p class="spacer"></p>
+              <p class="food__amount">（{{ breakfastFood.amount }}個）</p>
+              <p class="food__cal">
+                {{
+                  breakfastFood.amount * breakfastFood.meal.calPerAmount
+                    | number: '1.1-1'
+                }}kcal
+              </p>
+              <button (click)="deleteDailyInfoFood(breakfastFood.breakfastId)">
+                削除
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="meal__card">
-          <p class="meal__name">イチゴ</p>
-          <p class="spacer"></p>
-          <p class="meal__amount">（XXX個）</p>
-          <p class="meal__cal">XXXkcal</p>
-        </div>
-        <div class="meal__card">
-          <p class="meal__name">イチゴ</p>
-          <p class="spacer"></p>
-          <p class="meal__amount">（XXX個）</p>
-          <p class="meal__cal">XXXkcal</p>
-        </div>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>

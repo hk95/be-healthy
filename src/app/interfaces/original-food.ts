@@ -3,5 +3,11 @@ export interface OriginalFood {
   foodName: string;
   foodImage: string;
   foodCal: number;
-  foodNutrition: string;
+  calPerAmount: number;
+  unit: 'amount' | 'gram' | 'ml';
+  protein: number;
+  foodFat: number;
+  totalCarbohydrate: number;
+  sugar: number;
+  dietaryFiber: number;
 }
