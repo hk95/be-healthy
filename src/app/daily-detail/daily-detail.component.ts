@@ -5,6 +5,7 @@ import { DailyInfoService } from '../services/daily-info.service';
 import { Observable } from 'rxjs';
 import { DailyInfo } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
+import { MainShellService } from '../services/main-shell.service';
 
 @Component({
   selector: 'app-daily-detail',
@@ -14,18 +15,21 @@ import { AuthService } from '../services/auth.service';
 export class DailyDetailComponent implements OnInit {
   @Input() dailyInfo: DailyInfo;
   dailyInfo$: Observable<DailyInfo>;
+  date: string;
 
   constructor(
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private mainShellService: MainShellService
   ) {
     this.route.paramMap.subscribe((params) => {
-      const dailyId = params.get('id');
+      this.date = params.get('date');
       this.dailyInfo$ = this.dailyInfoService.getDailyInfo(
         this.authService.uid,
-        dailyId
+        this.date
       );
+      this.mainShellService.setTitle(this.date);
     });
   }
 

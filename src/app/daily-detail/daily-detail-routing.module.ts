@@ -8,7 +8,7 @@ const routes: Routes = [
     component: DailyDetailComponent,
   },
   {
-    path: ':id',
+    path: ':date',
     component: DailyDetailComponent,
   },
 ];

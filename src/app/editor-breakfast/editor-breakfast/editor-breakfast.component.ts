@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { DailyInfo, BreakfastWithMeal } from 'src/app/interfaces/daily-info';
 import { tap, switchMap, map } from 'rxjs/operators';
+import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
   selector: 'app-editor-breakfast',
@@ -28,23 +29,19 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
     private dailyInfoService: DailyInfoService,
     private foodService: FoodService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private mainShellService: MainShellService
   ) {
     this.route.paramMap.subscribe((paramMap) => {
       this.date = paramMap.get('date');
-
       this.breakfastFoods$ = this.dailyInfoService.getDailyInfoBreakfast(
         this.authService.uid,
         this.date
       );
+      this.mainShellService.setTitle(this.date);
     });
-    console.log(
-      this.breakfastFoods$.pipe(
-        map((breakfastFood) =>
-          breakfastFood.reduce((total, cal) => total + cal.meal.calPerAmount, 0)
-        )
-      )
-    );
+    this.mainShellService.setTitleMeal('朝食');
+
     this.totalCal$ = this.breakfastFoods$.pipe(
       map((breakfastFood) =>
         breakfastFood.reduce(

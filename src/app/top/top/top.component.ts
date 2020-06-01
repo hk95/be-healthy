@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
   selector: 'app-top',
@@ -9,7 +10,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 export class TopComponent implements OnInit {
   calendarPlugins = [dayGridPlugin];
 
-  constructor() {}
+  constructor(private mainShellService: MainShellService) {
+    this.mainShellService.setTitle('TOP');
+  }
 
   ngOnInit(): void {}
 }

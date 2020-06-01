@@ -58,7 +58,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'daily-detail/:id',
+        path: 'daily-detail/:date',
         loadChildren: () =>
           import('./daily-detail/daily-detail.module').then(
             (m) => m.DailyDetailModule
