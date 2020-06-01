@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MainShellService } from '../services/main-shell.service';
 import { Observable } from 'rxjs';
-import { DailyInfoService } from '../services/daily-info.service';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private datepipe: DatePipe,
     private mainShellService: MainShellService,
-    private userService: DailyInfoService,
+    private userService: UserService,
     private authService: AuthService
   ) {
     this.userService.getUser(this.authService.uid).subscribe((result) => {
