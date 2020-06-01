@@ -3,23 +3,31 @@
     <button mat-icon-button>
       <mat-icon>menu</mat-icon>
     </button>
-    <h1>{{ today }}</h1>
+
+    <ng-container *ngIf="(title$ | async) == ('TOP' || 'My Menu'); else other"
+      ><h1>{{ title$ | async }}</h1></ng-container
+    >
+    <ng-template #other>
+      <h1>
+        {{ title$ | async }}
+        <span *ngIf="titleMeal$"> {{ titleMeal$ | async }}</span>
+      </h1></ng-template
+    >
+    <!-- プロフィール  -->
+
     <div class="mypage">
       <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>home</mat-icon>
+        <img
+          *ngIf="avatarURL"
+          [src]="avatarURL"
+          alt="avatar"
+          class="avatarImage"
+        />
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>dialpad</mat-icon>
-          <span>Redial</span>
-        </button>
-        <button mat-menu-item disabled>
-          <mat-icon>voicemail</mat-icon>
-          <span>Check voice mail</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          <span>Disable alerts</span>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>login</mat-icon>
+          <span>ログアウト</span>
         </button>
       </mat-menu>
     </div>
