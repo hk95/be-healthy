@@ -5,6 +5,8 @@ import { EditorBreakfastRoutingModule } from './editor-breakfast-routing.module'
 import { EditorBreakfastComponent } from './editor-breakfast/editor-breakfast.component';
 
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -12,8 +14,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     EditorBreakfastRoutingModule,
+    MatIconModule,
     MatTabsModule,
     FormsModule,
+    MatButtonModule,
   ],
 })
 export class EditorBreakfastModule {}
