@@ -9,6 +9,9 @@
 .food {
   display: flex;
   align-items: center;
+  &__fav {
+    margin: 0 8px 0 0px;
+  }
   &__amountper {
     font-size: 12px;
     opacity: 0.7;
@@ -16,9 +19,8 @@
     color: #009688;
   }
   &__name {
-    margin-right: 16px;
+    margin: 8px 8px 8px 0;
     width: 100px;
-    margin-bottom: 16px;
     &--with-amount {
       margin: 0;
     }
@@ -32,5 +34,5 @@
   }
 }
 button {
-  margin: 0 16px;
+  margin: 0 8px;
 }

@@ -18,11 +18,14 @@ import { MainShellService } from 'src/app/services/main-shell.service';
 })
 export class EditorBreakfastComponent implements OnInit, AfterViewInit {
   @Input() originalFood: OriginalFood;
-  foods$: Observable<OriginalFood[]> = this.foodService.getOriginalFoods();
+  foods$: Observable<OriginalFood[]> = this.foodService.getOriginalFoods(
+    this.authService.uid
+  );
   amout = {};
   date: string;
-  breakfastFoods$: Observable<BreakfastWithMeal[]>;
+  selectedFoods$: Observable<BreakfastWithMeal[]>;
   totalCal$: Observable<number>;
+  favFoods$: Observable<OriginalFood[]>;
 
   constructor(
     private location: Location,
@@ -34,7 +37,7 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
   ) {
     this.route.paramMap.subscribe((paramMap) => {
       this.date = paramMap.get('date');
-      this.breakfastFoods$ = this.dailyInfoService.getDailyInfoBreakfast(
+      this.selectedFoods$ = this.dailyInfoService.getDailyInfoBreakfast(
         this.authService.uid,
         this.date
       );
@@ -42,7 +45,7 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
     });
     this.mainShellService.setTitleMeal('朝食');
 
-    this.totalCal$ = this.breakfastFoods$.pipe(
+    this.totalCal$ = this.selectedFoods$.pipe(
       map((breakfastFood) =>
         breakfastFood.reduce(
           (total, foodCal) =>
@@ -51,6 +54,7 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
         )
       )
     );
+    this.favFoods$ = this.foodService.getFavFoods(this.authService.uid);
   }
 
   addDailyInfoFood(amount: number, foodId: string) {
@@ -72,6 +76,12 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
     );
   }
 
+  likeFavFood(foodId: string) {
+    this.foodService.likeFavFood(this.authService.uid, foodId);
+  }
+  unLikeFavFood(foodId: string) {
+    this.foodService.unLikeFavFood(this.authService.uid, foodId);
+  }
   back(): void {
     this.location.back();
   }
