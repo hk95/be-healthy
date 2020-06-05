@@ -10,4 +10,5 @@ export interface OriginalFood {
   totalCarbohydrate: number;
   sugar: number;
   dietaryFiber: number;
+  isLiked?: boolean;
 }
