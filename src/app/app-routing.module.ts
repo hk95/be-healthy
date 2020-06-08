@@ -84,6 +84,13 @@ const routes: Routes = [
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
       },
+      {
+        path: 'menu',
+        loadChildren: () =>
+          import('./menu/menu.module').then((m) => m.MenuModule),
+        canLoad: [AuthGuard],
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];
