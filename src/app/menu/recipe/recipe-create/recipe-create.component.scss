@@ -1,0 +1,137 @@
+h1 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 0;
+}
+h2 {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+input {
+  display: block;
+  margin: 0;
+  justify-self: center;
+  border: none;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  height: 30px;
+  margin-bottom: 48px;
+}
+.title {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+  &__name {
+    margin-bottom: 8px;
+    height: 25px;
+  }
+  &__form {
+    display: none;
+  }
+  &__thumbnail {
+    height: 100px;
+    background: #fff;
+    border: 1px dashed #dbdbdb;
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+  }
+  p {
+    margin: 0;
+    color: #767676;
+  }
+}
+
+.summary {
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  textarea {
+    height: 100px;
+  }
+}
+
+.ingredient {
+  margin-bottom: 48px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  &__detail {
+    height: 30px;
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffff;
+    border-top: 1px solid #dbdbdb;
+  }
+  &__amount {
+    text-align: right;
+  }
+}
+
+.process {
+  margin-bottom: 48px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  p {
+    margin: 0;
+    color: #767676;
+  }
+  &__wrapper {
+    padding: 8px;
+    border-top: 1px solid #dbdbdb;
+    background: #ffff;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__number {
+    margin: 0;
+    margin-left: 8px;
+    min-height: 30px;
+  }
+  &__image {
+    background: #fff;
+    border: 1px dashed #dbdbdb;
+    cursor: pointer;
+  }
+  &__description {
+    border: none;
+  }
+}
+.nutrition {
+  margin-bottom: 48px;
+  border-bottom: 1px solid #dbdbdb;
+  &__detail {
+    height: 35px;
+    padding: 0 8px;
+    border-top: 1px solid #dbdbdb;
+    background: #ffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__name {
+    margin: 0;
+  }
+  &__amount {
+    text-align: right;
+  }
+}
+
+.publish {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-top: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 0 8px;
+}
