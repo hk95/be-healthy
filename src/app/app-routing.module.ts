@@ -8,6 +8,15 @@ import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
 
 const routes: Routes = [
   {
+    path: 'recipe-create',
+    loadChildren: () =>
+      import('./menu/recipe/recipe-create/recipe-create.module').then(
+        (m) => m.RecipeCreateModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'more',
     component: OtherShellComponent,
     children: [
