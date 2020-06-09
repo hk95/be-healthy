@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="head">
+    <button mat-icon-button routerLink="/menu">
+      <mat-icon>clear</mat-icon>
+    </button>
+    <h1>レシピ作成画面</h1>
+    <button mat-raised-button color="primary">保存</button>
+  </div>
+
+  <div class="title">
+    <h2>レシピタイトル</h2>
+    <input placeholder="レシピ名" class="title__name" type="text" />
+
+    <input class="title__form" type="file" />
+    <button disabled class="title__thumbnail">
+      <mat-icon class="camera-icon">add_photo_alternate</mat-icon>
+      <p>写真挿入</p>
+    </button>
+  </div>
+
+  <div class="summary">
+    <h2>説明</h2>
+    <textarea></textarea>
+  </div>
+
+  <div class="ingredient">
+    <h2>材料</h2>
+    <div class="ingredient__detail">
+      <input type="text" placeholder="りんご" />
+      <input class="ingredient__amount" type="text" placeholder="1個" />
+    </div>
+    <div class="ingredient__detail">
+      <button mat-icon-button color="primary">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="process">
+    <h2>作り方</h2>
+    <div class="process__wrapper">
+      <p class="process__number">1</p>
+      <input class="title__form" type="file" />
+      <button disabled class="process__image">
+        <mat-icon disabled>add_photo_alternate</mat-icon>
+        <p>写真挿入</p>
+      </button>
+      <textarea
+        class="process__description"
+        placeholder="りんごを切る"
+      ></textarea>
+    </div>
+    <div class="process__wrapper">
+      <p class="process__number">2</p>
+      <input class="title__form" type="file" />
+      <button disabled class="process__image">
+        <mat-icon class="camera-icon">add_photo_alternate</mat-icon>
+        <p>写真挿入</p>
+      </button>
+      <textarea class="process__description"></textarea>
+    </div>
+    <div class="process__wrapper">
+      <button mat-icon-button color="primary">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="nutrition">
+    <h2>栄養素</h2>
+    <div class="nutrition__detail">
+      <p class="nutrition__name">総カロリー</p>
+      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    </div>
+    <div class="nutrition__detail">
+      <p class="nutrition__name">タンパク質</p>
+      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    </div>
+    <div class="nutrition__detail">
+      <p class="nutrition__name">脂質</p>
+      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    </div>
+    <div class="nutrition__detail">
+      <p class="nutrition__name">糖質</p>
+      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    </div>
+    <div class="nutrition__detail">
+      <p class="nutrition__name">食物繊維</p>
+      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    </div>
+    <div class="nutrition__detail">
+      <p class="nutrition__name">炭水化物</p>
+      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    </div>
+    <div class="nutrition__detail">
+      <button mat-icon-button color="primary">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="publish">
+    <p>レシピを公開する</p>
+    <mat-slide-toggle class="example-margin" color="primary">
+    </mat-slide-toggle>
+  </div>
+</div>
