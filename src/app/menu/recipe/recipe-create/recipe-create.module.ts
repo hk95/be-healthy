@@ -6,6 +6,8 @@ import { RecipeCreateComponent } from './recipe-create.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [RecipeCreateComponent],
@@ -15,6 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSlideToggleModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
+    ImageCropperModule,
   ],
 })
 export class RecipeCreateModule {}

@@ -11,11 +11,27 @@
     <h2>レシピタイトル</h2>
     <input placeholder="レシピ名" class="title__name" type="text" />
 
-    <input class="title__form" type="file" />
-    <button disabled class="title__thumbnail">
+    <input
+      #thumbnail
+      class="title__form"
+      type="file"
+      (change)="thumbnailDialog($event)"
+      accept=".png, .jpg, .jpeg"
+    />
+    <button
+      *ngIf="!thumbnailURL"
+      (click)="thumbnail.click()"
+      class="title__thumbnail-button"
+    >
       <mat-icon class="camera-icon">add_photo_alternate</mat-icon>
       <p>写真挿入</p>
     </button>
+    <img
+      *ngIf="thumbnailURL"
+      (click)="thumbnail.click()"
+      [src]="thumbnailURL"
+      alt="recipe-thumbnail"
+    />
   </div>
 
   <div class="summary">
@@ -40,11 +56,27 @@
     <h2>作り方</h2>
     <div class="process__wrapper">
       <p class="process__number">1</p>
-      <input class="title__form" type="file" />
-      <button disabled class="process__image">
-        <mat-icon disabled>add_photo_alternate</mat-icon>
+      <input
+        #processImage
+        (change)="processImageDialog($event)"
+        class="title__form"
+        type="file"
+        accept=".png, .jpg, .jpeg"
+      />
+      <button
+        *ngIf="!processImageURL"
+        (click)="processImage.click()"
+        class="process__image"
+      >
+        <mat-icon>add_photo_alternate</mat-icon>
         <p>写真挿入</p>
       </button>
+      <img
+        *ngIf="processImageURL"
+        (click)="processImage.click()"
+        [src]="processImageURL"
+        alt="recipe-thumbnail"
+      />
       <textarea
         class="process__description"
         placeholder="りんごを切る"

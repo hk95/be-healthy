@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import localeJa from '@angular/common/locales/ja';
 import { registerLocaleData, DatePipe } from '@angular/common';
@@ -25,6 +26,9 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
 import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { RecipeThumbnailComponent } from './dialogs/recipe-thumbnail/recipe-thumbnail.component';
+import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/recipe-process-image.component';
 
 registerLocaleData(localeJa);
 
@@ -36,6 +40,8 @@ registerLocaleData(localeJa);
     MainShellComponent,
     OtherShellComponent,
     WelcomeShellComponent,
+    RecipeThumbnailComponent,
+    RecipeProcessImageComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +59,8 @@ registerLocaleData(localeJa);
     MatIconModule,
     MatMenuModule,
     FullCalendarModule,
+    ImageCropperModule,
+    MatDialogModule,
   ],
   providers: [
     DatePipe,
@@ -62,5 +70,6 @@ registerLocaleData(localeJa);
     },
   ],
   bootstrap: [AppComponent],
+  entryComponents: [RecipeThumbnailComponent, RecipeProcessImageComponent],
 })
 export class AppModule {}
