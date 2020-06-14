@@ -32,6 +32,7 @@ input {
   &__name {
     margin-bottom: 8px;
     height: 25px;
+    border: 1px solid #dbdbdb;
   }
   &__form {
     display: none;
@@ -68,6 +69,7 @@ input {
   display: flex;
   flex-direction: column;
   textarea {
+    border: 1px solid #dbdbdb;
     height: 100px;
   }
 }
@@ -77,6 +79,13 @@ input {
   border-bottom: 1px solid #dbdbdb;
   display: flex;
   flex-direction: column;
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      align-self: flex-end;
+    }
+  }
   &__detail {
     height: 30px;
     padding: 0 8px;
@@ -92,6 +101,13 @@ input {
 }
 
 .process {
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      align-self: flex-end;
+    }
+  }
   margin-bottom: 48px;
   border-bottom: 1px solid #dbdbdb;
   display: flex;
@@ -155,12 +171,21 @@ input {
   &__name {
     margin: 0;
   }
+  &__amount-unit {
+    text-align: right;
+    display: flex;
+    span {
+      text-align: right;
+      width: 30px;
+      margin-left: 8px;
+    }
+  }
   &__amount {
     text-align: right;
   }
 }
 
-.publish {
+.public {
   display: flex;
   justify-content: space-between;
   align-items: center;
