@@ -1,8 +1,19 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RecipeThumbnailComponent } from 'src/app/dialogs/recipe-thumbnail/recipe-thumbnail.component';
 import { RecipeProcessImageComponent } from 'src/app/dialogs/recipe-process-image/recipe-process-image.component';
-import { FormBuilder, Validators, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormArray,
+  FormControl,
+} from '@angular/forms';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -37,6 +48,10 @@ export class RecipeCreateComponent implements OnInit {
     recipeDietaryFiber: [''],
     recipeSugar: [''],
   });
+
+  get recipeTitle(): FormControl {
+    return this.form.get('recipeTitle') as FormControl;
+  }
 
   get ingredientDetails(): FormArray {
     return this.form.get('ingredientDetails') as FormArray;
@@ -82,7 +97,7 @@ export class RecipeCreateComponent implements OnInit {
     });
     this.processDetails.push(processFormGroup);
     this.processQuanity++;
-    this.ProcessURLs.push(undefined);
+    this.ProcessURLs.push(null);
   }
   editProcess() {
     if (!this.process) {
@@ -155,7 +170,14 @@ export class RecipeCreateComponent implements OnInit {
       },
       sendProcesses
     );
-    console.log('ok');
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.form.dirty) {
+      $event.preventDefault();
+      $event.returnValue = '作業中の内容がありますが、再読み込みしますか？';
+    }
   }
   ngOnInit(): void {}
 }

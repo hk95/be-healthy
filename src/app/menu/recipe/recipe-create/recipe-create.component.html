@@ -11,12 +11,14 @@
     </div>
 
     <div class="title">
-      <h2>レシピタイトル</h2>
+      <h2>レシピタイトル<span>*</span></h2>
+
       <input
         placeholder="レシピ名"
         class="title__name"
         type="text"
         formControlName="recipeTitle"
+        required
       />
 
       <input
@@ -50,7 +52,7 @@
 
     <div class="ingredient">
       <div class="ingredient__title">
-        <h2>材料</h2>
+        <h2>材料<span>*</span></h2>
         <button
           type="button"
           mat-button
