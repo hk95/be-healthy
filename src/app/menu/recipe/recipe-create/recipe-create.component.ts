@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { RecipeThumbnailComponent } from 'src/app/dialogs/recipe-thumbnail/recipe-thumbnail.component';
 import { RecipeProcessImageComponent } from 'src/app/dialogs/recipe-process-image/recipe-process-image.component';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
+import { RecipeService } from 'src/app/services/recipe.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recipe-create',
@@ -10,7 +12,7 @@ import { FormBuilder, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./recipe-create.component.scss'],
 })
 export class RecipeCreateComponent implements OnInit {
-  thumbnailURL: string;
+  thumbnailURL: string = null;
   ProcessURLs = [];
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
@@ -42,7 +44,12 @@ export class RecipeCreateComponent implements OnInit {
   get processDetails(): FormArray {
     return this.form.get('processDetails') as FormArray;
   }
-  constructor(private fb: FormBuilder, private dialog: MatDialog) {
+  constructor(
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private recipeService: RecipeService,
+    private authService: AuthService
+  ) {
     console.log(this.ProcessURLs);
   }
 
@@ -71,8 +78,7 @@ export class RecipeCreateComponent implements OnInit {
 
   addProcess() {
     const processFormGroup = this.fb.group({
-      photoURL: [''],
-      description: [''],
+      description: ['', [Validators.required]],
     });
     this.processDetails.push(processFormGroup);
     this.processQuanity++;
@@ -119,12 +125,37 @@ export class RecipeCreateComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((result) => {
         this.ProcessURLs.splice(index, 1, result);
-        console.log(this.ProcessURLs);
       });
     }
     this.processImageInput.nativeElement.value = '';
   }
 
-  submit() {}
+  submit() {
+    const formData = this.form.value;
+    const sendProcesses = this.ProcessURLs.map((v, index) => {
+      return { ...formData.processDetails[index], photoURL: v };
+    });
+    console.log(sendProcesses);
+    console.log(this.thumbnailURL);
+
+    this.recipeService.createRecipe(
+      {
+        recipeTitle: formData.recipeTitle,
+        recipeThumbnailURL: this.thumbnailURL,
+        recipeDescription: formData.recipeDescription,
+        recipelCal: formData.recipelCal,
+        recipeProtein: formData.recipeProtein,
+        recipeFat: formData.recipeFat,
+        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
+        recipeDietaryFiber: formData.recipeDietaryFiber,
+        recipeSugar: formData.recipeSugar,
+        foods: formData.ingredientDetails,
+        public: this.public,
+        authorId: this.authService.uid,
+      },
+      sendProcesses
+    );
+    console.log('ok');
+  }
   ngOnInit(): void {}
 }

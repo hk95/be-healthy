@@ -1,7 +1,7 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="head">
-      <button mat-icon-button routerLink="/menu">
+      <button type="button" mat-icon-button routerLink="/menu">
         <mat-icon>clear</mat-icon>
       </button>
       <h1>レシピ作成画面</h1>
@@ -27,6 +27,7 @@
         accept=".png, .jpg, .jpeg"
       />
       <button
+        type="button"
         *ngIf="!thumbnailURL"
         (click)="thumbnail.click()"
         class="title__thumbnail-button"
@@ -51,6 +52,7 @@
       <div class="ingredient__title">
         <h2>材料</h2>
         <button
+          type="button"
           mat-button
           *ngIf="ingredientQuanity !== 0"
           (click)="editIngredient()"
@@ -76,6 +78,7 @@
             formControlName="amountAndUnit"
           />
           <button
+            type="button"
             mat-icon-button
             *ngIf="ingredient"
             (click)="removeIngredinet(i)"
@@ -87,6 +90,7 @@
 
       <div class="ingredient__detail">
         <button
+          type="button"
           type="button"
           (click)="addIngredinet()"
           mat-icon-button
@@ -100,7 +104,12 @@
     <div class="process">
       <div class="process__title">
         <h2>作り方</h2>
-        <button mat-button *ngIf="processQuanity !== 0" (click)="editProcess()">
+        <button
+          type="button"
+          mat-button
+          *ngIf="processQuanity !== 0"
+          (click)="editProcess()"
+        >
           <span *ngIf="!process">編集</span><span *ngIf="process">完了</span>
         </button>
       </div>
@@ -113,13 +122,13 @@
           <p class="process__number">{{ i + 1 }}</p>
           <input
             #processImage
-            formControlName="photoURL"
             (change)="processImageDialog($event, i)"
             class="title__form"
             type="file"
             accept=".png, .jpg, .jpeg"
           />
           <button
+            type="button"
             *ngIf="!ProcessURLs[i]"
             (click)="processImage.click()"
             class="process__image"
@@ -138,13 +147,23 @@
             class="process__description"
             placeholder="りんごを切る"
           ></textarea>
-          <button mat-icon-button *ngIf="process" (click)="removeProcess(i)">
+          <button
+            type="button"
+            mat-icon-button
+            *ngIf="process"
+            (click)="removeProcess(i)"
+          >
             <mat-icon color="warn">remove_circle_outline</mat-icon>
           </button>
         </div>
       </div>
       <div class="process__wrapper">
-        <button (click)="addProcess()" mat-icon-button color="primary">
+        <button
+          type="button"
+          (click)="addProcess()"
+          mat-icon-button
+          color="primary"
+        >
           <mat-icon>add_circle_outline</mat-icon>
         </button>
       </div>
