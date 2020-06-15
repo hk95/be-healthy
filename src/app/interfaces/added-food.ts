@@ -1,11 +1,19 @@
+import { firestore } from 'firebase';
+
 export interface AddedFood {
-  foodId: string;
-  foodName: string;
-  foodImage: string;
-  foodCal: number;
-  foodNutrition: string;
-  autherId: string;
-  createdAt: Date;
-  foodRecipe: string; // 動画は後々検討
-  foodMemo: string;
+  recipeId: string;
+  recipeTitle: string;
+  recipeThumbnailURL?: string;
+  recipeDescription?: string;
+  recipelCal?: number;
+  recipeProtein?: number;
+  recipeFat?: number;
+  recipeTotalCarbohydrate?: number;
+  recipeDietaryFiber?: number;
+  recipeSugar?: number;
+  foods: [{ name: string; amountAndUnit: string }];
+  processes?: [{ photoURL: string; description: string }];
+  public: boolean;
+  authorId: string;
+  craetedAt: firestore.Timestamp;
 }
