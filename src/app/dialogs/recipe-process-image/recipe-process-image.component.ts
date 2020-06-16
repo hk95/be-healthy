@@ -17,6 +17,7 @@ export class RecipeProcessImageComponent implements OnInit {
     public data: {
       imageFile: File;
       processImageURL: string;
+      recipeId: string;
     },
     private authSerrvice: AuthService,
     private recipeService: RecipeService,
@@ -25,10 +26,11 @@ export class RecipeProcessImageComponent implements OnInit {
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
   }
-  async uploadImage(userId: string): Promise<void> {
+  async uploadImage(): Promise<void> {
     const file: Blob = base64ToFile(this.croppedImage);
     const downloadURL: string = await this.recipeService.uploadProcessImage(
-      userId,
+      this.userId,
+      this.data.recipeId,
       file
     );
     this.dialogRef.close(downloadURL);
