@@ -3,6 +3,8 @@ import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-thumbnail',
@@ -12,12 +14,12 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RecipeThumbnailComponent implements OnInit {
   croppedImage: string;
   userId: string = this.authSerrvice.uid;
-
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
       imageFile: File;
       thumbnailURL: string;
+      recipeId: string;
     },
     private recipeService: RecipeService,
     private authSerrvice: AuthService,
@@ -28,10 +30,11 @@ export class RecipeThumbnailComponent implements OnInit {
     this.croppedImage = event.base64;
   }
 
-  async uploadImage(userId: string): Promise<void> {
+  async uploadImage(): Promise<void> {
     const file: Blob = base64ToFile(this.croppedImage);
     const downloadURL: string = await this.recipeService.uploadThumbnail(
-      userId,
+      this.userId,
+      this.data.recipeId,
       file
     );
     this.dialogRef.close(downloadURL);
