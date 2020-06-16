@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [RecipeCreateComponent],
@@ -19,6 +20,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MatIconModule,
     MatDialogModule,
     ImageCropperModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class RecipeCreateModule {}

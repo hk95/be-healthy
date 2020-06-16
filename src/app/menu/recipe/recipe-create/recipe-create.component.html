@@ -1,138 +1,261 @@
 <div class="container">
-  <div class="head">
-    <button mat-icon-button routerLink="/menu">
-      <mat-icon>clear</mat-icon>
-    </button>
-    <h1>レシピ作成画面</h1>
-    <button mat-raised-button color="primary">保存</button>
-  </div>
-
-  <div class="title">
-    <h2>レシピタイトル</h2>
-    <input placeholder="レシピ名" class="title__name" type="text" />
-
-    <input
-      #thumbnail
-      class="title__form"
-      type="file"
-      (change)="thumbnailDialog($event)"
-      accept=".png, .jpg, .jpeg"
-    />
-    <button
-      *ngIf="!thumbnailURL"
-      (click)="thumbnail.click()"
-      class="title__thumbnail-button"
-    >
-      <mat-icon class="camera-icon">add_photo_alternate</mat-icon>
-      <p>写真挿入</p>
-    </button>
-    <img
-      *ngIf="thumbnailURL"
-      (click)="thumbnail.click()"
-      [src]="thumbnailURL"
-      alt="recipe-thumbnail"
-    />
-  </div>
-
-  <div class="summary">
-    <h2>説明</h2>
-    <textarea></textarea>
-  </div>
-
-  <div class="ingredient">
-    <h2>材料</h2>
-    <div class="ingredient__detail">
-      <input type="text" placeholder="りんご" />
-      <input class="ingredient__amount" type="text" placeholder="1個" />
-    </div>
-    <div class="ingredient__detail">
-      <button mat-icon-button color="primary">
-        <mat-icon>add_circle_outline</mat-icon>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="head">
+      <button type="button" mat-icon-button routerLink="/menu">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <h1>レシピ作成画面</h1>
+      <button mat-raised-button [disabled]="form.invalid" color="primary">
+        保存
       </button>
     </div>
-  </div>
 
-  <div class="process">
-    <h2>作り方</h2>
-    <div class="process__wrapper">
-      <p class="process__number">1</p>
+    <div class="title">
+      <h2>レシピタイトル<span>*</span></h2>
+
       <input
-        #processImage
-        (change)="processImageDialog($event)"
+        placeholder="レシピ名"
+        class="title__name"
+        type="text"
+        formControlName="recipeTitle"
+        required
+      />
+
+      <input
+        #thumbnail
         class="title__form"
         type="file"
+        (change)="thumbnailDialog($event)"
         accept=".png, .jpg, .jpeg"
       />
       <button
-        *ngIf="!processImageURL"
-        (click)="processImage.click()"
-        class="process__image"
+        type="button"
+        *ngIf="!thumbnailURL"
+        (click)="thumbnail.click()"
+        class="title__thumbnail-button"
       >
-        <mat-icon>add_photo_alternate</mat-icon>
-        <p>写真挿入</p>
-      </button>
-      <img
-        *ngIf="processImageURL"
-        (click)="processImage.click()"
-        [src]="processImageURL"
-        alt="recipe-thumbnail"
-      />
-      <textarea
-        class="process__description"
-        placeholder="りんごを切る"
-      ></textarea>
-    </div>
-    <div class="process__wrapper">
-      <p class="process__number">2</p>
-      <input class="title__form" type="file" />
-      <button disabled class="process__image">
         <mat-icon class="camera-icon">add_photo_alternate</mat-icon>
         <p>写真挿入</p>
       </button>
-      <textarea class="process__description"></textarea>
+      <img
+        *ngIf="thumbnailURL"
+        (click)="thumbnail.click()"
+        [src]="thumbnailURL"
+        alt="recipe-thumbnail"
+      />
     </div>
-    <div class="process__wrapper">
-      <button mat-icon-button color="primary">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-    </div>
-  </div>
 
-  <div class="nutrition">
-    <h2>栄養素</h2>
-    <div class="nutrition__detail">
-      <p class="nutrition__name">総カロリー</p>
-      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+    <div class="summary">
+      <h2>説明</h2>
+      <textarea formControlName="recipeDescription"></textarea>
     </div>
-    <div class="nutrition__detail">
-      <p class="nutrition__name">タンパク質</p>
-      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+
+    <div class="ingredient">
+      <div class="ingredient__title">
+        <h2>材料<span>*</span></h2>
+        <button
+          type="button"
+          mat-button
+          *ngIf="ingredientQuanity !== 0"
+          (click)="editIngredient()"
+        >
+          <span *ngIf="!ingredient">編集</span
+          ><span *ngIf="ingredient">完了</span>
+        </button>
+      </div>
+      <div formArrayName="ingredientDetails">
+        <div
+          class="ingredient__detail"
+          *ngFor="
+            let ingredientDetail of ingredientDetails.controls;
+            let i = index
+          "
+          [formGroupName]="i"
+        >
+          <input type="text" placeholder="りんご" formControlName="name" />
+          <input
+            class="ingredient__amount"
+            type="text"
+            placeholder="XXX 個"
+            formControlName="amountAndUnit"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            *ngIf="ingredient"
+            (click)="removeIngredinet(i)"
+          >
+            <mat-icon color="warn">remove_circle_outline</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="ingredient__detail">
+        <button
+          type="button"
+          type="button"
+          (click)="addIngredinet()"
+          mat-icon-button
+          color="primary"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
     </div>
-    <div class="nutrition__detail">
-      <p class="nutrition__name">脂質</p>
-      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+
+    <div class="process">
+      <div class="process__title">
+        <h2>作り方</h2>
+        <button
+          type="button"
+          mat-button
+          *ngIf="processQuanity !== 0"
+          (click)="editProcess()"
+        >
+          <span *ngIf="!process">編集</span><span *ngIf="process">完了</span>
+        </button>
+      </div>
+      <div formArrayName="processDetails">
+        <div
+          class="process__wrapper"
+          *ngFor="let processDetail of processDetails.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <p class="process__number">{{ i + 1 }}</p>
+          <input
+            #processImage
+            (change)="processImageDialog($event, i)"
+            class="title__form"
+            type="file"
+            accept=".png, .jpg, .jpeg"
+          />
+          <button
+            type="button"
+            *ngIf="!ProcessURLs[i]"
+            (click)="processImage.click()"
+            class="process__image"
+          >
+            <mat-icon>add_photo_alternate</mat-icon>
+            <p>写真挿入</p>
+          </button>
+          <img
+            *ngIf="ProcessURLs[i]"
+            (click)="processImage.click()"
+            [src]="ProcessURLs[i]"
+            alt="recipe-process"
+          />
+          <textarea
+            formControlName="description"
+            class="process__description"
+            placeholder="りんごを切る"
+          ></textarea>
+          <button
+            type="button"
+            mat-icon-button
+            *ngIf="process"
+            (click)="removeProcess(i)"
+          >
+            <mat-icon color="warn">remove_circle_outline</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="process__wrapper">
+        <button
+          type="button"
+          (click)="addProcess()"
+          mat-icon-button
+          color="primary"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
     </div>
-    <div class="nutrition__detail">
-      <p class="nutrition__name">糖質</p>
-      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
+
+    <div class="nutrition">
+      <h2>栄養素</h2>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">総カロリー</p>
+        <div class="nutrition__amount-unit">
+          <input
+            class="nutrition__amount"
+            type="text"
+            placeholder="XXX"
+            formControlName="recipelCal"
+          />
+          <span>kcal</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">タンパク質</p>
+        <div class="nutrition__amount-unit">
+          <input
+            class="nutrition__amount"
+            type="text"
+            placeholder="XXX"
+            formControlName="recipeProtein"
+          />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">脂質</p>
+        <div class="nutrition__amount-unit">
+          <input
+            class="nutrition__amount"
+            type="text"
+            placeholder="XXX"
+            formControlName="recipeFat"
+          />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">糖質</p>
+        <div class="nutrition__amount-unit">
+          <input
+            class="nutrition__amount"
+            type="text"
+            placeholder="XXX"
+            formControlName="recipeSugar"
+          />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">食物繊維</p>
+        <div class="nutrition__amount-unit">
+          <input
+            class="nutrition__amount"
+            type="text"
+            placeholder="XXX"
+            formControlName="recipeDietaryFiber"
+          />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">炭水化物</p>
+        <div class="nutrition__amount-unit">
+          <input
+            class="nutrition__amount"
+            type="text"
+            placeholder="XXX"
+            formControlName="recipeTotalCarbohydrate"
+          />
+          <span>g</span>
+        </div>
+      </div>
     </div>
-    <div class="nutrition__detail">
-      <p class="nutrition__name">食物繊維</p>
-      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
-    </div>
-    <div class="nutrition__detail">
-      <p class="nutrition__name">炭水化物</p>
-      <input class="nutrition__amount" type="text" placeholder="XXXkcal" />
-    </div>
-    <div class="nutrition__detail">
-      <button mat-icon-button color="primary">
-        <mat-icon>add_circle_outline</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div class="publish">
+  </form>
+
+  <div class="public">
     <p>レシピを公開する</p>
-    <mat-slide-toggle class="example-margin" color="primary">
+    <mat-slide-toggle
+      class="example-margin"
+      color="primary"
+      #toggleButton
+      [(ngModel)]="public"
+    >
     </mat-slide-toggle>
   </div>
 </div>
