@@ -17,6 +17,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'recipe-detail',
+    loadChildren: () =>
+      import('./menu/recipe/recipe-detail/recipe-detail.module').then(
+        (m) => m.RecipeDetailModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'more',
     component: OtherShellComponent,
     children: [
@@ -97,15 +106,6 @@ const routes: Routes = [
         path: 'menu',
         loadChildren: () =>
           import('./menu/menu.module').then((m) => m.MenuModule),
-        canLoad: [AuthGuard],
-        canActivate: [AuthGuard],
-      },
-      {
-        path: 'recipe-detail',
-        loadChildren: () =>
-          import('./menu/recipe/recipe-detail/recipe-detail.module').then(
-            (m) => m.RecipeDetailModule
-          ),
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
       },
