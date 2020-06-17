@@ -1,7 +1,12 @@
 <h1>マイレシピ</h1>
 <div class="border"></div>
 <div class="grid">
-  <div class="recipe" *ngFor="let recipe of myRecipes$ | async">
+  <div
+    class="recipe"
+    *ngFor="let recipe of myRecipes$ | async"
+    routerLink="/recipe-detail"
+    [queryParams]="{ id: recipe.recipeId }"
+  >
     <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
 
     <div class="recipe__row">
