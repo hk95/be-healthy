@@ -16,6 +16,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RecipeService {
+  allRecipes$: Observable<AddedFood[]>;
   constructor(
     private db: AngularFirestore,
     public storage: AngularFireStorage,
@@ -23,82 +24,78 @@ export class RecipeService {
     private router: Router,
     private userService: UserService,
     private authServce: AuthService
-  ) {}
-
-  // getRecipes(): Observable<RecipeWithAuthor[]> {
-  //   const publicRecipes: Observable<AddedFood[]> = this.db
-  //     .collection<AddedFood>(`recipes`, (ref) =>
-  //       ref.where('public', '==', true)
-  //     )
-  //     .valueChanges();
-  //   return this.db
-  //     .collection<AddedFood>(`recipes`, (ref) =>
-  //       ref.where('authorId', '==', this.authServce.uid)
-  //     )
-  //     .valueChanges()
-  //     .pipe(
-  //       switchMap((recipes: AddedFood[]) => {
-  //         const authorIds: string[] = Array.from(
-  //           new Set(recipes.map((recipe: AddedFood) => recipe.authorId))
-  //         );
-
-  //         const users$: Observable<User[]> = combineLatest(
-  //           authorIds.map((authorId: string) =>
-  //             this.userService.getUser(authorId)
-  //           )
-  //         );
-  //         return combineLatest([of(recipes), users$]);
-  //       }),
-  //       map(([recipes, users]) => {
-  //         return recipes.map((recipe: AddedFood) => {
-  //           return {
-  //             ...recipe,
-  //             author: users.find((user) => user.userId === recipe.authorId),
-  //           };
-  //         });
-  //       })
-  //     );
-  // }
-  getRecipes(): Observable<RecipeWithAuthor[]> {
-    const selectedRecipes = [];
-
-    return this.db
+  ) {
+    this.allRecipes$ = this.db
       .collection<AddedFood>(`recipes`, (ref) =>
         ref.orderBy('createdAt', 'desc')
       )
-      .valueChanges()
-      .pipe(
-        switchMap((allRecipes: AddedFood[]) => {
-          allRecipes.map((recipe) => {
-            if (recipe.authorId === this.authServce.uid) {
-              return selectedRecipes.push(recipe);
-            } else if (
-              recipe.authorId !== this.authServce.uid &&
-              recipe.public === true
-            ) {
-              return selectedRecipes.push(recipe);
-            }
-          });
-          const authorIds: string[] = Array.from(
-            new Set(allRecipes.map((recipe: AddedFood) => recipe.authorId))
-          );
+      .valueChanges();
+  }
 
-          const users$: Observable<User[]> = combineLatest(
-            authorIds.map((authorId: string) =>
-              this.userService.getUser(authorId)
-            )
-          );
-          return combineLatest([of(selectedRecipes), users$]);
-        }),
-        map(([recipes, users]) => {
-          return recipes.map((recipe: AddedFood) => {
-            return {
-              ...recipe,
-              author: users.find((user) => user.userId === recipe.authorId),
-            };
-          });
-        })
-      );
+  getMyRecipes(): Observable<RecipeWithAuthor[]> {
+    const myRecipes = [];
+
+    return this.allRecipes$.pipe(
+      switchMap((allRecipes: AddedFood[]) => {
+        allRecipes.map((recipe) => {
+          if (recipe.authorId === this.authServce.uid) {
+            return myRecipes.push(recipe);
+          }
+        });
+        const authorIds: string[] = Array.from(
+          new Set(allRecipes.map((recipe: AddedFood) => recipe.authorId))
+        );
+
+        const users$: Observable<User[]> = combineLatest(
+          authorIds.map((authorId: string) =>
+            this.userService.getUser(authorId)
+          )
+        );
+        return combineLatest([of(myRecipes), users$]);
+      }),
+      map(([recipes, users]) => {
+        return recipes.map((recipe: AddedFood) => {
+          return {
+            ...recipe,
+            author: users.find((user) => user.userId === recipe.authorId),
+          };
+        });
+      })
+    );
+  }
+  getPublicRecipes(): Observable<RecipeWithAuthor[]> {
+    const publicRecipes = [];
+
+    return this.allRecipes$.pipe(
+      switchMap((allRecipes: AddedFood[]) => {
+        allRecipes.map((recipe) => {
+          if (
+            recipe.authorId !== this.authServce.uid &&
+            recipe.public === true
+          ) {
+            return publicRecipes.push(recipe);
+          }
+        });
+        const authorIds: string[] = Array.from(
+          new Set(allRecipes.map((recipe: AddedFood) => recipe.authorId))
+        );
+
+        const users$: Observable<User[]> = combineLatest(
+          authorIds.map((authorId: string) =>
+            this.userService.getUser(authorId)
+          )
+        );
+        return combineLatest([of(publicRecipes), users$]);
+      }),
+      map(([recipes, users]) => {
+        return recipes.map((recipe: AddedFood) => {
+          return {
+            ...recipe,
+            author: users.find((user) => user.userId === recipe.authorId),
+          };
+        });
+      })
+    );
   }
 
   tentativeCreateRecipe(): Promise<void> {
