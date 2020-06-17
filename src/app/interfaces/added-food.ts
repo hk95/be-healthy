@@ -1,4 +1,5 @@
 import { firestore } from 'firebase';
+import { User } from './user';
 
 export interface AddedFood {
   recipeId: string;
@@ -15,5 +16,9 @@ export interface AddedFood {
   processes?: [{ photoURL: string; description: string }];
   public: boolean;
   authorId: string;
-  craetedAt: firestore.Timestamp;
+  createdAt: firestore.Timestamp;
+}
+
+export interface RecipeWithAuthor extends AddedFood {
+  author: User;
 }
