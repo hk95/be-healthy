@@ -1,101 +1,50 @@
+<h1>マイレシピ</h1>
+<div class="border"></div>
 <div class="grid">
-  <div class="recipe">
-    <img
-      class="recipe__thumbnail"
-      src="http://placehold.it/120x120"
-      alt="サムネイル"
-    />
+  <div class="recipe" *ngFor="let recipe of myRecipes$ | async">
+    <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+
     <div class="recipe__row">
       <img
         class="recipe__icon"
-        src="http://placehold.it/40"
+        [src]="recipe.author.avatarURL"
         alt="プロフィールアイコン"
       />
-      <p class="recipe__author">作者</p>
+      <p class="recipe__author">{{ recipe.author.name }}</p>
     </div>
     <h2 class="recipe__title">
-      タイトル
+      {{ recipe.recipeTitle }}
     </h2>
-    <p class="recipe__cal">XXXkcal</p>
+    <p *ngIf="recipe.recipelCal" class="recipe__cal">
+      {{ recipe.recipelCal }}kcal
+    </p>
+    <p *ngIf="!recipe.recipelCal" class="recipe__cal">--</p>
   </div>
-  <div class="recipe">
-    <img
-      class="recipe__thumbnail"
-      src="http://placehold.it/120x120"
-      alt="サムネイル"
-    />
+</div>
+<h1>他ユーザーのレシピ</h1>
+<div class="border"></div>
+<div class="grid">
+  <div class="recipe" *ngFor="let recipe of publicRecipes$ | async">
+    <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+
     <div class="recipe__row">
       <img
         class="recipe__icon"
-        src="http://placehold.it/40"
+        [src]="recipe.author.avatarURL"
         alt="プロフィールアイコン"
       />
-      <p class="recipe__author">作者</p>
+      <p class="recipe__author">{{ recipe.author.name }}</p>
     </div>
     <h2 class="recipe__title">
-      タイトル
+      {{ recipe.recipeTitle }}
     </h2>
-    <p class="recipe__cal">XXXkcal</p>
-  </div>
-  <div class="recipe">
-    <img
-      class="recipe__thumbnail"
-      src="http://placehold.it/120x120"
-      alt="サムネイル"
-    />
-    <div class="recipe__row">
-      <img
-        class="recipe__icon"
-        src="http://placehold.it/40"
-        alt="プロフィールアイコン"
-      />
-      <p class="recipe__author">作者</p>
-    </div>
-    <h2 class="recipe__title">
-      タイトル
-    </h2>
-    <p class="recipe__cal">XXXkcal</p>
-  </div>
-  <div class="recipe">
-    <img
-      class="recipe__thumbnail"
-      src="http://placehold.it/120x120"
-      alt="サムネイル"
-    />
-    <div class="recipe__row">
-      <img
-        class="recipe__icon"
-        src="http://placehold.it/40"
-        alt="プロフィールアイコン"
-      />
-      <p class="recipe__author">作者</p>
-    </div>
-    <h2 class="recipe__title">
-      タイトル
-    </h2>
-    <p class="recipe__cal">XXXkcal</p>
-  </div>
-  <div class="recipe">
-    <img
-      class="recipe__thumbnail"
-      src="http://placehold.it/120x120"
-      alt="サムネイル"
-    />
-    <div class="recipe__row">
-      <img
-        class="recipe__icon"
-        src="http://placehold.it/40"
-        alt="プロフィールアイコン"
-      />
-      <p class="recipe__author">作者</p>
-    </div>
-    <h2 class="recipe__title">
-      タイトル
-    </h2>
-    <p class="recipe__cal">XXXkcal</p>
+    <p *ngIf="recipe.recipelCal" class="recipe__cal">
+      {{ recipe.recipelCal }}kcal
+    </p>
+    <p *ngIf="!recipe.recipelCal" class="recipe__cal">--</p>
   </div>
 </div>
 
-<button mat-fab color="primary" routerLink="/recipe-create" class="create">
+<button mat-fab color="primary" (click)="forwardbackToForm()" class="create">
   <mat-icon>add</mat-icon>
 </button>
