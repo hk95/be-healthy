@@ -98,6 +98,10 @@ export class RecipeService {
     );
   }
 
+  getRecipeByRecipeId(recipeId: string): Observable<AddedFood> {
+    return this.db.doc<AddedFood>(`recipes/${recipeId}`).valueChanges();
+  }
+
   tentativeCreateRecipe(): Promise<void> {
     const recipeId = this.db.createId();
     return this.db
