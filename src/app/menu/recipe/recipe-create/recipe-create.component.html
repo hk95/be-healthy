@@ -1,7 +1,7 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="head">
-      <button type="button" mat-icon-button routerLink="/menu">
+      <button type="button" mat-icon-button (click)="backToMenu()">
         <mat-icon>clear</mat-icon>
       </button>
       <h1>レシピ作成画面</h1>

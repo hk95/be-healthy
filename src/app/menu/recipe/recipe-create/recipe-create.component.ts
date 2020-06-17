@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-create',
@@ -25,6 +26,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RecipeCreateComponent implements OnInit {
   thumbnailURL: string = null;
   ProcessURLs = [];
+  query;
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
   ingredient = false;
@@ -63,9 +65,12 @@ export class RecipeCreateComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private recipeService: RecipeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) {
-    console.log(this.ProcessURLs);
+    this.route.queryParamMap.subscribe((recipeId) => {
+      this.query = recipeId.get('id');
+    });
   }
 
   addIngredinet() {
@@ -121,7 +126,11 @@ export class RecipeCreateComponent implements OnInit {
     if (imageFile) {
       const dialogRef = this.dialog.open(RecipeThumbnailComponent, {
         width: '80%',
-        data: { imageFile, thumbnailURL: this.thumbnailURL },
+        data: {
+          imageFile,
+          thumbnailURL: this.thumbnailURL,
+          recipeId: this.query,
+        },
       });
 
       dialogRef.afterClosed().subscribe((result) => {
@@ -135,7 +144,11 @@ export class RecipeCreateComponent implements OnInit {
     if (imageFile) {
       const dialogRef = this.dialog.open(RecipeProcessImageComponent, {
         width: '80%',
-        data: { imageFile, processImageURL: this.ProcessURLs[index] },
+        data: {
+          imageFile,
+          processImageURL: this.ProcessURLs[index],
+          recipeId: this.query,
+        },
       });
 
       dialogRef.afterClosed().subscribe((result) => {
@@ -145,16 +158,17 @@ export class RecipeCreateComponent implements OnInit {
     this.processImageInput.nativeElement.value = '';
   }
 
+  backToMenu() {
+    this.recipeService.tentativeDelRecipe(this.query);
+  }
   submit() {
     const formData = this.form.value;
     const sendProcesses = this.ProcessURLs.map((v, index) => {
       return { ...formData.processDetails[index], photoURL: v };
     });
-    console.log(sendProcesses);
-    console.log(this.thumbnailURL);
-
     this.recipeService.createRecipe(
       {
+        recipeId: this.query,
         recipeTitle: formData.recipeTitle,
         recipeThumbnailURL: this.thumbnailURL,
         recipeDescription: formData.recipeDescription,
