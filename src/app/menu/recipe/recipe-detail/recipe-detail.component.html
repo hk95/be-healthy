@@ -1,16 +1,33 @@
 <div class="contents" *ngIf="recipe$ | async as recipe">
   <div class="nav">
-    <button class="back-to-page" mat-icon-button routerLink="/menu">
+    <button
+      class="back-to-page"
+      mat-icon-button
+      mat-raised-button
+      routerLink="/menu"
+    >
       <mat-icon>navigate_before</mat-icon>
     </button>
+    <div class="spacer"></div>
     <button
       *ngIf="myRecipe ? true : false"
       class="update-to-page"
       mat-icon-button
+      mat-raised-button
+      color="primary"
       routerLink="/recipe-update"
       [queryParams]="{ id: recipe.recipeId }"
     >
-      <mat-icon color="primary">create</mat-icon>
+      <mat-icon>create</mat-icon>
+    </button>
+    <button
+      *ngIf="myRecipe ? true : false"
+      mat-icon-button
+      mat-raised-button
+      class="delete"
+      color="warn"
+    >
+      <mat-icon>delete</mat-icon>
     </button>
   </div>
 
@@ -22,6 +39,7 @@
   </div>
 
   <h2 class="content__name">レシピ名</h2>
+
   <div class="content">
     <h1>{{ recipe.recipeTitle }}</h1>
   </div>
