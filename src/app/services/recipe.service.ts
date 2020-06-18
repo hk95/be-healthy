@@ -133,13 +133,32 @@ export class RecipeService {
   ): Promise<void> {
     return this.db
       .doc<AddedFood>(`recipes/${recipe.recipeId}`)
-      .set({
-        ...recipe,
-        processes,
-        createdAt: firestore.Timestamp.now(),
-      })
+      .set(
+        {
+          ...recipe,
+          processes,
+          createdAt: firestore.Timestamp.now(),
+        },
+        {
+          merge: true,
+        }
+      )
       .then(() => {
         this.snackBar.open('レシピを作成しました', null, {
+          duration: 2000,
+        });
+        this.router.navigateByUrl('menu');
+      });
+  }
+  updateRecipe(
+    recipe: Omit<AddedFood, 'processes' | 'createdAt'>,
+    processes
+  ): Promise<void> {
+    return this.db
+      .doc<AddedFood>(`recipes/${recipe.recipeId}`)
+      .update({ ...recipe, processes, createdAt: firestore.Timestamp.now() })
+      .then(() => {
+        this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
         });
         this.router.navigateByUrl('menu');
