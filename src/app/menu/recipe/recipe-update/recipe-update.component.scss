@@ -1,0 +1,196 @@
+@import '~@angular/material/theming';
+
+h1 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 0;
+}
+h2 {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+input {
+  display: block;
+  margin: 0;
+  justify-self: center;
+  border: none;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  height: 30px;
+  margin-bottom: 48px;
+}
+.title {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+  &__name {
+    margin-bottom: 8px;
+    height: 25px;
+    border: 1px solid #dbdbdb;
+  }
+  &__form {
+    display: none;
+  }
+  &__thumbnail-button {
+    height: 120px;
+    background: #fff;
+    border: 1px dashed hsl(0, 0%, 86%);
+    border-radius: 10px;
+    outline: none;
+    color: #767676;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+  p {
+    margin: 0;
+  }
+  img {
+    width: 100%;
+    height: 67%;
+    border-radius: 10px;
+    background: #ffff;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+}
+
+.summary {
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  textarea {
+    border: 1px solid #dbdbdb;
+    height: 100px;
+  }
+}
+
+.ingredient {
+  margin-bottom: 48px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      align-self: flex-end;
+    }
+  }
+  &__detail {
+    height: 30px;
+    padding: 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffff;
+    border-top: 1px solid #dbdbdb;
+  }
+  &__amount {
+    text-align: right;
+  }
+}
+
+.process {
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      align-self: flex-end;
+    }
+  }
+  margin-bottom: 48px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  p {
+    margin: 0;
+    color: #767676;
+  }
+  &__wrapper {
+    padding: 8px;
+    border-top: 1px solid #dbdbdb;
+    background: #ffff;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__number {
+    margin: 0;
+    margin-left: 8px;
+    min-height: 30px;
+  }
+  &__image {
+    width: 65px;
+    height: 65px;
+    padding: 0;
+    background: #fff;
+    border: 1px dashed #dbdbdb;
+    border-radius: 5px;
+    outline: none;
+    color: #767676;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+  &__description {
+    border: none;
+  }
+  img {
+    width: 65px;
+    height: 65px;
+    border-radius: 5px;
+    background: #ffff;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+}
+.nutrition {
+  margin-bottom: 48px;
+  border-bottom: 1px solid #dbdbdb;
+  &__detail {
+    height: 35px;
+    padding: 0 8px;
+    border-top: 1px solid #dbdbdb;
+    background: #ffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__name {
+    margin: 0;
+  }
+  &__amount-unit {
+    text-align: right;
+    display: flex;
+    span {
+      text-align: right;
+      width: 30px;
+      margin-left: 8px;
+    }
+  }
+  &__amount {
+    text-align: right;
+  }
+}
+
+.public {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-top: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 0 8px;
+}

@@ -26,6 +26,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'recipe-update',
+    loadChildren: () =>
+      import('./menu/recipe/recipe-update/recipe-update.module').then(
+        (m) => m.RecipeUpdateModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'more',
     component: OtherShellComponent,
     children: [
