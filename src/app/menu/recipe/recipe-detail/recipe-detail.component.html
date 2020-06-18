@@ -1,17 +1,19 @@
-<div class="nav">
-  <button class="back-to-page" mat-icon-button routerLink="/menu">
-    <mat-icon>navigate_before</mat-icon>
-  </button>
-  <button
-    *ngIf="myRecipe ? true : false"
-    class="update-to-page"
-    mat-icon-button
-  >
-    <mat-icon color="primary">create</mat-icon>
-  </button>
-</div>
-
 <div class="contents" *ngIf="recipe$ | async as recipe">
+  <div class="nav">
+    <button class="back-to-page" mat-icon-button routerLink="/menu">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button
+      *ngIf="myRecipe ? true : false"
+      class="update-to-page"
+      mat-icon-button
+      routerLink="/recipe-update"
+      [queryParams]="{ id: recipe.recipeId }"
+    >
+      <mat-icon color="primary">create</mat-icon>
+    </button>
+  </div>
+
   <div *ngIf="recipe.recipeThumbnailURL">
     <img class="thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
   </div>
