@@ -30,6 +30,7 @@ h1 {
   flex-direction: column;
   border-radius: 10px;
   transition: 0.2s;
+  outline: none;
   cursor: pointer;
   &:hover {
     @include mat-elevation(2);
