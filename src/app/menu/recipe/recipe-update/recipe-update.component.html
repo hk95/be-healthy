@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="updateRecipe()">
     <div class="head">
       <button type="button" mat-icon-button (click)="back()">
         <mat-icon>clear</mat-icon>
