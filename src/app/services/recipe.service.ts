@@ -10,7 +10,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/added-food';
 import { User } from '../interfaces/user';
 import { UserService } from './user.service';
-import { AuthService } from './auth.service';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -23,22 +23,24 @@ export class RecipeService {
     private snackBar: MatSnackBar,
     private router: Router,
     private userService: UserService,
-    private authServce: AuthService
+    private location: Location
   ) {
     this.allRecipes$ = this.db
       .collection<AddedFood>(`recipes`, (ref) =>
-        ref.orderBy('createdAt', 'desc')
+        ref.orderBy('updatedAt', 'desc')
       )
       .valueChanges();
+    console.log('all');
   }
 
-  getMyRecipes(): Observable<RecipeWithAuthor[]> {
+  getMyRecipes(userId: string): Observable<RecipeWithAuthor[]> {
     const myRecipes = [];
+    console.log('my');
 
     return this.allRecipes$.pipe(
       switchMap((allRecipes: AddedFood[]) => {
         allRecipes.map((recipe) => {
-          if (recipe.authorId === this.authServce.uid) {
+          if (recipe.authorId === userId) {
             return myRecipes.push(recipe);
           }
         });
@@ -63,16 +65,13 @@ export class RecipeService {
       })
     );
   }
-  getPublicRecipes(): Observable<RecipeWithAuthor[]> {
+  getPublicRecipes(userId: string): Observable<RecipeWithAuthor[]> {
     const publicRecipes = [];
-
+    console.log('public');
     return this.allRecipes$.pipe(
       switchMap((allRecipes: AddedFood[]) => {
         allRecipes.map((recipe) => {
-          if (
-            recipe.authorId !== this.authServce.uid &&
-            recipe.public === true
-          ) {
+          if (recipe.authorId !== userId && recipe.public === true) {
             return publicRecipes.push(recipe);
           }
         });
@@ -108,7 +107,6 @@ export class RecipeService {
       .doc(`recipes/${recipeId}`)
       .set({
         recipeId,
-        authorId: this.authServce.uid,
       })
       .then(() => {
         this.router.navigate(['/recipe-create'], {
@@ -128,7 +126,7 @@ export class RecipeService {
   }
 
   createRecipe(
-    recipe: Omit<AddedFood, 'processes' | 'createdAt'>,
+    recipe: Omit<AddedFood, 'processes' | 'updatedAt'>,
     processes
   ): Promise<void> {
     return this.db
@@ -137,7 +135,7 @@ export class RecipeService {
         {
           ...recipe,
           processes,
-          createdAt: firestore.Timestamp.now(),
+          updatedAt: firestore.Timestamp.now(),
         },
         {
           merge: true,
@@ -151,14 +149,25 @@ export class RecipeService {
       });
   }
   updateRecipe(
-    recipe: Omit<AddedFood, 'processes' | 'createdAt'>,
+    recipe: Omit<AddedFood, 'processes' | 'updatedAt'>,
     processes
   ): Promise<void> {
     return this.db
       .doc<AddedFood>(`recipes/${recipe.recipeId}`)
-      .update({ ...recipe, processes, createdAt: firestore.Timestamp.now() })
+      .update({ ...recipe, processes, updatedAt: firestore.Timestamp.now() })
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
+          duration: 2000,
+        });
+        this.location.back();
+      });
+  }
+  deleteRecipe(recipeId: string): Promise<void> {
+    return this.db
+      .doc<AddedFood>(`recipes/${recipeId}`)
+      .delete()
+      .then(() => {
+        this.snackBar.open('レシピを削除しました', null, {
           duration: 2000,
         });
         this.router.navigateByUrl('menu');
