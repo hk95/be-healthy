@@ -29,6 +29,7 @@ import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { RecipeThumbnailComponent } from './dialogs/recipe-thumbnail/recipe-thumbnail.component';
 import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/recipe-process-image.component';
+import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 
 registerLocaleData(localeJa);
 
@@ -42,6 +43,7 @@ registerLocaleData(localeJa);
     WelcomeShellComponent,
     RecipeThumbnailComponent,
     RecipeProcessImageComponent,
+    DeleteDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,6 +72,10 @@ registerLocaleData(localeJa);
     },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [RecipeThumbnailComponent, RecipeProcessImageComponent],
+  entryComponents: [
+    RecipeThumbnailComponent,
+    RecipeProcessImageComponent,
+    DeleteDialogComponent,
+  ],
 })
 export class AppModule {}
