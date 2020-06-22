@@ -18,7 +18,7 @@
       routerLink="/recipe-update"
       [queryParams]="{ id: recipe.recipeId }"
     >
-      <mat-icon>create</mat-icon>
+      <mat-icon>edit</mat-icon>
     </button>
     <button
       *ngIf="myRecipe ? true : false"
@@ -26,6 +26,7 @@
       mat-raised-button
       class="delete"
       color="warn"
+      (click)="openDeleteDialog()"
     >
       <mat-icon>delete</mat-icon>
     </button>
@@ -37,9 +38,12 @@
   <div *ngIf="!recipe.recipeThumbnailURL">
     <span class="no-thumbnail">No Image</span>
   </div>
-
-  <h2 class="content__name">レシピ名</h2>
-
+  <div class="content-head">
+    <h2 class="content__name">レシピ名</h2>
+    <h4 *ngIf="recipe.public ? true : false">
+      公開中
+    </h4>
+  </div>
   <div class="content">
     <h1>{{ recipe.recipeTitle }}</h1>
   </div>
@@ -52,9 +56,12 @@
     </div>
   </ng-container>
   <h2 class="content__name">材料</h2>
-  <div class="content" *ngFor="let food of recipe.foods">
-    <p>{{ food.name }}</p>
-    <p>{{ food.amountAndUnit }}</p>
+  <div class="ingredients">
+    <div class="ingredient" *ngFor="let food of recipe.foods">
+      <p>{{ food.name }}</p>
+      <p>{{ food.amountAndUnit }}</p>
+    </div>
+    <div class="border"></div>
   </div>
   <ng-container *ngIf="recipe.processes[0]">
     <h2 class="content__name">作り方</h2>
