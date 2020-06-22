@@ -5,6 +5,7 @@ import { RecipeDetailRoutingModule } from './recipe-detail-routing.module';
 import { RecipeDetailComponent } from './recipe-detail.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [RecipeDetailComponent],
@@ -13,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
     RecipeDetailRoutingModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
   ],
 })
 export class RecipeDetailModule {}

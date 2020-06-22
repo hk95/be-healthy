@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { RecipeCreateComponent } from '../menu/recipe/recipe-create/recipe-create.component';
+import { RecipeUpdateComponent } from '../menu/recipe/recipe-update/recipe-update.component';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RecipeFormGuard implements CanDeactivate<RecipeCreateComponent> {
+export class RecipeFormGuard
+  implements CanDeactivate<RecipeCreateComponent | RecipeUpdateComponent> {
   canDeactivate(
-    component: RecipeCreateComponent // 対象コンポーネント
+    component: RecipeCreateComponent | RecipeUpdateComponent
   ): Observable<boolean> | boolean {
     if (component.form.pristine || component.form.valid) {
       return true;

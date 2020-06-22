@@ -32,8 +32,9 @@ h1 {
   transition: 0.2s;
   outline: none;
   cursor: pointer;
+  @include mat-elevation(2);
   &:hover {
-    @include mat-elevation(2);
+    @include mat-elevation(4);
   }
   &__thumbnail {
     width: 140px;

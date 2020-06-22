@@ -16,7 +16,7 @@ export interface AddedFood {
   processes?: [{ photoURL: string; description: string }];
   public: boolean;
   authorId: string;
-  createdAt: firestore.Timestamp;
+  updatedAt: firestore.Timestamp;
 }
 
 export interface RecipeWithAuthor extends AddedFood {

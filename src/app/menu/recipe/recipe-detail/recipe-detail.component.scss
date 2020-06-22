@@ -42,6 +42,23 @@ h3 {
   font-weight: normal;
   margin: 0;
 }
+.content-head {
+  display: flex;
+  justify-content: space-between;
+  h2 {
+    align-self: flex-end;
+  }
+  h4 {
+    padding: 4px;
+    font-size: 15px;
+    font-weight: normal;
+    margin: 0 8px 8px 0;
+    text-align: center;
+    color: #009688;
+    background: #ffff;
+    border: 1px solid #009688;
+  }
+}
 .content {
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
@@ -55,6 +72,19 @@ h3 {
   }
   &__point {
     height: 120px;
+  }
+}
+.ingredients {
+  margin-bottom: 32px;
+}
+.ingredient {
+  padding: 0 8px;
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border-top: 1px solid #dbdbdb;
+  p {
+    margin: 0;
   }
 }
 .processes {

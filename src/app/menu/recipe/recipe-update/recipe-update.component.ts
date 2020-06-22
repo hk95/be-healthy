@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -10,6 +16,8 @@ import { RecipeThumbnailComponent } from 'src/app/dialogs/recipe-thumbnail/recip
 import { RecipeProcessImageComponent } from 'src/app/dialogs/recipe-process-image/recipe-process-image.component';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { RecipeService } from 'src/app/services/recipe.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recipe-update',
@@ -19,14 +27,14 @@ import { ActivatedRoute } from '@angular/router';
 export class RecipeUpdateComponent implements OnInit {
   thumbnailURL: string = null;
   ProcessURLs = [];
-  query;
+  query: string;
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
   ingredient = false;
   ingredientQuanity = 0;
   process = false;
   processQuanity = 0;
-  public = false;
+  public: boolean;
 
   form = this.fb.group({
     recipeTitle: ['', [Validators.required]],
@@ -46,7 +54,6 @@ export class RecipeUpdateComponent implements OnInit {
   get recipeTitle(): FormControl {
     return this.form.get('recipeTitle') as FormControl;
   }
-
   get ingredientDetails(): FormArray {
     return this.form.get('ingredientDetails') as FormArray;
   }
@@ -57,12 +64,44 @@ export class RecipeUpdateComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private recipeService: RecipeService,
+    private authService: AuthService
   ) {
     this.route.queryParamMap.subscribe((recipeId) => {
       this.query = recipeId.get('id');
+      this.recipeService.getRecipeByRecipeId(this.query).subscribe((recipe) => {
+        if (recipe) {
+          this.form.patchValue(recipe);
+          this.thumbnailURL = recipe.recipeThumbnailURL;
+          this.public = recipe.public;
+          if (recipe.foods) {
+            recipe.foods.forEach((food) => {
+              const ingredientFormGroup = this.fb.group({
+                name: food.name,
+                amountAndUnit: food.amountAndUnit,
+              });
+              this.ingredientQuanity++;
+              this.ingredientDetails.push(ingredientFormGroup);
+            });
+          }
+          if (recipe.processes) {
+            recipe.processes.forEach((process) => {
+              const processFormGroup = this.fb.group({
+                description: process.description,
+              });
+              this.processQuanity++;
+              this.ProcessURLs.push(process.photoURL);
+              this.processDetails.push(processFormGroup);
+            });
+          }
+        } else {
+          console.log('error');
+        }
+      });
     });
   }
+
   addIngredinet() {
     const ingredientFormGroup = this.fb.group({
       name: ['', [Validators.required]],
@@ -148,6 +187,37 @@ export class RecipeUpdateComponent implements OnInit {
   }
   back(): void {
     this.location.back();
+  }
+  updateRecipe() {
+    const formData = this.form.value;
+    const sendProcesses = this.ProcessURLs.map((v, index) => {
+      return { ...formData.processDetails[index], photoURL: v };
+    });
+    this.recipeService.updateRecipe(
+      {
+        recipeId: this.query,
+        recipeTitle: formData.recipeTitle,
+        recipeThumbnailURL: this.thumbnailURL,
+        recipeDescription: formData.recipeDescription,
+        recipelCal: formData.recipelCal,
+        recipeProtein: formData.recipeProtein,
+        recipeFat: formData.recipeFat,
+        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
+        recipeDietaryFiber: formData.recipeDietaryFiber,
+        recipeSugar: formData.recipeSugar,
+        foods: formData.ingredientDetails,
+        public: this.public,
+        authorId: this.authService.uid,
+      },
+      sendProcesses
+    );
+  }
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.form.dirty) {
+      $event.preventDefault();
+      $event.returnValue = '作業中の内容がありますが、再読み込みしますか？';
+    }
   }
   ngOnInit(): void {}
 }

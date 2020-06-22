@@ -1,0 +1,13 @@
+<h2 mat-dialog-title><mat-icon>info</mat-icon>{{ title }}を削除しますか？</h2>
+
+<mat-dialog-actions>
+  <button mat-stroked-button mat-dialog-close>キャンセル</button>
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="deleteRecipe()"
+    mat-dialog-close
+  >
+    削除
+  </button>
+</mat-dialog-actions>
