@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -75,7 +81,7 @@ export class RecipeUpdateComponent implements OnInit {
                 name: food.name,
                 amountAndUnit: food.amountAndUnit,
               });
-              console.log(ingredientFormGroup);
+              this.ingredientQuanity++;
               this.ingredientDetails.push(ingredientFormGroup);
             });
           }
@@ -84,8 +90,8 @@ export class RecipeUpdateComponent implements OnInit {
               const processFormGroup = this.fb.group({
                 description: process.description,
               });
+              this.processQuanity++;
               this.ProcessURLs.push(process.photoURL);
-              console.log(processFormGroup);
               this.processDetails.push(processFormGroup);
             });
           }
@@ -205,6 +211,13 @@ export class RecipeUpdateComponent implements OnInit {
       },
       sendProcesses
     );
+  }
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.form.dirty) {
+      $event.preventDefault();
+      $event.returnValue = '作業中の内容がありますが、再読み込みしますか？';
+    }
   }
   ngOnInit(): void {}
 }
