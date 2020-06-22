@@ -1,0 +1,15 @@
+h2 {
+  display: flex;
+  align-items: center;
+  margin: 24px auto;
+  mat-icon {
+    color: #f44335;
+    vertical-align: middle;
+  }
+}
+
+mat-dialog-actions {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
