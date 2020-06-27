@@ -9,42 +9,18 @@ import { FavFood } from '../interfaces/fav-food';
   providedIn: 'root',
 })
 export class FoodService {
-  OriginalFoods$: Observable<FavFood[]> = this.db
-    .collection<FavFood>(`foods`)
-    .valueChanges();
   constructor(private db: AngularFirestore) {}
-
-  getOriginalFoods(userId: string): Observable<OriginalFood[]> {
-    const favFoodIds$: Observable<string[]> = this.db
-      .collection<FavFood>(`users/${userId}/favFoods`)
-      .valueChanges()
-      .pipe(
-        map((favFoods: FavFood[]) => {
-          return favFoods.map((favFood: FavFood) => favFood.foodId);
-        })
-      );
-
-    const originalFoods$: Observable<OriginalFood[]> = this.db
-      .collection<OriginalFood>('foods')
-      .valueChanges();
-
-    return combineLatest([originalFoods$, favFoodIds$]).pipe(
-      map(([originalFoods, favFoodIds]) => {
-        return originalFoods.map((food) => {
-          return {
-            ...food,
-            isLiked: favFoodIds.includes(food.foodId),
-          };
-        });
-      })
-    );
-  }
 
   likeFavFood(userId: string, foodId: string): Promise<void> {
     return this.db.doc(`users/${userId}/favFoods/${foodId}`).set({ foodId });
   }
   unLikeFavFood(userId: string, foodId: string): Promise<void> {
     return this.db.doc(`users/${userId}/favFoods/${foodId}`).delete();
+  }
+  getfavFoodslist(userId: string): Observable<FavFood[]> {
+    return this.db
+      .collection<FavFood>(`users/${userId}/favFoods`)
+      .valueChanges();
   }
 
   getFavFoods(userId: string): Observable<OriginalFood[]> {
