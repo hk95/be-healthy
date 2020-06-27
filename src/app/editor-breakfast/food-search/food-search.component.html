@@ -1,0 +1,63 @@
+<ais-instantsearch [config]="config">
+  <ais-search-box
+    placeholder="食べ物を入力してください"
+    class="ais-SearchBox-form"
+  >
+  </ais-search-box>
+
+  <ais-configure [searchParameters]="{ hitsPerPage: 10 }"></ais-configure>
+  <ais-hits>
+    <ng-template let-hits="hits">
+      <div *ngFor="let food of hits">
+        <div class="food">
+          <button
+            class="food__fav"
+            mat-icon-button
+            color="warn"
+            *ngIf="isLikedlist.includes(food.foodId)"
+            (click)="unLikeFavFood(food.foodId)"
+          >
+            <mat-icon>favorite</mat-icon>
+          </button>
+
+          <button
+            class="food__fav"
+            mat-icon-button
+            *ngIf="!isLikedlist.includes(food.foodId)"
+            (click)="likeFavFood(food.foodId)"
+          >
+            <mat-icon>favorite_border</mat-icon>
+          </button>
+          <div class="food__name">
+            <p class="food__name--with-amount">{{ food.foodName }}</p>
+            <span class="food__amountper">
+              {{ food.calPerAmount }}kcal/{{ food.unit }}
+            </span>
+          </div>
+
+          <input
+            class="food__amount-form"
+            max="100"
+            min="0"
+            step="0.1"
+            [(ngModel)]="amout[food.foodId]"
+            type="number"
+          />
+          <span>{{ food.unit }}</span>
+          <p class="spacer"></p>
+          <p class="food__cal">
+            {{ food.calPerAmount * amout[food.foodId] | number: '1.1-1' }}kcal
+          </p>
+
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="addDailyInfoFood(amout[food.foodId], food.foodId)"
+          >
+            <mat-icon>add_box</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </ais-hits>
+</ais-instantsearch>
