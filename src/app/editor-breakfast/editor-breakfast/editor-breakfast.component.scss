@@ -1,14 +1,7 @@
-.search {
-  display: block;
-  margin: 16px auto;
-  width: 85%;
-  border-radius: 5px;
-  height: 20px;
-}
-
 .food {
   display: flex;
   align-items: center;
+  background: #fff;
   &__fav {
     margin: 0 8px 0 0px;
   }
@@ -19,18 +12,25 @@
     color: #009688;
   }
   &__name {
+    font-size: 14px;
     margin: 8px 8px 8px 0;
     width: 100px;
     &--with-amount {
       margin: 0;
     }
   }
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   &__amount-form {
     display: block;
-    -webkit-appearance: none;
+    border: 1px solid #707070;
     width: 10%;
     border-radius: 5px;
     height: 20px;
+    margin-right: 8px;
   }
 }
 button {

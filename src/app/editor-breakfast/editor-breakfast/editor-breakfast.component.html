@@ -45,13 +45,13 @@
               </p>
 
               <button
-                mat-stroked-button
+                mat-icon-button
                 color="primary"
                 (click)="
                   addDailyInfoFood(amout[favFood.foodId], favFood.foodId)
                 "
               >
-                追加
+                <mat-icon>add_box</mat-icon>
               </button>
             </div>
           </div>
@@ -59,69 +59,15 @@
       </mat-tab>
 
       <mat-tab class="tab__list" label="検索">
-        <input class="search" type="text" />
-        <div *ngIf="foods$ | async as foods">
-          <div *ngFor="let food of foods">
-            <div class="food">
-              <button
-                class="food__fav"
-                mat-icon-button
-                color="warn"
-                *ngIf="food.isLiked"
-                (click)="unLikeFavFood(food.foodId)"
-              >
-                <mat-icon>favorite</mat-icon>
-              </button>
-
-              <button
-                class="food__fav"
-                mat-icon-button
-                *ngIf="!food.isLiked"
-                (click)="likeFavFood(food.foodId)"
-              >
-                <mat-icon>favorite_border</mat-icon>
-              </button>
-              <div class="food__name">
-                <p class="food__name--with-amount">{{ food.foodName }}</p>
-                <span class="food__amountper">
-                  {{ food.calPerAmount }}kcal/{{ food.unit }}
-                </span>
-              </div>
-
-              <input
-                class="food__amount-form"
-                max="100"
-                min="0"
-                step="0.1"
-                [(ngModel)]="amout[food.foodId]"
-                type="number"
-              />
-              <span>{{ food.unit }}</span>
-              <p class="spacer"></p>
-              <p class="food__cal">
-                {{
-                  food.calPerAmount * amout[food.foodId] | number: '1.1-1'
-                }}kcal
-              </p>
-
-              <button
-                mat-stroked-button
-                color="primary"
-                (click)="addDailyInfoFood(amout[food.foodId], food.foodId)"
-              >
-                追加
-              </button>
-            </div>
-          </div>
-        </div></mat-tab
-      >
+        <app-food-search></app-food-search>
+      </mat-tab>
       <mat-tab class="tab__list" label="履歴">
         <input class="search" type="text" />
         rireki</mat-tab
       >
       <mat-tab class="tab__list" label="選択項目">
         <p *ngIf="totalCal$ | async as totalCal">
-          朝食摂取カロリー:{{ totalCal | number: '1.1-1' }} kcal
+          朝食摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
         </p>
         <div *ngIf="selectedFoods$ | async as selectedFoods">
           <div *ngFor="let selectedFood of selectedFoods">
@@ -129,7 +75,9 @@
             <div class="food">
               <p class="food__name">{{ selectedFood.meal.foodName }}</p>
               <p class="spacer"></p>
-              <p class="food__amount">（{{ selectedFood.amount }}個）</p>
+              <p class="food__amount">
+                （{{ selectedFood.amount }}{{ selectedFood.meal.unit }}）
+              </p>
               <p class="food__cal">
                 {{
                   selectedFood.amount * selectedFood.meal.calPerAmount
@@ -137,11 +85,11 @@
                 }}kcal
               </p>
               <button
-                mat-stroked-button
-                color="primary"
+                mat-icon-button
+                color="warn"
                 (click)="deleteDailyInfoFood(selectedFood.breakfastId)"
               >
-                削除
+                <mat-icon>clear</mat-icon>
               </button>
             </div>
           </div>

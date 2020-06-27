@@ -7,8 +7,8 @@ import { FoodService } from 'src/app/services/food.service';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { DailyInfo, BreakfastWithMeal } from 'src/app/interfaces/daily-info';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { BreakfastWithMeal } from 'src/app/interfaces/daily-info';
+import { map } from 'rxjs/operators';
 import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
@@ -16,11 +16,8 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   templateUrl: './editor-breakfast.component.html',
   styleUrls: ['./editor-breakfast.component.scss'],
 })
-export class EditorBreakfastComponent implements OnInit, AfterViewInit {
+export class EditorBreakfastComponent implements OnInit {
   @Input() originalFood: OriginalFood;
-  foods$: Observable<OriginalFood[]> = this.foodService.getOriginalFoods(
-    this.authService.uid
-  );
   amout = {};
   date: string;
   selectedFoods$: Observable<BreakfastWithMeal[]>;
@@ -85,6 +82,6 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
   back(): void {
     this.location.back();
   }
+
   ngOnInit(): void {}
-  ngAfterViewInit() {}
 }
