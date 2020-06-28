@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { OriginalFood } from '../interfaces/original-food';
 import { Observable, combineLatest, of } from 'rxjs';
-import { map, switchMap, mergeAll } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { FavFood } from '../interfaces/fav-food';
 
 @Injectable({
@@ -20,7 +20,8 @@ export class FoodService {
   getfavFoodslist(userId: string): Observable<FavFood[]> {
     return this.db
       .collection<FavFood>(`users/${userId}/favFoods`)
-      .valueChanges();
+      .valueChanges()
+      .pipe(take(1));
   }
 
   getFavFoods(userId: string): Observable<OriginalFood[]> {
