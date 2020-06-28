@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SearchService } from 'src/app/services/search.service';
 import { FoodService } from 'src/app/services/food.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
