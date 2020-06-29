@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { BreakfastWithMeal } from 'src/app/interfaces/daily-info';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
@@ -23,7 +23,8 @@ export class EditorBreakfastComponent implements OnInit {
   selectedFoods$: Observable<BreakfastWithMeal[]>;
   totalCal$: Observable<number>;
   favFoods$: Observable<OriginalFood[]>;
-
+  favFoods: OriginalFood[];
+  isLikedlist = [];
   constructor(
     private location: Location,
     private dailyInfoService: DailyInfoService,
@@ -52,6 +53,11 @@ export class EditorBreakfastComponent implements OnInit {
       )
     );
     this.favFoods$ = this.foodService.getFavFoods(this.authService.uid);
+    this.favFoods$.pipe(take(1)).subscribe((foods: OriginalFood[]) => {
+      console.log(foods);
+      this.favFoods = foods;
+      this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
+    });
   }
 
   addDailyInfoFood(amount: number, foodId: string) {
@@ -73,11 +79,13 @@ export class EditorBreakfastComponent implements OnInit {
     );
   }
 
-  likeFavFood(foodId: string) {
-    this.foodService.likeFavFood(this.authService.uid, foodId);
-  }
   unLikeFavFood(foodId: string) {
     this.foodService.unLikeFavFood(this.authService.uid, foodId);
+    const index = this.isLikedlist.indexOf(foodId);
+    if (index > -1) {
+      this.isLikedlist.splice(index, 1);
+      this.favFoods.splice(index, 1);
+    }
   }
   back(): void {
     this.location.back();
