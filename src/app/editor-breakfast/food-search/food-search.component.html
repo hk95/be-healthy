@@ -1,10 +1,7 @@
 <ais-instantsearch [config]="config">
-  <ais-search-box
-    placeholder="食べ物を入力してください"
-    class="ais-SearchBox-form"
-  >
-  </ais-search-box>
-
+  <div class="search-box">
+    <ais-search-box placeholder="食べ物を入力してください"> </ais-search-box>
+  </div>
   <ais-configure [searchParameters]="{ hitsPerPage: 10 }"></ais-configure>
   <ais-hits>
     <ng-template let-hits="hits">
