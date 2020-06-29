@@ -1,7 +1,11 @@
+.search-box {
+  margin: 16px auto;
+}
+
 .food {
   display: flex;
-  align-items: center;
   background: #fff;
+  align-items: center;
   &__fav {
     margin: 0 8px 0 0px;
   }

@@ -8,9 +8,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { FoodSearchComponent } from './food-search/food-search.component';
+import { NgAisModule } from 'angular-instantsearch';
 
 @NgModule({
-  declarations: [EditorBreakfastComponent],
+  declarations: [EditorBreakfastComponent, FoodSearchComponent],
   imports: [
     CommonModule,
     EditorBreakfastRoutingModule,
@@ -18,6 +20,7 @@ import { FormsModule } from '@angular/forms';
     MatTabsModule,
     FormsModule,
     MatButtonModule,
+    NgAisModule,
   ],
 })
 export class EditorBreakfastModule {}

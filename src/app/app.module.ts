@@ -30,6 +30,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { RecipeThumbnailComponent } from './dialogs/recipe-thumbnail/recipe-thumbnail.component';
 import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/recipe-process-image.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { NgAisModule } from 'angular-instantsearch';
 
 registerLocaleData(localeJa);
 
@@ -63,6 +64,7 @@ registerLocaleData(localeJa);
     FullCalendarModule,
     ImageCropperModule,
     MatDialogModule,
+    NgAisModule.forRoot(),
   ],
   providers: [
     DatePipe,

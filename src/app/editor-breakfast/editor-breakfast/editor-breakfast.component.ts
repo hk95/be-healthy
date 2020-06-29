@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
@@ -7,8 +7,8 @@ import { FoodService } from 'src/app/services/food.service';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { DailyInfo, BreakfastWithMeal } from 'src/app/interfaces/daily-info';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { BreakfastWithMeal } from 'src/app/interfaces/daily-info';
+import { map, take } from 'rxjs/operators';
 import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
@@ -16,17 +16,15 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   templateUrl: './editor-breakfast.component.html',
   styleUrls: ['./editor-breakfast.component.scss'],
 })
-export class EditorBreakfastComponent implements OnInit, AfterViewInit {
+export class EditorBreakfastComponent implements OnInit {
   @Input() originalFood: OriginalFood;
-  foods$: Observable<OriginalFood[]> = this.foodService.getOriginalFoods(
-    this.authService.uid
-  );
   amout = {};
   date: string;
   selectedFoods$: Observable<BreakfastWithMeal[]>;
   totalCal$: Observable<number>;
   favFoods$: Observable<OriginalFood[]>;
-
+  favFoods: OriginalFood[];
+  isLikedlist = [];
   constructor(
     private location: Location,
     private dailyInfoService: DailyInfoService,
@@ -55,6 +53,11 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
       )
     );
     this.favFoods$ = this.foodService.getFavFoods(this.authService.uid);
+    this.favFoods$.pipe(take(1)).subscribe((foods: OriginalFood[]) => {
+      console.log(foods);
+      this.favFoods = foods;
+      this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
+    });
   }
 
   addDailyInfoFood(amount: number, foodId: string) {
@@ -76,15 +79,17 @@ export class EditorBreakfastComponent implements OnInit, AfterViewInit {
     );
   }
 
-  likeFavFood(foodId: string) {
-    this.foodService.likeFavFood(this.authService.uid, foodId);
-  }
   unLikeFavFood(foodId: string) {
     this.foodService.unLikeFavFood(this.authService.uid, foodId);
+    const index = this.isLikedlist.indexOf(foodId);
+    if (index > -1) {
+      this.isLikedlist.splice(index, 1);
+      this.favFoods.splice(index, 1);
+    }
   }
   back(): void {
     this.location.back();
   }
+
   ngOnInit(): void {}
-  ngAfterViewInit() {}
 }
