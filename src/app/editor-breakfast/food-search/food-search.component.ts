@@ -3,11 +3,10 @@ import { FoodService } from 'src/app/services/food.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute } from '@angular/router';
-import { FavFood } from 'src/app/interfaces/fav-food';
 import algoliasearch from 'algoliasearch/lite';
 import { environment } from 'src/environments/environment';
+import { EditorBreakfastComponent } from '../editor-breakfast/editor-breakfast.component';
 
-// Algoliakey取得 => Algoliaアクセス可
 const searchClient = algoliasearch(
   environment.algolia.appId,
   environment.algolia.searchKey
@@ -19,16 +18,14 @@ const searchClient = algoliasearch(
 })
 export class FoodSearchComponent implements OnInit {
   amout = {};
-  isLikedlist = [];
-
   date: string;
   config = {
     indexName: 'foods',
     searchClient,
   };
 
-  favFoods$ = this.foodService.getfavFoodslist(this.authService.uid);
   constructor(
+    private editorBreakfastComponent: EditorBreakfastComponent,
     private foodService: FoodService,
     private authService: AuthService,
     private dailyInfoService: DailyInfoService,
@@ -37,22 +34,23 @@ export class FoodSearchComponent implements OnInit {
     this.route.paramMap.subscribe((date) => {
       this.date = date.get('date');
     });
-    this.favFoods$.subscribe((foods: FavFood[]) => {
-      console.log(foods);
-
-      this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
-    });
   }
 
   likeFavFood(foodId: string) {
     this.foodService.likeFavFood(this.authService.uid, foodId);
-    this.isLikedlist.push(foodId);
+    this.editorBreakfastComponent.isLikedlist.push(foodId);
+    this.foodService.getFoodByFoodId(foodId).subscribe((food) => {
+      const favFood = food;
+      console.log(favFood);
+      this.editorBreakfastComponent.favFoods.push(favFood);
+    });
   }
   unLikeFavFood(foodId: string) {
     this.foodService.unLikeFavFood(this.authService.uid, foodId);
-    const index = this.isLikedlist.indexOf(foodId);
+    const index = this.editorBreakfastComponent.isLikedlist.indexOf(foodId);
     if (index > -1) {
-      this.isLikedlist.splice(index, 1);
+      this.editorBreakfastComponent.isLikedlist.splice(index, 1);
+      this.editorBreakfastComponent.favFoods.splice(index, 1);
     }
   }
   addDailyInfoFood(amount: number, foodId: string) {

@@ -14,7 +14,7 @@
             class="food__fav"
             mat-icon-button
             color="warn"
-            *ngIf="isLikedlist.includes(food.foodId)"
+            *ngIf="editorBreakfastComponent.isLikedlist.includes(food.foodId)"
             (click)="unLikeFavFood(food.foodId)"
           >
             <mat-icon>favorite</mat-icon>
@@ -23,7 +23,7 @@
           <button
             class="food__fav"
             mat-icon-button
-            *ngIf="!isLikedlist.includes(food.foodId)"
+            *ngIf="!editorBreakfastComponent.isLikedlist.includes(food.foodId)"
             (click)="likeFavFood(food.foodId)"
           >
             <mat-icon>favorite_border</mat-icon>
