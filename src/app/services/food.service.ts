@@ -17,13 +17,13 @@ export class FoodService {
   unLikeFavFood(userId: string, foodId: string): Promise<void> {
     return this.db.doc(`users/${userId}/favFoods/${foodId}`).delete();
   }
-  getfavFoodslist(userId: string): Observable<FavFood[]> {
+
+  getFoodByFoodId(foodId: string): Observable<OriginalFood> {
     return this.db
-      .collection<FavFood>(`users/${userId}/favFoods`)
+      .doc<OriginalFood>(`foods/${foodId}`)
       .valueChanges()
       .pipe(take(1));
   }
-
   getFavFoods(userId: string): Observable<OriginalFood[]> {
     return this.db
       .collection<FavFood>(`users/${userId}/favFoods`)
