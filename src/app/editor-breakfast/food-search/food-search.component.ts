@@ -25,7 +25,7 @@ export class FoodSearchComponent implements OnInit {
   };
 
   constructor(
-    private editorBreakfastComponent: EditorBreakfastComponent,
+    public editorBreakfastComponent: EditorBreakfastComponent,
     private foodService: FoodService,
     private authService: AuthService,
     private dailyInfoService: DailyInfoService,
