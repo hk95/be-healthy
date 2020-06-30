@@ -3,14 +3,9 @@ import { FoodService } from 'src/app/services/food.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute } from '@angular/router';
-import algoliasearch from 'algoliasearch/lite';
-import { environment } from 'src/environments/environment';
 import { EditorBreakfastComponent } from '../editor-breakfast/editor-breakfast.component';
+import { SearchService } from 'src/app/services/search.service';
 
-const searchClient = algoliasearch(
-  environment.algolia.appId,
-  environment.algolia.searchKey
-);
 @Component({
   selector: 'app-food-search',
   templateUrl: './food-search.component.html',
@@ -19,17 +14,15 @@ const searchClient = algoliasearch(
 export class FoodSearchComponent implements OnInit {
   amout = {};
   date: string;
-  config = {
-    indexName: 'foods',
-    searchClient,
-  };
+  config = this.searchService.config;
 
   constructor(
     public editorBreakfastComponent: EditorBreakfastComponent,
     private foodService: FoodService,
     private authService: AuthService,
     private dailyInfoService: DailyInfoService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private searchService: SearchService
   ) {
     this.route.paramMap.subscribe((date) => {
       this.date = date.get('date');
