@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SetService } from 'src/app/services/set.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-set',
@@ -6,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./set.component.scss'],
 })
 export class SetComponent implements OnInit {
-  constructor() {}
-
+  setId: string;
+  constructor(private setService: SetService, private router: Router) {}
+  forwardbackToForm() {
+    this.setId = this.setService.getTentativeRecipeId();
+    this.router.navigate(['/set-create'], {
+      queryParams: {
+        id: this.setId,
+      },
+    });
+  }
   ngOnInit(): void {}
 }

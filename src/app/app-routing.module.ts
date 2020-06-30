@@ -35,6 +35,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'set-create',
+    loadChildren: () =>
+      import('./menu/set/set-create/set-create.module').then(
+        (m) => m.SetCreateModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'more',
     component: OtherShellComponent,
     children: [

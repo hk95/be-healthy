@@ -1,0 +1,180 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="head">
+      <button type="button" mat-icon-button (click)="backToMenu()">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <h1>マイセット作成画面</h1>
+      <button mat-raised-button color="primary">
+        保存
+      </button>
+    </div>
+
+    <div class="title">
+      <h2>セットタイトル<span>*</span></h2>
+
+      <input placeholder="セット名" class="title__name" type="text" required />
+    </div>
+    <div class="meal">
+      <button mat-stroked-button color="primary">
+        朝食
+      </button>
+      <button mat-stroked-button color="primary">
+        昼食
+      </button>
+      <button mat-stroked-button color="primary">
+        夕食
+      </button>
+    </div>
+    <div class="foods">
+      <h2>食べ物登録</h2>
+      <mat-tab-group mat-align-tabs="start">
+        <mat-tab label="食べ物リストから探す">
+          <ais-instantsearch [config]="config">
+            <div class="search-box">
+              <ais-search-box placeholder="食べ物を入力してください">
+              </ais-search-box>
+            </div>
+            <ais-configure
+              [searchParameters]="{ hitsPerPage: 5 }"
+            ></ais-configure>
+            <ais-hits>
+              <ng-template let-hits="hits">
+                <div *ngFor="let food of hits">
+                  <div class="food">
+                    <div class="food__name">
+                      <p class="food__name--with-amount">{{ food.foodName }}</p>
+                      <span class="food__amountper">
+                        {{ food.calPerAmount }}kcal/{{ food.unit }}
+                      </span>
+                    </div>
+                    <div class="food__row">
+                      <input
+                        class="food__amount-form"
+                        max="100"
+                        min="0"
+                        step="0.1"
+                        type="number"
+                      />
+                      <span>{{ food.unit }}</span>
+                      <p class="spacer"></p>
+                      <p class="food__cal"></p>
+
+                      <button mat-icon-button color="primary">
+                        <mat-icon>add_box</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ais-hits>
+          </ais-instantsearch>
+        </mat-tab>
+
+        <mat-tab label="レシピ集から探す">
+          <div class="grid">
+            <div
+              class="recipe"
+              *ngFor="let recipe of myRecipes"
+              routerLink="/recipe-detail"
+              [queryParams]="{ id: recipe.recipeId }"
+            >
+              <img
+                class="recipe__thumbnail"
+                [src]="recipe.recipeThumbnailURL"
+                alt=""
+              />
+
+              <div class="recipe__row">
+                <img
+                  class="recipe__icon"
+                  [src]="recipe.author.avatarURL"
+                  alt="プロフィールアイコン"
+                />
+                <p class="recipe__author">{{ recipe.author.name }}</p>
+              </div>
+              <h2 class="recipe__title">
+                {{ recipe.recipeTitle }}
+              </h2>
+              <p *ngIf="recipe.recipelCal" class="recipe__cal">
+                {{ recipe.recipelCal }}kcal
+              </p>
+              <p *ngIf="!recipe.recipelCal" class="recipe__cal">--</p>
+              <button class="recipe__add" mat-icon-button color="primary">
+                <mat-icon>add_box</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <div class="foods">
+      <h2>選択中</h2>
+      <div class="food">
+        <div class="food__name">
+          <p class="food__name--with-amount">orange</p>
+          <span class="food__amountper">
+            aasd kcal/g
+          </span>
+        </div>
+        <div class="food__row">
+          <p>１００</p>
+          <span>g</span>
+          <p class="spacer"></p>
+          <p class="food__cal"></p>
+
+          <button mat-icon-button color="warn">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nutrition">
+      <h2>栄養素</h2>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">総カロリー</p>
+        <div class="nutrition__amount-unit">
+          <input class="nutrition__amount" type="text" placeholder="XXX" />
+          <span>kcal</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">タンパク質</p>
+        <div class="nutrition__amount-unit">
+          <input class="nutrition__amount" type="text" placeholder="XXX" />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">脂質</p>
+        <div class="nutrition__amount-unit">
+          <input class="nutrition__amount" type="text" placeholder="XXX" />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">糖質</p>
+        <div class="nutrition__amount-unit">
+          <input class="nutrition__amount" type="text" placeholder="XXX" />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">食物繊維</p>
+        <div class="nutrition__amount-unit">
+          <input class="nutrition__amount" type="text" placeholder="XXX" />
+          <span>g</span>
+        </div>
+      </div>
+      <div class="nutrition__detail">
+        <p class="nutrition__name">炭水化物</p>
+        <div class="nutrition__amount-unit">
+          <input class="nutrition__amount" type="text" placeholder="XXX" />
+          <span>g</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
