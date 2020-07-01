@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgAisModule } from 'angular-instantsearch';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [SetCreateComponent],
@@ -21,6 +22,7 @@ import { NgAisModule } from 'angular-instantsearch';
     ReactiveFormsModule,
     MatTabsModule,
     NgAisModule,
+    MatDialogModule,
   ],
 })
 export class SetCreateModule {}
