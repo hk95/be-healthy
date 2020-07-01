@@ -43,7 +43,7 @@ export class RecipeCreateComponent implements OnInit {
       [Validators.required, Validators.minLength(1)]
     ),
     processDetails: this.fb.array([]),
-    recipelCal: [''],
+    recipeCal: [''],
     recipeProtein: [''],
     recipeFat: [''],
     recipeTotalCarbohydrate: [''],
@@ -80,6 +80,7 @@ export class RecipeCreateComponent implements OnInit {
     });
     this.ingredientDetails.push(ingredientFormGroup);
     this.ingredientQuanity++;
+    console.log(this.ingredientDetails);
   }
   editIngredient() {
     if (!this.ingredient) {
@@ -172,7 +173,7 @@ export class RecipeCreateComponent implements OnInit {
         recipeTitle: formData.recipeTitle,
         recipeThumbnailURL: this.thumbnailURL,
         recipeDescription: formData.recipeDescription,
-        recipelCal: formData.recipelCal,
+        recipeCal: formData.recipeCal,
         recipeProtein: formData.recipeProtein,
         recipeFat: formData.recipeFat,
         recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,

@@ -6,7 +6,7 @@ export interface AddedFood {
   recipeTitle: string;
   recipeThumbnailURL?: string;
   recipeDescription?: string;
-  recipelCal?: number;
+  recipeCal?: number;
   recipeProtein?: number;
   recipeFat?: number;
   recipeTotalCarbohydrate?: number;
