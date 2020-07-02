@@ -31,6 +31,7 @@ import { RecipeThumbnailComponent } from './dialogs/recipe-thumbnail/recipe-thum
 import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/recipe-process-image.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { NgAisModule } from 'angular-instantsearch';
+import { ConfirmRecipeComponent } from './dialogs/confirm-recipe/confirm-recipe.component';
 
 registerLocaleData(localeJa);
 
@@ -45,6 +46,7 @@ registerLocaleData(localeJa);
     RecipeThumbnailComponent,
     RecipeProcessImageComponent,
     DeleteDialogComponent,
+    ConfirmRecipeComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +80,7 @@ registerLocaleData(localeJa);
     RecipeThumbnailComponent,
     RecipeProcessImageComponent,
     DeleteDialogComponent,
+    ConfirmRecipeComponent,
   ],
 })
 export class AppModule {}
