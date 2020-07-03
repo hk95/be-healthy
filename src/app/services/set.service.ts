@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class SetService {
     private snackBar: MatSnackBar
   ) {}
 
-  getSets(userId: string) {
+  getSets(userId: string): Observable<Set[]> {
     return this.db
       .collection<Set>(`users/${userId}/sets`)
       .valueChanges()
@@ -25,10 +25,10 @@ export class SetService {
         switchMap((sets: Set[]) => {
           const allSets = sets.map((set) => {
             return this.db
-              .collection(`users/${userId}/sets/${set.setId}/foodsArray`)
+              .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
               .valueChanges()
               .pipe(
-                map((foodsArray) => {
+                map((foodsArray: Set[]) => {
                   console.log(foodsArray);
                   return Object.assign(set, { foodsArray });
                 })
