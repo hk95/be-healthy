@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
+import { combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +16,29 @@ export class SetService {
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
+
+  getSets(userId: string) {
+    return this.db
+      .collection<Set>(`users/${userId}/sets`)
+      .valueChanges()
+      .pipe(
+        switchMap((sets: Set[]) => {
+          const allSets = sets.map((set) => {
+            return this.db
+              .collection(`users/${userId}/sets/${set.setId}/foodsArray`)
+              .valueChanges()
+              .pipe(
+                map((foodsArray) => {
+                  console.log(foodsArray);
+                  return Object.assign(set, { foodsArray });
+                })
+              );
+          });
+          return combineLatest([...allSets]);
+        })
+      );
+  }
+
   getTentativeRecipeId(): string {
     return this.db.createId();
   }
@@ -22,6 +47,7 @@ export class SetService {
       .doc(`users/${set.userId}/sets/${set.setId}`)
       .set({
         setId: set.setId,
+        setTitle: set.setTitle,
         breakfast: set.meal.breakfast,
         lunch: set.meal.lunch,
         dinner: set.meal.dinner,
@@ -39,17 +65,17 @@ export class SetService {
             const foodArrayId = this.db.createId();
             this.db
               .doc(
-                `users/${set.userId}/sets/${set.setId}/formArray/${foodArrayId}`
+                `users/${set.userId}/sets/${set.setId}/foodsArray/${foodArrayId}`
               )
               .set({
                 food,
-                foodArrayId,
+                setId: set.setId,
               });
           });
         }
       })
       .then(() => {
-        this.snackBar.open('マイセットを登録しました', null, {
+        this.snackBar.open('マイセットを追加しました', null, {
           duration: 2000,
         });
         this.router.navigateByUrl('/menu');
