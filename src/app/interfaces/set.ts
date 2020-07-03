@@ -1,4 +1,6 @@
 import { firestore } from 'firebase';
+import { OriginalFood } from './original-food';
+import { AddedFood } from './added-food';
 
 export interface Set {
   setId: string;
@@ -9,7 +11,7 @@ export interface Set {
     lunch: boolean;
     dinner: boolean;
   };
-  foodsArray?: [];
+  foodsArray?: { setId: string; food: FoodInArray }[];
   setCal: number;
   setProtein: number;
   setFat: number;
@@ -17,4 +19,11 @@ export interface Set {
   setDietaryFiber: number;
   setSugar: number;
   updatedAt: firestore.Timestamp;
+}
+
+interface FoodInArray {
+  foodName: string;
+  foodId?: string;
+  recipeId?: string;
+  amount: number;
 }
