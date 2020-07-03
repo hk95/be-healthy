@@ -20,7 +20,10 @@ export interface Set {
   setSugar: number;
   updatedAt: firestore.Timestamp;
 }
-
+export interface FoodsArray {
+  food?: OriginalFood;
+  recipe?: AddedFood;
+}
 interface FoodInArray {
   foodName: string;
   foodId?: string;
