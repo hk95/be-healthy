@@ -14,6 +14,9 @@ import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
+import { OriginalFood } from 'src/app/interfaces/original-food';
+import { AddedFood } from 'src/app/interfaces/added-food';
+import { FoodsArray } from 'src/app/interfaces/set';
 
 @Component({
   selector: 'app-set-create',
@@ -76,55 +79,64 @@ export class SetCreateComponent implements OnInit {
       });
   }
 
-  addFood(food, preAmount: number) {
+  addFood(food: FoodsArray, preAmount: number) {
     const amount = Number(preAmount);
     this.preFoods.push({
       ...food,
       amount,
     });
-    if (food.foodId) {
+    if (food.food.foodId) {
       const foodFormGroup = this.fb.group({
-        foodId: food.foodId,
+        foodId: food.food.foodId,
+        foodName: food.food.foodName,
         amount,
       });
       this.foodsArray.push(foodFormGroup);
       this.currentCal =
-        Math.round((this.currentCal + food.calPerAmount * amount) * 10) / 10;
+        Math.round((this.currentCal + food.food.calPerAmount * amount) * 10) /
+        10;
       this.currentProtein =
-        Math.round((this.currentProtein + food.protein * amount) * 10) / 10;
+        Math.round((this.currentProtein + food.food.protein * amount) * 10) /
+        10;
       this.currentFat =
-        Math.round((this.currentFat + food.foodFat * amount) * 10) / 10;
+        Math.round((this.currentFat + food.food.foodFat * amount) * 10) / 10;
       this.currentTotalCarbohydrate =
         Math.round(
-          (this.currentTotalCarbohydrate + food.totalCarbohydrate * amount) * 10
+          (this.currentTotalCarbohydrate +
+            food.food.totalCarbohydrate * amount) *
+            10
         ) / 10;
       this.currentSugar =
-        Math.round((this.currentSugar + food.sugar * amount) * 10) / 10;
+        Math.round((this.currentSugar + food.food.sugar * amount) * 10) / 10;
       this.currentDietaryFiber =
         Math.round(
-          (this.currentDietaryFiber + food.dietaryFiber * amount) * 10
+          (this.currentDietaryFiber + food.food.dietaryFiber * amount) * 10
         ) / 10;
     } else {
       const foodFormGroup = this.fb.group({
-        foodId: food.recipeId,
+        recipeId: food.recipe.recipeId,
+        foodName: food.recipe.recipeTitle,
         amount,
       });
       this.foodsArray.push(foodFormGroup);
       this.currentCal =
-        Math.round((this.currentCal + food.recipeCal) * 10) / 10;
+        Math.round((this.currentCal + food.recipe.recipeCal) * 10) / 10;
       this.currentProtein =
-        Math.round((this.currentProtein + food.recipeProtein) * 10) / 10;
+        Math.round((this.currentProtein + food.recipe.recipeProtein) * 10) / 10;
       this.currentFat =
-        Math.round((this.currentFat + food.recipeFat) * 10) / 10;
+        Math.round((this.currentFat + food.recipe.recipeFat) * 10) / 10;
       this.currentTotalCarbohydrate =
         Math.round(
-          (this.currentTotalCarbohydrate + food.recipeTotalCarbohydrate) * 10
+          (this.currentTotalCarbohydrate +
+            food.recipe.recipeTotalCarbohydrate) *
+            10
         ) / 10;
       this.currentSugar =
-        Math.round((this.currentSugar + food.recipeSugar) * 10) / 10;
+        Math.round((this.currentSugar + food.recipe.recipeSugar) * 10) / 10;
       this.currentDietaryFiber =
-        Math.round((this.currentDietaryFiber + food.recipeDietaryFiber) * 10) /
-        10;
+        Math.round(
+          (this.currentDietaryFiber + food.recipe.recipeDietaryFiber) * 10
+        ) / 10;
     }
   }
   removeFood(index: number, food) {
