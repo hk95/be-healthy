@@ -31,7 +31,6 @@ export class SetService {
               .valueChanges()
               .pipe(
                 map((foodsArray: Set[]) => {
-                  console.log(foodsArray);
                   return Object.assign(set, { foodsArray });
                 })
               );
@@ -50,7 +49,9 @@ export class SetService {
       .set({
         setId: set.setId,
         setTitle: set.setTitle,
-        meal: set.meal,
+        breakfast: set.breakfast,
+        lunch: set.lunch,
+        dinner: set.dinner,
         setCal: set.setCal,
         setProtein: set.setProtein,
         setFat: set.setFat,
@@ -80,5 +81,14 @@ export class SetService {
         });
         this.router.navigateByUrl('/menu');
       });
+  }
+  updateMeal(userId: string, setId: string, meal: string, bool: boolean) {
+    if (meal === 'breakfast') {
+      this.db.doc(`users/${userId}/sets/${setId}`).update({ breakfast: bool });
+    } else if (meal === 'lunch') {
+      this.db.doc(`users/${userId}/sets/${setId}`).update({ lunch: bool });
+    } else {
+      this.db.doc(`users/${userId}/sets/${setId}`).update({ dinner: bool });
+    }
   }
 }
