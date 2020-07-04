@@ -6,11 +6,9 @@ export interface Set {
   setId: string;
   userId: string;
   setTitle: string;
-  meal: {
-    breakfast: boolean;
-    lunch: boolean;
-    dinner: boolean;
-  };
+  breakfast: boolean;
+  lunch: boolean;
+  dinner: boolean;
   foodsArray?: { setId: string; food: FoodInArray }[];
   setCal: number;
   setProtein: number;
@@ -54,4 +52,9 @@ interface FoodInArray {
   foodId?: string;
   recipeId?: string;
   amount: number;
+}
+export interface Meal {
+  breakfast: boolean;
+  lunch: boolean;
+  dinner: boolean;
 }
