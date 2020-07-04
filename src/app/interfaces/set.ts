@@ -20,10 +20,35 @@ export interface Set {
   setSugar: number;
   updatedAt: firestore.Timestamp;
 }
-export interface FoodsArray {
-  food?: OriginalFood;
-  recipe?: AddedFood;
+
+export interface FoodOrRecipe {
+  foodId: string;
+  foodName: string;
+  calPerAmount: number;
+  unit: 'amount' | 'g' | 'ml';
+  protein: number;
+  foodFat: number;
+  totalCarbohydrate: number;
+  sugar: number;
+  dietaryFiber: number;
+  isLiked?: boolean;
+  recipeId: string;
+  recipeTitle: string;
+  recipeThumbnailURL?: string;
+  recipeDescription?: string;
+  recipeCal?: number;
+  recipeProtein?: number;
+  recipeFat?: number;
+  recipeTotalCarbohydrate?: number;
+  recipeDietaryFiber?: number;
+  recipeSugar?: number;
+  foods: [{ name: string; amountAndUnit: string }];
+  processes?: [{ photoURL: string; description: string }];
+  public: boolean;
+  authorId: string;
+  updatedAt: firestore.Timestamp;
 }
+
 interface FoodInArray {
   foodName: string;
   foodId?: string;
