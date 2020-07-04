@@ -8,6 +8,9 @@
   gap: 24px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
+p {
+  margin: 0;
+}
 
 .card {
   &__body {
@@ -16,7 +19,7 @@
     background: #fff;
     display: flex;
     align-items: center;
-    height: 150px;
+    height: 155px;
     border-radius: 10px;
     transition: 0.2s;
     cursor: pointer;
@@ -36,13 +39,14 @@
     align-items: center;
   }
   &__title {
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: normal;
     margin-left: 8px;
     margin-top: 0;
     margin-bottom: 8px;
   }
   &__cal {
-    font-size: 12px;
+    font-size: 14px;
     color: #8a98ba;
     margin-left: 16px;
   }
@@ -52,6 +56,18 @@
     font-size: 13px;
     color: #3e3f68;
     opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    li {
+      display: flex;
+      justify-content: space-between;
+      min-width: 150px;
+      height: 18px;
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
   &__icon {
     align-self: flex-end;

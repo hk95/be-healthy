@@ -10,16 +10,35 @@
         </div>
         <div class="card__row">
           <ul class="card__foods">
-            <li *ngFor="let food of set.foodsArray | slice: 0:4">
-              {{ food.food.foodName }}
+            <li *ngFor="let food of set.foodsArray | slice: 0:5; index as i">
+              <p>{{ food.food.foodName }}</p>
+              <span *ngIf="i === 4 ? true : false"
+                ><mat-icon>more_horiz</mat-icon></span
+              >
             </li>
           </ul>
         </div>
       </div>
+
       <div class="card__buttons">
-        <button mat-flat-button color="primary">朝食</button>
-        <button mat-stroked-button color="primary">昼食</button>
-        <button mat-flat-button color="primary">夕食</button>
+        <button *ngIf="set.meal.breakfast" mat-flat-button color="primary">
+          朝食
+        </button>
+        <button *ngIf="!set.meal.breakfast" mat-stroked-button color="primary">
+          朝食
+        </button>
+        <button *ngIf="set.meal.lunch" mat-flat-button color="primary">
+          昼食
+        </button>
+        <button *ngIf="!set.meal.lunch" mat-stroked-button color="primary">
+          昼食
+        </button>
+        <button *ngIf="set.meal.dinner" mat-flat-button color="primary">
+          夕食
+        </button>
+        <button *ngIf="!set.meal.dinner" mat-stroked-button color="primary">
+          夕食
+        </button>
       </div>
     </div>
   </div>
