@@ -1,0 +1,83 @@
+.nav {
+  position: absolute;
+  width: 95%;
+  position: fixed;
+  top: 8px;
+  z-index: 5px;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+}
+.update-to-page {
+  margin-right: 16px;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+}
+h2 {
+  padding-left: 8px;
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+h3 {
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.content {
+  border-top: 1px solid #dbdbdb;
+  border-bottom: 1px solid #dbdbdb;
+  margin-bottom: 24px;
+  padding: 0 8px;
+  background: #ffff;
+  display: flex;
+  justify-content: space-between;
+  &--head {
+    margin-top: 80px;
+  }
+  &--buttons {
+    background: #fafafa;
+    border: none;
+  }
+  p {
+    margin: 0;
+  }
+  &__point {
+    height: 120px;
+  }
+}
+
+.food {
+  border-top: 1px solid #dbdbdb;
+  background: #fff;
+  margin-bottom: 32px;
+}
+.food__detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 8px;
+  border-bottom: 1px solid #dbdbdb;
+  p {
+    margin: 0;
+  }
+}
+
+.nutrition {
+  border-top: 1px solid #dbdbdb;
+  background: #fff;
+  margin-bottom: 32px;
+}
+.nutrition__detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  border-bottom: 1px solid #dbdbdb;
+  p {
+    margin: 0;
+  }
+}
