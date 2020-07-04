@@ -1,251 +1,75 @@
 <div class="grid">
-  <div class="card">
-    <div class="card__body" routerLink="">
-      <img src="http://placehold.it/165x100" alt="foods" />
+  <div class="card" *ngFor="let set of sets; index as i">
+    <div class="card__body">
       <div class="card__content">
         <div class="card__row">
           <h2 class="card__title">
-            タイトル
+            {{ set.setTitle }}
+            <span class="card__cal">{{ set.setCal }}kcal</span>
           </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
         </div>
         <div class="card__row">
           <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
+            <li *ngFor="let food of set.foodsArray | slice: 0:5; index as j">
+              <p>{{ food.food.foodName }}</p>
+              <span *ngIf="j === 4 ? true : false"
+                ><mat-icon>more_horiz</mat-icon></span
+              >
+            </li>
           </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
         </div>
       </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
+      <div class="card__buttons">
+        <button
+          *ngIf="mealOfAllSets[i].breakfast"
+          mat-flat-button
+          color="primary"
+          (click)="updateMeal(set.setId, 'breakfast', false, i)"
+        >
+          朝食
+        </button>
+        <button
+          *ngIf="!mealOfAllSets[i].breakfast"
+          mat-stroked-button
+          color="primary"
+          (click)="updateMeal(set.setId, 'breakfast', true, i)"
+        >
+          朝食
+        </button>
+        <button
+          *ngIf="mealOfAllSets[i].lunch"
+          mat-flat-button
+          (click)="updateMeal(set.setId, 'lunch', false, i)"
+          color="primary"
+        >
+          昼食
+        </button>
+        <button
+          *ngIf="!mealOfAllSets[i].lunch"
+          mat-stroked-button
+          color="primary"
+          (click)="updateMeal(set.setId, 'lunch', true, i)"
+        >
+          昼食
+        </button>
+        <button
+          *ngIf="mealOfAllSets[i].dinner"
+          mat-flat-button
+          color="primary"
+          (click)="updateMeal(set.setId, 'dinner', false, i)"
+        >
+          夕食
+        </button>
+        <button
+          *ngIf="!mealOfAllSets[i].dinner"
+          mat-stroked-button
+          color="primary"
+          (click)="updateMeal(set.setId, 'dinner', true, i)"
+        >
+          夕食
+        </button>
       </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
-      </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
-      </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
-      </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
-      </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
-      </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card__body">
-      <img src="http://placehold.it/165x100" alt="foods" />
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            タイトル
-          </h2>
-          <p class="card__cal">
-            XXXkcal
-          </p>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-            <li>ブロッコリー</li>
-          </ul>
-          <mat-icon class="card__icon">more_horiz</mat-icon>
-        </div>
-      </div>
-    </div>
-    <div class="card__buttons">
-      <button mat-flat-button color="primary">朝食</button>
-      <div class="spacer"></div>
-      <button mat-stroked-button color="primary">昼食</button>
-      <div class="spacer"></div>
-      <button mat-flat-button color="primary">夕食</button>
     </div>
   </div>
 </div>

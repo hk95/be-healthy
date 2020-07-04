@@ -14,6 +14,7 @@ import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
+import { FoodOrRecipe } from 'src/app/interfaces/set';
 
 @Component({
   selector: 'app-set-create',
@@ -76,7 +77,7 @@ export class SetCreateComponent implements OnInit {
       });
   }
 
-  addFood(food, preAmount: number) {
+  addFood(food: FoodOrRecipe, preAmount: number) {
     const amount = Number(preAmount);
     this.preFoods.push({
       ...food,
@@ -85,6 +86,7 @@ export class SetCreateComponent implements OnInit {
     if (food.foodId) {
       const foodFormGroup = this.fb.group({
         foodId: food.foodId,
+        foodName: food.foodName,
         amount,
       });
       this.foodsArray.push(foodFormGroup);
@@ -106,7 +108,8 @@ export class SetCreateComponent implements OnInit {
         ) / 10;
     } else {
       const foodFormGroup = this.fb.group({
-        foodId: food.recipeId,
+        recipeId: food.recipeId,
+        foodName: food.recipeTitle,
         amount,
       });
       this.foodsArray.push(foodFormGroup);
@@ -198,11 +201,9 @@ export class SetCreateComponent implements OnInit {
       setId: this.query,
       userId: this.userId,
       setTitle: formData.setTitle,
-      meal: {
-        breakfast: formData.meal.breakfast,
-        lunch: formData.meal.lunch,
-        dinner: formData.meal.dinner,
-      },
+      breakfast: formData.meal.breakfast,
+      lunch: formData.meal.lunch,
+      dinner: formData.meal.dinner,
       foodsArray: formData.foodsArray,
       setCal: formData.setCal,
       setProtein: formData.setProtein,

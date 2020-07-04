@@ -6,50 +6,49 @@
 .grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-img {
-  height: 100px;
-  width: 165px;
-  border-radius: 10px 0 0 10px;
+p {
+  margin: 0;
 }
 
 .card {
   &__body {
     outline: none;
+    padding: 0px 16px 0px 8px;
     background: #fff;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    height: 100px;
+    height: 155px;
     border-radius: 10px;
     transition: 0.2s;
-    margin-bottom: 8px;
     cursor: pointer;
+    @include mat-elevation(2);
     &:hover {
-      @include mat-elevation(2);
+      @include mat-elevation(4);
     }
   }
   &__content {
-    flex-grow: 2;
     height: 100px;
+    margin-right: 32px;
+    flex: 1;
   }
   &__row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
   &__title {
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: normal;
     margin-left: 8px;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 8px;
   }
   &__cal {
-    font-size: 12px;
+    font-size: 14px;
     color: #8a98ba;
-    padding-right: 8px;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-left: 16px;
   }
   &__foods {
     padding-left: 32px;
@@ -57,6 +56,18 @@ img {
     font-size: 13px;
     color: #3e3f68;
     opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    li {
+      display: flex;
+      justify-content: space-between;
+      min-width: 150px;
+      height: 18px;
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
   &__icon {
     align-self: flex-end;
@@ -65,7 +76,11 @@ img {
   }
   &__buttons {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+  }
+  button {
+    margin-bottom: 4px;
+    margin-top: 4px;
   }
 }
 .create {
