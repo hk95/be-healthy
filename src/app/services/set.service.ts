@@ -19,7 +19,9 @@ export class SetService {
 
   getSets(userId: string): Observable<Set[]> {
     return this.db
-      .collection<Set>(`users/${userId}/sets`)
+      .collection<Set>(`users/${userId}/sets`, (ref) =>
+        ref.orderBy('updatedAt', 'desc')
+      )
       .valueChanges()
       .pipe(
         switchMap((sets: Set[]) => {
@@ -48,9 +50,7 @@ export class SetService {
       .set({
         setId: set.setId,
         setTitle: set.setTitle,
-        breakfast: set.meal.breakfast,
-        lunch: set.meal.lunch,
-        dinner: set.meal.dinner,
+        meal: set.meal,
         setCal: set.setCal,
         setProtein: set.setProtein,
         setFat: set.setFat,
