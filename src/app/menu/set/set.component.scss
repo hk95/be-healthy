@@ -13,8 +13,8 @@ p {
 }
 
 .card {
+  outline: none;
   &__body {
-    outline: none;
     padding: 0px 16px 0px 8px;
     background: #fff;
     display: flex;
