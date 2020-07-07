@@ -16,67 +16,120 @@
   >
     <mat-icon>edit</mat-icon>
   </button>
-  <button mat-icon-button mat-raised-button class="delete" color="warn">
+  <button
+    mat-icon-button
+    mat-raised-button
+    class="delete"
+    color="warn"
+    (click)="openDeleteDialog()"
+  >
     <mat-icon>delete</mat-icon>
   </button>
 </div>
+<div *ngIf="set">
+  <div class="content--head">
+    <h2 class="content__name">セット名</h2>
+    <div class="content">
+      <h1>{{ set.setTitle }}</h1>
+    </div>
+  </div>
 
-<div class="content--head">
-  <h2 class="content__name">セット名</h2>
-  <div class="content">
-    <h1>セットタイトル</h1>
+  <div class="content content--buttons">
+    <button
+      *ngIf="mealOfSet.breakfast"
+      mat-flat-button
+      color="primary"
+      (click)="updateMeal(set.setId, 'breakfast', false)"
+    >
+      朝食
+    </button>
+    <button
+      *ngIf="!mealOfSet.breakfast"
+      mat-stroked-button
+      style="background: #fff;"
+      color="primary"
+      (click)="updateMeal(set.setId, 'breakfast', true)"
+    >
+      朝食
+    </button>
+    <button
+      *ngIf="mealOfSet.lunch"
+      mat-flat-button
+      color="primary"
+      (click)="updateMeal(set.setId, 'lunch', false)"
+    >
+      昼食
+    </button>
+    <button
+      *ngIf="!mealOfSet.lunch"
+      mat-stroked-button
+      style="background: #fff;"
+      color="primary"
+      (click)="updateMeal(set.setId, 'lunch', true)"
+    >
+      昼食
+    </button>
+    <button
+      *ngIf="mealOfSet.dinner"
+      mat-flat-button
+      color="primary"
+      (click)="updateMeal(set.setId, 'dinner', false)"
+    >
+      夕食
+    </button>
+    <button
+      *ngIf="!mealOfSet.dinner"
+      mat-stroked-button
+      style="background: #fff;"
+      color="primary"
+      (click)="updateMeal(set.setId, 'dinner', true)"
+    >
+      夕食
+    </button>
   </div>
-</div>
 
-<div class="content content--buttons">
-  <button mat-flat-button color="primary">朝食</button>
-  <button mat-stroked-button style="background: #ffff;" color="primary">
-    昼食
-  </button>
-  <button mat-flat-button color="primary">夕食</button>
-</div>
+  <h2 class="content__name">食べ物一覧</h2>
+  <div class="food">
+    <div class="food__detail" *ngFor="let food of set.foodsArray">
+      <h3 class="food__name">{{ food.food.foodName }}</h3>
+      <p>{{ food.food.amount }}g</p>
+    </div>
+  </div>
 
-<h2 class="content__name">食べ物一覧</h2>
-<div class="food">
-  <div class="food__detail">
-    <h3 class="food__name">apple</h3>
-    <p>XXXg</p>
-  </div>
-</div>
+  <h2 class="content__name">栄養素</h2>
 
-<h2 class="content__name">栄養素</h2>
-
-<div class="nutrition">
-  <div class="nutrition__detail">
-    <h3 class="nutrition__name">総カロリー</h3>
-    <p>XXXkcal</p>
-  </div>
-  <div class="nutrition__detail">
-    <h3 class="nutrition__name">タンパク質</h3>
-    <p>XXXg</p>
-  </div>
-  <div class="nutrition__detail">
-    <h3 class="nutrition__name">
-      脂質
-    </h3>
-    <p>XXXg</p>
-  </div>
-  <div class="nutrition__detail">
-    <h3 class="nutrition__name">
-      糖質
-    </h3>
-    <p>XXXg</p>
-  </div>
-  <div class="nutrition__detail">
-    <h3 class="nutrition__name">
-      食物繊維
-    </h3>
-    <p>XXXg</p>
-  </div>
-  <div class="nutrition__detail">
-    <h3 class="nutrition__name">
-      炭水化物
-    </h3>
-    <p>XXXg</p>
+  <div class="nutrition">
+    <div class="nutrition__detail">
+      <h3 class="nutrition__name">総カロリー</h3>
+      <p>{{ set.setCal }}kcal</p>
+    </div>
+    <div class="nutrition__detail">
+      <h3 class="nutrition__name">タンパク質</h3>
+      <p>{{ set.setProtein }}g</p>
+    </div>
+    <div class="nutrition__detail">
+      <h3 class="nutrition__name">
+        脂質
+      </h3>
+      <p>{{ set.setFat }}g</p>
+    </div>
+    <div class="nutrition__detail">
+      <h3 class="nutrition__name">
+        糖質
+      </h3>
+      <p>{{ set.setSugar }}g</p>
+    </div>
+    <div class="nutrition__detail">
+      <h3 class="nutrition__name">
+        食物繊維
+      </h3>
+      <p>{{ set.setDietaryFiber }}g</p>
+    </div>
+    <div class="nutrition__detail">
+      <h3 class="nutrition__name">
+        炭水化物
+      </h3>
+      <p>{{ set.setTotalCarbohydrate }}g</p>
+    </div>
   </div>
 </div>
