@@ -3,9 +3,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Set } from '../interfaces/set';
+import { Set, FoodInArray } from '../interfaces/set';
 import { combineLatest, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class SetService {
   constructor(
     private db: AngularFirestore,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fns: AngularFireFunctions
   ) {}
 
   getSets(userId: string): Observable<Set[]> {
@@ -36,6 +38,29 @@ export class SetService {
               );
           });
           return combineLatest([...allSets]);
+        })
+      );
+  }
+  getSetById(
+    userId: string,
+    setId: string
+  ): Observable<Set & { foodsArray: FoodInArray[] }> {
+    return this.db
+      .doc<Set>(`users/${userId}/sets/${setId}`)
+      .valueChanges()
+      .pipe(
+        switchMap((set: Set) => {
+          const setWithArray$: Observable<
+            Set & { foodsArray: FoodInArray[] }
+          > = this.db
+            .collection<FoodInArray>(`users/${userId}/sets/${setId}/foodsArray`)
+            .valueChanges()
+            .pipe(
+              map((foodsArray: FoodInArray[]) => {
+                return Object.assign(set, { foodsArray });
+              })
+            );
+          return setWithArray$;
         })
       );
   }
@@ -90,5 +115,20 @@ export class SetService {
     } else {
       this.db.doc(`users/${userId}/sets/${setId}`).update({ dinner: bool });
     }
+  }
+  async deleteSet(userId: string, setId: string): Promise<void> {
+    const callable = this.fns.httpsCallable('deleteSet');
+
+    return await callable({ userId, setId })
+      .toPromise()
+      .then(() => {
+        this.snackBar.open('マイセットを削除しました', null, {
+          duration: 2000,
+        });
+        this.router.navigateByUrl('/menu');
+      })
+      .catch((err) => {
+        console.log('failes', err);
+      });
   }
 }
