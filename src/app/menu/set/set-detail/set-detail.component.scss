@@ -56,14 +56,14 @@ h3 {
   border-top: 1px solid #dbdbdb;
   background: #fff;
   margin-bottom: 32px;
-}
-.food__detail {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 8px;
-  border-bottom: 1px solid #dbdbdb;
-  p {
-    margin: 0;
+  &__detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 8px;
+    border-bottom: 1px solid #dbdbdb;
+    p {
+      margin: 0;
+    }
   }
 }
 
@@ -71,13 +71,13 @@ h3 {
   border-top: 1px solid #dbdbdb;
   background: #fff;
   margin-bottom: 32px;
-}
-.nutrition__detail {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 8px;
-  border-bottom: 1px solid #dbdbdb;
-  p {
-    margin: 0;
+  &__detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    border-bottom: 1px solid #dbdbdb;
+    p {
+      margin: 0;
+    }
   }
 }
