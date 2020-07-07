@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
-import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFireFunctionsModule, REGION } from '@angular/fire/functions';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -73,6 +73,10 @@ registerLocaleData(localeJa);
     {
       provide: LOCALE_ID,
       useValue: 'ja-JP',
+    },
+    {
+      provide: REGION,
+      useValue: 'asia-northeast1',
     },
   ],
   bootstrap: [AppComponent],
