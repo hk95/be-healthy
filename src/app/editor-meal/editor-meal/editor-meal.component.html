@@ -1,0 +1,96 @@
+<button (click)="back()">
+  今日の一覧へ
+</button>
+
+<div class="container">
+  <div class="tab">
+    <mat-tab-group [disablePagination]="true">
+      <mat-tab class="tab__list" label="マイセット">
+        <div *ngFor="let favFood of favFoods">
+          <div class="food">
+            <button
+              class="food__fav"
+              mat-icon-button
+              color="warn"
+              (click)="unLikeFavFood(favFood.foodId)"
+            >
+              <mat-icon>favorite</mat-icon>
+            </button>
+
+            <div class="food__name">
+              <p class="food__name--with-amount">
+                {{ favFood.foodName }}
+              </p>
+              <span class="food__amountper">
+                {{ favFood.foodCalPerAmount }}kcal/{{ favFood.unit }}
+              </span>
+            </div>
+
+            <input
+              class="food__amount-form"
+              max="100"
+              min="0"
+              step="0.1"
+              [(ngModel)]="amout[favFood.foodId]"
+              type="number"
+            />
+            <span>{{ favFood.unit }}</span>
+            <p class="spacer"></p>
+            <p class="food__cal">
+              {{
+                favFood.foodCalPerAmount * amout[favFood.foodId]
+                  | number: '1.1-1'
+              }}kcal
+            </p>
+
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="addDailyInfoFood(amout[favFood.foodId], favFood.foodId)"
+            >
+              <mat-icon>add_box</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab class="tab__list" label="検索">
+        <app-food-search></app-food-search>
+      </mat-tab>
+      <mat-tab class="tab__list" label="履歴">
+        <input class="search" type="text" />
+        rireki</mat-tab
+      >
+      <mat-tab class="tab__list" label="選択項目">
+        <p *ngIf="totalCal$ | async as totalCal">
+          朝食摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
+        </p>
+        <div *ngIf="selectedFoods$ | async as selectedFoods">
+          <div *ngFor="let selectedFood of selectedFoods">
+            <p class="border"></p>
+            <div class="food">
+              <p class="food__name">{{ selectedFood.meal.foodName }}</p>
+              <p class="spacer"></p>
+              <p class="food__amount">
+                （{{ selectedFood.amount }}{{ selectedFood.meal.unit }}）
+              </p>
+              <p class="food__cal">
+                {{
+                  selectedFood.amount * selectedFood.meal.foodCalPerAmount
+                    | number: '1.1-1'
+                }}kcal
+              </p>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteDailyInfoFood(selectedFood.breakfastId)"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
