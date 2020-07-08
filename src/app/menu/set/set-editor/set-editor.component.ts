@@ -240,9 +240,7 @@ export class SetEditorComponent implements OnInit {
   }
   submit() {
     const formData = this.form.value;
-    this.breakfast = true;
-    this.formGurad.submitted = true;
-    this.breakfast = true;
+    this.setService.submitted = true;
     this.setService.createSet({
       setId: this.query,
       userId: this.userId,
@@ -259,7 +257,7 @@ export class SetEditorComponent implements OnInit {
       setSugar: formData.setSugar,
     });
   }
-  openRecipe(recipeId): void {
+  openRecipe(recipeId: string): void {
     this.dialog.open(ConfirmRecipeComponent, {
       width: '100%',
       data: recipeId,
