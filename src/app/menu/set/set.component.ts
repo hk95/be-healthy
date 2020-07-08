@@ -38,7 +38,7 @@ export class SetComponent implements OnInit {
   }
   forwardbackToForm() {
     this.setId = this.setService.getTentativeRecipeId();
-    this.router.navigate(['/set-create'], {
+    this.router.navigate(['/set-editor'], {
       queryParams: {
         id: this.setId,
       },
