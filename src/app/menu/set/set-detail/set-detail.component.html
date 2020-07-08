@@ -27,7 +27,7 @@
   </button>
 </div>
 <div *ngIf="set">
-  <div class="content--head">
+  <div class="content__head">
     <h2 class="content__name">セット名</h2>
     <div class="content">
       <h1>{{ set.setTitle }}</h1>
@@ -46,7 +46,7 @@
     <button
       *ngIf="!mealOfSet.breakfast"
       mat-stroked-button
-      style="background: #fff;"
+      class="not-seletected"
       color="primary"
       (click)="updateMeal(set.setId, 'breakfast', true)"
     >
@@ -63,7 +63,7 @@
     <button
       *ngIf="!mealOfSet.lunch"
       mat-stroked-button
-      style="background: #fff;"
+      class="not-seletected"
       color="primary"
       (click)="updateMeal(set.setId, 'lunch', true)"
     >
@@ -80,7 +80,7 @@
     <button
       *ngIf="!mealOfSet.dinner"
       mat-stroked-button
-      style="background: #fff;"
+      class="not-seletected"
       color="primary"
       (click)="updateMeal(set.setId, 'dinner', true)"
     >
