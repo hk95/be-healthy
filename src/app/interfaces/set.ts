@@ -20,13 +20,13 @@ export interface Set {
 export interface FoodOrRecipe {
   foodId: string;
   foodName: string;
-  calPerAmount: number;
+  foodCalPerAmount: number;
   unit: 'amount' | 'g' | 'ml';
-  protein: number;
+  foodProtein: number;
   foodFat: number;
-  totalCarbohydrate: number;
-  sugar: number;
-  dietaryFiber: number;
+  foodTotalCarbohydrate: number;
+  foodSugar: number;
+  foodDietaryFiber: number;
   isLiked?: boolean;
   recipeId: string;
   recipeTitle: string;
@@ -46,13 +46,30 @@ export interface FoodOrRecipe {
 }
 
 export interface FoodInArray {
-  setId: string;
-  food: {
-    foodName: string;
-    foodId?: string;
-    recipeId?: string;
-    amount: number;
-  };
+  foodId: string;
+  foodName: string;
+  foodCalPerAmount: number;
+  foodProtein: number;
+  foodFat: number;
+  foodTotalCarbohydrate: number;
+  foodSugar: number;
+  foodDietaryFiber: number;
+
+  recipeId: string;
+  recipeTitle: string;
+
+  recipeCal?: number;
+  recipeProtein?: number;
+  recipeFat?: number;
+  recipeTotalCarbohydrate?: number;
+  recipeDietaryFiber?: number;
+  recipeSugar?: number;
+  foods: [{ name: string; amountAndUnit: string }];
+  processes?: [{ photoURL: string; description: string }];
+  public: boolean;
+  authorId: string;
+  updatedAt: firestore.Timestamp;
+  amount: number;
 }
 export interface Meal {
   breakfast: boolean;
