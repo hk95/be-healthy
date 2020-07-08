@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { AddedFood } from 'src/app/interfaces/added-food';
+import { Recipe } from 'src/app/interfaces/recipe';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { take } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./confirm-recipe.component.scss'],
 })
 export class ConfirmRecipeComponent implements OnInit {
-  recipe: AddedFood;
+  recipe: Recipe;
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: string,
