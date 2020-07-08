@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
   providedIn: 'root',
 })
 export class SetService {
+  submitted: boolean;
   constructor(
     private db: AngularFirestore,
     private router: Router,
