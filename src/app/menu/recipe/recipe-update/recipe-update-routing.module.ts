@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RecipeUpdateComponent } from './recipe-update.component';
-import { RecipeFormGuard } from 'src/app/guards/recipe-form.guard';
+import { FormGuard } from 'src/app/guards/form.guard';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     component: RecipeUpdateComponent,
-    canDeactivate: [RecipeFormGuard],
+    canDeactivate: [FormGuard],
   },
 ];
 
