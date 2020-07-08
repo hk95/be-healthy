@@ -47,7 +47,7 @@ export class EditorBreakfastComponent implements OnInit {
       map((breakfastFood) =>
         breakfastFood.reduce(
           (total, foodCal) =>
-            total + foodCal.meal.calPerAmount * foodCal.amount,
+            total + foodCal.meal.foodCalPerAmount * foodCal.amount,
           0
         )
       )
