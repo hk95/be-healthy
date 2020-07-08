@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Location } from '@angular/common';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { OriginalFood } from 'src/app/interfaces/original-food';
+import { Food } from 'src/app/interfaces/food';
 import { FoodService } from 'src/app/services/food.service';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,13 +17,13 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   styleUrls: ['./editor-breakfast.component.scss'],
 })
 export class EditorBreakfastComponent implements OnInit {
-  @Input() originalFood: OriginalFood;
+  @Input() Food: Food;
   amout = {};
   date: string;
   selectedFoods$: Observable<BreakfastWithMeal[]>;
   totalCal$: Observable<number>;
-  favFoods$: Observable<OriginalFood[]>;
-  favFoods: OriginalFood[];
+  favFoods$: Observable<Food[]>;
+  favFoods: Food[];
   isLikedlist = [];
   constructor(
     private location: Location,
@@ -53,7 +53,7 @@ export class EditorBreakfastComponent implements OnInit {
       )
     );
     this.favFoods$ = this.foodService.getFavFoods(this.authService.uid);
-    this.favFoods$.pipe(take(1)).subscribe((foods: OriginalFood[]) => {
+    this.favFoods$.pipe(take(1)).subscribe((foods: Food[]) => {
       console.log(foods);
       this.favFoods = foods;
       this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
