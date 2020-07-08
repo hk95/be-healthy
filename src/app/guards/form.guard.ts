@@ -3,7 +3,7 @@ import { CanDeactivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { RecipeCreateComponent } from '../menu/recipe/recipe-create/recipe-create.component';
 import { RecipeUpdateComponent } from '../menu/recipe/recipe-update/recipe-update.component';
-import { SetCreateComponent } from '../menu/set/set-create/set-create.component';
+import { SetEditorComponent } from '../menu/set/set-editor/set-editor.component';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export class FormGuard
     component:
       | RecipeCreateComponent
       | RecipeUpdateComponent
-      | SetCreateComponent
+      | SetEditorComponent
   ): Observable<boolean> | boolean {
     if (component.form.pristine || component.form.valid || this.submitted) {
       this.submitted = false;
