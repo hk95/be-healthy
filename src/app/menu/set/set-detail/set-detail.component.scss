@@ -37,7 +37,7 @@ h3 {
   background: #ffff;
   display: flex;
   justify-content: space-between;
-  &--head {
+  &__head {
     margin-top: 80px;
   }
   &--buttons {
@@ -47,9 +47,9 @@ h3 {
   p {
     margin: 0;
   }
-  &__point {
-    height: 120px;
-  }
+}
+.not-seletected {
+  background: #fff;
 }
 
 .food {

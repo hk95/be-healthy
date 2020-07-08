@@ -3,9 +3,19 @@
 <mat-dialog-actions>
   <button mat-stroked-button mat-dialog-close>キャンセル</button>
   <button
+    *ngIf="recipeId"
     mat-raised-button
     color="warn"
     (click)="deleteRecipe()"
+    mat-dialog-close
+  >
+    削除
+  </button>
+  <button
+    *ngIf="setId"
+    mat-raised-button
+    color="warn"
+    (click)="deleteSet()"
     mat-dialog-close
   >
     削除
