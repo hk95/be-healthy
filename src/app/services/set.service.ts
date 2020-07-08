@@ -7,6 +7,7 @@ import { Set, FoodInArray } from '../interfaces/set';
 import { combineLatest, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,8 @@ export class SetService {
     private db: AngularFirestore,
     private router: Router,
     private snackBar: MatSnackBar,
-    private fns: AngularFireFunctions
+    private fns: AngularFireFunctions,
+    private location: Location
   ) {}
 
   getSets(userId: string): Observable<Set[]> {
@@ -57,7 +59,9 @@ export class SetService {
             .valueChanges()
             .pipe(
               map((foodsArray: FoodInArray[]) => {
-                return Object.assign(set, { foodsArray });
+                if (foodsArray.length > 0) {
+                  return Object.assign(set, { foodsArray });
+                }
               })
             );
           return setWithArray$;
@@ -88,23 +92,23 @@ export class SetService {
       .then(() => {
         if (set.foodsArray.length) {
           set.foodsArray.forEach((food) => {
-            const foodArrayId = this.db.createId();
+            const foodsArrayId = this.db.createId();
             this.db
               .doc(
-                `users/${set.userId}/sets/${set.setId}/foodsArray/${foodArrayId}`
+                `users/${set.userId}/sets/${set.setId}/foodsArray/${foodsArrayId}`
               )
               .set({
-                food,
-                setId: set.setId,
+                ...food,
+                setId: foodsArrayId,
               });
           });
         }
       })
       .then(() => {
-        this.snackBar.open('マイセットを追加しました', null, {
+        this.snackBar.open('マイセットを保存しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/menu');
+        this.location.back();
       });
   }
   updateMeal(userId: string, setId: string, meal: string, bool: boolean) {
@@ -115,6 +119,11 @@ export class SetService {
     } else {
       this.db.doc(`users/${userId}/sets/${setId}`).update({ dinner: bool });
     }
+  }
+  deleteFoodOfSet(userId: string, setId: string, foodsArrayId: string) {
+    return this.db
+      .doc(`users/${userId}/sets/${setId}/foodsArray/${foodsArrayId}`)
+      .delete();
   }
   async deleteSet(userId: string, setId: string): Promise<void> {
     const callable = this.fns.httpsCallable('deleteSet');
