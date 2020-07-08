@@ -44,6 +44,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'set-detail',
+    loadChildren: () =>
+      import('./menu/set/set-detail/set-detail.module').then(
+        (m) => m.SetDetailModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'more',
     component: OtherShellComponent,
     children: [

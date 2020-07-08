@@ -1,5 +1,10 @@
 <div class="grid">
-  <div class="card" *ngFor="let set of sets; index as i">
+  <div
+    class="card"
+    *ngFor="let set of sets; index as i"
+    routerLink="/set-detail"
+    [queryParams]="{ id: set.setId }"
+  >
     <div class="card__body">
       <div class="card__content">
         <div class="card__row">
@@ -25,7 +30,10 @@
           *ngIf="mealOfAllSets[i].breakfast"
           mat-flat-button
           color="primary"
-          (click)="updateMeal(set.setId, 'breakfast', false, i)"
+          (click)="
+            updateMeal(set.setId, 'breakfast', false, i);
+            $event.stopPropagation()
+          "
         >
           朝食
         </button>
@@ -33,14 +41,19 @@
           *ngIf="!mealOfAllSets[i].breakfast"
           mat-stroked-button
           color="primary"
-          (click)="updateMeal(set.setId, 'breakfast', true, i)"
+          (click)="
+            updateMeal(set.setId, 'breakfast', true, i);
+            $event.stopPropagation()
+          "
         >
           朝食
         </button>
         <button
           *ngIf="mealOfAllSets[i].lunch"
           mat-flat-button
-          (click)="updateMeal(set.setId, 'lunch', false, i)"
+          (click)="
+            updateMeal(set.setId, 'lunch', false, i); $event.stopPropagation()
+          "
           color="primary"
         >
           昼食
@@ -49,7 +62,9 @@
           *ngIf="!mealOfAllSets[i].lunch"
           mat-stroked-button
           color="primary"
-          (click)="updateMeal(set.setId, 'lunch', true, i)"
+          (click)="
+            updateMeal(set.setId, 'lunch', true, i); $event.stopPropagation()
+          "
         >
           昼食
         </button>
@@ -57,7 +72,9 @@
           *ngIf="mealOfAllSets[i].dinner"
           mat-flat-button
           color="primary"
-          (click)="updateMeal(set.setId, 'dinner', false, i)"
+          (click)="
+            updateMeal(set.setId, 'dinner', false, i); $event.stopPropagation()
+          "
         >
           夕食
         </button>
@@ -65,7 +82,9 @@
           *ngIf="!mealOfAllSets[i].dinner"
           mat-stroked-button
           color="primary"
-          (click)="updateMeal(set.setId, 'dinner', true, i)"
+          (click)="
+            updateMeal(set.setId, 'dinner', true, i); $event.stopPropagation()
+          "
         >
           夕食
         </button>
