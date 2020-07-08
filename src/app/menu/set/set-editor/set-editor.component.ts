@@ -212,29 +212,23 @@ export class SetEditorComponent implements OnInit {
 
   ngOnInit(): void {}
   changeBreakfast() {
-    if (!this.form.value.breakfast) {
-      this.form.value.breakfast = true;
+    if (!this.breakfast) {
       this.breakfast = true;
     } else {
-      this.form.value.breakfast = false;
       this.breakfast = false;
     }
   }
   changeLunch() {
-    if (!this.form.value.lunch) {
-      this.form.value.lunch = true;
+    if (!this.lunch) {
       this.lunch = true;
     } else {
-      this.form.value.lunch = false;
       this.lunch = false;
     }
   }
   changeDinner() {
-    if (!this.form.value.dinner) {
-      this.form.value.dinner = true;
+    if (!this.dinner) {
       this.dinner = true;
     } else {
-      this.form.value.dinner = false;
       this.dinner = false;
     }
   }
@@ -245,9 +239,9 @@ export class SetEditorComponent implements OnInit {
       setId: this.query,
       userId: this.userId,
       setTitle: formData.setTitle,
-      breakfast: formData.breakfast,
-      lunch: formData.lunch,
-      dinner: formData.dinner,
+      breakfast: this.breakfast,
+      lunch: this.lunch,
+      dinner: this.dinner,
       foodsArray: formData.foodsArray,
       setCal: formData.setCal,
       setProtein: formData.setProtein,
