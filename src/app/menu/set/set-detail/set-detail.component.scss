@@ -3,7 +3,7 @@
   width: 95%;
   position: fixed;
   top: 8px;
-  z-index: 5px;
+  z-index: 5;
   display: flex;
   justify-content: space-between;
   padding: 8px;
@@ -37,18 +37,18 @@ h3 {
   background: #ffff;
   display: flex;
   justify-content: space-between;
-  &--head {
+  &__head {
     margin-top: 80px;
   }
   &--buttons {
     background: #fafafa;
     border: none;
+    .not-seletected {
+      background: #fff;
+    }
   }
   p {
     margin: 0;
-  }
-  &__point {
-    height: 120px;
   }
 }
 
