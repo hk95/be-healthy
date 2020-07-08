@@ -1,6 +1,4 @@
-import { User } from './user';
-import { DailyInfoService } from '../services/daily-info.service';
-import { OriginalFood } from './original-food';
+import { Food } from './food';
 
 export interface DailyInfo {
   dailyId: string;
@@ -21,5 +19,5 @@ export interface Breakfast {
 }
 
 export interface BreakfastWithMeal extends Breakfast {
-  meal: OriginalFood;
+  meal: Food;
 }
