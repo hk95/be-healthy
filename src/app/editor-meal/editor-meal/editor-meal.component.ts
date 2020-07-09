@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 import { Location } from '@angular/common';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
@@ -15,6 +15,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   selector: 'app-editor-meal',
   templateUrl: './editor-meal.component.html',
   styleUrls: ['./editor-meal.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class EditorMealComponent implements OnInit {
   @Input() Food: Food;

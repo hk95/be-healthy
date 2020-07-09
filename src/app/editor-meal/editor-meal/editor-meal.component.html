@@ -1,11 +1,16 @@
-<button (click)="back()">
-  今日の一覧へ
-</button>
-
-<div class="container">
-  <div class="tab">
-    <mat-tab-group [disablePagination]="true">
-      <mat-tab class="tab__list" label="マイセット">
+<div class="tab">
+  <mat-tab-group
+    mat-align-tabs="center"
+    animationDuration="0ms"
+    [disablePagination]="true"
+  >
+    <mat-tab class="mat-tab-label" label="マイメニュー">
+      <div class="container">
+        <input class="search" type="text" />
+      </div>
+    </mat-tab>
+    <mat-tab class="mat-tab-label" label="お気に入り">
+      <div class="container">
         <div *ngFor="let favFood of favFoods">
           <div class="food">
             <button
@@ -28,6 +33,7 @@
 
             <input
               class="food__amount-form"
+              text="number"
               max="100"
               min="0"
               step="0.1"
@@ -52,16 +58,13 @@
             </button>
           </div>
         </div>
-      </mat-tab>
-
-      <mat-tab class="tab__list" label="検索">
-        <app-food-search></app-food-search>
-      </mat-tab>
-      <mat-tab class="tab__list" label="履歴">
-        <input class="search" type="text" />
-        rireki</mat-tab
-      >
-      <mat-tab class="tab__list" label="選択項目">
+      </div>
+    </mat-tab>
+    <mat-tab class="mat-tab-label" label="検索">
+      <div class="container"><app-food-search></app-food-search></div>
+    </mat-tab>
+    <mat-tab class="mat-tab-label" label="選択項目">
+      <div class="container">
         <p *ngIf="totalCal$ | async as totalCal">
           朝食摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
         </p>
@@ -90,7 +93,7 @@
             </div>
           </div>
         </div>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
