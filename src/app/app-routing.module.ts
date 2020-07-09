@@ -35,10 +35,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'set-create',
+    path: 'set-editor',
     loadChildren: () =>
-      import('./menu/set/set-create/set-create.module').then(
-        (m) => m.SetCreateModule
+      import('./menu/set/set-editor/set-editor.module').then(
+        (m) => m.SetEditorModule
       ),
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],

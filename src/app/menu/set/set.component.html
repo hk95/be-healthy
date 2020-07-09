@@ -16,7 +16,7 @@
         <div class="card__row">
           <ul class="card__foods">
             <li *ngFor="let food of set.foodsArray | slice: 0:5; index as j">
-              <p>{{ food.food.foodName }}</p>
+              <p>{{ food.foodName }}</p>
               <span *ngIf="j === 4 ? true : false"
                 ><mat-icon>more_horiz</mat-icon></span
               >

@@ -63,6 +63,9 @@ p {
     overflow: auto;
   }
 }
+.not-seletected {
+  background: #fff;
+}
 .food {
   display: flex;
   background: #fff;
@@ -200,5 +203,6 @@ p {
   }
   &__amount {
     text-align: right;
+    font-size: 15px;
   }
 }

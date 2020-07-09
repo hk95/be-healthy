@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RecipeWithAuthor } from 'src/app/interfaces/added-food';
+import { RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 

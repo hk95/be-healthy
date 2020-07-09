@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { User } from '../interfaces/user';
-import { OriginalFood } from '../interfaces/original-food';
+import { Food } from '../interfaces/food';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, of, combineLatest } from 'rxjs';
@@ -153,16 +152,14 @@ export class DailyInfoService {
 
             return combineLatest(
               foodIds.map((foodId) => {
-                return this.db
-                  .doc<OriginalFood>(`foods/${foodId}`)
-                  .valueChanges();
+                return this.db.doc<Food>(`foods/${foodId}`).valueChanges();
               })
             );
           } else {
             return of([]);
           }
         }),
-        map((foods: OriginalFood[]) => {
+        map((foods: Food[]) => {
           return meal.map((breakfast) => {
             const result: BreakfastWithMeal = {
               ...breakfast,

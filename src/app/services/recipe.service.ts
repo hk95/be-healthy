@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { AddedFood } from '../interfaces/added-food';
+import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { RecipeWithAuthor } from '../interfaces/added-food';
+import { RecipeWithAuthor } from '../interfaces/recipe';
 import { User } from '../interfaces/user';
 import { UserService } from './user.service';
 import { Location } from '@angular/common';
@@ -16,7 +16,7 @@ import { Location } from '@angular/common';
   providedIn: 'root',
 })
 export class RecipeService {
-  allRecipes$: Observable<AddedFood[]>;
+  allRecipes$: Observable<Recipe[]>;
   constructor(
     private db: AngularFirestore,
     public storage: AngularFireStorage,
@@ -27,22 +27,20 @@ export class RecipeService {
   ) {}
   getAllRecipes() {
     this.allRecipes$ = this.db
-      .collection<AddedFood>(`recipes`, (ref) =>
-        ref.orderBy('updatedAt', 'desc')
-      )
+      .collection<Recipe>(`recipes`, (ref) => ref.orderBy('updatedAt', 'desc'))
       .valueChanges();
   }
   getMyRecipes(userId: string): Observable<RecipeWithAuthor[]> {
     const myRecipes$ = this.db
-      .collection<AddedFood>(`recipes`, (ref) =>
+      .collection<Recipe>(`recipes`, (ref) =>
         ref.where('authorId', '==', userId).orderBy('updatedAt', 'desc')
       )
       .valueChanges();
 
     return myRecipes$.pipe(
-      switchMap((myRecipes: AddedFood[]) => {
+      switchMap((myRecipes: Recipe[]) => {
         const authorIds: string[] = [
-          ...new Set(myRecipes.map((recipe: AddedFood) => recipe.authorId)),
+          ...new Set(myRecipes.map((recipe: Recipe) => recipe.authorId)),
         ];
 
         const users$: Observable<User[]> = combineLatest(
@@ -53,7 +51,7 @@ export class RecipeService {
         return combineLatest([of(myRecipes), users$]);
       }),
       map(([recipes, users]) => {
-        return recipes.map((recipe: AddedFood) => {
+        return recipes.map((recipe: Recipe) => {
           return {
             ...recipe,
             author: users.find((user) => user.userId === recipe.authorId),
@@ -63,22 +61,20 @@ export class RecipeService {
     );
   }
   getPublicRecipes(userId: string): Observable<RecipeWithAuthor[]> {
-    let publicExcludeMyRecipes: AddedFood[] = [];
+    let publicExcludeMyRecipes: Recipe[] = [];
     return this.db
-      .collection<AddedFood>(`recipes`, (ref) =>
+      .collection<Recipe>(`recipes`, (ref) =>
         ref.where('public', '==', true).orderBy('updatedAt', 'desc')
       )
       .valueChanges()
       .pipe(
-        switchMap((publicRecipes: AddedFood[]) => {
+        switchMap((publicRecipes: Recipe[]) => {
           publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
             return recipe.authorId !== userId;
           });
 
           const authorIds: string[] = [
-            ...new Set(
-              publicRecipes.map((recipe: AddedFood) => recipe.authorId)
-            ),
+            ...new Set(publicRecipes.map((recipe: Recipe) => recipe.authorId)),
           ];
 
           const users$: Observable<User[]> = combineLatest(
@@ -89,7 +85,7 @@ export class RecipeService {
           return combineLatest([of(publicExcludeMyRecipes), users$]);
         }),
         map(([recipes, users]) => {
-          return recipes.map((recipe: AddedFood) => {
+          return recipes.map((recipe: Recipe) => {
             return {
               ...recipe,
               author: users.find((user) => user.userId === recipe.authorId),
@@ -99,8 +95,8 @@ export class RecipeService {
       );
   }
 
-  getRecipeByRecipeId(recipeId: string): Observable<AddedFood> {
-    return this.db.doc<AddedFood>(`recipes/${recipeId}`).valueChanges();
+  getRecipeByRecipeId(recipeId: string): Observable<Recipe> {
+    return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
   tentativeCreateRecipe(): Promise<void> {
@@ -128,11 +124,11 @@ export class RecipeService {
   }
 
   createRecipe(
-    recipe: Omit<AddedFood, 'processes' | 'updatedAt'>,
+    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
     processes
   ): Promise<void> {
     return this.db
-      .doc<AddedFood>(`recipes/${recipe.recipeId}`)
+      .doc<Recipe>(`recipes/${recipe.recipeId}`)
       .set(
         {
           ...recipe,
@@ -151,11 +147,11 @@ export class RecipeService {
       });
   }
   updateRecipe(
-    recipe: Omit<AddedFood, 'processes' | 'updatedAt'>,
+    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
     processes
   ): Promise<void> {
     return this.db
-      .doc<AddedFood>(`recipes/${recipe.recipeId}`)
+      .doc<Recipe>(`recipes/${recipe.recipeId}`)
       .update({ ...recipe, processes, updatedAt: firestore.Timestamp.now() })
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
@@ -166,7 +162,7 @@ export class RecipeService {
   }
   deleteRecipe(recipeId: string): Promise<void> {
     return this.db
-      .doc<AddedFood>(`recipes/${recipeId}`)
+      .doc<Recipe>(`recipes/${recipeId}`)
       .delete()
       .then(() => {
         this.snackBar.open('レシピを削除しました', null, {

@@ -1,7 +1,7 @@
 import { firestore } from 'firebase';
 import { User } from './user';
 
-export interface AddedFood {
+export interface Recipe {
   recipeId: string;
   recipeTitle: string;
   recipeThumbnailURL?: string;
@@ -19,6 +19,6 @@ export interface AddedFood {
   updatedAt: firestore.Timestamp;
 }
 
-export interface RecipeWithAuthor extends AddedFood {
+export interface RecipeWithAuthor extends Recipe {
   author: User;
 }

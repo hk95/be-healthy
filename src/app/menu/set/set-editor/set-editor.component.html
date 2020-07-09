@@ -4,12 +4,15 @@
       <button type="button" mat-icon-button (click)="backToMenu()">
         <mat-icon>clear</mat-icon>
       </button>
-      <h1>マイセット作成画面</h1>
-      <button mat-raised-button color="primary" [disabled]="form.invalid">
+      <h1>マイセット{{ title || '作成' }}画面</h1>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="preFoods.length === 0 || titleControle.hasError('required')"
+      >
         保存
       </button>
     </div>
-
     <div class="title">
       <h2>
         セットタイトル<span
@@ -38,13 +41,14 @@
         required
       />
     </div>
+
     <div class="meal">
       <button
         type="button"
         mat-stroked-button
         color="primary"
-        style="background: #ffff;"
-        *ngIf="!form.value.meal.breakfast"
+        class="not-seletected"
+        *ngIf="!breakfast"
         (click)="changeBreakfast()"
       >
         朝食
@@ -53,7 +57,7 @@
         type="button"
         mat-flat-button
         color="primary"
-        *ngIf="form.value.meal.breakfast"
+        *ngIf="breakfast"
         (click)="changeBreakfast()"
       >
         朝食
@@ -62,8 +66,8 @@
         type="button"
         mat-stroked-button
         color="primary"
-        style="background: #ffff;"
-        *ngIf="!form.value.meal.lunch"
+        class="not-seletected"
+        *ngIf="!lunch"
         (click)="changeLunch()"
       >
         昼食
@@ -72,7 +76,7 @@
         type="button"
         mat-flat-button
         color="primary"
-        *ngIf="form.value.meal.lunch"
+        *ngIf="lunch"
         (click)="changeLunch()"
       >
         昼食
@@ -81,8 +85,8 @@
         type="button"
         mat-stroked-button
         color="primary"
-        style="background: #ffff;"
-        *ngIf="!form.value.meal.dinner"
+        class="not-seletected"
+        *ngIf="!dinner"
         (click)="changeDinner()"
       >
         夕食
@@ -91,7 +95,7 @@
         type="button"
         mat-flat-button
         color="primary"
-        *ngIf="form.value.meal.dinner"
+        *ngIf="dinner"
         (click)="changeDinner()"
       >
         夕食
@@ -116,7 +120,7 @@
                     <div class="food__name">
                       <p class="food__name--with-amount">{{ food.foodName }}</p>
                       <span class="food__amountper">
-                        {{ food.calPerAmount }}kcal/{{ food.unit }}
+                        {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
                       </span>
                     </div>
                     <div class="food__row">
@@ -192,7 +196,7 @@
       </mat-tab-group>
     </div>
 
-    <h2 *ngIf="foodsArray.length > 0; else noFood">選択中</h2>
+    <h2 *ngIf="preFoods.length > 0; else noFood">選択中</h2>
     <ng-template #noFood><h2>*食べ物を選択してください</h2></ng-template>
     <div class="foods foods--choice">
       <div class="food" *ngFor="let food of preFoods; let i = index">
@@ -201,7 +205,7 @@
             {{ food.foodName || food.recipeTitle }}
           </p>
           <span class="food__amountper">
-            {{ food.calPerAmount || food.recipeCal }}kcal/{{
+            {{ food.foodCalPerAmount || food.recipeCal }}kcal/{{
               food.unit || 'セット'
             }}
           </span>

@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SetCreateComponent } from './set-create.component';
-import { RecipeFormGuard } from 'src/app/guards/recipe-form.guard';
+
+import { FormGuard } from 'src/app/guards/form.guard';
+import { SetEditorComponent } from './set-editor.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: SetCreateComponent,
-    canDeactivate: [RecipeFormGuard],
+    component: SetEditorComponent,
+    canDeactivate: [FormGuard],
   },
 ];
 
@@ -16,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SetCreateRoutingModule {}
+export class SetEditorRoutingModule {}

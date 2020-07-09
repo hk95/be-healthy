@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SetService } from 'src/app/services/set.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Observable } from 'rxjs';
 import { Set, FoodInArray, Meal } from 'src/app/interfaces/set';
 import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';

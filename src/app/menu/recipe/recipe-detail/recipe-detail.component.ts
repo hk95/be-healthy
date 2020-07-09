@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { Observable } from 'rxjs';
-import { AddedFood } from 'src/app/interfaces/added-food';
+import { Recipe } from 'src/app/interfaces/recipe';
 import { AuthService } from 'src/app/services/auth.service';
 import {
   MatDialog,
@@ -17,7 +17,7 @@ import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dial
   styleUrls: ['./recipe-detail.component.scss'],
 })
 export class RecipeDetailComponent implements OnInit {
-  recipe$: Observable<AddedFood>;
+  recipe$: Observable<Recipe>;
   myRecipe = false;
   query: string;
   userId = this.authService.uid;

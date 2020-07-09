@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SetCreateRoutingModule } from './set-create-routing.module';
-import { SetCreateComponent } from './set-create.component';
+import { SetEditorRoutingModule } from './set-editor-routing.module';
+import { SetEditorComponent } from './set-editor.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,10 +12,10 @@ import { NgAisModule } from 'angular-instantsearch';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [SetCreateComponent],
+  declarations: [SetEditorComponent],
   imports: [
     CommonModule,
-    SetCreateRoutingModule,
+    SetEditorRoutingModule,
     MatButtonModule,
     MatIconModule,
     FormsModule,
@@ -25,4 +25,4 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule,
   ],
 })
-export class SetCreateModule {}
+export class SetEditorModule {}

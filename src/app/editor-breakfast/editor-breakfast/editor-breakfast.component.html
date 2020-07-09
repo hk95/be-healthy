@@ -22,7 +22,7 @@
                 {{ favFood.foodName }}
               </p>
               <span class="food__amountper">
-                {{ favFood.calPerAmount }}kcal/{{ favFood.unit }}
+                {{ favFood.foodCalPerAmount }}kcal/{{ favFood.unit }}
               </span>
             </div>
 
@@ -38,7 +38,8 @@
             <p class="spacer"></p>
             <p class="food__cal">
               {{
-                favFood.calPerAmount * amout[favFood.foodId] | number: '1.1-1'
+                favFood.foodCalPerAmount * amout[favFood.foodId]
+                  | number: '1.1-1'
               }}kcal
             </p>
 
@@ -75,7 +76,7 @@
               </p>
               <p class="food__cal">
                 {{
-                  selectedFood.amount * selectedFood.meal.calPerAmount
+                  selectedFood.amount * selectedFood.meal.foodCalPerAmount
                     | number: '1.1-1'
                 }}kcal
               </p>

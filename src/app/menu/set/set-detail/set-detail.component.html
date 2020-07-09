@@ -13,6 +13,8 @@
     mat-icon-button
     mat-raised-button
     color="primary"
+    routerLink="/set-editor"
+    [queryParams]="{ id: setId }"
   >
     <mat-icon>edit</mat-icon>
   </button>
@@ -91,8 +93,8 @@
   <h2 class="content__name">食べ物一覧</h2>
   <div class="food">
     <div class="food__detail" *ngFor="let food of set.foodsArray">
-      <h3 class="food__name">{{ food.food.foodName }}</h3>
-      <p>{{ food.food.amount }}g</p>
+      <h3 class="food__name">{{ food.foodName }}</h3>
+      <p>{{ food.amount }}g</p>
     </div>
   </div>
 
