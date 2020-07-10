@@ -80,7 +80,7 @@ export class SetEditorComponent implements OnInit {
         this.myRecipes = recipes;
       });
     this.setService
-      .getSetById(this.userId, this.query)
+      .getSetByIdWithFoods(this.userId, this.query)
       .pipe(take(1))
       .subscribe((set) => {
         if (set) {
