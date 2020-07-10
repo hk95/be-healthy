@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Food } from '../interfaces/food';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, of, combineLatest } from 'rxjs';
 
-import { map, take, tap, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import {
   DailyInfo,
-  Breakfast,
-  BreakfastWithMeal,
+  DailyMeal,
+  DailyMealWithSet,
 } from '../interfaces/daily-info';
+import { Set } from '../interfaces/set';
+import { SetService } from './set.service';
+import { FoodService } from './food.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +21,9 @@ export class DailyInfoService {
   constructor(
     private db: AngularFirestore,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private setService: SetService,
+    private foodService: FoodService
   ) {}
 
   getDailyInfos(authorId: string): Observable<DailyInfo[]> {
@@ -100,25 +104,32 @@ export class DailyInfoService {
         });
       });
   }
-  addDailyInfoBreakfast(
-    dailyInfo: Omit<
-      DailyInfo,
-      | 'dailyId'
-      | 'currentWeight'
-      | 'currentFat'
-      | 'lunch'
-      | 'dinner'
-      | 'dailyMemo'
-    >
+  async addFood(
+    mealContet: Omit<DailyMeal, 'mealId'>,
+    userId: string,
+    date: string,
+    whitchMeal: string
   ): Promise<void> {
-    dailyInfo.breakfast.breakfastId = this.db.createId();
+    const mealId = this.db.createId();
     return this.db
-      .doc(
-        `users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}/breakfast/${dailyInfo.breakfast.breakfastId}`
-      )
-      .set(dailyInfo.breakfast, {
-        merge: true,
-      })
+      .doc(`users/${userId}/dailyInfos/${date}/${whitchMeal}(food)/${mealId}`)
+      .set({ ...mealContet, mealId })
+      .then(() => {
+        this.snackBar.open('追加しました', null, {
+          duration: 2000,
+        });
+      });
+  }
+  async addSet(
+    mealContet: Omit<DailyMeal, 'mealId'>,
+    userId: string,
+    date: string,
+    whitchMeal: string
+  ): Promise<void> {
+    const mealId = this.db.createId();
+    return this.db
+      .doc(`users/${userId}/dailyInfos/${date}/${whitchMeal}(set)/${mealId}`)
+      .set({ ...mealContet, mealId })
       .then(() => {
         this.snackBar.open('追加しました', null, {
           duration: 2000,
@@ -126,57 +137,67 @@ export class DailyInfoService {
       });
   }
 
-  getDailyInfoBreakfast(
+  getSelectedFoods(
     userId: string,
-    date: string
-  ): Observable<BreakfastWithMeal[]> {
-    let meal: Breakfast[];
-    console.log(date);
-
+    date: string,
+    whitchMeal: string
+  ): Observable<DailyMeal[]> {
     return this.db
-      .collection<Breakfast>(`users/${userId}/dailyInfos/${date}/breakfast`)
+      .collection<DailyMeal>(
+        `users/${userId}/dailyInfos/${date}/${whitchMeal}(food)`
+      )
+      .valueChanges();
+  }
+  getSelectedSets(
+    userId: string,
+    date: string,
+    whitchMeal: string
+  ): Observable<DailyMealWithSet[]> {
+    return this.db
+      .collection<DailyMeal>(
+        `users/${userId}/dailyInfos/${date}/${whitchMeal}(set)`
+      )
       .valueChanges()
       .pipe(
-        switchMap((mealdocs: Breakfast[]) => {
-          meal = mealdocs;
+        switchMap((meals: DailyMeal[]) => {
+          const setIds: string[] = [
+            ...new Set(
+              meals
+                .filter((meal: DailyMeal) => {
+                  return meal.setId !== undefined;
+                })
+                .map((set) => set.setId)
+            ),
+          ];
+          const sets$: Observable<Set[]> = combineLatest(
+            setIds.map((setid: string) =>
+              this.setService.getSetById(userId, setid)
+            )
+          );
 
-          if (meal.length) {
-            const foodIds: string[] = meal
-              .filter((breakfast, index, self) => {
-                return (
-                  self.findIndex((item) => breakfast.foodId === item.foodId) ===
-                  index
-                );
-              })
-              .map((breakfast) => breakfast.foodId);
-
-            return combineLatest(
-              foodIds.map((foodId) => {
-                return this.db.doc<Food>(`foods/${foodId}`).valueChanges();
-              })
-            );
-          } else {
-            return of([]);
-          }
+          return combineLatest([of(meals), sets$]);
         }),
-        map((foods: Food[]) => {
-          return meal.map((breakfast) => {
-            const result: BreakfastWithMeal = {
-              ...breakfast,
-              meal: foods.find((food) => food.foodId === breakfast.foodId),
+        map(([meals, sets]) => {
+          return meals.map((meal) => {
+            return {
+              ...meal,
+              set: sets.find((set) => set.setId === meal.setId),
             };
-            return result;
           });
         })
       );
   }
-  deleteDailyInfoFood(
+  deleteMeal(
     userId: string,
     date: string,
-    breakfastId: string
+    mealId: string,
+    whitchMeal: string,
+    foodOrSet: string
   ): Promise<void> {
     return this.db
-      .doc(`users/${userId}/dailyInfos/${date}/breakfast/${breakfastId}`)
+      .doc(
+        `users/${userId}/dailyInfos/${date}/${whitchMeal}(${foodOrSet})/${mealId}`
+      )
       .delete();
   }
 }
