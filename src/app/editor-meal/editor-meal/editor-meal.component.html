@@ -4,9 +4,50 @@
     animationDuration="0ms"
     [disablePagination]="true"
   >
-    <mat-tab class="mat-tab-label" label="マイメニュー">
+    <mat-tab class="mat-tab-label" label="マイセット">
       <div class="container">
-        <input class="search" type="text" />
+        <div *ngFor="let set of sets">
+          <div class="food">
+            <button
+              class="food__fav"
+              mat-icon-button
+              color="primary"
+              (click)="outSet(set.setId)"
+            >
+              <mat-icon>bookmark</mat-icon>
+            </button>
+
+            <div class="food__name">
+              <p class="food__name--with-amount">
+                {{ set.setTitle }}
+              </p>
+              <span class="food__amountper"> {{ set.setCal }}kcal/セット </span>
+            </div>
+
+            <input
+              class="food__amount-form"
+              text="number"
+              max="100"
+              min="0"
+              step="0.1"
+              [(ngModel)]="amout[set.setId]"
+              type="number"
+            />
+            <span>セット</span>
+            <p class="spacer"></p>
+            <p class="food__cal">
+              {{ set.setCal * amout[set.setId] | number: '1.1-1' }}kcal
+            </p>
+
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="addSet(amout[set.setId], set.setId)"
+            >
+              <mat-icon>add_box</mat-icon>
+            </button>
+          </div>
+        </div>
       </div>
     </mat-tab>
     <mat-tab class="mat-tab-label" label="お気に入り">
@@ -52,7 +93,7 @@
             <button
               mat-icon-button
               color="primary"
-              (click)="addDailyInfoFood(amout[favFood.foodId], favFood.foodId)"
+              (click)="addFood(amout[favFood.foodId], favFood)"
             >
               <mat-icon>add_box</mat-icon>
             </button>
@@ -65,32 +106,54 @@
     </mat-tab>
     <mat-tab class="mat-tab-label" label="選択項目">
       <div class="container">
-        <p *ngIf="totalCal$ | async as totalCal">
+        <!-- <p *ngIf="totalCal$ | async as totalCal">
           朝食摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
-        </p>
-        <div *ngIf="selectedFoods$ | async as selectedFoods">
-          <div *ngFor="let selectedFood of selectedFoods">
-            <p class="border"></p>
-            <div class="food">
-              <p class="food__name">{{ selectedFood.meal.foodName }}</p>
-              <p class="spacer"></p>
-              <p class="food__amount">
-                （{{ selectedFood.amount }}{{ selectedFood.meal.unit }}）
-              </p>
-              <p class="food__cal">
-                {{
-                  selectedFood.amount * selectedFood.meal.foodCalPerAmount
-                    | number: '1.1-1'
-                }}kcal
-              </p>
-              <button
-                mat-icon-button
-                color="warn"
-                (click)="deleteDailyInfoFood(selectedFood.breakfastId)"
-              >
-                <mat-icon>clear</mat-icon>
-              </button>
-            </div>
+        </p> -->
+
+        <div *ngFor="let set of selectedSets$ | async">
+          <p class="border"></p>
+          <div class="food">
+            <p class="food__name">
+              {{ set.set.setTitle }}
+            </p>
+            <p class="spacer"></p>
+            <p class="food__amount">({{ set.set.setTitle }})</p>
+            <p class="food__cal">
+              {{ set.amount * set.set.setCal | number: '1.1-1' }}kcal
+            </p>
+
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteMeal(set.mealId, 'set')"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div *ngFor="let food of selectedFoods$ | async">
+          <p class="border"></p>
+          <div class="food">
+            <p class="food__name">
+              {{ food.food.foodName }}
+            </p>
+            <p class="spacer"></p>
+            <p class="food__amount">
+              （{{ food.amount }}{{ food.food.unit }}）
+            </p>
+            <p class="food__cal">
+              {{ food.amount * food.food.foodCalPerAmount | number: '1.1-1' }}
+              kcal
+            </p>
+
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteMeal(food.mealId, 'food')"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
           </div>
         </div>
       </div>
