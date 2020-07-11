@@ -5,6 +5,8 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute } from '@angular/router';
 import { EditorMealComponent } from '../editor-meal/editor-meal.component';
 import { SearchService } from 'src/app/services/search.service';
+import { Food } from 'src/app/interfaces/food';
+import { DailyMeal } from 'src/app/interfaces/daily-info';
 
 @Component({
   selector: 'app-food-search',
@@ -34,7 +36,6 @@ export class FoodSearchComponent implements OnInit {
     this.editorBreakfastComponent.isLikedlist.push(foodId);
     this.foodService.getFoodByFoodId(foodId).subscribe((food) => {
       const favFood = food;
-      console.log(favFood);
       this.editorBreakfastComponent.favFoods.push(favFood);
     });
   }
@@ -46,16 +47,14 @@ export class FoodSearchComponent implements OnInit {
       this.editorBreakfastComponent.favFoods.splice(index, 1);
     }
   }
-  addDailyInfoFood(amount: number, foodId: string) {
-    this.dailyInfoService.addDailyInfoBreakfast({
-      date: this.date,
-      breakfast: {
-        breakfastId: '',
-        amount,
-        foodId,
-      },
-      authorId: this.authService.uid,
-    });
+  addFood(amount: number, food: Food) {
+    const meal: DailyMeal = { mealId: '', food, amount };
+    this.dailyInfoService.addMeal(
+      meal,
+      this.authService.uid,
+      this.date,
+      'breakfast'
+    );
   }
 
   ngOnInit(): void {}
