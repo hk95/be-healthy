@@ -9,7 +9,7 @@
         <div *ngFor="let set of sets">
           <div class="food">
             <button
-              class="food__fav"
+              class="food__book"
               mat-icon-button
               color="primary"
               (click)="outSet(set.setId)"
@@ -33,7 +33,7 @@
               [(ngModel)]="amout[set.setId]"
               type="number"
             />
-            <span>セット</span>
+            <span class="set-unit">セット</span>
             <p class="spacer"></p>
             <p class="food__cal">
               {{ set.setCal * amout[set.setId] | number: '1.1-1' }}kcal
@@ -104,53 +104,39 @@
     <mat-tab class="mat-tab-label" label="検索">
       <div class="container"><app-food-search></app-food-search></div>
     </mat-tab>
-    <mat-tab class="mat-tab-label" label="選択項目">
+    <mat-tab
+      class="mat-tab-label"
+      *ngIf="totalCal$ | async as totalCal"
+      label="選択項目"
+    >
       <div class="container">
-        <!-- <p *ngIf="totalCal$ | async as totalCal">
+        <p *ngIf="totalCal$ | async as totalCal; noSelected">
           朝食摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
-        </p> -->
+        </p>
 
-        <div *ngFor="let set of selectedSets$ | async">
+        <div *ngFor="let foodOrSet of selectedFoodOrSets$ | async">
           <p class="border"></p>
           <div class="food">
             <p class="food__name">
-              {{ set.set.setTitle }}
-            </p>
-            <p class="spacer"></p>
-            <p class="food__amount">({{ set.set.setTitle }})</p>
-            <p class="food__cal">
-              {{ set.amount * set.set.setCal | number: '1.1-1' }}kcal
-            </p>
-
-            <button
-              mat-icon-button
-              color="warn"
-              (click)="deleteMeal(set.mealId, 'set')"
-            >
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
-        </div>
-
-        <div *ngFor="let food of selectedFoods$ | async">
-          <p class="border"></p>
-          <div class="food">
-            <p class="food__name">
-              {{ food.food.foodName }}
+              {{ foodOrSet.food.foodName || foodOrSet.set.setTitle }}
             </p>
             <p class="spacer"></p>
             <p class="food__amount">
-              （{{ food.amount }}{{ food.food.unit }}）
+              （{{ foodOrSet.amount }}{{ foodOrSet.food.unit || 'セット' }}）
             </p>
             <p class="food__cal">
-              {{ food.amount * food.food.foodCalPerAmount | number: '1.1-1' }}
+              {{
+                foodOrSet.amount *
+                  (foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal)
+                  | number: '1.1-1'
+              }}
               kcal
             </p>
 
             <button
               mat-icon-button
               color="warn"
-              (click)="deleteMeal(food.mealId, 'food')"
+              (click)="deleteMeal(foodOrSet.mealId)"
             >
               <mat-icon>clear</mat-icon>
             </button>

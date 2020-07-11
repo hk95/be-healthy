@@ -4,11 +4,11 @@ import { Location } from '@angular/common';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { Food } from 'src/app/interfaces/food';
 import { FoodService } from 'src/app/services/food.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { DailyMealWithSet, DailyMeal } from 'src/app/interfaces/daily-info';
-import { map, take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { SetService } from 'src/app/services/set.service';
 import { Set } from 'src/app/interfaces/set';
@@ -23,8 +23,9 @@ export class EditorMealComponent implements OnInit {
   @Input() Food: Food;
   amout = {};
   date: string;
-
-  favFoods$: Observable<Food[]>;
+  favFoods$: Observable<Food[]> = this.foodService.getFavFoods(
+    this.authService.uid
+  );
   favFoods: Food[];
   isLikedlist = [];
   sets$: Observable<Set[]> = this.setService.getSetsOfMeal(
@@ -33,9 +34,11 @@ export class EditorMealComponent implements OnInit {
   );
   sets: Set[];
   setList = [];
-  selectedFoods$: Observable<DailyMeal[]>;
-  selectedSets$: Observable<DailyMealWithSet[]>;
+
+  selectedFoodOrSets$: Observable<DailyMealWithSet[]>;
+
   totalCal$: Observable<number>;
+
   constructor(
     private location: Location,
     private dailyInfoService: DailyInfoService,
@@ -51,7 +54,6 @@ export class EditorMealComponent implements OnInit {
     });
     this.mainShellService.setTitleMeal('朝食');
 
-    this.favFoods$ = this.foodService.getFavFoods(this.authService.uid);
     this.favFoods$.pipe(take(1)).subscribe((foods: Food[]) => {
       this.favFoods = foods;
       this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
@@ -64,7 +66,7 @@ export class EditorMealComponent implements OnInit {
 
   addSet(amount: number, setId: string) {
     const meal: DailyMeal = { mealId: '', setId, amount };
-    this.dailyInfoService.addSet(
+    this.dailyInfoService.addMeal(
       meal,
       this.authService.uid,
       this.date,
@@ -73,20 +75,20 @@ export class EditorMealComponent implements OnInit {
   }
   addFood(amount: number, food: Food) {
     const meal: DailyMeal = { mealId: '', food, amount };
-    this.dailyInfoService.addFood(
+    this.dailyInfoService.addMeal(
       meal,
       this.authService.uid,
       this.date,
       'breakfast'
     );
   }
-  deleteMeal(mealId: string, foodOrSet: string) {
+
+  deleteMeal(mealId: string) {
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
       this.date,
       mealId,
-      'breakfast',
-      foodOrSet
+      'breakfast'
     );
   }
 
@@ -111,26 +113,24 @@ export class EditorMealComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedFoods$ = this.dailyInfoService.getSelectedFoods(
+    this.selectedFoodOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
       this.authService.uid,
       this.date,
       'breakfast'
     );
-    this.selectedSets$ = this.dailyInfoService.getSelectedSets(
-      this.authService.uid,
-      this.date,
-      'breakfast'
+
+    this.totalCal$ = this.selectedFoodOrSets$.pipe(
+      switchMap((meals) => {
+        let currentcal = 0;
+        meals.forEach((meal) => {
+          if (meal.set.setCal) {
+            return (currentcal += meal.set.setCal * meal.amount);
+          } else if (meal.food.foodCalPerAmount) {
+            return (currentcal += meal.food.foodCalPerAmount * meal.amount);
+          }
+        });
+        return of(currentcal);
+      })
     );
-    // this.totalCal$ = this.selectedFoodsOrSets$.pipe(
-    //   map((FoodOrSet) =>
-    //     FoodOrSet.reduce(
-    //       (total, foodCal) =>
-    //         total +
-    //         foodCal.food.foodCalPerAmount * foodCal.amount +
-    //         foodCal.set.setCal * foodCal.amount,
-    //       0
-    //     )
-    //   )
-    // );
   }
 }
