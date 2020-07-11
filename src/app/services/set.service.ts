@@ -44,7 +44,29 @@ export class SetService {
         })
       );
   }
-  getSetById(
+  getSetsOfMeal(userId: string, meal: string): Observable<Set[]> {
+    return this.db
+      .collection<Set>(`users/${userId}/sets`, (ref) =>
+        ref.orderBy('updatedAt', 'desc').where(meal, '==', true)
+      )
+      .valueChanges()
+      .pipe(
+        switchMap((sets: Set[]) => {
+          const allSets = sets.map((set) => {
+            return this.db
+              .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
+              .valueChanges()
+              .pipe(
+                map((foodsArray: Set[]) => {
+                  return Object.assign(set, { foodsArray });
+                })
+              );
+          });
+          return combineLatest([...allSets]);
+        })
+      );
+  }
+  getSetByIdWithFoods(
     userId: string,
     setId: string
   ): Observable<Set & { foodsArray: FoodInArray[] }> {
@@ -68,6 +90,9 @@ export class SetService {
           return setWithArray$;
         })
       );
+  }
+  getSetById(userId: string, setId: string): Observable<Set> {
+    return this.db.doc<Set>(`users/${userId}/sets/${setId}`).valueChanges();
   }
 
   getTentativeRecipeId(): string {
