@@ -32,6 +32,8 @@ import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/reci
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { NgAisModule } from 'angular-instantsearch';
 import { ConfirmRecipeComponent } from './dialogs/confirm-recipe/confirm-recipe.component';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 registerLocaleData(localeJa);
 
@@ -67,6 +69,8 @@ registerLocaleData(localeJa);
     ImageCropperModule,
     MatDialogModule,
     NgAisModule.forRoot(),
+    MatSelectModule,
+    FormsModule,
   ],
   providers: [
     DatePipe,
