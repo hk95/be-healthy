@@ -27,7 +27,7 @@ export class SetDetailComponent implements OnInit {
       this.setId = query.get('id');
     });
     this.setService
-      .getSetById(this.userId, this.setId)
+      .getSetByIdWithFoods(this.userId, this.setId)
       .pipe(take(1))
       .subscribe((set) => {
         this.set = set;

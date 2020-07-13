@@ -83,10 +83,13 @@ p {
     margin-top: 4px;
   }
 }
-.create {
+.nav {
   position: absolute;
   position: fixed;
   bottom: 80px;
   right: 24px;
   z-index: 5;
+  &--meal {
+    left: 24px;
+  }
 }

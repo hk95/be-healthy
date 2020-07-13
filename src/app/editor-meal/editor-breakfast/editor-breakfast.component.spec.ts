@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorBreakfastComponent } from './editor-breakfast.component';
+import { EditorMealComponent } from './editor-meal.component';
 
-describe('EditorBreakfastComponent', () => {
-  let component: EditorBreakfastComponent;
-  let fixture: ComponentFixture<EditorBreakfastComponent>;
+describe('EditorMealComponent', () => {
+  let component: EditorMealComponent;
+  let fixture: ComponentFixture<EditorMealComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EditorBreakfastComponent],
+      declarations: [EditorMealComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditorBreakfastComponent);
+    fixture = TestBed.createComponent(EditorMealComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

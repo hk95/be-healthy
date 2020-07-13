@@ -92,6 +92,16 @@
     </div>
   </div>
 </div>
-<button mat-fab color="primary" class="create" (click)="forwardbackToForm()">
+<button
+  *ngIf="path"
+  mat-fab
+  class="nav nav--meal"
+  color="black"
+  (click)="backToMeal()"
+>
+  <mat-icon>navigate_before</mat-icon>
+</button>
+
+<button mat-fab color="primary" class="nav" (click)="forwardbackToForm()">
   <mat-icon>add</mat-icon>
 </button>

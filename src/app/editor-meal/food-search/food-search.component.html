@@ -28,7 +28,7 @@
           <div class="food__name">
             <p class="food__name--with-amount">{{ food.foodName }}</p>
             <span class="food__amountper">
-              {{ food.calPerAmount }}kcal/{{ food.unit }}
+              {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
             </span>
           </div>
 
@@ -43,13 +43,15 @@
           <span>{{ food.unit }}</span>
           <p class="spacer"></p>
           <p class="food__cal">
-            {{ food.calPerAmount * amout[food.foodId] | number: '1.1-1' }}kcal
+            {{
+              food.foodCalPerAmount * amout[food.foodId] | number: '1.1-1'
+            }}kcal
           </p>
 
           <button
             mat-icon-button
             color="primary"
-            (click)="addDailyInfoFood(amout[food.foodId], food.foodId)"
+            (click)="addFood(amout[food.foodId], food)"
           >
             <mat-icon>add_box</mat-icon>
           </button>

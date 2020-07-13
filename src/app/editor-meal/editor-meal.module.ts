@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { EditorBreakfastRoutingModule } from './editor-breakfast-routing.module';
-import { EditorBreakfastComponent } from './editor-breakfast/editor-breakfast.component';
+import { EditorBreakfastRoutingModule } from './editor-meal-routing.module';
+import { EditorMealComponent } from './editor-meal/editor-meal.component';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,7 @@ import { FoodSearchComponent } from './food-search/food-search.component';
 import { NgAisModule } from 'angular-instantsearch';
 
 @NgModule({
-  declarations: [EditorBreakfastComponent, FoodSearchComponent],
+  declarations: [EditorMealComponent, FoodSearchComponent],
   imports: [
     CommonModule,
     EditorBreakfastRoutingModule,
