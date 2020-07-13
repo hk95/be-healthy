@@ -1,15 +1,23 @@
 .header {
   display: flex;
   justify-content: space-between;
+  &__wrapper {
+    display: flex;
+    align-items: center;
+  }
 }
-
+.other-title {
+  margin-right: 8px;
+}
 .avatarImage {
   border-radius: 50%;
   width: 40px;
   background: center/cover;
 }
 
-span {
-  margin-left: 8px;
-  font-size: 16px;
+.field {
+  width: 80px;
+  height: 60px;
+  font-size: 13px;
+  margin-right: 8px;
 }

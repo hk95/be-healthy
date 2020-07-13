@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   titleMeal$: Observable<string> = this.mainShellService.titleMeal$;
   today: string = this.getDate();
   avatarURL: string;
+  selectedValue = 'breakfast';
   constructor(
     private datepipe: DatePipe,
     private mainShellService: MainShellService,
