@@ -6,7 +6,7 @@ import { Food } from 'src/app/interfaces/food';
 import { FoodService } from 'src/app/services/food.service';
 import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DailyMealWithSet, DailyMeal } from 'src/app/interfaces/daily-info';
 import { take, switchMap } from 'rxjs/operators';
 import { MainShellService } from 'src/app/services/main-shell.service';
@@ -34,7 +34,6 @@ export class EditorMealComponent implements OnInit {
   );
   sets: Set[];
   setList = [];
-
   selectedFoodOrSets$: Observable<DailyMealWithSet[]>;
 
   totalCal$: Observable<number>;
@@ -46,7 +45,8 @@ export class EditorMealComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private mainShellService: MainShellService,
-    private setService: SetService
+    private setService: SetService,
+    private router: Router
   ) {
     this.route.paramMap.subscribe((paramMap) => {
       this.date = paramMap.get('date');
@@ -111,7 +111,9 @@ export class EditorMealComponent implements OnInit {
   back(): void {
     this.location.back();
   }
-
+  goToSet() {
+    this.dailyInfoService.goToSet(this.router.url);
+  }
   ngOnInit(): void {
     this.selectedFoodOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
       this.authService.uid,
