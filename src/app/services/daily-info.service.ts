@@ -18,13 +18,17 @@ import { Food } from '../interfaces/food';
   providedIn: 'root',
 })
 export class DailyInfoService {
+  path: string;
   constructor(
     private db: AngularFirestore,
     private snackBar: MatSnackBar,
     private router: Router,
     private setService: SetService
   ) {}
-
+  goToSet(path: string) {
+    this.path = path;
+    this.router.navigateByUrl('/menu');
+  }
   getDailyInfos(authorId: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
