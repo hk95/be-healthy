@@ -27,6 +27,9 @@ export class ToolbarComponent implements OnInit {
       date: this.date,
     });
   }
+  changeQuery() {
+    this.dailyInfoService.queryParams = null;
+  }
 
   ngOnInit(): void {}
 }
