@@ -5,6 +5,7 @@ import { GuestGuard } from './guards/guest.guard';
 import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
 import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -137,6 +138,10 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 
