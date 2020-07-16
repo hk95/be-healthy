@@ -5,7 +5,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs';
 import { Set, Meal } from 'src/app/interfaces/set';
 import { take } from 'rxjs/operators';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
 
 @Component({
   selector: 'app-set',
@@ -18,12 +17,10 @@ export class SetComponent implements OnInit {
   sets$: Observable<Set[]> = this.setService.getSets(this.userId).pipe(take(1));
   sets: Set[];
   mealOfAllSets: Meal[];
-  path = this.dailyInfoService.path;
   constructor(
     private setService: SetService,
     private router: Router,
-    private authService: AuthService,
-    private dailyInfoService: DailyInfoService
+    private authService: AuthService
   ) {
     this.setService
       .getSets(this.authService.uid)
@@ -59,9 +56,6 @@ export class SetComponent implements OnInit {
       this.mealOfAllSets[index].dinner = bool;
       this.setService.updateMeal(this.userId, setId, meal, bool);
     }
-  }
-  backToMeal() {
-    this.router.navigateByUrl(this.path);
   }
   ngOnInit(): void {}
 }
