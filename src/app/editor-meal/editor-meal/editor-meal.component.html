@@ -1,182 +1,57 @@
 <div class="tab">
-  <mat-tab-group
+  <nav
+    mat-tab-nav-bar
     mat-align-tabs="center"
     animationDuration="0ms"
     [disablePagination]="true"
   >
-    <mat-tab class="mat-tab-label" label="検索">
-      <div class="container"><app-food-search></app-food-search></div>
-    </mat-tab>
-
-    <mat-tab class="mat-tab-label" label="お気に入り">
-      <div class="container">
-        <div *ngFor="let favFood of favFoods">
-          <div class="food">
-            <button
-              class="food__fav"
-              mat-icon-button
-              color="warn"
-              (click)="unLikeFavFood(favFood.foodId)"
-            >
-              <mat-icon>favorite</mat-icon>
-            </button>
-
-            <div class="food__name">
-              <p class="food__name--with-amount">
-                {{ favFood.foodName }}
-              </p>
-              <span class="food__amountper">
-                {{ favFood.foodCalPerAmount }}kcal/{{ favFood.unit }}
-              </span>
-            </div>
-
-            <input
-              class="food__amount-form"
-              text="number"
-              max="100"
-              min="0"
-              step="0.1"
-              [(ngModel)]="amout[favFood.foodId]"
-              type="number"
-            />
-            <span>{{ favFood.unit }}</span>
-            <p class="spacer"></p>
-            <p class="food__cal">
-              {{
-                favFood.foodCalPerAmount * amout[favFood.foodId]
-                  | number: '1.1-1'
-              }}kcal
-            </p>
-
-            <button
-              mat-icon-button
-              color="primary"
-              (click)="addFood(amout[favFood.foodId], favFood)"
-            >
-              <mat-icon>add_box</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </mat-tab>
-    <mat-tab class="mat-tab-label" label="マイセット">
-      <div class="container">
-        <ng-template #noSet>
-          <div class="no-set">
-            <h3 class="no-set__title">
-              <mat-icon color="primary">bookmark</mat-icon
-              >マイセットはまだ登録されていません。
-            </h3>
-
-            <p>食べる頻度が多い食べ物をまとめて登録できる機能です。</p>
-            <figure>
-              <p class="no-set__example">（例）カレーセット</p>
-              <img
-                class="no-set__image"
-                src="/assets/images/ex-set.png/"
-                alt=""
-              />
-            </figure>
-            <p>
-              自分だけのマイセットを登録しましょう！
-            </p>
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="goToSet()"
-              class="no-set__create"
-            >
-              <mat-icon>add</mat-icon><span>登録する</span>
-            </button>
-          </div>
-        </ng-template>
-        <div *ngIf="setList.length > 0; else noSet">
-          <div *ngFor="let set of sets">
-            <div class="food">
-              <button
-                class="food__book"
-                mat-icon-button
-                color="primary"
-                (click)="outSet(set.setId)"
-              >
-                <mat-icon>bookmark</mat-icon>
-              </button>
-
-              <div class="food__name">
-                <p class="food__name--with-amount">
-                  {{ set.setTitle }}
-                </p>
-                <span class="food__amountper">
-                  {{ set.setCal }}kcal/セット
-                </span>
-              </div>
-
-              <input
-                class="food__amount-form"
-                text="number"
-                max="100"
-                min="0"
-                step="0.1"
-                [(ngModel)]="amout[set.setId]"
-                type="number"
-              />
-              <span class="set-unit">セット</span>
-              <p class="spacer"></p>
-              <p class="food__cal">
-                {{ set.setCal * amout[set.setId] | number: '1.1-1' }}kcal
-              </p>
-
-              <button
-                mat-icon-button
-                color="primary"
-                (click)="addSet(amout[set.setId], set.setId)"
-              >
-                <mat-icon>add_box</mat-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </mat-tab>
-    <mat-tab
+    <a
       class="mat-tab-label"
-      *ngIf="totalCal$ | async as totalCal"
-      label="選択項目"
+      mat-tab-link
+      routerLink="search"
+      [queryParams]="{ date: date, meal: meal }"
+      routerLinkActive
+      #rla0="routerLinkActive"
+      [active]="rla0.isActive"
     >
-      <div class="container">
-        <p *ngIf="totalCal$ | async as totalCal; noSelected">
-          朝食摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
-        </p>
+      検索
+    </a>
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="fav-foods"
+      [queryParams]="{ date: date, meal: meal }"
+      routerLinkActive
+      #rla1="routerLinkActive"
+      [active]="rla1.isActive"
+    >
+      お気に入り
+    </a>
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="my-set"
+      [queryParams]="{ date: date, meal: meal }"
+      routerLinkActive
+      #rla2="routerLinkActive"
+      [active]="rla2.isActive"
+    >
+      マイセット
+    </a>
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="selected-foods"
+      [queryParams]="{ date: date, meal: meal }"
+      routerLinkActive
+      #rla3="routerLinkActive"
+      [active]="rla3.isActive"
+    >
+      選択項目
+    </a>
+  </nav>
 
-        <div *ngFor="let foodOrSet of selectedFoodOrSets$ | async">
-          <p class="border"></p>
-          <div class="food">
-            <p class="food__name">
-              {{ foodOrSet.food.foodName || foodOrSet.set.setTitle }}
-            </p>
-            <p class="spacer"></p>
-            <p class="food__amount">
-              （{{ foodOrSet.amount }}{{ foodOrSet.food.unit || 'セット' }}）
-            </p>
-            <p class="food__cal">
-              {{
-                foodOrSet.amount *
-                  (foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal)
-                  | number: '1.1-1'
-              }}
-              kcal
-            </p>
-
-            <button
-              mat-icon-button
-              color="warn"
-              (click)="deleteMeal(foodOrSet.mealId)"
-            >
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
 </div>
