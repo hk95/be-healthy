@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
 
 import { map, switchMap } from 'rxjs/operators';
 import {
@@ -18,16 +18,25 @@ import { Food } from '../interfaces/food';
   providedIn: 'root',
 })
 export class DailyInfoService {
-  path: string;
+  mealSource = new BehaviorSubject<string>('notChange');
+  whichMeal$ = this.mealSource.asObservable();
+  whichMeal: string;
+  meal: string;
+  date: string;
+  queryParams: string[];
   constructor(
     private db: AngularFirestore,
     private snackBar: MatSnackBar,
     private router: Router,
     private setService: SetService
   ) {}
-  goToSet(path: string) {
-    this.path = path;
+  goToSetPage(date: string, meal: string) {
+    this.queryParams = [date, meal];
     this.router.navigateByUrl('/menu');
+  }
+  changeMeal(meal: string) {
+    this.whichMeal = meal;
+    this.mealSource.next(meal);
   }
   getDailyInfos(authorId: string): Observable<DailyInfo[]> {
     return this.db
@@ -107,10 +116,10 @@ export class DailyInfoService {
   getSelectedFoodsOrSets(
     userId: string,
     date: string,
-    whitchMeal: string
+    whichMeal: string
   ): Observable<DailyMealWithSet[]> {
     return this.db
-      .collection<DailyMeal>(`users/${userId}/dailyInfos/${date}/${whitchMeal}`)
+      .collection<DailyMeal>(`users/${userId}/dailyInfos/${date}/${whichMeal}`)
       .valueChanges()
       .pipe(
         switchMap((meals: DailyMeal[]) => {
@@ -174,12 +183,11 @@ export class DailyInfoService {
   async addMeal(
     mealContet: Omit<DailyMeal, 'mealId'>,
     userId: string,
-    date: string,
-    whitchMeal: string
+    date: string
   ): Promise<void> {
     const mealId = this.db.createId();
     return this.db
-      .doc(`users/${userId}/dailyInfos/${date}/${whitchMeal}/${mealId}`)
+      .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
       .set({ ...mealContet, mealId })
       .then(() => {
         this.snackBar.open('追加しました', null, {
@@ -188,14 +196,9 @@ export class DailyInfoService {
       });
   }
 
-  deleteMeal(
-    userId: string,
-    date: string,
-    mealId: string,
-    whitchMeal: string
-  ): Promise<void> {
+  deleteMeal(userId: string, date: string, mealId: string): Promise<void> {
     return this.db
-      .doc(`users/${userId}/dailyInfos/${date}/${whitchMeal}/${mealId}`)
+      .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
       .delete();
   }
 }
