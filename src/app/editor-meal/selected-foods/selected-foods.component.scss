@@ -1,0 +1,30 @@
+@import '~@angular/material/theming';
+.card {
+  cursor: pointer;
+  margin: 0 auto 24px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: 0.2s;
+  cursor: pointer;
+  @include mat-elevation(2);
+  outline: none;
+  &:hover {
+    @include mat-elevation(4);
+  }
+  &__title {
+    margin: 16px auto;
+    &--food {
+      margin: 16px auto 48px auto;
+    }
+  }
+  &__food {
+    max-width: 80px;
+  }
+  &__set {
+    max-width: 120px;
+    margin: 0 auto;
+  }
+}
