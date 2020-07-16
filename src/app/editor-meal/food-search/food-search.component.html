@@ -11,7 +11,7 @@
             class="food__fav"
             mat-icon-button
             color="warn"
-            *ngIf="editorBreakfastComponent.isLikedlist.includes(food.foodId)"
+            *ngIf="isLikedlist.includes(food.foodId)"
             (click)="unLikeFavFood(food.foodId)"
           >
             <mat-icon>favorite</mat-icon>
@@ -20,7 +20,7 @@
           <button
             class="food__fav"
             mat-icon-button
-            *ngIf="!editorBreakfastComponent.isLikedlist.includes(food.foodId)"
+            *ngIf="!isLikedlist.includes(food.foodId)"
             (click)="likeFavFood(food.foodId)"
           >
             <mat-icon>favorite_border</mat-icon>
@@ -37,21 +37,21 @@
             max="100"
             min="0"
             step="0.1"
-            [(ngModel)]="amout[food.foodId]"
+            [(ngModel)]="amount[food.foodId]"
             type="number"
           />
           <span>{{ food.unit }}</span>
           <p class="spacer"></p>
           <p class="food__cal">
             {{
-              food.foodCalPerAmount * amout[food.foodId] | number: '1.1-1'
+              food.foodCalPerAmount * amount[food.foodId] | number: '1.1-1'
             }}kcal
           </p>
 
           <button
             mat-icon-button
             color="primary"
-            (click)="addFood(amout[food.foodId], food)"
+            (click)="addFood(amount[food.foodId], food)"
           >
             <mat-icon>add_box</mat-icon>
           </button>

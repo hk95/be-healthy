@@ -10,9 +10,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { FoodSearchComponent } from './food-search/food-search.component';
 import { NgAisModule } from 'angular-instantsearch';
+import { MySetComponent } from './my-set/my-set.component';
+import { SelectedFoodsComponent } from './selected-foods/selected-foods.component';
+import { MatCardModule } from '@angular/material/card';
+
+import { FavFoodsComponent } from './fav-foods/fav-foods.component';
 
 @NgModule({
-  declarations: [EditorMealComponent, FoodSearchComponent],
+  declarations: [
+    EditorMealComponent,
+    FoodSearchComponent,
+    MySetComponent,
+    SelectedFoodsComponent,
+    FavFoodsComponent,
+  ],
   imports: [
     CommonModule,
     EditorBreakfastRoutingModule,
@@ -21,6 +32,7 @@ import { NgAisModule } from 'angular-instantsearch';
     FormsModule,
     MatButtonModule,
     NgAisModule,
+    MatCardModule,
   ],
 })
 export class EditorBreakfastModule {}

@@ -4,32 +4,56 @@
       <mat-icon>menu</mat-icon>
     </button>
 
-    <ng-container *ngIf="(title$ | async) == ('TOP' || 'My Menu'); else other"
+    <ng-container *ngIf="!selectedValue"
       ><h1>{{ title$ | async }}</h1></ng-container
     >
-    <ng-template #other>
-      <h1>
-        {{ title$ | async }}
-        <span *ngIf="titleMeal$"> {{ titleMeal$ | async }}</span>
-      </h1></ng-template
-    >
-    <!-- プロフィール  -->
+    <div class="header__wrapper">
+      <ng-container *ngIf="selectedValue">
+        <h1 class="other-title">
+          {{ title$ | async }}
+        </h1>
 
-    <div class="mypage">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <img
-          *ngIf="avatarURL"
-          [src]="avatarURL"
-          alt="avatar"
-          class="avatarImage"
-        />
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>login</mat-icon>
-          <span>ログアウト</span>
+        <mat-form-field
+          *ngIf="selectedValue"
+          class="field mat-select-arrow-wrapper"
+          appearance="fill"
+        >
+          <mat-select
+            [value]="selectedValue"
+            class="select"
+            (selectionChange)="chanageMeal($event.value)"
+          >
+            <mat-option value="breakfast">
+              朝食
+            </mat-option>
+            <mat-option value="lunch">
+              昼食
+            </mat-option>
+            <mat-option value="dinner">
+              夕食
+            </mat-option>
+          </mat-select>
+        </mat-form-field></ng-container
+      >
+
+      <!-- プロフィール  -->
+
+      <div class="mypage">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <img
+            *ngIf="avatarURL"
+            [src]="avatarURL"
+            alt="avatar"
+            class="avatarImage"
+          />
         </button>
-      </mat-menu>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>login</mat-icon>
+            <span>ログアウト</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </mat-toolbar-row></mat-toolbar
 >

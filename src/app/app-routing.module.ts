@@ -121,7 +121,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'editor-meal/:date',
+        path: 'editor-meal',
         loadChildren: () =>
           import('./editor-meal/editor-meal.module').then(
             (m) => m.EditorBreakfastModule

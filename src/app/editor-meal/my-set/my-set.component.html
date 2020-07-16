@@ -1,0 +1,71 @@
+<ng-template #noSet>
+  <div class="no">
+    <h3 class="no__title">
+      <mat-icon color="primary">bookmark</mat-icon
+      >マイセットはまだ登録されていません。
+    </h3>
+
+    <p>食べる頻度が多い食べ物をまとめて登録できる機能です。</p>
+    <figure>
+      <p class="no__example">（例）カレーセット</p>
+      <img class="no__image" src="/assets/images/ex-set.png/" alt="" />
+    </figure>
+    <p>
+      自分だけのマイセットを登録しましょう！
+    </p>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="goToSetPage()"
+      class="no__create"
+    >
+      <mat-icon>add</mat-icon><span>登録する</span>
+    </button>
+  </div>
+</ng-template>
+<div *ngIf="sets$ | async as sets">
+  <div *ngIf="sets.length > 0; else noSet">
+    <div *ngFor="let set of sets">
+      <div class="food">
+        <button
+          class="food__book"
+          mat-icon-button
+          color="primary"
+          (click)="outSet(set.setId)"
+        >
+          <mat-icon>bookmark</mat-icon>
+        </button>
+
+        <div class="food__name">
+          <p class="food__name--with-amount">
+            {{ set.setTitle }}
+          </p>
+          <span class="food__amountper"> {{ set.setCal }}kcal/セット </span>
+        </div>
+
+        <input
+          class="food__amount-form"
+          text="number"
+          max="100"
+          min="0"
+          step="0.1"
+          [(ngModel)]="amount[set.setId]"
+          type="number"
+        />
+        <span class="set-unit">セット</span>
+        <p class="spacer"></p>
+        <p class="food__cal">
+          {{ set.setCal * amount[set.setId] | number: '1.1-1' }}kcal
+        </p>
+
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="addSet(amount[set.setId], set.setId)"
+        >
+          <mat-icon>add_box</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

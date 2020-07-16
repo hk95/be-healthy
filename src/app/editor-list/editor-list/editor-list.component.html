@@ -2,7 +2,8 @@
   <div class="card">
     <mat-card
       class="card__content"
-      [routerLink]="['/editor-meal', dailyInfo.date]"
+      routerLink="/editor-meal/search"
+      [queryParams]="{ date: dailyInfo.date, meal: 'breakfast' }"
       >朝食
       <div class="spacer"></div>
       <mat-icon aria-hidden="false">arrow_forward_ios</mat-icon></mat-card
@@ -11,7 +12,8 @@
   <div class="card">
     <mat-card
       class="card__content"
-      [routerLink]="['/editor-meal', dailyInfo.date]"
+      routerLink="/editor-meal/search"
+      [queryParams]="{ date: dailyInfo.date, meal: 'lunch' }"
       >昼食
       <div class="spacer"></div>
       <mat-icon aria-hidden="false">arrow_forward_ios</mat-icon></mat-card
@@ -20,7 +22,8 @@
   <div class="card">
     <mat-card
       class="card__content"
-      [routerLink]="['/editor-meal', dailyInfo.date]"
+      routerLink="/editor-meal/search"
+      [queryParams]="{ date: dailyInfo.date, meal: 'dinner' }"
       >夕食
       <div class="spacer"></div>
       <mat-icon aria-hidden="false">arrow_forward_ios</mat-icon></mat-card

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { MainShellService } from '../services/main-shell.service';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { DailyInfoService } from '../services/daily-info.service';
 
 @Component({
   selector: 'app-header',
@@ -13,22 +14,28 @@ import { UserService } from '../services/user.service';
 export class HeaderComponent implements OnInit {
   title$: Observable<string> = this.mainShellService.title$;
   titleMeal$: Observable<string> = this.mainShellService.titleMeal$;
-  today: string = this.getDate();
+  date: string;
   avatarURL: string;
+  selectedValue: string;
   constructor(
-    private datepipe: DatePipe,
     private mainShellService: MainShellService,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private dailyInfoService: DailyInfoService
   ) {
     this.userService.getUser(this.authService.uid).subscribe((result) => {
       this.avatarURL = result.avatarURL;
     });
+    this.route.queryParamMap.subscribe((params) => {
+      this.date = params.get('date');
+      this.selectedValue = params.get('meal');
+      this.dailyInfoService.whichMeal = this.selectedValue;
+    });
   }
 
-  getDate() {
-    const d = new Date();
-    return this.datepipe.transform(d, 'yy.MM.dd(E)');
+  chanageMeal(meal: string) {
+    this.dailyInfoService.changeMeal(meal);
   }
   logout() {
     this.authService.logout();
