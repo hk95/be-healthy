@@ -21,3 +21,7 @@
   font-size: 13px;
   margin-right: 8px;
 }
+
+:host ::ng-deep .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
+  transform: none;
+}
