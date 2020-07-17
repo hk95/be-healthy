@@ -94,12 +94,12 @@
       </div>
       <p class="border"></p>
 
-      <div class="meal__content" style="height: 200px;">
+      <div class="meal__content">
         <div class="meal__card" *ngFor="let food of MealsOfBreakfast">
           <p class="meal__name">
             {{ food.food.foodName || food.set.setTitle }}
           </p>
-          <p class="spacer"></p>
+          <div class="spacer"></div>
           <p class="amount">{{ food.amount }}</p>
           <p class="meal__cal">
             {{ food.food.foodCalPerAmount || food.set.setCal }}kcal
@@ -124,12 +124,12 @@
       </div>
       <p class="border"></p>
 
-      <div class="meal__content" style="height: 200px;">
+      <div class="meal__content">
         <div class="meal__card" *ngFor="let food of MealsOfLunch">
           <p class="meal__name">
             {{ food.food.foodName || food.set.setTitle }}
           </p>
-          <p class="spacer"></p>
+          <div class="spacer"></div>
           <p class="amount">{{ food.amount }}</p>
           <p class="meal__cal">
             {{ food.food.foodCalPerAmount || food.set.setCal }}kcal
@@ -156,12 +156,12 @@
       </div>
       <p class="border"></p>
 
-      <div class="meal__content" style="height: 200px;">
+      <div class="meal__content">
         <div class="meal__card" *ngFor="let food of MealsOfDinner">
           <p class="meal__name">
             {{ food.food.foodName || food.set.setTitle }}
           </p>
-          <p class="spacer"></p>
+          <div class="spacer"></div>
           <p class="amount">{{ food.amount }}adsa</p>
           <p class="meal__cal">
             {{ food.food.foodCalPerAmount || food.set.setCal }}kcal

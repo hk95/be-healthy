@@ -56,6 +56,9 @@ p {
     justify-content: space-between;
     align-items: center;
   }
+  &__content {
+    height: 200px;
+  }
   &__card {
     display: flex;
     .spacer {
