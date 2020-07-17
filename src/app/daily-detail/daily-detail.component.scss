@@ -1,3 +1,20 @@
+p {
+  margin: 0;
+}
+
+.back {
+  height: 40px;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  position: sticky;
+  top: 0;
+}
 .result {
   background: #fff;
   padding-top: 8px;
