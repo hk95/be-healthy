@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { DailyInfoService } from '../services/daily-info.service';
 import { Observable } from 'rxjs';
-import { DailyInfo } from '../interfaces/daily-info';
+import { DailyInfo, DailyMealWithSet } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 
@@ -13,9 +12,12 @@ import { MainShellService } from '../services/main-shell.service';
   styleUrls: ['./daily-detail.component.scss'],
 })
 export class DailyDetailComponent implements OnInit {
-  @Input() dailyInfo: DailyInfo;
   dailyInfo$: Observable<DailyInfo>;
   date: string;
+
+  MealsOfBreakfast: DailyMealWithSet[];
+  MealsOfLunch: DailyMealWithSet[];
+  MealsOfDinner: DailyMealWithSet[];
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +33,15 @@ export class DailyDetailComponent implements OnInit {
       );
       this.mainShellService.setTitle(this.date);
     });
+    this.dailyInfoService
+      .getSelectedFoodsOrSets(this.authService.uid, this.date, 'breakfast')
+      .subscribe((meals) => (this.MealsOfBreakfast = meals));
+    this.dailyInfoService
+      .getSelectedFoodsOrSets(this.authService.uid, this.date, 'lunch')
+      .subscribe((meals) => (this.MealsOfLunch = meals));
+    this.dailyInfoService
+      .getSelectedFoodsOrSets(this.authService.uid, this.date, 'dinner')
+      .subscribe((meals) => (this.MealsOfDinner = meals));
   }
 
   ngOnInit(): void {}
