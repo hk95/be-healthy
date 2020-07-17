@@ -5,9 +5,10 @@ import { DailyDetailRoutingModule } from './daily-detail-routing.module';
 import { DailyDetailComponent } from './daily-detail.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NutritionPipe } from '../pipes/nutrition.pipe';
 
 @NgModule({
-  declarations: [DailyDetailComponent],
+  declarations: [DailyDetailComponent, NutritionPipe],
   imports: [
     CommonModule,
     DailyDetailRoutingModule,
