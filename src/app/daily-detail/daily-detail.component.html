@@ -11,7 +11,7 @@
           <p class="card__title" *ngIf="dailyInfo.currentWeight; else noWeight">
             {{ dailyInfo.currentWeight }} kg
           </p>
-          <ng-template #noWeight>----</ng-template>
+          <ng-template #noWeight>---- kg</ng-template>
         </div>
         <div class="vertical-line"></div>
         <div class="card__fat">
@@ -19,7 +19,7 @@
           <p class="card__title" *ngIf="dailyInfo.currentFat; else noFat">
             {{ dailyInfo.currentFat }} %
           </p>
-          <ng-template #noFat>----</ng-template>
+          <ng-template #noFat>---- %</ng-template>
         </div>
 
         <button
@@ -38,7 +38,7 @@
       <p>栄養素</p>
       <ng-container matColumnDef="name">
         <mat-header-cell class="table__header" *matHeaderCellDef>
-          Name
+          栄養素名
         </mat-header-cell>
         <mat-cell class="table__cell" *matCellDef="let element">
           {{ element.name }}
@@ -47,7 +47,7 @@
 
       <ng-container matColumnDef="key">
         <mat-header-cell class="table__header" *matHeaderCellDef>
-          量
+          数量
         </mat-header-cell>
         <mat-cell
           class="table__cell table__header--right"
@@ -260,7 +260,7 @@
       </p>
       <ng-template #noMemo>
         <div class="border"></div>
-        <span>まだメモされていません</span></ng-template
+        <span>まだメモはありません</span></ng-template
       >
     </mat-card>
   </div>
