@@ -19,6 +19,20 @@ export class DailyDetailComponent implements OnInit {
   MealsOfLunch: DailyMealWithSet[];
   MealsOfDinner: DailyMealWithSet[];
 
+  displayedColumns: string[] = ['name', 'key'];
+  nutritionName = [
+    { name: '総摂取カロリー', key: 'cal', unit: 'kcal', percentage: '--' },
+    { name: 'タンパク質', key: 'protein', unit: 'g', percentage: 'true' },
+    { name: '脂質', key: 'fat', unit: 'g', percentage: 'true' },
+    {
+      name: '炭水化物',
+      key: 'totalCarbohydrate',
+      unit: 'g',
+      percentage: 'true',
+    },
+    { name: '食物繊維', key: 'dietaryFiber', unit: 'g', percentage: 'true' },
+    { name: '糖質', key: 'sugar', unit: 'g', percentage: 'true' },
+  ];
   constructor(
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
