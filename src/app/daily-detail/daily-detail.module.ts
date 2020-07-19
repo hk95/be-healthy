@@ -5,7 +5,9 @@ import { DailyDetailRoutingModule } from './daily-detail-routing.module';
 import { DailyDetailComponent } from './daily-detail.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [DailyDetailComponent, NutritionPipe],
@@ -14,6 +16,8 @@ import { NutritionPipe } from '../pipes/nutrition.pipe';
     DailyDetailRoutingModule,
     MatButtonModule,
     MatIconModule,
+    MatCardModule,
+    MatTableModule,
   ],
 })
 export class DailyDetailModule {}
