@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { MatTableModule } from '@angular/material/table';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [DailyDetailComponent, NutritionPipe],
@@ -18,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
     MatIconModule,
     MatCardModule,
     MatTableModule,
+    NgxChartsModule,
   ],
 })
 export class DailyDetailModule {}
