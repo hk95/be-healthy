@@ -34,6 +34,7 @@ import { NgAisModule } from 'angular-instantsearch';
 import { ConfirmRecipeComponent } from './dialogs/confirm-recipe/confirm-recipe.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 registerLocaleData(localeJa);
 
@@ -49,6 +50,7 @@ registerLocaleData(localeJa);
     RecipeProcessImageComponent,
     DeleteDialogComponent,
     ConfirmRecipeComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
