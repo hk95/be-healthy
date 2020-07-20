@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
 import { Observable } from 'rxjs';
 import { DailyInfo, DailyMealWithSet } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
+import { NutritionPipe } from '../pipes/nutrition.pipe';
 
 @Component({
   selector: 'app-daily-detail',
   templateUrl: './daily-detail.component.html',
   styleUrls: ['./daily-detail.component.scss'],
+  providers: [NutritionPipe],
 })
 export class DailyDetailComponent implements OnInit {
   dailyInfo$: Observable<DailyInfo>;
@@ -18,6 +20,7 @@ export class DailyDetailComponent implements OnInit {
   MealsOfBreakfast: DailyMealWithSet[];
   MealsOfLunch: DailyMealWithSet[];
   MealsOfDinner: DailyMealWithSet[];
+  totalCal: number;
 
   displayedColumns: string[] = ['name', 'key'];
   nutritionName = [
@@ -33,11 +36,40 @@ export class DailyDetailComponent implements OnInit {
     { name: '食物繊維', key: 'dietaryFiber', unit: 'g', percentage: 'true' },
     { name: '糖質', key: 'sugar', unit: 'g', percentage: 'true' },
   ];
+
+  colorScheme = {
+    domain: ['#D81B60', '#FF9800', '#EEEEEE'],
+  };
+  single: any[] = [
+    {
+      name: '炭水化物 (%)',
+      value: 50,
+    },
+    {
+      name: 'タンパク質 (%)',
+      value: 500,
+    },
+    {
+      name: '脂質 (%)',
+      value: 70,
+    },
+  ];
+  view: number[];
+
+  gradient = false;
+  showLegend = true;
+  showLabels = false;
+  isDoughnut = true;
+  arcWidth = 0.25;
+  legendPosition = 'below';
+  legendTitle = '';
+  font: number;
   constructor(
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
-    private mainShellService: MainShellService
+    private mainShellService: MainShellService,
+    private nutritionPipe: NutritionPipe
   ) {
     this.route.paramMap.subscribe((params) => {
       this.date = params.get('date');
@@ -55,7 +87,31 @@ export class DailyDetailComponent implements OnInit {
       .subscribe((meals) => (this.MealsOfLunch = meals));
     this.dailyInfoService
       .getSelectedFoodsOrSets(this.authService.uid, this.date, 'dinner')
-      .subscribe((meals) => (this.MealsOfDinner = meals));
+      .subscribe((meals) => {
+        this.MealsOfDinner = meals;
+        this.totalCal = this.nutritionPipe.transform(
+          this.MealsOfBreakfast,
+          'all',
+          'cal',
+          this.MealsOfLunch,
+          this.MealsOfDinner
+        );
+      });
+
+    if (innerWidth < 500) {
+      this.font = innerWidth / 28;
+      this.view = [innerWidth / 1.3, innerWidth / 2];
+    } else {
+      this.font = 16;
+      this.view = [378, 246];
+    }
+  }
+  onResize(event) {
+    if (event.target.innerWidth < 500) {
+      this.font = innerWidth / 28;
+      this.view = [event.target.innerWidth / 1.3, event.target.innerWidth / 2];
+      this.font = innerWidth / 28;
+    }
   }
 
   ngOnInit(): void {}
