@@ -48,7 +48,9 @@ p {
     justify-content: center;
   }
   &__cell {
-    padding-left: 48px;
+    display: flex;
+    justify-content: center;
+    text-align: right;
   }
 }
 .card {
@@ -128,4 +130,36 @@ p {
 
 .border {
   margin: 8px 0;
+}
+.pie-chart {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 32px;
+  position: relative;
+  &__cal {
+    width: 22%;
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    top: 42%;
+    left: 40%;
+  }
+}
+ngx-charts-pie-chart {
+  width: 100%;
+  max-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+:host ::ng-deep .chart-legend .legend-labels {
+  width: 100%;
+  position: absolute;
+  top: 90%;
+  line-height: 1;
+  left: 0;
+  text-align: center;
+  background: #fafafa;
 }
