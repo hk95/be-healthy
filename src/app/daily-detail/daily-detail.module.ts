@@ -9,9 +9,10 @@ import { MatCardModule } from '@angular/material/card';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { MatTableModule } from '@angular/material/table';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 
 @NgModule({
-  declarations: [DailyDetailComponent, NutritionPipe],
+  declarations: [DailyDetailComponent, NutritionPipe, PfcBalancePipe],
   imports: [
     CommonModule,
     DailyDetailRoutingModule,
