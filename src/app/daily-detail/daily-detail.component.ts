@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-daily-detail',
@@ -71,15 +72,13 @@ export class DailyDetailComponent implements OnInit {
     });
 
     this.dailyInfoService
-      .getSelectedFoodsOrSets(this.authService.uid, this.date, 'breakfast')
-      .subscribe((meals) => (this.MealsOfBreakfast = meals));
-    this.dailyInfoService
-      .getSelectedFoodsOrSets(this.authService.uid, this.date, 'lunch')
-      .subscribe((meals) => (this.MealsOfLunch = meals));
-    this.dailyInfoService
-      .getSelectedFoodsOrSets(this.authService.uid, this.date, 'dinner')
-      .subscribe((meals) => {
-        this.MealsOfDinner = meals;
+      .getAllSelectedFoodsOrSets(this.authService.uid, this.date)
+      .pipe(take(1))
+      .subscribe((mealList) => {
+        this.MealsOfBreakfast = mealList[0];
+        this.MealsOfLunch = mealList[1];
+        this.MealsOfDinner = mealList[2];
+
         this.totalCal = this.nutritionPipe.transform(
           this.MealsOfBreakfast,
           'all',
@@ -87,7 +86,6 @@ export class DailyDetailComponent implements OnInit {
           this.MealsOfLunch,
           this.MealsOfDinner
         );
-
         this.data = [
           ...[
             {
