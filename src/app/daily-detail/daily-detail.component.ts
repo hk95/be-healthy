@@ -87,42 +87,36 @@ export class DailyDetailComponent implements OnInit {
           this.MealsOfDinner
         );
         this.data = [
-          ...[
-            {
-              name: '炭水化物 (%)',
-              value: this.pfcBalancePipe.transform(
-                this.MealsOfBreakfast,
-                this.MealsOfLunch,
-                this.MealsOfDinner,
-                this.totalCal,
-                'carbohydrate'
-              ),
-            },
-          ],
-          ...[
-            {
-              name: 'タンパク質 (%)',
-              value: this.pfcBalancePipe.transform(
-                this.MealsOfBreakfast,
-                this.MealsOfLunch,
-                this.MealsOfDinner,
-                this.totalCal,
-                'protein'
-              ),
-            },
-          ],
-          ...[
-            {
-              name: '脂質 (%)',
-              value: this.pfcBalancePipe.transform(
-                this.MealsOfBreakfast,
-                this.MealsOfLunch,
-                this.MealsOfDinner,
-                this.totalCal,
-                'fat'
-              ),
-            },
-          ],
+          {
+            name: '炭水化物 (%)',
+            value: this.pfcBalancePipe.transform(
+              this.MealsOfBreakfast,
+              this.MealsOfLunch,
+              this.MealsOfDinner,
+              this.totalCal,
+              'carbohydrate'
+            ),
+          },
+          {
+            name: 'タンパク質 (%)',
+            value: this.pfcBalancePipe.transform(
+              this.MealsOfBreakfast,
+              this.MealsOfLunch,
+              this.MealsOfDinner,
+              this.totalCal,
+              'protein'
+            ),
+          },
+          {
+            name: '脂質 (%)',
+            value: this.pfcBalancePipe.transform(
+              this.MealsOfBreakfast,
+              this.MealsOfLunch,
+              this.MealsOfDinner,
+              this.totalCal,
+              'fat'
+            ),
+          },
         ];
       });
 
