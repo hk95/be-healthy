@@ -179,6 +179,13 @@ export class DailyInfoService {
         })
       );
   }
+  getAllSelectedFoodsOrSets(userId: string, date: string) {
+    return combineLatest([
+      this.getSelectedFoodsOrSets(userId, date, 'breakfast'),
+      this.getSelectedFoodsOrSets(userId, date, 'lunch'),
+      this.getSelectedFoodsOrSets(userId, date, 'dinner'),
+    ]);
+  }
 
   async addMeal(
     mealContet: Omit<DailyMeal, 'mealId'>,
