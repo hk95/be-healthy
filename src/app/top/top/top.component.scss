@@ -6,49 +6,51 @@
   margin-bottom: 16px;
 }
 
-:host ::ng-deep .fc .fc-toolbar.fc-header-toolbar {
-  margin-bottom: 8px;
-}
-:host ::ng-deep .fc .fc-toolbar-title {
-  font-size: 18px;
-  font-weight: normal;
-  margin: 0;
-}
-:host ::ng-deep .fc .fc-daygrid-day-frame {
-  position: relative;
-  height: 45px;
-  max-width: 500px;
-}
-:host ::ng-deep .fc-theme-standard td,
-.fc-theme-standard th {
-  cursor: pointer;
-}
-:host ::ng-deep .fc .fc-daygrid-day-number {
-  padding: 4px;
-  font-size: 14px;
-}
-:host ::ng-deep .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
-  position: relative;
-  min-height: 0;
-  height: 15px;
-}
-:host ::ng-deep .fc .fc-col-header-cell-cushion {
-  display: inline-block;
-  padding: 2px 4px;
-  font-weight: normal;
-}
-:host ::ng-deep .fc .fc-button:not(:disabled) {
-  height: 25px;
-  cursor: pointer;
-  width: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  color: black;
-  border: none;
-}
-:host ::ng-deep .fc .fc-button .fc-icon {
-  font-size: 18px;
-  height: 16px;
+:host ::ng-deep {
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 8px;
+  }
+  .fc .fc-toolbar-title {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0;
+  }
+  .fc .fc-daygrid-day-frame {
+    position: relative;
+    height: 45px;
+    max-width: 500px;
+  }
+  .fc-theme-standard td,
+  .fc-theme-standard th {
+    cursor: pointer;
+  }
+  .fc .fc-daygrid-day-number {
+    padding: 4px;
+    font-size: 14px;
+  }
+  .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    position: relative;
+    min-height: 0;
+    height: 15px;
+  }
+  .fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 2px 4px;
+    font-weight: normal;
+  }
+  .fc .fc-button:not(:disabled) {
+    height: 25px;
+    cursor: pointer;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    color: black;
+    border: none;
+  }
+  .fc .fc-button .fc-icon {
+    font-size: 18px;
+    height: 16px;
+  }
 }
