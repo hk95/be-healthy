@@ -38,10 +38,10 @@ export class DailyInfoService {
     this.whichMeal = meal;
     this.mealSource.next(meal);
   }
-  getDailyInfos(authorId: string): Observable<DailyInfo[]> {
+  getDailyInfos(authorId: string, date: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
-        ref.orderBy('date', 'desc').limit(7)
+        ref.where('date', '<=', date).orderBy('date', 'desc').limit(7)
       )
       .valueChanges();
   }
@@ -88,12 +88,7 @@ export class DailyInfoService {
           .set({
             dailyId,
             ...dailyInfo,
-          })
-          .then(() => {
-            this.router.navigateByUrl('editor-list');
           });
-      } else {
-        this.router.navigateByUrl('editor-list');
       }
     });
   }

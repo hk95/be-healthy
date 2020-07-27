@@ -25,7 +25,8 @@
           <div class="spacer"></div>
           <mat-card-actions>
             <button
-              [routerLink]="['/daily-detail', dailyInfo.date]"
+              routerLink="/daily-detail"
+              [queryParams]="{ date: dailyInfo.date }"
               mat-icon-button
               color="primary"
             >

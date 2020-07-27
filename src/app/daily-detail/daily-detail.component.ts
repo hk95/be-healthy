@@ -62,7 +62,7 @@ export class DailyDetailComponent implements OnInit {
     private nutritionPipe: NutritionPipe,
     private pfcBalancePipe: PfcBalancePipe
   ) {
-    this.route.paramMap.subscribe((params) => {
+    this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
       this.dailyInfo$ = this.dailyInfoService.getDailyInfo(
         this.authService.uid,

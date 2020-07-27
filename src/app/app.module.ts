@@ -22,6 +22,7 @@ import localeJa from '@angular/common/locales/ja';
 import { registerLocaleData, DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
@@ -37,7 +38,7 @@ import { FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 registerLocaleData(localeJa);
-
+FullCalendarModule.registerPlugins([dayGridPlugin]);
 @NgModule({
   declarations: [
     AppComponent,

@@ -7,10 +7,6 @@ const routes: Routes = [
     path: '',
     component: DailyDetailComponent,
   },
-  {
-    path: ':date',
-    component: DailyDetailComponent,
-  },
 ];
 
 @NgModule({

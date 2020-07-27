@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { DailyInfoService } from '../services/daily-info.service';
 import { AuthService } from '../services/auth.service';
 import { DailyInfo } from '../interfaces/daily-info';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
@@ -15,7 +16,8 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private router: Router
   ) {}
   getDate() {
     const d = new Date();
@@ -26,6 +28,7 @@ export class ToolbarComponent implements OnInit {
       authorId: this.authService.uid,
       date: this.date,
     });
+    this.router.navigateByUrl('editor-list');
   }
   changeQuery() {
     this.dailyInfoService.queryParams = null;
