@@ -6,6 +6,8 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { Router } from '@angular/router';
+import { DailyInfoService } from 'src/app/services/daily-info.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-top',
@@ -33,15 +35,19 @@ export class TopComponent implements OnInit {
 
   constructor(
     private mainShellService: MainShellService,
-    private router: Router
+    private router: Router,
+    private dailyInfoService: DailyInfoService,
+    private authService: AuthService
   ) {
     this.mainShellService.setTitle('TOP');
   }
   handleDateClick(arg) {
     const week = this.weelList[arg.dayEl.cellIndex];
     this.date = arg.dateStr.slice(2).replace(/-/g, '.').replace(/$/, week);
-    console.log(this.date);
-
+    this.dailyInfoService.createDailyInfo({
+      authorId: this.authService.uid,
+      date: this.date,
+    });
     this.router.navigate(['/daily-detail'], {
       queryParams: {
         date: this.date,
