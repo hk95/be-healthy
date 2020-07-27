@@ -16,7 +16,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class TopComponent implements OnInit {
   date: string;
-  weelList = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'];
+  weelList = ['日', '月', '火', '水', '木', '金', '土'];
 
   calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
@@ -43,7 +43,10 @@ export class TopComponent implements OnInit {
   }
   handleDateClick(arg) {
     const week = this.weelList[arg.dayEl.cellIndex];
-    this.date = arg.dateStr.slice(2).replace(/-/g, '.').replace(/$/, week);
+    this.date = arg.dateStr
+      .slice(2)
+      .replace(/-/g, '.')
+      .replace(/$/, '(' + week + ')');
     this.dailyInfoService.createDailyInfo({
       authorId: this.authService.uid,
       date: this.date,
