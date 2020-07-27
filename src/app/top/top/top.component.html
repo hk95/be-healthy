@@ -1,12 +1,3 @@
-<full-calendar
-  class="calendar"
-  defaultView="dayGridMonth"
-  [plugins]="calendarPlugins"
-  [weekends]="true"
-  [events]="[
-    { title: 'event 1', date: '2019-04-01' },
-    { title: 'event 2', date: '2019-04-02' }
-  ]"
-></full-calendar>
+<full-calendar class="calendar" [options]="calendarOptions"></full-calendar>
 
 <app-detail></app-detail>
