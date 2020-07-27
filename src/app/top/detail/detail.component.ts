@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/interfaces/user';
+
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs';
@@ -15,7 +15,8 @@ export class DetailComponent implements OnInit {
   @Input() dailyInfo: DailyInfo;
   date: string = this.getDate();
   dailyInfos$: Observable<DailyInfo[]> = this.dailyInfoService.getDailyInfos(
-    this.authService.uid
+    this.authService.uid,
+    this.date
   );
   isTodayDailyInfo$: Observable<
     DailyInfo
