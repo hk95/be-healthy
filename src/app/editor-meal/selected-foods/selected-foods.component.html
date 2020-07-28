@@ -57,7 +57,17 @@
       kcal
     </p>
 
-    <button mat-icon-button color="warn" (click)="deleteMeal(foodOrSet.mealId)">
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="
+        deleteMeal(
+          foodOrSet.mealId,
+          foodOrSet.amount,
+          foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal
+        )
+      "
+    >
       <mat-icon>clear</mat-icon>
     </button>
   </div>
