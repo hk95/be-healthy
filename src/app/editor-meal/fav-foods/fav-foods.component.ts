@@ -34,7 +34,12 @@ export class FavFoodsComponent implements OnInit {
   }
   addFood(amount: number, food: Food) {
     const meal: DailyMeal = { mealId: '', food, amount };
-    this.dailyInfoService.addMeal(meal, this.authService.uid, this.date);
+    this.dailyInfoService.addMeal(
+      meal,
+      this.authService.uid,
+      this.date,
+      'food'
+    );
   }
 
   unLikeFavFood(foodId: string) {
