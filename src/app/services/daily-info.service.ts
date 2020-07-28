@@ -13,6 +13,7 @@ import {
 import { Set } from '../interfaces/set';
 import { SetService } from './set.service';
 import { Food } from '../interfaces/food';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,8 @@ export class DailyInfoService {
     private db: AngularFirestore,
     private snackBar: MatSnackBar,
     private router: Router,
-    private setService: SetService
+    private setService: SetService,
+    private fns: AngularFireFunctions
   ) {}
   goToSetPage(date: string, meal: string) {
     this.queryParams = [date, meal];
@@ -185,10 +187,12 @@ export class DailyInfoService {
   async addMeal(
     mealContet: Omit<DailyMeal, 'mealId'>,
     userId: string,
-    date: string
+    date: string,
+    foodOrSet: string,
+    setCal?: number
   ): Promise<void> {
     const mealId = this.db.createId();
-    return this.db
+    this.db
       .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
       .set({ ...mealContet, mealId })
       .then(() => {
@@ -196,11 +200,48 @@ export class DailyInfoService {
           duration: 2000,
         });
       });
+    const callable = this.fns.httpsCallable('addMeal');
+    if (foodOrSet === 'food') {
+      const amount = mealContet.amount;
+      const cal = mealContet.food.foodCalPerAmount;
+      return callable({
+        userId,
+        date,
+        meal: this.whichMeal,
+        amount,
+        cal,
+      }).toPromise();
+    } else if (foodOrSet === 'set') {
+      const amount = mealContet.amount;
+      const cal = setCal;
+      return callable({
+        userId,
+        date,
+        meal: this.whichMeal,
+        amount,
+        cal,
+      }).toPromise();
+    }
   }
 
-  deleteMeal(userId: string, date: string, mealId: string): Promise<void> {
-    return this.db
+  deleteMeal(
+    userId: string,
+    date: string,
+    mealId: string,
+
+    amount: number,
+    cal: number
+  ): Promise<void> {
+    this.db
       .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
       .delete();
+    const callable = this.fns.httpsCallable('removeMeal');
+    return callable({
+      userId,
+      date,
+      meal: this.whichMeal,
+      amount,
+      cal,
+    }).toPromise();
   }
 }
