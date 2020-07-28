@@ -31,7 +31,7 @@ export class UpdateComponent implements OnInit {
     private authService: AuthService,
     private location: Location
   ) {
-    this.route.paramMap.subscribe((params) => {
+    this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
       this.dailyInfoService
         .getDailyInfo(this.authService.uid, this.date)
