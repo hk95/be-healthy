@@ -53,7 +53,12 @@ export class FoodSearchComponent implements OnInit {
   }
   addFood(amount: number, food: Food) {
     const meal: DailyMeal = { mealId: '', food, amount };
-    this.dailyInfoService.addMeal(meal, this.authService.uid, this.date);
+    this.dailyInfoService.addMeal(
+      meal,
+      this.authService.uid,
+      this.date,
+      'food'
+    );
   }
 
   ngOnInit(): void {}
