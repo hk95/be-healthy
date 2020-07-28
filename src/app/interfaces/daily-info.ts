@@ -6,11 +6,12 @@ export interface DailyInfo {
   date: string;
   currentWeight: number;
   currentFat: number;
-  breakfast: DailyMeal;
-  lunch: number;
-  dinner: number;
   dailyMemo: string;
   authorId: string;
+  totalCal?: number;
+  breakfastCal?: number;
+  lunchCal?: number;
+  dinnerCal?: number;
 }
 
 export interface DailyMeal {
