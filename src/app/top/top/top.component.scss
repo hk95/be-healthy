@@ -1,7 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+.top {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  @media screen and (min-width: 750px) {
+    padding-top: 24px;
+    flex-direction: row;
+  }
+}
+.calendar-wrap {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  @media screen and (min-width: 750px) {
+    position: sticky;
+    top: 136px;
+    height: 400px;
+    margin-top: 48px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
 .calendar {
   max-width: 500px;
-  margin: 0 auto;
-  padding: 16px;
+  width: 100%;
+  padding: 8px;
   height: 400px;
   margin-bottom: 16px;
 }
@@ -19,6 +45,9 @@
     position: relative;
     height: 45px;
     max-width: 500px;
+  }
+  .fc-col-header {
+    width: 100%;
   }
   .fc-theme-standard td,
   .fc-theme-standard th {
