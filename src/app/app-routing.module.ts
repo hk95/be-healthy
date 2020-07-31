@@ -97,7 +97,7 @@ const routes: Routes = [
       },
 
       {
-        path: 'update/:date',
+        path: 'update',
         loadChildren: () =>
           import('./update/update.module').then((m) => m.UpdateModule),
         canLoad: [AuthGuard],

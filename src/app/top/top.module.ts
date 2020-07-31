@@ -7,6 +7,7 @@ import { TopComponent } from './top/top.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetailComponent } from './detail/detail.component';
@@ -21,6 +22,7 @@ import { DetailComponent } from './detail/detail.component';
     MatCardModule,
     MatIconModule,
     FullCalendarModule,
+    MatTooltipModule,
   ],
   providers: [DatePipe],
 })

@@ -1,11 +1,77 @@
-.daily-card {
+@import '~@angular/material/theming';
+
+* {
+  box-sizing: border-box;
+}
+p {
+  margin: 0;
+}
+.grid {
+  min-width: 300px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
-.wrapper{
-display: flex;
+.card {
+  display: flex;
+  outline: none;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+  @media screen and (min-width: 750px) {
+    max-width: 420px;
+    min-width: 380px;
+  }
+  &:hover {
+    @include mat-elevation(3);
+  }
+  &__title {
+    font-weight: normal;
+    margin-bottom: 16px;
+  }
+  &__weight {
+    margin-bottom: 8px;
+  }
+  &__fat {
+    margin-bottom: 8px;
+  }
+
+  &__icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 }
-.spacer{
-  flex: 1;
+.wrap {
+  display: flex;
+  margin-bottom: 8px;
+  &--column {
+    flex-direction: column;
+  }
+}
+
+.box {
+  cursor: pointer;
+  outline: none;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: #ffffff;
+  margin: 0 4px;
+  z-index: 10;
+}
+.icon {
+  width: 22px;
+  &--breakfast {
+    width: 40px;
+  }
+}
+.no-registration {
+  opacity: 0.3;
 }

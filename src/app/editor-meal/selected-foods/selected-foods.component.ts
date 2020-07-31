@@ -44,8 +44,14 @@ export class SelectedFoodsComponent implements OnInit {
       })
     );
   }
-  deleteMeal(mealId: string) {
-    this.dailyInfoService.deleteMeal(this.authService.uid, this.date, mealId);
+  deleteMeal(mealId: string, amount: number, cal: number) {
+    this.dailyInfoService.deleteMeal(
+      this.authService.uid,
+      this.date,
+      mealId,
+      amount,
+      cal
+    );
   }
 
   ngOnInit(): void {

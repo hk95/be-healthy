@@ -30,9 +30,15 @@ export class MySetComponent implements OnInit {
     });
     this.sets$ = this.setService.getSetsOfMeal(this.authService.uid, this.meal);
   }
-  addSet(amount: number, setId: string) {
+  addSet(amount: number, setId: string, setCal: number) {
     const meal: DailyMeal = { mealId: '', setId, amount };
-    this.dailyInfoService.addMeal(meal, this.authService.uid, this.date);
+    this.dailyInfoService.addMeal(
+      meal,
+      this.authService.uid,
+      this.date,
+      'set',
+      setCal
+    );
   }
 
   outSet(setId: string) {

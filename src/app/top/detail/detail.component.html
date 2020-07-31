@@ -1,39 +1,133 @@
-<ng-container *ngIf="isTodayDailyInfo$ | async as isToday; else deafult">
-  今日は登録済み
-</ng-container>
-<ng-template #deafult
-  ><button (click)="createDailyInfo()" mat-stroked-button color="primary">
-    今日の情報を登録する
-  </button></ng-template
->
-
 <div *ngIf="dailyInfos$ | async as dailyInfos">
-  <div *ngFor="let dailyInfo of dailyInfos">
-    <div class="daily-card">
-      <mat-card>
-        <mat-card-title>{{ dailyInfo.date }}</mat-card-title>
-        <div class="wrapper">
+  <div class="grid">
+    <div *ngFor="let dailyInfo of dailyInfos; index as i">
+      <mat-card
+        class="card"
+        routerLink="/daily-detail"
+        [queryParams]="{ date: dailyInfo.date }"
+      >
+        <div class="wrap wrap--column">
+          <mat-card-title class="card__title">{{
+            dailyInfo.date
+          }}</mat-card-title>
           <mat-card-content>
-            <p class="daily-card__weight">
-              体重：{{ dailyInfo.currentWeight }} kg
+            <p class="card__weight">
+              体重：{{
+                dailyInfo.currentWeight ? dailyInfo.currentWeight : '----'
+              }}
+              kg
             </p>
-            <p class="daily-card__fat">
-              体脂肪率：{{ dailyInfo.currentFat }} %
+            <p class="card__fat">
+              体脂肪率：{{
+                dailyInfo.currentFat ? dailyInfo.currentFat : '----'
+              }}
+              %
             </p>
-            <p class="daily-card__cal">カロリー：2000kcal</p>
+            <p class="card__cal">
+              カロリー：{{
+                dailyInfo.totalCal ? (dailyInfo.totalCal | number: '1.1-1') : 0
+              }}kcal
+            </p>
           </mat-card-content>
-          <div class="spacer"></div>
-          <mat-card-actions>
-            <button
-              routerLink="/daily-detail"
-              [queryParams]="{ date: dailyInfo.date }"
-              mat-icon-button
-              color="primary"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-          </mat-card-actions>
         </div>
+        <div class="spacer"></div>
+        <mat-card-actions class="card__icons">
+          <div class="wrap">
+            <button
+              mat-icon-button
+              color="primar"
+              matTooltip="体重・体脂肪"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+              class="box"
+              (click)="$event.stopPropagation()"
+              routerLink="/update"
+              [queryParams]="{ date: dailyInfo.date }"
+            >
+              <img
+                class="icon"
+                [class.no-registration]="!dailyInfo.currentWeight"
+                src="/assets/images/scale.svg"
+                alt=""
+              />
+            </button>
+            <button
+              mat-icon-button
+              color="primar"
+              matTooltip="メモ"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+              class="box"
+              (click)="$event.stopPropagation()"
+              routerLink="/update"
+              [queryParams]="{ date: dailyInfo.date }"
+            >
+              <img
+                class="icon"
+                [class.no-registration]="
+                  !dailyInfo.currentWeight || dailyInfo.dailyMemo === ''
+                "
+                src="/assets/images/memo.svg
+            "
+                alt=""
+              />
+            </button>
+          </div>
+          <div class="wrap">
+            <button
+              mat-icon-button
+              color="primar"
+              matTooltip="朝食"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+              class="box"
+              (click)="$event.stopPropagation()"
+              routerLink="/editor-meal/search"
+              [queryParams]="{ date: dailyInfo.date, meal: 'breakfast' }"
+            >
+              <img
+                class="icon icon--breakfast"
+                [class.no-registration]="!dailyInfo.breakfastCal"
+                src="/assets/images/breakfast.svg
+            "
+                alt=""
+              />
+            </button>
+            <button
+              mat-icon-button
+              color="primar"
+              matTooltip="昼食"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+              class="box"
+              (click)="$event.stopPropagation()"
+              routerLink="/editor-meal/search"
+              [queryParams]="{ date: dailyInfo.date, meal: 'lunch' }"
+            >
+              <img
+                class="icon"
+                [class.no-registration]="!dailyInfo.lunchCal"
+                src="/assets/images/lunch.svg
+            "
+                alt=""
+              />
+            </button>
+            <button
+              mat-icon-button
+              color="primar"
+              matTooltip="夕食"
+              aria-label="Button that displays a tooltip when focused or hovered over"
+              class="box"
+              (click)="$event.stopPropagation()"
+              routerLink="/editor-meal/search"
+              [queryParams]="{ date: dailyInfo.date, meal: 'dinner' }"
+            >
+              <img
+                class="icon"
+                [class.no-registration]="!dailyInfo.dinnerCal"
+                src="/assets/images/dinner.svg
+            "
+                alt=""
+              />
+            </button>
+          </div>
+        </mat-card-actions>
       </mat-card>
     </div>
   </div>
