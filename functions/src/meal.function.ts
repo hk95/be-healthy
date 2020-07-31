@@ -16,19 +16,19 @@ export const addMeal = functions
             { totalCal: increment, breakfastCal: increment },
             { merge: true }
           )
-          .catch(() => console.log('success'))
+          .then(() => console.log('success'))
           .catch((err) => console.log(err));
         break;
       case 'lunch':
         db.doc(`users/${data.userId}/dailyInfos/${data.date}`)
           .set({ totalCal: increment, lunchCal: increment }, { merge: true })
-          .catch(() => console.log('success'))
+          .then(() => console.log('success'))
           .catch((err) => console.log(err));
         break;
       case 'dinner':
         db.doc(`users/${data.userId}/dailyInfos/${data.date}`)
           .set({ totalCal: increment, dinnerCal: increment }, { merge: true })
-          .catch(() => console.log('success'))
+          .then(() => console.log('success'))
           .catch((err) => console.log(err));
         break;
     }
@@ -43,19 +43,19 @@ export const removeMeal = functions
       case 'breakfast':
         db.doc(`users/${data.userId}/dailyInfos/${data.date}`)
           .update({ totalCal: decline, breakfastCal: decline })
-          .catch(() => console.log('success'))
+          .then(() => console.log('success'))
           .catch((err) => console.log(err));
         break;
       case 'lunch':
         db.doc(`users/${data.userId}/dailyInfos/${data.date}`)
           .update({ totalCal: decline, lunchCal: decline })
-          .catch(() => console.log('success'))
+          .then(() => console.log('success'))
           .catch((err) => console.log(err));
         break;
       case 'dinner':
         db.doc(`users/${data.userId}/dailyInfos/${data.date}`)
           .update({ totalCal: decline, dinnerCal: decline })
-          .catch(() => console.log('success'))
+          .then(() => console.log('success'))
           .catch((err) => console.log(err));
         break;
     }
