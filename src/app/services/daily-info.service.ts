@@ -52,6 +52,16 @@ export class DailyInfoService {
       .doc<DailyInfo>(`users/${authorId}/dailyInfos/${date}`)
       .valueChanges();
   }
+  getDailyInfosEveryWeek(
+    authorId: string,
+    dates: string[]
+  ): Observable<DailyInfo>[] {
+    return dates.map((date: string) => {
+      return this.db
+        .doc<DailyInfo>(`users/${authorId}/dailyInfos/${date}`)
+        .valueChanges();
+    });
+  }
 
   isTodayDailyInfo(userId: string, date: string): Observable<DailyInfo> {
     return this.db

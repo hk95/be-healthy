@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="calendar">
+    <mat-form-field>
+      <mat-label>日付を選択してください</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        (dateChange)="createGraphByChangingDate(today, $event)"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <h3>{{ graphTitle }}</h3>
+    <div class="nav">
+      <button>日</button>
+      <button>週</button>
+      <button>月</button>
+      <button>年</button>
+    </div>
+  </div>
+  <div class="graph">
+    <ngx-charts-line-chart
+      *ngIf="weightGraph"
+      (window:resize)="onResize($event)"
+      [view]="view"
+      [legendPosition]="legendPosition"
+      [scheme]="colorScheme"
+      [legend]="legend"
+      [legendTitle]="legendTitle"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="dataWeight"
+    >
+    </ngx-charts-line-chart>
+    <ngx-charts-line-chart
+      *ngIf="fatGraph"
+      (window:resize)="onResize($event)"
+      [view]="view"
+      [legendPosition]="legendPosition"
+      [scheme]="colorScheme"
+      [legend]="legend"
+      [legendTitle]="legendTitle"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="dataFat"
+    >
+    </ngx-charts-line-chart>
+    <ngx-charts-line-chart
+      *ngIf="totalCalGraph"
+      (window:resize)="onResize($event)"
+      [view]="view"
+      [legendPosition]="legendPosition"
+      [scheme]="colorScheme"
+      [legend]="legend"
+      [legendTitle]="legendTitle"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="dataTotalCal"
+    >
+    </ngx-charts-line-chart>
+  </div>
+  <div class="nav">
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="weightGraph ? 'primary' : 'black'"
+      (click)="changeTitle('weight')"
+    >
+      体重
+    </button>
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="fatGraph ? 'primary' : 'black'"
+      (click)="changeTitle('fat')"
+    >
+      体脂肪
+    </button>
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="totalCalGraph ? 'primary' : 'black'"
+      (click)="changeTitle('totalCal')"
+    >
+      カロリー
+    </button>
+  </div>
+</div>
