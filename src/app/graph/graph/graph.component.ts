@@ -24,6 +24,9 @@ export class GraphComponent implements OnInit, OnDestroy {
   today = new Date();
   dates: string[] = this.getDates(new Date());
   basicInfo: BasicInfo;
+  goalWeight = 0;
+  goalFat = 0;
+  goalCal = 0;
   dataWeight: any[] = [];
   dataFat: any[] = [];
   dataTotalCal: any[] = [];
@@ -77,7 +80,13 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
     this.basicInfoService
       .getBasicInfo(this.authService.uid)
-      .subscribe((info) => (this.basicInfo = info));
+      .subscribe((basicInfo) => {
+        if (basicInfo !== undefined) {
+          this.goalWeight = basicInfo.goalWeight;
+          this.goalFat = basicInfo.goalFat;
+          this.goalCal = basicInfo.goalCal;
+        }
+      });
     this.createGraphOfDay(this.today);
   }
   onResize(event) {
@@ -133,15 +142,15 @@ export class GraphComponent implements OnInit, OnDestroy {
             });
             this.goalWeightList.unshift({
               name: this.dates[index],
-              value: this.basicInfo.goalWeight ? this.basicInfo.goalWeight : 0,
+              value: this.goalWeight,
             });
             this.goalFatList.unshift({
               name: this.dates[index],
-              value: this.basicInfo.goalFat ? this.basicInfo.goalFat : 0,
+              value: this.goalFat,
             });
             this.goalTotalCalList.unshift({
               name: this.dates[index],
-              value: this.basicInfo.goalCal ? this.basicInfo.goalCal : 0,
+              value: this.goalCal,
             });
           } else {
             this.preWeight.unshift({
@@ -158,15 +167,15 @@ export class GraphComponent implements OnInit, OnDestroy {
             });
             this.goalWeightList.unshift({
               name: this.dates[index],
-              value: this.basicInfo.goalWeight ? this.basicInfo.goalWeight : 0,
+              value: this.goalWeight,
             });
             this.goalFatList.unshift({
               name: this.dates[index],
-              value: this.basicInfo.goalFat ? this.basicInfo.goalFat : 0,
+              value: this.goalFat,
             });
             this.goalTotalCalList.unshift({
               name: this.dates[index],
-              value: this.basicInfo.goalCal ? this.basicInfo.goalCal : 0,
+              value: this.goalCal,
             });
           }
 
@@ -262,9 +271,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalWeightList.unshift({
                         name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
-                        value: this.basicInfo.goalWeight
-                          ? this.basicInfo.goalWeight
-                          : 0,
+                        value: this.goalWeight,
                       });
                       break;
                     case 'fat':
@@ -274,9 +281,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalFatList.unshift({
                         name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
-                        value: this.basicInfo.goalFat
-                          ? this.basicInfo.goalFat
-                          : 0,
+                        value: this.goalFat,
                       });
                       break;
                     case 'cal':
@@ -287,9 +292,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalTotalCalList.unshift({
                         name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
-                        value: this.basicInfo.goalCal
-                          ? this.basicInfo.goalCal
-                          : 0,
+                        value: this.goalCal,
                       });
                       break;
                   }
@@ -379,9 +382,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalWeightList.unshift({
                         name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
-                        value: this.basicInfo.goalWeight
-                          ? this.basicInfo.goalWeight
-                          : 0,
+                        value: this.goalWeight,
                       });
                       break;
                     case 'fat':
@@ -391,9 +392,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalFatList.unshift({
                         name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
-                        value: this.basicInfo.goalFat
-                          ? this.basicInfo.goalFat
-                          : 0,
+                        value: this.goalFat,
                       });
                       break;
                     case 'cal':
@@ -404,9 +403,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalTotalCalList.unshift({
                         name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
-                        value: this.basicInfo.goalCal
-                          ? this.basicInfo.goalCal
-                          : 0,
+                        value: this.goalCal,
                       });
                       break;
                   }
@@ -489,9 +486,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalWeightList.unshift({
                         name: `${dataOfYear.year}年`,
-                        value: this.basicInfo.goalWeight
-                          ? this.basicInfo.goalWeight
-                          : 0,
+                        value: this.goalWeight,
                       });
                       break;
                     case 'fat':
@@ -501,9 +496,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalFatList.unshift({
                         name: `${dataOfYear.year}年`,
-                        value: this.basicInfo.goalFat
-                          ? this.basicInfo.goalFat
-                          : 0,
+                        value: this.goalFat,
                       });
                       break;
                     case 'cal':
@@ -514,9 +507,7 @@ export class GraphComponent implements OnInit, OnDestroy {
                       });
                       this.goalTotalCalList.unshift({
                         name: `${dataOfYear.year}年`,
-                        value: this.basicInfo.goalCal
-                          ? this.basicInfo.goalCal
-                          : 0,
+                        value: this.goalCal,
                       });
                       break;
                   }
