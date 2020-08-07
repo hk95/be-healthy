@@ -469,10 +469,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       date = event.value;
     }
     this.averageService
-      .getAveragesOfYear(
-        this.authService.uid,
-        this.datePipe.transform(date, 'yy.MM.dd(E)')
-      )
+      .getAveragesOfYear(this.authService.uid)
       .subscribe(
         (
           datasOfYearList: [AverageOfYear[], AverageOfYear[], AverageOfYear[]]
