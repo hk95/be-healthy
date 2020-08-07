@@ -30,11 +30,8 @@ export class AverageService {
   }
 
   getAveragesOfYear(
-    userId: string,
-    date: string
+    userId: string
   ): Observable<[AverageOfYear[], AverageOfYear[], AverageOfYear[]]> {
-    const allDataOfDate = this.getAllDataOfDate(date);
-    const year = moment(allDataOfDate).year();
     const getAverages = (category: string) => {
       return this.db
         .collection<AverageOfYear>(`users/${userId}/averagesYear`, (ref) =>
@@ -51,9 +48,6 @@ export class AverageService {
     userId: string,
     date: string
   ): Observable<[AverageOfMonth[], AverageOfMonth[], AverageOfMonth[]]> {
-    const allDataOfDate = this.getAllDataOfDate(date);
-    const year = moment(allDataOfDate).year();
-    const month = moment(allDataOfDate).month();
     const getAverages = (category: string) => {
       return this.db
         .collection<AverageOfMonth>(`users/${userId}/averagesMonth`, (ref) =>
@@ -75,14 +69,7 @@ export class AverageService {
     userId: string,
     date: string
   ): Observable<[AverageOfWeek[], AverageOfWeek[], AverageOfWeek[]]> {
-    console.log(date);
-
-    const allDataOfDate = this.getAllDataOfDate(date);
-    const year = moment(allDataOfDate).year();
-    const week = moment(allDataOfDate).week();
     const getAverages = (category: string): Observable<any[]> => {
-      console.log(category);
-
       return this.db
         .collection<AverageOfWeek>(`users/${userId}/averagesWeek`, (ref) =>
           ref
@@ -105,9 +92,12 @@ export class AverageService {
     currentWeight: number,
     currentFat: number
   ) {
-    const bodyOfYear = this.fns.httpsCallable('bodyOfYear');
-    const bodyOfMonth = this.fns.httpsCallable('bodyOfMonth');
-    const bodyOfWeek = this.fns.httpsCallable('bodyOfWeek');
+    const weightOfYear = this.fns.httpsCallable('averageWeightOfYear');
+    const fatOfYear = this.fns.httpsCallable('averageFatOfYear');
+    const weightOfMonth = this.fns.httpsCallable('averageWeightOfMonth');
+    const fatOfMonth = this.fns.httpsCallable('averageFatOfMonth');
+    const weightOfWeek = this.fns.httpsCallable('averageWeightOfWeek');
+    const fatOfWeek = this.fns.httpsCallable('averageFatOfWeek');
 
     const allDataOfDate = this.getAllDataOfDate(date);
 
@@ -181,22 +171,42 @@ export class AverageService {
         },
         { merge: true }
       );
-
-    bodyOfWeek({
+    weightOfYear({
       userId,
       year,
       month,
       week,
       date,
     }).toPromise();
-    bodyOfMonth({
+    weightOfMonth({
       userId,
       year,
       month,
       week,
       date,
     }).toPromise();
-    return bodyOfYear({
+    weightOfWeek({
+      userId,
+      year,
+      month,
+      week,
+      date,
+    }).toPromise();
+    fatOfYear({
+      userId,
+      year,
+      month,
+      week,
+      date,
+    }).toPromise();
+    fatOfWeek({
+      userId,
+      year,
+      month,
+      week,
+      date,
+    }).toPromise();
+    return fatOfMonth({
       userId,
       year,
       month,
@@ -206,9 +216,9 @@ export class AverageService {
   }
 
   async averageTotalCal(userId: string, date: string) {
-    const callableOfYear = this.fns.httpsCallable('calOfYear');
-    const callableOfMonth = this.fns.httpsCallable('calOfMonth');
-    const callableOfWeek = this.fns.httpsCallable('calOfWeek');
+    const callableOfYear = this.fns.httpsCallable('averageCalOfYear');
+    const callableOfMonth = this.fns.httpsCallable('averageCalOfMonth');
+    const callableOfWeek = this.fns.httpsCallable('averageCalOfWeek');
 
     const allDataOfDate = this.getAllDataOfDate(date);
     await this.db
