@@ -41,7 +41,7 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     this.favFoods$.subscribe((foods: Food[]) => {
       this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
     });
-    this.routerSub = router.events.subscribe((event) => {
+    this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
         console.log(this.date, 'ts');
