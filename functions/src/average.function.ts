@@ -188,5 +188,5 @@ export const averageCalOfWeek = functions
     memory: '2GB',
   })
   .https.onCall(async (data) => {
-    aggregateAverageOfWeek('体脂肪', data.userId, data.year, data.week);
+    aggregateAverageOfWeek('カロリー', data.userId, data.year, data.week);
   });
