@@ -39,11 +39,13 @@ export class GraphComponent implements OnInit, OnDestroy {
   weightGraph = true;
   fatGraph = false;
   totalCalGraph = false;
-  // options
+
   view = [];
   legend = false;
   legendPosition = 'below';
-  legendTitle = '';
+  legendWeight = '体重';
+  legendFat = '体脂肪';
+  legendTotalCal = '摂取カロリー';
   showLabels = true;
   animations = true;
   xAxis = true;
@@ -55,7 +57,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   timeline = true;
 
   colorScheme = {
-    domain: ['#5AA454', '#000000'],
+    domain: ['#009688', '#FB8C00'],
   };
   constructor(
     private mainShellService: MainShellService,
@@ -66,8 +68,12 @@ export class GraphComponent implements OnInit, OnDestroy {
     private averageService: AverageService
   ) {
     this.mainShellService.setTitle('グラフ');
-    if (innerWidth < 500) {
-      this.view = [innerWidth / 1, innerWidth / 1];
+    this.view = [innerWidth / 1, innerWidth / 1];
+    if (innerWidth > 750) {
+      this.view = [innerWidth / 3.5, innerWidth / 3.5];
+      this.fatGraph = true;
+      this.totalCalGraph = true;
+      this.legend = true;
     }
     this.basicInfoService
       .getBasicInfo(this.authService.uid)
