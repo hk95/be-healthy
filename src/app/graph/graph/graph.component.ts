@@ -563,7 +563,22 @@ export class GraphComponent implements OnInit, OnDestroy {
         }
       );
   }
-
+  createGraphByChangingDate(event: MatDatepickerInputEvent<Date>) {
+    switch (this.typeOfGraph) {
+      case 'day':
+        this.createGraphOfDay(this.today, event);
+        break;
+      case 'week':
+        this.createGraphOfWeek(this.today, event);
+        break;
+      case 'month':
+        this.createGraphOfMonth(this.today, event);
+        break;
+      case 'year':
+        this.createGraphOfYear(this.today, event);
+        break;
+    }
+  }
   ngOnInit(): void {}
   ngOnDestroy(): void {}
 }
