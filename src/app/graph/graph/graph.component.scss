@@ -1,8 +1,12 @@
 h3 {
   margin: 0;
   font-weight: normal;
-  margin-right: 32px;
   font-size: 16px;
+  text-align: center;
+  margin-bottom: 8px;
+  @media (min-width: 480px) {
+    margin-bottom: 32px;
+  }
 }
 .graph {
   width: 100%;
@@ -11,17 +15,30 @@ h3 {
   align-items: center;
 }
 .nav {
-  text-align: center;
-  &__button {
-    margin-right: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: grid;
+  gap: 8px;
+  &--date {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-bottom: 8px;
+    @media (min-width: 480px) {
+      margin-bottom: 48px;
+    }
+  }
+  &--category {
+    margin-top: -48px;
+    grid-template-columns: 1fr 1fr 1fr;
+    @media (min-width: 480px) {
+      margin-top: -16px;
+    }
+  }
+  @media (min-width: 480px) {
+    gap: 16px;
   }
 }
 .calendar {
   margin: 16px auto;
   display: flex;
   justify-content: center;
-}
-.row {
-  display: flex;
-  margin-bottom: 8px;
 }

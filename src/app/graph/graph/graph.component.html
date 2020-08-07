@@ -5,20 +5,47 @@
       <input
         matInput
         [matDatepicker]="picker"
-        (dateChange)="createGraphByChangingDate(today, $event)"
+        (dateChange)="createGraphByChangingDate($event)"
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </div>
-  <div class="row">
-    <h3>{{ graphTitle }}</h3>
-    <div class="nav">
-      <button>日</button>
-      <button>週</button>
-      <button>月</button>
-      <button>年</button>
-    </div>
+
+  <h3>{{ graphTitle }}</h3>
+  <div class="nav nav--date">
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="typeOfGraph === 'day' ? 'primary' : 'black'"
+      (click)="createGraphOfDay(today)"
+    >
+      日
+    </button>
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="typeOfGraph === 'week' ? 'primary' : 'black'"
+      (click)="createGraphOfWeek(today)"
+    >
+      週
+    </button>
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="typeOfGraph === 'month' ? 'primary' : 'black'"
+      (click)="createGraphOfMonth(today)"
+    >
+      月
+    </button>
+    <button
+      class="nav__button"
+      mat-stroked-button
+      [color]="typeOfGraph === 'year' ? 'primary' : 'black'"
+      (click)="createGraphOfYear(today)"
+    >
+      年
+    </button>
   </div>
   <div class="graph">
     <ngx-charts-line-chart
@@ -76,7 +103,7 @@
     >
     </ngx-charts-line-chart>
   </div>
-  <div class="nav">
+  <div class="nav nav--category">
     <button
       class="nav__button"
       mat-stroked-button
