@@ -24,7 +24,8 @@
 
         <button
           class="card__button"
-          [routerLink]="['/update', dailyInfo.date]"
+          routerLink="/update"
+          [queryParams]="{ date: date }"
           mat-icon-button
           color="primary"
         >
