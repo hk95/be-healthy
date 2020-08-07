@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -7,13 +7,19 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';
 import * as moment from 'moment';
+import { AverageService } from 'src/app/services/average.service';
+import {
+  AverageOfMonth,
+  AverageOfYear,
+  AverageOfWeek,
+} from 'src/app/interfaces/average';
 
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.scss'],
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnInit, OnDestroy {
   events: string[] = [];
   today = new Date();
   dates: string[] = this.getDates(new Date());
@@ -29,6 +35,7 @@ export class GraphComponent implements OnInit {
   goalFatList = [];
   goalTotalCalList = [];
   graphTitle = '体重';
+  typeOfGraph = 'day';
   weightGraph = true;
   fatGraph = false;
   totalCalGraph = false;
@@ -55,7 +62,8 @@ export class GraphComponent implements OnInit {
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
     private datePipe: DatePipe,
-    private basicInfoService: BasicInfoService
+    private basicInfoService: BasicInfoService,
+    private averageService: AverageService
   ) {
     this.mainShellService.setTitle('グラフ');
     if (innerWidth < 500) {
@@ -64,7 +72,7 @@ export class GraphComponent implements OnInit {
     this.basicInfoService
       .getBasicInfo(this.authService.uid)
       .subscribe((info) => (this.basicInfo = info));
-    this.createGraphByChangingDate(this.today);
+    this.createGraphOfDay(this.today);
   }
   onResize(event) {
     if (event.target.innerWidth < 500) {
@@ -83,10 +91,9 @@ export class GraphComponent implements OnInit {
       return preDates;
     }
   }
-  createGraphByChangingDate(
-    initialDate: Date,
-    event?: MatDatepickerInputEvent<Date>
-  ) {
+
+  createGraphOfDay(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+    this.typeOfGraph = 'day';
     this.dates = [];
     this.preWeight = [];
     this.preFat = [];
@@ -180,7 +187,7 @@ export class GraphComponent implements OnInit {
             ];
             this.dataTotalCal = [
               {
-                name: 'カロリー (kg)',
+                name: 'カロリー (kcal)',
                 series: [...this.preTotalCal],
               },
               {
@@ -214,5 +221,349 @@ export class GraphComponent implements OnInit {
         break;
     }
   }
+  createGraphOfWeek(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+    this.typeOfGraph = 'week';
+    let date = initialDate;
+    this.preWeight = [];
+    this.preFat = [];
+    this.preTotalCal = [];
+    this.goalWeightList = [];
+    this.goalFatList = [];
+    this.goalTotalCalList = [];
+    if (event) {
+      date = event.value;
+    }
+    this.averageService
+      .getAveragesOfWeek(
+        this.authService.uid,
+        this.datePipe.transform(date, 'yy.MM.dd(E)')
+      )
+      .subscribe(
+        (datasOfWeeks: [AverageOfWeek[], AverageOfWeek[], AverageOfWeek[]]) => {
+          if (datasOfWeeks !== undefined) {
+            datasOfWeeks.forEach((dataOfWeeks: AverageOfWeek[], i) => {
+              console.log(dataOfWeeks.length, 'dataOfWeeks');
+
+              dataOfWeeks.forEach((dataOfWeek: AverageOfWeek, j) => {
+                if (dataOfWeek !== undefined) {
+                  switch (dataOfWeek.category) {
+                    case 'weight':
+                      console.log(dataOfWeek, i);
+
+                      this.preWeight.unshift({
+                        name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
+                        value: dataOfWeek.averageOfWeek,
+                      });
+                      this.goalWeightList.unshift({
+                        name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
+                        value: this.basicInfo.goalWeight
+                          ? this.basicInfo.goalWeight
+                          : 0,
+                      });
+                      break;
+                    case 'fat':
+                      this.preFat.unshift({
+                        name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
+                        value: dataOfWeek.averageOfWeek,
+                      });
+                      this.goalFatList.unshift({
+                        name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
+                        value: this.basicInfo.goalFat
+                          ? this.basicInfo.goalFat
+                          : 0,
+                      });
+                      break;
+                    case 'cal':
+                      console.log(dataOfWeek, i, j);
+                      this.preTotalCal.unshift({
+                        name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
+                        value: dataOfWeek.averageOfWeek,
+                      });
+                      this.goalTotalCalList.unshift({
+                        name: `${dataOfWeek.year}-${dataOfWeek.week}週`,
+                        value: this.basicInfo.goalCal
+                          ? this.basicInfo.goalCal
+                          : 0,
+                      });
+                      break;
+                  }
+                }
+                console.log(i, j);
+
+                if (
+                  i === datasOfWeeks.length - 1 &&
+                  j === dataOfWeeks.length - 1
+                ) {
+                  console.log(this.preWeight);
+
+                  this.dataWeight = [
+                    {
+                      name: '体重 (kg)',
+                      series: [...this.preWeight],
+                    },
+                    {
+                      name: '目標体重 (kg)',
+                      series: [...this.goalWeightList],
+                    },
+                  ];
+                  this.dataFat = [
+                    {
+                      name: '体脂肪 (%)',
+                      series: [...this.preFat],
+                    },
+                    {
+                      name: '目標体脂肪 (%)',
+                      series: [...this.goalFatList],
+                    },
+                  ];
+                  this.dataTotalCal = [
+                    {
+                      name: 'カロリー (kcal)',
+                      series: [...this.preTotalCal],
+                    },
+                    {
+                      name: '目標カロリー (kcal)',
+                      series: [...this.goalTotalCalList],
+                    },
+                  ];
+                }
+              });
+            });
+          }
+        }
+      );
+  }
+  createGraphOfMonth(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+    this.typeOfGraph = 'month';
+    let date = initialDate;
+    this.preWeight = [];
+    this.preFat = [];
+    this.preTotalCal = [];
+    this.goalWeightList = [];
+    this.goalFatList = [];
+    this.goalTotalCalList = [];
+    if (event) {
+      date = event.value;
+    }
+    this.averageService
+      .getAveragesOfMonth(
+        this.authService.uid,
+        this.datePipe.transform(date, 'yy.MM.dd(E)')
+      )
+      .subscribe(
+        (
+          datasOfMonthList: [
+            AverageOfMonth[],
+            AverageOfMonth[],
+            AverageOfMonth[]
+          ]
+        ) => {
+          if (datasOfMonthList !== undefined) {
+            console.log(datasOfMonthList);
+
+            datasOfMonthList.forEach((dataOfMonthList: AverageOfMonth[], i) => {
+              dataOfMonthList.forEach((dataOfMonth: AverageOfMonth, j) => {
+                if (dataOfMonth !== undefined) {
+                  switch (dataOfMonth.category) {
+                    case 'weight':
+                      console.log(dataOfMonth, i);
+                      this.preWeight.unshift({
+                        name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
+                        value: dataOfMonth.averageOfMonth,
+                      });
+                      this.goalWeightList.unshift({
+                        name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
+                        value: this.basicInfo.goalWeight
+                          ? this.basicInfo.goalWeight
+                          : 0,
+                      });
+                      break;
+                    case 'fat':
+                      this.preFat.unshift({
+                        name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
+                        value: dataOfMonth.averageOfMonth,
+                      });
+                      this.goalFatList.unshift({
+                        name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
+                        value: this.basicInfo.goalFat
+                          ? this.basicInfo.goalFat
+                          : 0,
+                      });
+                      break;
+                    case 'cal':
+                      console.log(dataOfMonth, i, j);
+                      this.preTotalCal.unshift({
+                        name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
+                        value: dataOfMonth.averageOfMonth,
+                      });
+                      this.goalTotalCalList.unshift({
+                        name: `${dataOfMonth.year}-${dataOfMonth.month}月`,
+                        value: this.basicInfo.goalCal
+                          ? this.basicInfo.goalCal
+                          : 0,
+                      });
+                      break;
+                  }
+                }
+                console.log(i, j);
+
+                if (
+                  i === datasOfMonthList.length - 1 &&
+                  j === dataOfMonthList.length - 1
+                ) {
+                  console.log(this.preWeight);
+
+                  this.dataWeight = [
+                    {
+                      name: '体重 (kg)',
+                      series: [...this.preWeight],
+                    },
+                    {
+                      name: '目標体重 (kg)',
+                      series: [...this.goalWeightList],
+                    },
+                  ];
+                  this.dataFat = [
+                    {
+                      name: '体脂肪 (%)',
+                      series: [...this.preFat],
+                    },
+                    {
+                      name: '目標体脂肪 (%)',
+                      series: [...this.goalFatList],
+                    },
+                  ];
+                  this.dataTotalCal = [
+                    {
+                      name: 'カロリー (kcal)',
+                      series: [...this.preTotalCal],
+                    },
+                    {
+                      name: '目標カロリー (kcal)',
+                      series: [...this.goalTotalCalList],
+                    },
+                  ];
+                }
+              });
+            });
+          }
+        }
+      );
+  }
+  createGraphOfYear(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+    this.typeOfGraph = 'year';
+    let date = initialDate;
+    this.preWeight = [];
+    this.preFat = [];
+    this.preTotalCal = [];
+    this.goalWeightList = [];
+    this.goalFatList = [];
+    this.goalTotalCalList = [];
+    if (event) {
+      date = event.value;
+    }
+    this.averageService
+      .getAveragesOfYear(
+        this.authService.uid,
+        this.datePipe.transform(date, 'yy.MM.dd(E)')
+      )
+      .subscribe(
+        (
+          datasOfYearList: [AverageOfYear[], AverageOfYear[], AverageOfYear[]]
+        ) => {
+          if (datasOfYearList !== undefined) {
+            console.log(datasOfYearList);
+
+            datasOfYearList.forEach((dataOfYearList: AverageOfYear[], i) => {
+              dataOfYearList.forEach((dataOfYear: AverageOfYear, j) => {
+                if (dataOfYear !== undefined) {
+                  switch (dataOfYear.category) {
+                    case 'weight':
+                      console.log(dataOfYear, i);
+                      this.preWeight.unshift({
+                        name: `${dataOfYear.year}年`,
+                        value: dataOfYear.averageOfYear,
+                      });
+                      this.goalWeightList.unshift({
+                        name: `${dataOfYear.year}年`,
+                        value: this.basicInfo.goalWeight
+                          ? this.basicInfo.goalWeight
+                          : 0,
+                      });
+                      break;
+                    case 'fat':
+                      this.preFat.unshift({
+                        name: `${dataOfYear.year}年`,
+                        value: dataOfYear.averageOfYear,
+                      });
+                      this.goalFatList.unshift({
+                        name: `${dataOfYear.year}年`,
+                        value: this.basicInfo.goalFat
+                          ? this.basicInfo.goalFat
+                          : 0,
+                      });
+                      break;
+                    case 'cal':
+                      console.log(dataOfYear, i, j);
+                      this.preTotalCal.unshift({
+                        name: `${dataOfYear.year}年`,
+                        value: dataOfYear.averageOfYear,
+                      });
+                      this.goalTotalCalList.unshift({
+                        name: `${dataOfYear.year}年`,
+                        value: this.basicInfo.goalCal
+                          ? this.basicInfo.goalCal
+                          : 0,
+                      });
+                      break;
+                  }
+                }
+                console.log(i, j);
+
+                if (
+                  i === datasOfYearList.length - 1 &&
+                  j === dataOfYearList.length - 1
+                ) {
+                  console.log(this.preWeight);
+
+                  this.dataWeight = [
+                    {
+                      name: '体重 (kg)',
+                      series: [...this.preWeight],
+                    },
+                    {
+                      name: '目標体重 (kg)',
+                      series: [...this.goalWeightList],
+                    },
+                  ];
+                  this.dataFat = [
+                    {
+                      name: '体脂肪 (%)',
+                      series: [...this.preFat],
+                    },
+                    {
+                      name: '目標体脂肪 (%)',
+                      series: [...this.goalFatList],
+                    },
+                  ];
+                  this.dataTotalCal = [
+                    {
+                      name: 'カロリー (kcal)',
+                      series: [...this.preTotalCal],
+                    },
+                    {
+                      name: '目標カロリー (kcal)',
+                      series: [...this.goalTotalCalList],
+                    },
+                  ];
+                }
+              });
+            });
+          }
+        }
+      );
+  }
+
   ngOnInit(): void {}
+  ngOnDestroy(): void {}
 }
