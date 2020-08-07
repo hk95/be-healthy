@@ -12,7 +12,7 @@
     </mat-form-field>
   </div>
 
-  <h3>{{ graphTitle }}</h3>
+  <h3 *ngIf="!legend">{{ graphTitle }}</h3>
   <div class="nav nav--date">
     <button
       class="nav__button"
@@ -55,7 +55,7 @@
       [legendPosition]="legendPosition"
       [scheme]="colorScheme"
       [legend]="legend"
-      [legendTitle]="legendTitle"
+      [legendTitle]="legendWeight"
       [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel"
       [xAxis]="xAxis"
@@ -73,7 +73,7 @@
       [legendPosition]="legendPosition"
       [scheme]="colorScheme"
       [legend]="legend"
-      [legendTitle]="legendTitle"
+      [legendTitle]="legendFat"
       [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel"
       [xAxis]="xAxis"
@@ -91,7 +91,7 @@
       [legendPosition]="legendPosition"
       [scheme]="colorScheme"
       [legend]="legend"
-      [legendTitle]="legendTitle"
+      [legendTitle]="legendTotalCal"
       [showXAxisLabel]="showXAxisLabel"
       [showYAxisLabel]="showYAxisLabel"
       [xAxis]="xAxis"
@@ -103,7 +103,7 @@
     >
     </ngx-charts-line-chart>
   </div>
-  <div class="nav nav--category">
+  <div class="nav nav--category" *ngIf="!legend">
     <button
       class="nav__button"
       mat-stroked-button
