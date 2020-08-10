@@ -1,13 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute } from '@angular/router';
 
-import { switchMap, take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs';
 import { DailyInfo } from 'src/app/interfaces/daily-info';
 import { Location } from '@angular/common';
+import { AverageService } from 'src/app/services/average.service';
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
@@ -29,7 +29,8 @@ export class UpdateComponent implements OnInit {
     private dailyInfoService: DailyInfoService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private location: Location
+    private location: Location,
+    private averageService: AverageService
   ) {
     this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
@@ -55,6 +56,12 @@ export class UpdateComponent implements OnInit {
       dailyMemo: formData.dailyMemo,
       authorId: this.authService.uid,
     });
+    this.averageService.averageWeightAndFat(
+      this.authService.uid,
+      this.date,
+      formData.currentWeight,
+      formData.currentFat
+    );
   }
   back() {
     this.location.back();

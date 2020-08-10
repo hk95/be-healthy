@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FoodService } from 'src/app/services/food.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
 import { Food } from 'src/app/interfaces/food';
 import { DailyMeal } from 'src/app/interfaces/daily-info';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FavFood } from 'src/app/interfaces/fav-food';
+import { AverageService } from 'src/app/services/average.service';
 
 @Component({
   selector: 'app-food-search',
   templateUrl: './food-search.component.html',
   styleUrls: ['./food-search.component.scss'],
 })
-export class FoodSearchComponent implements OnInit {
+export class FoodSearchComponent implements OnInit, OnDestroy {
   amount = {};
   date: string;
   meal: string;
@@ -23,13 +24,15 @@ export class FoodSearchComponent implements OnInit {
   );
   isLikedlist = [];
   config = this.searchService.config;
-
+  routerSub: Subscription;
   constructor(
     private foodService: FoodService,
     private authService: AuthService,
     private dailyInfoService: DailyInfoService,
     private route: ActivatedRoute,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
+    private averageService: AverageService
   ) {
     this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
@@ -37,6 +40,12 @@ export class FoodSearchComponent implements OnInit {
     });
     this.favFoods$.subscribe((foods: Food[]) => {
       this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
+    });
+    this.routerSub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.averageService.averageTotalCal(this.authService.uid, this.date);
+        console.log(this.date, 'ts');
+      }
     });
   }
 
@@ -62,4 +71,7 @@ export class FoodSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+  ngOnDestroy() {
+    this.routerSub.unsubscribe();
+  }
 }
