@@ -1,57 +1,79 @@
 .welcome {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
+  overflow: hidden;
+  max-width: 900px;
+  padding: 112px 24px 24px 24px;
+  display: grid;
+  row-gap: 64px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    'catcopy image'
+    'text image'
+    'button image';
+  background: #fafafa;
+  @media screen and (max-width: 750px) {
+    gap: 16px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 160px 1fr 1fr 40px;
+    grid-template-areas:
+      'catcopy'
+      'image'
+      'text'
+      'button';
+    padding: 32px 24px;
+  }
 
-  background: linear-gradient(45deg, #6abebc, #009688, #02a196);
-  height: 100%;
+  &__catcopy {
+    grid-area: catcopy;
+    align-self: end;
+    margin: 0;
+    font-size: 35px;
+    color: #737373;
+    width: 100%;
+    line-height: 1.5;
+  }
   &__text {
-    margin-top: 0;
-    margin-bottom: 160px;
-    color: white;
-    font-size: 30px;
+    width: 100%;
+    margin: 0;
+    align-self: center;
+    color: #737373;
+    font-size: 22px;
+    grid-area: text;
   }
   &__button {
     height: 40px;
+    max-width: 200px;
     cursor: pointer;
-    border-width: 0;
-    background: white;
+    // border-width: 0;
+
     color: #737373;
-    border-radius: 5px;
     white-space: nowrap;
-    box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, 0.05);
-    transition-property: background-color, box-shadow;
-    transition-duration: 150ms;
-    transition-timing-function: ease-in-out;
-    padding: 0;
 
-    &:focus,
-    &:hover {
-      box-shadow: 1px 4px 5px 1px rgba(0, 0, 0, 0.1);
-    }
-
-    &:active {
-      background-color: #e5e5e5;
-      box-shadow: none;
-      transition-duration: 10ms;
+    grid-area: button;
+    @media screen and (max-width: 750px) {
+      justify-self: center;
     }
   }
-
   &__button-icon {
     display: inline-block;
     vertical-align: middle;
-    margin: 8px 0 8px 8px;
-    width: 18px;
+    margin-right: 8px;
     height: 18px;
     box-sizing: border-box;
   }
   &__button-text {
     display: inline-block;
     vertical-align: middle;
-    padding: 0 24px;
     font-size: 14px;
     font-weight: bold;
     font-family: 'Roboto', arial, sans-serif;
+  }
+  &__image {
+    grid-area: image;
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    max-width: 380px;
   }
 }
