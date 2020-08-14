@@ -1,11 +1,11 @@
-<mat-toolbar color="primary">
+<mat-toolbar>
   <mat-toolbar-row class="header">
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
+    <button class="logo" routerLink="/">
+      <img class="logo__image" src="/assets/images/logo.svg" alt="" />
     </button>
 
     <ng-container *ngIf="!selectedValue"
-      ><h1>{{ title$ | async }}</h1></ng-container
+      ><h1 class="title">{{ title$ | async }}</h1></ng-container
     >
     <div class="header__wrapper">
       <ng-container *ngIf="selectedValue">
@@ -35,25 +35,28 @@
           </mat-select>
         </mat-form-field></ng-container
       >
+    </div>
+    <!-- プロフィール  -->
 
-      <!-- プロフィール  -->
-
-      <div class="mypage">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <img
-            *ngIf="avatarURL"
-            [src]="avatarURL"
-            alt="avatar"
-            class="avatarImage"
-          />
+    <div class="mypage">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <img
+          *ngIf="avatarURL"
+          [src]="avatarURL"
+          alt="avatar"
+          class="avatar-image"
+        />
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>login</mat-icon>
+          <span>ログアウト</span>
         </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>login</mat-icon>
-            <span>ログアウト</span>
-          </button>
-        </mat-menu>
-      </div>
+        <button mat-menu-item>
+          <mat-icon>support</mat-icon>
+          <span>開発者を応援する</span>
+        </button>
+      </mat-menu>
     </div>
   </mat-toolbar-row></mat-toolbar
 >

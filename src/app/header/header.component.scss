@@ -1,15 +1,33 @@
+@import '~@angular/material/theming';
 .header {
-  display: flex;
-  justify-content: space-between;
+  @include mat-elevation(1);
+  display: grid;
+  grid-template-columns: 70px 1fr 1fr 50px;
+  row-gap: 4px;
+  grid-template-areas: 'logo title title icon';
   &__wrapper {
-    display: flex;
+    grid-area: title;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
     align-items: center;
+    justify-items: center;
+    z-index: 20;
   }
 }
-.other-title {
-  margin-right: 8px;
+.title {
+  grid-area: title;
+  justify-self: center;
+  text-align: center;
 }
-.avatarImage {
+.other-title {
+  font-size: 15px;
+}
+.mypage {
+  grid-area: icon;
+  justify-self: end;
+}
+.avatar-image {
   border-radius: 50%;
   width: 40px;
   background: center/cover;
@@ -24,4 +42,17 @@
 
 :host ::ng-deep .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
   transform: none;
+}
+
+.logo {
+  margin: 0;
+  justify-self: start;
+  outline: none;
+  cursor: pointer;
+  border: 0px;
+  background: none;
+  grid-area: logo;
+  &__image {
+    height: 50px;
+  }
 }
