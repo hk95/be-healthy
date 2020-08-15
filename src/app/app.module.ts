@@ -36,6 +36,11 @@ import { ConfirmRecipeComponent } from './dialogs/confirm-recipe/confirm-recipe.
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
 
 registerLocaleData(localeJa);
 FullCalendarModule.registerPlugins([dayGridPlugin]);
@@ -74,6 +79,11 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     NgAisModule.forRoot(),
     MatSelectModule,
     FormsModule,
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
   ],
   providers: [
     DatePipe,
