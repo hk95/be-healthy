@@ -1,42 +1,86 @@
 <mat-toolbar>
   <mat-toolbar-row class="header">
-    <button class="logo" routerLink="/">
+    <div class="logo" routerLink="/">
       <img class="logo__image" src="/assets/images/logo.svg" alt="" />
-    </button>
+    </div>
 
-    <ng-container *ngIf="!selectedValue"
-      ><h1 class="title">{{ title$ | async }}</h1></ng-container
-    >
+    <ng-container *ngIf="!selectedValue">
+      <h1 class="title" *ngIf="!(title$ | async).includes('2')">
+        {{ title$ | async }}
+      </h1>
+      <h1
+        *ngIf="(title$ | async).includes('2')"
+        class="title title--date"
+        (click)="picker.open()"
+      >
+        {{ title$ | async }}
+      </h1>
+      <mat-form-field class="example-full-width" style="display: none;">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          (dateChange)="changeDate($event)"
+        />
+
+        <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
+      </mat-form-field>
+    </ng-container>
     <div class="header__wrapper">
       <ng-container *ngIf="selectedValue">
-        <h1 class="other-title">
+        <h1 class="other-title" (click)="picker.open()">
           {{ title$ | async }}
         </h1>
 
-        <mat-form-field
-          *ngIf="selectedValue"
-          class="field mat-select-arrow-wrapper"
-          appearance="fill"
-        >
-          <mat-select
-            [value]="selectedValue"
-            class="select"
-            (selectionChange)="chanageMeal($event.value)"
-          >
-            <mat-option value="breakfast">
-              朝食
-            </mat-option>
-            <mat-option value="lunch">
-              昼食
-            </mat-option>
-            <mat-option value="dinner">
-              夕食
-            </mat-option>
-          </mat-select>
-        </mat-form-field></ng-container
-      >
+        <mat-form-field class="example-full-width" style="display: none;">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            (dateChange)="changeDate($event)"
+          />
+
+          <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
+        </mat-form-field>
+        <button class="meal" mat-button [matMenuTriggerFor]="meal">
+          {{ mealTitle }}<mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #meal="matMenu">
+          <button mat-menu-item (click)="chanageMeal('breakfast')">
+            朝食
+          </button>
+          <button mat-menu-item (click)="chanageMeal('lunch')">
+            昼食
+          </button>
+          <button mat-menu-item (click)="chanageMeal('dinner')">
+            夕食
+          </button>
+        </mat-menu>
+      </ng-container>
     </div>
-    <!-- プロフィール  -->
+
+    <div class="navs">
+      <button
+        [style.opacity]="(title$ | async) === 'グラフ' ? 1 : 0.3"
+        mat-icon-button
+        color="primary"
+        matTooltip="グラフ"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        class="navs__item"
+        routerLink="/graph"
+      >
+        <mat-icon>show_chart</mat-icon>
+      </button>
+      <button
+        [style.opacity]="(title$ | async) === 'My Menu' ? 1 : 0.3"
+        mat-icon-button
+        color="primary"
+        matTooltip="マイメニュー"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        class="navs__item"
+        routerLink="/menu"
+      >
+        <mat-icon>menu_book</mat-icon>
+      </button>
+    </div>
 
     <div class="mypage">
       <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -52,11 +96,15 @@
           <mat-icon>login</mat-icon>
           <span>ログアウト</span>
         </button>
+        <button mat-menu-item *ngIf="more" routerLink="/more">
+          <mat-icon>more_horiz</mat-icon>
+          <span>その他</span>
+        </button>
         <button mat-menu-item>
           <mat-icon>support</mat-icon>
           <span>開発者を応援する</span>
         </button>
       </mat-menu>
     </div>
-  </mat-toolbar-row></mat-toolbar
->
+  </mat-toolbar-row>
+</mat-toolbar>
