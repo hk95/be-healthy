@@ -28,25 +28,26 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
+      this.selectedFoodsOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
+        this.authService.uid,
+        this.date,
+        this.meal
+      );
+      this.totalCal$ = this.selectedFoodsOrSets$.pipe(
+        switchMap((meals) => {
+          let currentcal = 0;
+          meals.forEach((meal) => {
+            if (meal.set.setCal) {
+              return (currentcal += meal.set.setCal * meal.amount);
+            } else if (meal.food.foodCalPerAmount) {
+              return (currentcal += meal.food.foodCalPerAmount * meal.amount);
+            }
+          });
+          return of(currentcal);
+        })
+      );
     });
-    this.selectedFoodsOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
-      this.authService.uid,
-      this.date,
-      this.meal
-    );
-    this.totalCal$ = this.selectedFoodsOrSets$.pipe(
-      switchMap((meals) => {
-        let currentcal = 0;
-        meals.forEach((meal) => {
-          if (meal.set.setCal) {
-            return (currentcal += meal.set.setCal * meal.amount);
-          } else if (meal.food.foodCalPerAmount) {
-            return (currentcal += meal.food.foodCalPerAmount * meal.amount);
-          }
-        });
-        return of(currentcal);
-      })
-    );
+
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
@@ -55,6 +56,7 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     });
   }
   deleteMeal(mealId: string, amount: number, cal: number) {
+    console.log(this.date);
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
       this.date,
