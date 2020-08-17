@@ -1,27 +1,97 @@
+@import '~@angular/material/theming';
 .header {
-  display: flex;
-  justify-content: space-between;
+  @include mat-elevation(1);
+  display: grid;
+  grid-template-columns: 70px 1fr 50px;
+  gap: 4px;
+  grid-template-areas: 'logo title icon';
+  align-items: center;
+  @media screen and (min-width: 750px) {
+    grid-template-columns: 70px 1fr 100px 50px;
+    gap: 16px;
+    grid-template-areas: 'logo  title navs icon';
+  }
+
   &__wrapper {
-    display: flex;
+    grid-area: title;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
+    justify-items: center;
+    z-index: 20;
+    @media screen and (min-width: 750px) {
+      gap: 32px;
+      height: 64px;
+      grid-template-rows: 64px;
+    }
+  }
+}
+.title {
+  grid-area: title;
+  justify-self: center;
+  text-align: center;
+  font-weight: normal;
+  cursor: text;
+  z-index: 30;
+  &--date {
+    cursor: pointer;
   }
 }
 .other-title {
-  margin-right: 8px;
+  font-size: 15px;
+  font-weight: normal;
+  cursor: pointer;
+  @media screen and (min-width: 750px) {
+    font-size: 18px;
+    justify-self: end;
+  }
 }
-.avatarImage {
+
+::ng-deep .datepicker {
+  position: absolute;
+  background: #ffff;
+  top: 64px;
+  left: 35vw;
+  @include mat-elevation(1);
+  @media screen and (max-width: 750px) {
+    left: 10vw;
+  }
+}
+.mypage {
+  grid-area: icon;
+  justify-self: end;
+}
+.avatar-image {
   border-radius: 50%;
   width: 40px;
   background: center/cover;
 }
 
-.field {
-  width: 80px;
-  height: 60px;
-  font-size: 13px;
-  margin-right: 8px;
+.navs {
+  grid-area: navs;
+  @media screen and (max-width: 750px) {
+    display: none;
+  }
+}
+.meal {
+  font-size: 15px;
+  @media screen and (min-width: 750px) {
+    justify-self: start;
+  }
+}
+button.mat-menu-item {
+  width: 100%;
+  margin: 0;
 }
 
-:host ::ng-deep .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
-  transform: none;
+.logo {
+  margin: 0;
+  justify-self: start;
+  outline: none;
+  cursor: pointer;
+  grid-area: logo;
+  &__image {
+    height: 48px;
+    vertical-align: middle;
+  }
 }

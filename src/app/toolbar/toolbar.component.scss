@@ -1,4 +1,16 @@
 .toolbar {
-  display: flex;
-  justify-content: space-between;
+  height: 56px;
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  justify-items: center;
+  align-items: center;
+}
+
+.nav {
+  line-height: 28px;
+  padding: 0 8px;
+  &__text {
+    font-size: 11px;
+    height: 24px;
+  }
 }
