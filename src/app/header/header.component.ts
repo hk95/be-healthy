@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
     private datePipe: DatePipe
   ) {
     this.userService.getUser(this.authService.uid).subscribe((result) => {
-      this.avatarURL = result.avatarURL;
+      this.avatarURL = result?.avatarURL;
     });
     this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
