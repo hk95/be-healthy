@@ -42,6 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { CreditCardComponent } from './dialogs/credit-card/credit-card.component';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 registerLocaleData(localeJa);
 FullCalendarModule.registerPlugins([dayGridPlugin]);
@@ -59,6 +60,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     ConfirmRecipeComponent,
     NotFoundComponent,
     CreditCardComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
