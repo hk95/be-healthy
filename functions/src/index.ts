@@ -10,3 +10,4 @@ export * from './stripe/customer.function';
 export * from './stripe/payment-method.function';
 export * from './stripe/intent.function';
 export * from './stripe/charge.function';
+export * from './stripe/invoice.function';
