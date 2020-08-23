@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="billing">
+    <div class="billing__wrap-card">
+      <h2 class="billing__title">クレジットカード</h2>
+      <ng-container *ngIf="paymentMethods && paymentMethods.length">
+        <div class="billing__detail" *ngFor="let method of paymentMethods">
+          <p class="billing__text">登録カード</p>
+
+          <div class="billing__selected-card">
+            <i class="card-logo fab fa-cc-{{ cardBrand }}"></i>**** **** ****
+            {{ method.card.last4 }}
+          </div>
+        </div>
+      </ng-container>
+      <p class="billing__note">
+        クレジットカードは本サービスで情報を所持する事なく、世界的決済サービStripeにより厳重に保管されており、情報漏洩の心配はありません。
+      </p>
+      <button
+        class="billing__button"
+        mat-flat-button
+        color="primary"
+        (click)="openCreditCardDialog()"
+      >
+        {{
+          paymentMethods && paymentMethods.length === 1
+            ? '更新する'
+            : '登録する'
+        }}
+      </button>
+    </div>
+    <div class="billing__wrap billing__wrap--ad" *ngIf="user$ | async as user">
+      <h2 class="billing__title">広告を非表示にする</h2>
+      <p class="billing__text">
+        {{ user.premiumPlan ? '購入済み' : '¥1,000（買切り）' }}
+      </p>
+      <button
+        class="billing__button"
+        mat-flat-button
+        color="primary"
+        (click)="openConfirmDialog('premiumPlan')"
+        [disabled]="user.premiumPlan"
+      >
+        広告を削除
+      </button>
+    </div>
+
+    <div class="billing__wrap billing__wrap--donation">
+      <h2 class="billing__title">開発者に寄付</h2>
+      <p class="billing__text"></p>
+      <form class="form" [formGroup]="donationForm">
+        <mat-form-field class="donation-input" appearance="legacy">
+          <mat-label>金額</mat-label>
+          <input
+            matInput
+            type="number"
+            class="donation-input__amount"
+            autocomplete="off"
+            formControlName="donationAmount"
+            required
+            min="0"
+            step="100"
+          />
+          <span matPrefix>¥ &nbsp;</span>
+          <mat-hint *ngIf="!donationForm.invalid">税込み金額です</mat-hint>
+          <mat-error *ngIf="donationAmountControl.hasError('required')"
+            >必須入力です</mat-error
+          >
+          <mat-error *ngIf="donationAmountControl.hasError('min')"
+            >100円以上での入力をお願いします</mat-error
+          >
+          <mat-error *ngIf="donationAmountControl.hasError('max')"
+            >10万円以下での入力をお願いします</mat-error
+          >
+        </mat-form-field>
+        <button
+          class="billing__button"
+          mat-flat-button
+          color="primary"
+          (click)="openConfirmDialog('donation')"
+          [disabled]="donationForm.invalid"
+        >
+          寄付する
+        </button>
+      </form>
+    </div>
+    <div class="billing__wrap-invoice">
+      <app-invoice></app-invoice>
+    </div>
+  </div>
+</div>
