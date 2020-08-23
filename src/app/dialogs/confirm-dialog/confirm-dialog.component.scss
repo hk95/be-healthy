@@ -1,0 +1,12 @@
+h2 {
+  display: flex;
+  align-items: center;
+  margin: 24px auto;
+  mat-icon {
+    vertical-align: middle;
+  }
+}
+mat-icon {
+  align-self: flex-start;
+  margin-top: 4px;
+}
