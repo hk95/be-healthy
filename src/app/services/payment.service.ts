@@ -84,4 +84,75 @@ export class PaymentService {
     const callable = this.fns.httpsCallable('getPaymentMethods');
     return callable({}).toPromise();
   }
+  async chargePremiumPlan(priceId: string, userId: string): Promise<void> {
+    const callable = this.fns.httpsCallable('payStripePremium');
+    const process = this.snackBar.open('決済を開始します...', null, {
+      duration: null,
+    });
+    return callable({
+      priceId,
+    })
+      .toPromise()
+      .then(() => {
+        this.snackBar.open(
+          '決済が完了しました。ご購入ありがとうございます。',
+          null,
+          {
+            duration: 2000,
+          }
+        );
+        this.db.doc(`users/${userId}`).set(
+          {
+            premiumPlan: true,
+          },
+          { merge: true }
+        );
+      })
+      .catch((error) => {
+        console.error(error?.message);
+        this.snackBar.open(
+          '決済に失敗しました。恐れ入りますが時間をおき再度お願いします。',
+          null,
+          {
+            duration: 2000,
+          }
+        );
+      })
+      .finally(() => {
+        process.dismiss();
+      });
+  }
+
+  async donate(donationAmount: number): Promise<void> {
+    const callable = this.fns.httpsCallable('donation');
+    const process = this.snackBar.open('決済を開始します...', null, {
+      duration: null,
+    });
+    return callable({
+      donationAmount,
+    })
+      .toPromise()
+      .then(() => {
+        this.snackBar.open(
+          '決済が完了しました。ありがとうございます！活動の励みになります！',
+          null,
+          {
+            duration: 2000,
+          }
+        );
+      })
+      .catch((error) => {
+        console.error(error?.message);
+        this.snackBar.open(
+          '決済に失敗しました。恐れ入りますが時間をおき再度お願いします。',
+          null,
+          {
+            duration: 2000,
+          }
+        );
+      })
+      .finally(() => {
+        process.dismiss();
+      });
+  }
 }
