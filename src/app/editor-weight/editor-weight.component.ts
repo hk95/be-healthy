@@ -6,7 +6,7 @@ import { DailyInfoService } from '../services/daily-info.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AverageService } from '../services/average.service';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-editor-weight',
@@ -16,30 +16,35 @@ import { Location } from '@angular/common';
 export class EditorWeightComponent implements OnInit {
   @Input() dailyInfo: DailyInfo;
   date: string;
+  today: string = this.getDate();
   dailyInfo$: Observable<DailyInfo>;
+  previousDailyInfo$: Observable<DailyInfo[]>;
 
   form = this.fb.group({
     currentWeight: ['', [Validators.required]],
     currentFat: ['', [Validators.required]],
     dailyMemo: [''],
   });
+
   constructor(
     private fb: FormBuilder,
     private dailyInfoService: DailyInfoService,
     private route: ActivatedRoute,
     private authService: AuthService,
     private location: Location,
-    private averageService: AverageService
+    private averageService: AverageService,
+    private datePipe: DatePipe
   ) {
     this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
       this.dailyInfoService
         .getDailyInfo(this.authService.uid, this.date)
         .subscribe((dailyInfo) => {
-          if (dailyInfo) {
+          if (dailyInfo.currentWeight) {
             this.form.patchValue(dailyInfo);
           } else {
-            console.log('error');
+            console.log('latatstData');
+            this.getPreviuosWeightAndFat();
           }
         });
     });
@@ -62,6 +67,18 @@ export class EditorWeightComponent implements OnInit {
   }
   back() {
     this.location.back();
+  }
+
+  private getPreviuosWeightAndFat() {
+    this.dailyInfoService
+      .getPreviousDailyInfo(this.authService.uid, this.today)
+      .subscribe((dailyInfos?: DailyInfo[]) => {
+        this.form.patchValue(dailyInfos[0]);
+      });
+  }
+  getDate() {
+    const d = new Date();
+    return this.datePipe.transform(d, 'yy.MM.dd(E)');
   }
 
   ngOnInit(): void {}
