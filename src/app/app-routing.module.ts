@@ -89,14 +89,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'edit',
-        loadChildren: () =>
-          import('./edit/edit.module').then((m) => m.EditModule),
-        canLoad: [AuthGuard],
-        canActivate: [AuthGuard],
-      },
-
-      {
         path: 'editor-weight',
         loadChildren: () =>
           import('./editor-weight/editor-weight.module').then(
