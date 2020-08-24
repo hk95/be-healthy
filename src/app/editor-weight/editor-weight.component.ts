@@ -27,7 +27,6 @@ export class EditorWeightComponent implements OnInit {
       [Validators.required, Validators.min(0), Validators.max(200)],
     ],
     currentFat: ['', [Validators.required]],
-    dailyMemo: [''],
   });
 
   constructor(
@@ -49,7 +48,6 @@ export class EditorWeightComponent implements OnInit {
           if (dailyInfo.currentWeight) {
             this.form.patchValue(dailyInfo);
           } else {
-            console.log('latatstData');
             this.getPreviuosWeightAndFat();
           }
         });
@@ -67,7 +65,6 @@ export class EditorWeightComponent implements OnInit {
       date: this.date,
       currentWeight: formData.currentWeight,
       currentFat: formData.currentFat,
-      dailyMemo: formData.dailyMemo,
       authorId: this.authService.uid,
     });
     this.averageService.averageWeightAndFat(
