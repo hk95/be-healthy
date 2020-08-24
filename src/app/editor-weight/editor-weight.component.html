@@ -3,22 +3,57 @@
     <div class="form-body__body">
       <mat-form-field class="form-body__weight">
         <mat-label>体重</mat-label>
-        <input formControlName="currentWeight" type="number" matInput />
+        <input
+          formControlName="currentWeight"
+          type="number"
+          matInput
+          autocomplete="off"
+          min="0"
+          max="200"
+          step=".1"
+        />
+        <span matSuffix>kg</span>
+        <mat-error *ngIf="currentWeightControl.hasError('required')"
+          >必須入力です</mat-error
+        >
+        <mat-error *ngIf="currentWeightControl.hasError('min')"
+          >0kg以上で入力してください</mat-error
+        >
+        <mat-error *ngIf="currentWeightControl.hasError('max')"
+          >200kg以内で入力してください</mat-error
+        >
       </mat-form-field>
       <mat-form-field class="form-body__fat">
         <mat-label>体脂肪</mat-label>
-        <input formControlName="currentFat" type="number" matInput />
+        <input
+          formControlName="currentFat"
+          type="number"
+          matInput
+          autocomplete="off"
+          min="0"
+          max="100"
+          step=".1"
+        /><span matSuffix>%</span>
+        <mat-error *ngIf="currentFatControl.hasError('required')"
+          >必須入力です</mat-error
+        >
+        <mat-error *ngIf="currentFatControl.hasError('min')"
+          >0%以上で入力してください</mat-error
+        >
+        <mat-error *ngIf="currentFatControl.hasError('max')"
+          >100%以内で入力してください</mat-error
+        >
       </mat-form-field>
     </div>
 
-    <mat-form-field class="form-body__memo">
+    <!-- <mat-form-field class="form-body__memo">
       <mat-label>1日メモ</mat-label>
       <textarea
         class="form-body__memo-textarea"
         formControlName="dailyMemo"
         matInput
       ></textarea>
-    </mat-form-field>
+    </mat-form-field> -->
   </div>
 
   <button
