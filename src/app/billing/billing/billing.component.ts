@@ -89,7 +89,6 @@ export class BillingComponent implements OnInit, OnDestroy {
     );
   }
   private donate() {
-    console.log('donationRun', this.donationForm.value.donationAmount);
     this.paymentService.donate(this.donationForm.value.donationAmount);
   }
 
