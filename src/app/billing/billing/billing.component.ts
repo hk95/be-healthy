@@ -83,13 +83,18 @@ export class BillingComponent implements OnInit, OnDestroy {
     });
   }
   private chargePremiumPlan() {
-    this.paymentService.chargePremiumPlan(
-      'price_1HHq4xEM1ZTRJUunj6AY9MzM',
-      this.authService.uid
-    );
+    this.paymentService
+      .chargePremiumPlan('price_1HHq4xEM1ZTRJUunj6AY9MzM', this.authService.uid)
+      .then(() => {
+        this.mainShellService.paymentCompleted();
+      });
   }
   private donate() {
-    this.paymentService.donate(this.donationForm.value.donationAmount);
+    this.paymentService
+      .donate(this.donationForm.value.donationAmount)
+      .then(() => {
+        this.mainShellService.paymentCompleted();
+      });
   }
 
   ngOnInit(): void {}
