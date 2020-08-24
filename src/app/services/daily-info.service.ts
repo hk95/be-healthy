@@ -117,7 +117,10 @@ export class DailyInfoService {
   }
 
   updateDailyInfoBody(
-    dailyInfo: Omit<DailyInfo, 'dailyId' | 'breakfast' | 'lunch' | 'dinner'>
+    dailyInfo: Omit<
+      DailyInfo,
+      'dailyId' | 'breakfast' | 'lunch' | 'dinner' | 'dailyMemo'
+    >
   ): Promise<void> {
     return this.db
       .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
