@@ -97,9 +97,11 @@ const routes: Routes = [
       },
 
       {
-        path: 'update',
+        path: 'editor-weight',
         loadChildren: () =>
-          import('./update/update.module').then((m) => m.UpdateModule),
+          import('./editor-weight/editor-weight.module').then(
+            (m) => m.EditorWeightModule
+          ),
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
       },
