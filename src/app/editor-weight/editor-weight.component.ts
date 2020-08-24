@@ -1,12 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DailyInfo } from '../interfaces/daily-info';
 import { Observable } from 'rxjs';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { DailyInfoService } from '../services/daily-info.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AverageService } from '../services/average.service';
 import { Location, DatePipe } from '@angular/common';
+import { MainShellService } from '../services/main-shell.service';
 
 @Component({
   selector: 'app-editor-weight',
@@ -21,7 +22,10 @@ export class EditorWeightComponent implements OnInit {
   previousDailyInfo$: Observable<DailyInfo[]>;
 
   form = this.fb.group({
-    currentWeight: ['', [Validators.required]],
+    currentWeight: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(200)],
+    ],
     currentFat: ['', [Validators.required]],
     dailyMemo: [''],
   });
@@ -33,8 +37,10 @@ export class EditorWeightComponent implements OnInit {
     private authService: AuthService,
     private location: Location,
     private averageService: AverageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private mainShellService: MainShellService
   ) {
+    this.mainShellService.setTitle('体重・体脂肪記録');
     this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
       this.dailyInfoService
@@ -48,6 +54,12 @@ export class EditorWeightComponent implements OnInit {
           }
         });
     });
+  }
+  get currentWeightControl(): FormControl {
+    return this.form.get('currentWeight') as FormControl;
+  }
+  get currentFatControl(): FormControl {
+    return this.form.get('currentFat') as FormControl;
   }
   updateSubmit() {
     const formData = this.form.value;
