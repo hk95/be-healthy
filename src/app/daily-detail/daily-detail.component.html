@@ -24,7 +24,7 @@
 
         <button
           class="card__button"
-          routerLink="/update"
+          routerLink="/editor-weight"
           [queryParams]="{ date: date }"
           mat-icon-button
           color="primary"
@@ -275,7 +275,8 @@
         <div class="card__head">
           <p class="card__memo-title">1日のメモ</p>
           <button
-            [routerLink]="['/update', dailyInfo.date]"
+            routerLink="/editor-weight"
+            [queryParams]="{ date: dailyInfo.date }"
             mat-icon-button
             color="primary"
           >
