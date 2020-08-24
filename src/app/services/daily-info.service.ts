@@ -40,6 +40,17 @@ export class DailyInfoService {
     this.whichMeal = meal;
     this.mealSource.next(meal);
   }
+  getPreviousDailyInfo(userId: string, date: string): Observable<DailyInfo[]> {
+    return this.db
+      .collection<DailyInfo>(`users/${userId}/dailyInfos`, (ref) =>
+        ref
+          .where('date', '<=', date)
+          .orderBy('date', 'desc')
+          .orderBy('currentWeight', 'desc')
+          .limit(1)
+      )
+      .valueChanges();
+  }
   getDailyInfos(authorId: string, date: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
