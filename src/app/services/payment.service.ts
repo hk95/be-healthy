@@ -155,4 +155,12 @@ export class PaymentService {
         process.dismiss();
       });
   }
+  getInvoices(params?: {
+    startingAfter?: string;
+    endingBefore?: string;
+    stripeAccountId?: string;
+  }): Promise<Stripe.ApiList<ChargeWithInvoice>> {
+    const callable = this.fns.httpsCallable('getStripeInvoices');
+    return callable(params).toPromise();
+  }
 }
