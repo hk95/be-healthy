@@ -8,6 +8,7 @@ import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 import { take } from 'rxjs/operators';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-daily-detail',
@@ -18,6 +19,10 @@ import { take } from 'rxjs/operators';
 export class DailyDetailComponent implements OnInit {
   dailyInfo$: Observable<DailyInfo>;
   date: string;
+  editing = false;
+  form = this.fb.group({
+    memo: ['', [Validators.maxLength(1000)]],
+  });
 
   MealsOfBreakfast: DailyMealWithSet[] = [];
   MealsOfLunch: DailyMealWithSet[] = [];
@@ -60,7 +65,8 @@ export class DailyDetailComponent implements OnInit {
     private authService: AuthService,
     private mainShellService: MainShellService,
     private nutritionPipe: NutritionPipe,
-    private pfcBalancePipe: PfcBalancePipe
+    private pfcBalancePipe: PfcBalancePipe,
+    private fb: FormBuilder
   ) {
     this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
@@ -135,6 +141,20 @@ export class DailyDetailComponent implements OnInit {
       this.view = [event.target.innerWidth / 1.3, event.target.innerWidth / 2];
       this.font = innerWidth / 28;
     }
+  }
+  get memoControl(): FormControl {
+    return this.form.get('memo') as FormControl;
+  }
+  editMemo() {
+    this.editing = true;
+  }
+  updateMemo() {
+    this.editing = false;
+    this.dailyInfoService.updateDailyInfoMemo(
+      this.authService.uid,
+      this.date,
+      this.form.value.memo
+    );
   }
   ngOnInit() {}
 }

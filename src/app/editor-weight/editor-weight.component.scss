@@ -1,0 +1,40 @@
+@import '~@angular/material/theming';
+.form-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 32px;
+  &__weight {
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 16px;
+  }
+  &__fat {
+    width: 80%;
+    margin: 0 auto;
+  }
+  &__suffix {
+    margin-left: 8px;
+  }
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  &__button {
+    max-width: 150px;
+    width: 100%;
+    justify-self: center;
+  }
+}
+
+.edit-wrap {
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 4px;
+  margin-top: 48px;
+  padding: 24px;
+  background: #ffff;
+  @include mat-elevation(2);
+}

@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { EditComponent } from './edit/edit.component';
-
+import { EditorWeightComponent } from './editor-weight.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: EditComponent
-  }
+    pathMatch: 'full',
+    component: EditorWeightComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class EditRoutingModule { }
+export class EditorWeightRoutingModule {}

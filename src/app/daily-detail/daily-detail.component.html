@@ -24,7 +24,7 @@
 
         <button
           class="card__button"
-          routerLink="/update"
+          routerLink="/editor-weight"
           [queryParams]="{ date: date }"
           mat-icon-button
           color="primary"
@@ -273,23 +273,55 @@
     <mat-card class="card"
       ><div class="card__memo">
         <div class="card__head">
-          <p class="card__memo-title">1日のメモ</p>
+          <p class="card__memo-title">
+            1日のメモ<span
+              ><img
+                [style.opacity]="dailyInfo.dailyMemo ? 1 : 0.3"
+                class="card__icon"
+                src="/assets/images/memo.svg"
+                alt=""
+              />
+            </span>
+          </p>
           <button
-            [routerLink]="['/update', dailyInfo.date]"
+            *ngIf="!editing"
             mat-icon-button
             color="primary"
+            (click)="editMemo()"
           >
             <mat-icon>edit</mat-icon>
           </button>
+          <button
+            *ngIf="editing"
+            mat-flat-button
+            color="primary"
+            (click)="updateMemo()"
+          >
+            保存
+          </button>
         </div>
       </div>
-      <p class="card__memo-textarea" *ngIf="dailyInfo.dailyMemo; else noMemo">
+      <p class="card__memo-textarea" *ngIf="dailyInfo.dailyMemo && !editing">
         {{ dailyInfo.dailyMemo }}
       </p>
-      <ng-template #noMemo>
-        <div class="border"></div>
-        <span>まだメモはありません</span></ng-template
+      <form
+        [formGroup]="form"
+        *ngIf="editing"
+        class="card__memo-textarea-editor"
       >
+        <mat-form-field class="card__memo-textarea-field" appearance="outline">
+          <mat-label>体調など記入しましょう</mat-label>
+          <textarea matInput rows="16" formControlName="memo"></textarea>
+          <mat-error *ngIf="memoControl.hasError('maxlength')"
+            >入力文字数が多すぎます</mat-error
+          >
+        </mat-form-field>
+      </form>
+
+      <div *ngIf="!dailyInfo.dailyMemo && !editing">
+        <div class="border"></div>
+        <span>まだメモはありません</span>
+      </div>
     </mat-card>
   </div>
 </div>

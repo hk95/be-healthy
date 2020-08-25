@@ -40,6 +40,17 @@ export class DailyInfoService {
     this.whichMeal = meal;
     this.mealSource.next(meal);
   }
+  getPreviousDailyInfo(userId: string, date: string): Observable<DailyInfo[]> {
+    return this.db
+      .collection<DailyInfo>(`users/${userId}/dailyInfos`, (ref) =>
+        ref
+          .where('date', '<=', date)
+          .orderBy('date', 'desc')
+          .orderBy('currentWeight', 'desc')
+          .limit(1)
+      )
+      .valueChanges();
+  }
   getDailyInfos(authorId: string, date: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
@@ -106,7 +117,10 @@ export class DailyInfoService {
   }
 
   updateDailyInfoBody(
-    dailyInfo: Omit<DailyInfo, 'dailyId' | 'breakfast' | 'lunch' | 'dinner'>
+    dailyInfo: Omit<
+      DailyInfo,
+      'dailyId' | 'breakfast' | 'lunch' | 'dinner' | 'dailyMemo'
+    >
   ): Promise<void> {
     return this.db
       .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
@@ -115,6 +129,21 @@ export class DailyInfoService {
       })
       .then(() => {
         this.snackBar.open('更新しました', null, {
+          duration: 2000,
+        });
+      });
+  }
+  updateDailyInfoMemo(userId: string, date: string, dailyMemo: string) {
+    return this.db
+      .doc(`users/${userId}/dailyInfos/${date}`)
+      .set(
+        {
+          dailyMemo,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        this.snackBar.open('保存しました', null, {
           duration: 2000,
         });
       });
