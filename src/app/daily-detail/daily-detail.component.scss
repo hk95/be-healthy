@@ -126,6 +126,12 @@ p {
     word-break: break-all;
     height: 100px;
   }
+  &__memo-textarea-editor {
+    width: 100%;
+  }
+  &__memo-textarea-field {
+    width: 100%;
+  }
 }
 
 .border {
