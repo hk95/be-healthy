@@ -133,6 +133,21 @@ export class DailyInfoService {
         });
       });
   }
+  updateDailyInfoMemo(userId: string, date: string, dailyMemo: string) {
+    return this.db
+      .doc(`users/${userId}/dailyInfos/${date}`)
+      .set(
+        {
+          dailyMemo,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        this.snackBar.open('保存しました', null, {
+          duration: 2000,
+        });
+      });
+  }
 
   getSelectedFoodsOrSets(
     userId: string,
