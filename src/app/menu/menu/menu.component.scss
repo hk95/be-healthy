@@ -5,13 +5,16 @@
 .meal-nav {
   height: 40px;
   width: 100%;
-  background: #fff;
   display: flex;
   align-items: center;
-  z-index: 10;
+  z-index: 5;
   border-left: none;
   border-right: none;
   border-radius: 0;
   position: sticky;
   top: 0;
+}
+.tab {
+  max-width: 600px;
+  margin: 0 auto;
 }
