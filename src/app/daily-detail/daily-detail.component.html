@@ -312,6 +312,9 @@
         <mat-form-field class="card__memo-textarea-field" appearance="outline">
           <mat-label>体調など記入しましょう</mat-label>
           <textarea matInput rows="16" formControlName="memo"></textarea>
+          <mat-error *ngIf="memoControl.hasError('maxlength')"
+            >入力文字数が多すぎます</mat-error
+          >
         </mat-form-field>
       </form>
 
