@@ -85,12 +85,14 @@ export class RecipeService {
           return combineLatest([of(publicExcludeMyRecipes), users$]);
         }),
         map(([recipes, users]) => {
-          return recipes.map((recipe: Recipe) => {
-            return {
-              ...recipe,
-              author: users.find((user) => user.userId === recipe.authorId),
-            };
-          });
+          if (users[0]?.userId) {
+            return recipes.map((recipe: Recipe) => {
+              return {
+                ...recipe,
+                author: users.find((user?) => user.userId === recipe.authorId),
+              };
+            });
+          }
         })
       );
   }
