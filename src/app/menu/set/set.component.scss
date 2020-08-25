@@ -90,3 +90,26 @@ p {
   right: 24px;
   z-index: 5;
 }
+
+.no {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    font-size: 18px;
+    display: flex;
+  }
+  &__example {
+    font-size: 15px;
+    margin: 0;
+    color: rgba(#000000, 0.6);
+  }
+  &__image {
+    background: center/cover;
+    max-width: 100%;
+  }
+  &__create {
+    margin: 0 auto 16px auto;
+    max-width: 200px;
+  }
+}

@@ -1,98 +1,126 @@
-<div class="grid">
-  <div
-    class="card"
-    *ngFor="let set of sets; index as i"
-    routerLink="/set-detail"
-    [queryParams]="{ id: set.setId }"
-  >
-    <div class="card__body">
-      <div class="card__content">
-        <div class="card__row">
-          <h2 class="card__title">
-            {{ set.setTitle }}
-            <span class="card__cal">{{ set.setCal }}kcal</span>
-          </h2>
-        </div>
-        <div class="card__row">
-          <ul class="card__foods">
-            <li *ngFor="let food of set.foodsArray | slice: 0:5; index as j">
-              <p>{{ food.foodName }}</p>
-              <span *ngIf="j === 4 ? true : false"
-                ><mat-icon>more_horiz</mat-icon></span
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
+<ng-template #noSet>
+  <div class="no">
+    <h3 class="no__title">
+      <mat-icon color="primary">bookmark</mat-icon
+      >マイセットはまだ登録されていません。
+    </h3>
 
-      <div class="card__buttons">
-        <button
-          *ngIf="mealOfAllSets[i].breakfast"
-          mat-flat-button
-          color="primary"
-          (click)="
-            updateMeal(set.setId, 'breakfast', false, i);
-            $event.stopPropagation()
-          "
-        >
-          朝食
-        </button>
-        <button
-          *ngIf="!mealOfAllSets[i].breakfast"
-          mat-stroked-button
-          color="primary"
-          (click)="
-            updateMeal(set.setId, 'breakfast', true, i);
-            $event.stopPropagation()
-          "
-        >
-          朝食
-        </button>
-        <button
-          *ngIf="mealOfAllSets[i].lunch"
-          mat-flat-button
-          (click)="
-            updateMeal(set.setId, 'lunch', false, i); $event.stopPropagation()
-          "
-          color="primary"
-        >
-          昼食
-        </button>
-        <button
-          *ngIf="!mealOfAllSets[i].lunch"
-          mat-stroked-button
-          color="primary"
-          (click)="
-            updateMeal(set.setId, 'lunch', true, i); $event.stopPropagation()
-          "
-        >
-          昼食
-        </button>
-        <button
-          *ngIf="mealOfAllSets[i].dinner"
-          mat-flat-button
-          color="primary"
-          (click)="
-            updateMeal(set.setId, 'dinner', false, i); $event.stopPropagation()
-          "
-        >
-          夕食
-        </button>
-        <button
-          *ngIf="!mealOfAllSets[i].dinner"
-          mat-stroked-button
-          color="primary"
-          (click)="
-            updateMeal(set.setId, 'dinner', true, i); $event.stopPropagation()
-          "
-        >
-          夕食
-        </button>
+    <p>食べる頻度が多い食べ物をまとめて登録できる機能です。</p>
+    <figure>
+      <p class="no__example">（例）カレーセット</p>
+      <img class="no__image" src="/assets/images/ex-set.png/" alt="" />
+    </figure>
+    <p>
+      自分だけのマイセットを登録しましょう！
+    </p>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="forwardbackToForm()"
+      class="no__create"
+    >
+      <mat-icon>add</mat-icon><span>登録する</span>
+    </button>
+  </div>
+</ng-template>
+<div class="set" *ngIf="sets && sets.length > 0; else noSet">
+  <div class="grid">
+    <div
+      class="card"
+      *ngFor="let set of sets; index as i"
+      routerLink="/set-detail"
+      [queryParams]="{ id: set.setId }"
+    >
+      <div class="card__body">
+        <div class="card__content">
+          <div class="card__row">
+            <h2 class="card__title">
+              {{ set.setTitle }}
+              <span class="card__cal">{{ set.setCal }}kcal</span>
+            </h2>
+          </div>
+          <div class="card__row">
+            <ul class="card__foods">
+              <li *ngFor="let food of set.foodsArray | slice: 0:5; index as j">
+                <p>{{ food.foodName }}</p>
+                <span *ngIf="j === 4 ? true : false"
+                  ><mat-icon>more_horiz</mat-icon></span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card__buttons">
+          <button
+            *ngIf="mealOfAllSets[i].breakfast"
+            mat-flat-button
+            color="primary"
+            (click)="
+              updateMeal(set.setId, 'breakfast', false, i);
+              $event.stopPropagation()
+            "
+          >
+            朝食
+          </button>
+          <button
+            *ngIf="!mealOfAllSets[i].breakfast"
+            mat-stroked-button
+            color="primary"
+            (click)="
+              updateMeal(set.setId, 'breakfast', true, i);
+              $event.stopPropagation()
+            "
+          >
+            朝食
+          </button>
+          <button
+            *ngIf="mealOfAllSets[i].lunch"
+            mat-flat-button
+            (click)="
+              updateMeal(set.setId, 'lunch', false, i); $event.stopPropagation()
+            "
+            color="primary"
+          >
+            昼食
+          </button>
+          <button
+            *ngIf="!mealOfAllSets[i].lunch"
+            mat-stroked-button
+            color="primary"
+            (click)="
+              updateMeal(set.setId, 'lunch', true, i); $event.stopPropagation()
+            "
+          >
+            昼食
+          </button>
+          <button
+            *ngIf="mealOfAllSets[i].dinner"
+            mat-flat-button
+            color="primary"
+            (click)="
+              updateMeal(set.setId, 'dinner', false, i);
+              $event.stopPropagation()
+            "
+          >
+            夕食
+          </button>
+          <button
+            *ngIf="!mealOfAllSets[i].dinner"
+            mat-stroked-button
+            color="primary"
+            (click)="
+              updateMeal(set.setId, 'dinner', true, i); $event.stopPropagation()
+            "
+          >
+            夕食
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<button mat-fab color="primary" class="nav" (click)="forwardbackToForm()">
-  <mat-icon>add</mat-icon>
-</button>
+  <button mat-fab color="primary" class="nav" (click)="forwardbackToForm()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
