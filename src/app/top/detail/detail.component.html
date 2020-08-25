@@ -57,14 +57,12 @@
               aria-label="Button that displays a tooltip when focused or hovered over"
               class="box"
               (click)="$event.stopPropagation()"
-              routerLink="/editor-weight"
+              routerLink="/daily-detail"
               [queryParams]="{ date: dailyInfo.date }"
             >
               <img
                 class="icon"
-                [class.no-registration]="
-                  !dailyInfo.currentWeight || dailyInfo.dailyMemo === ''
-                "
+                [class.no-registration]="!dailyInfo.dailyMemo"
                 src="/assets/images/memo.svg
             "
                 alt=""
