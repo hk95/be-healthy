@@ -52,7 +52,7 @@
           class="buttons__button"
           (click)="updateSubmit()"
           (click)="back()"
-          [disabled]="form.invalid || form.pristine"
+          [disabled]="form.invalid || initialRecord ? form.pristine : false"
           mat-stroked-button
           color="primary"
         >

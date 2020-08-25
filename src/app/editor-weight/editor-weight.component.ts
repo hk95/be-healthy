@@ -26,8 +26,12 @@ export class EditorWeightComponent implements OnInit {
       '',
       [Validators.required, Validators.min(0), Validators.max(200)],
     ],
-    currentFat: ['', [Validators.required]],
+    currentFat: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(100)],
+    ],
   });
+  initialRecord: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +51,7 @@ export class EditorWeightComponent implements OnInit {
         .subscribe((dailyInfo) => {
           if (dailyInfo.currentWeight) {
             this.form.patchValue(dailyInfo);
+            this.initialRecord = true;
           } else {
             this.getPreviuosWeightAndFat();
           }
