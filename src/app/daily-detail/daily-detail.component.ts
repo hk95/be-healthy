@@ -142,15 +142,13 @@ export class DailyDetailComponent implements OnInit {
       this.font = innerWidth / 28;
     }
   }
-  get memoCntrol(): FormControl {
+  get memoControl(): FormControl {
     return this.form.get('memo') as FormControl;
   }
   editMemo() {
     this.editing = true;
   }
   updateMemo() {
-    console.log(this.form.value.memo);
-
     this.editing = false;
     this.dailyInfoService.updateDailyInfoMemo(
       this.authService.uid,
