@@ -10,6 +10,9 @@ import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { MatTableModule } from '@angular/material/table';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [DailyDetailComponent, NutritionPipe, PfcBalancePipe],
@@ -21,6 +24,10 @@ import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
     MatCardModule,
     MatTableModule,
     NgxChartsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
 })
 export class DailyDetailModule {}
