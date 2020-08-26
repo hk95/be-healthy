@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { SetComponent } from './set/set.component';
 import { RecipeComponent } from './recipe/recipe.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [MenuComponent, SetComponent, RecipeComponent],
@@ -18,6 +19,7 @@ import { RecipeComponent } from './recipe/recipe.component';
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MenuModule {}
