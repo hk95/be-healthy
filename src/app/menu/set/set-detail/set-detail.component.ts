@@ -38,19 +38,7 @@ export class SetDetailComponent implements OnInit {
         };
       });
   }
-  updateMeal(setId: string, meal: string, bool: boolean) {
-    this.setService.updateMeal(this.userId, setId, meal, bool);
-    if (meal === 'breakfast') {
-      this.mealOfSet.breakfast = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    } else if (meal === 'lunch') {
-      this.mealOfSet.lunch = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    } else {
-      this.mealOfSet.dinner = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    }
-  }
+
   openDeleteDialog(): void {
     this.dialog.open(DeleteDialogComponent, {
       width: '80%',
