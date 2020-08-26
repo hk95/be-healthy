@@ -4,6 +4,10 @@
 
 export const environment = {
   production: false,
+  stripe: {
+    publicKey:
+      'pk_test_51HFAJnEM1ZTRJUunMG2SHfDgpSVjRfDwUBzhZZAb8UgfnBUffI6TILmi8lWmLdOTFI0pblEeP7c5KUGXafzmdI7h00QgXo8DZN',
+  },
   algolia: {
     appId: 'BQ4M4PM81E',
     searchKey: 'bcf9c772491ea74ff8a8411bfeb182f4',

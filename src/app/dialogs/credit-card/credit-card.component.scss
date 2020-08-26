@@ -1,0 +1,18 @@
+.mat-form-field {
+  width: 100%;
+}
+.title {
+  font-weight: normal;
+  opacity: 0.87;
+}
+.stripe {
+  &__element {
+    margin-bottom: 16px;
+  }
+  &__logo {
+    text-align: right;
+  }
+}
+.form {
+  margin-bottom: 16px;
+}

@@ -9,6 +9,8 @@ export class MainShellService {
   title$ = this.titleSource.asObservable();
   titleMealSource = new ReplaySubject<string>();
   titleMeal$ = this.titleMealSource.asObservable();
+  paymentCompletedSource = new ReplaySubject<void>();
+  paymentCompleted$ = this.paymentCompletedSource.asObservable();
 
   constructor() {}
 
@@ -17,5 +19,9 @@ export class MainShellService {
   }
   setTitleMeal(titleMeal: string) {
     this.titleMealSource.next(titleMeal);
+  }
+
+  paymentCompleted() {
+    this.paymentCompletedSource.next();
   }
 }

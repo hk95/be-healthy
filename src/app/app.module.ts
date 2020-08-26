@@ -34,13 +34,15 @@ import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.com
 import { NgAisModule } from 'angular-instantsearch';
 import { ConfirmRecipeComponent } from './dialogs/confirm-recipe/confirm-recipe.component';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { CreditCardComponent } from './dialogs/credit-card/credit-card.component';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 
 registerLocaleData(localeJa);
 FullCalendarModule.registerPlugins([dayGridPlugin]);
@@ -57,6 +59,8 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     DeleteDialogComponent,
     ConfirmRecipeComponent,
     NotFoundComponent,
+    CreditCardComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +83,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     NgAisModule.forRoot(),
     MatSelectModule,
     FormsModule,
+    ReactiveFormsModule,
     MatTooltipModule,
     MatDatepickerModule,
     MatFormFieldModule,

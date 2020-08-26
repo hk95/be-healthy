@@ -1,0 +1,45 @@
+<div *ngIf="invoices && invoices.length">
+  <mat-list dense>
+    <h2 class="invoice-title">支払い履歴</h2>
+    <mat-list-item *ngFor="let inovice of invoices">
+      <span matLine
+        >{{
+          (inovice.invoice?.lines?.data)[0]?.description || inovice.description
+        }}
+        / {{ inovice.amount | number }}円</span
+      >
+      <span matLine>{{ inovice.created * 1000 | date: 'yyyy/MM/dd' }}</span>
+      <a mat-icon-button [href]="inovice.receipt_url" target="_blank">
+        <mat-icon inline>receipt</mat-icon>
+      </a>
+    </mat-list-item>
+    <mat-list-item *ngIf="invoices && !invoices.length"
+      >購入履歴はありません</mat-list-item
+    >
+  </mat-list>
+
+  <mat-spinner class="spinner" [diameter]="40" *ngIf="loading"></mat-spinner>
+
+  <mat-divider *ngIf="hasNext || page > 0" class="mat-diver"></mat-divider>
+
+  <button
+    mat-stroked-button
+    color="primary"
+    class="previous"
+    (click)="prevPage()"
+    *ngIf="page"
+    [disabled]="loading"
+  >
+    前へ
+  </button>
+
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="nextPage()"
+    *ngIf="hasNext"
+    [disabled]="loading"
+  >
+    次へ
+  </button>
+</div>
