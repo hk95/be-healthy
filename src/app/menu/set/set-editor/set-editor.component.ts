@@ -41,24 +41,56 @@ export class SetEditorComponent implements OnInit {
 
   form = this.fb.group({
     setTitle: ['', [Validators.required, Validators.maxLength(50)]],
-    breakfast: [''],
-    lunch: [''],
-    dinner: [''],
     foodsArray: this.fb.array([], [Validators.required]),
-    setCal: [''],
-    setProtein: [''],
-    setFat: [''],
-    setTotalCarbohydrate: [''],
-    setDietaryFiber: [''],
-    setSugar: [''],
+    setCal: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setProtein: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setFat: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setTotalCarbohydrate: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setDietaryFiber: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setSugar: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
   });
-  get titleControle() {
+  get titleControl(): FormControl {
     return this.form.get('setTitle') as FormControl;
+  }
+  get setCalControl(): FormControl {
+    return this.form.get('setCal') as FormControl;
+  }
+  get setProteinControl(): FormControl {
+    return this.form.get('setProtein') as FormControl;
+  }
+  get setFatControl(): FormControl {
+    return this.form.get('setFat') as FormControl;
+  }
+  get setTotalCarbohydrateControl(): FormControl {
+    return this.form.get('setTotalCarbohydrate') as FormControl;
+  }
+  get setDietaryFiberControl(): FormControl {
+    return this.form.get('setDietaryFiber') as FormControl;
+  }
+  get setSugarControl(): FormControl {
+    return this.form.get('setSugar') as FormControl;
   }
   get foodsArray(): FormArray {
     return this.form.get('foodsArray') as FormArray;
   }
-
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -67,8 +99,7 @@ export class SetEditorComponent implements OnInit {
     private recipeService: RecipeService,
     private authService: AuthService,
     private setService: SetService,
-    private dialog: MatDialog,
-    private formGurad: FormGuard
+    private dialog: MatDialog
   ) {
     this.route.queryParamMap.subscribe((setId) => {
       this.query = setId.get('id');
@@ -111,7 +142,7 @@ export class SetEditorComponent implements OnInit {
         foodTotalCarbohydrate: food.foodTotalCarbohydrate,
         foodSugar: food.foodSugar,
         foodDietaryFiber: food.foodDietaryFiber,
-        amount,
+        amount: [amount, [Validators.max(1000)]],
       });
       this.foodsArray.push(foodFormGroup);
       this.currentCal =
@@ -211,27 +242,32 @@ export class SetEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-  changeBreakfast() {
-    if (!this.breakfast) {
-      this.breakfast = true;
-    } else {
-      this.breakfast = false;
+  changeMeal(meal: string) {
+    switch (meal) {
+      case 'breakfast':
+        if (!this.breakfast) {
+          this.breakfast = true;
+        } else {
+          this.breakfast = false;
+        }
+        break;
+      case 'lunch':
+        if (!this.lunch) {
+          this.lunch = true;
+        } else {
+          this.lunch = false;
+        }
+        break;
+      case 'dinner':
+        if (!this.dinner) {
+          this.dinner = true;
+        } else {
+          this.dinner = false;
+        }
+        break;
     }
   }
-  changeLunch() {
-    if (!this.lunch) {
-      this.lunch = true;
-    } else {
-      this.lunch = false;
-    }
-  }
-  changeDinner() {
-    if (!this.dinner) {
-      this.dinner = true;
-    } else {
-      this.dinner = false;
-    }
-  }
+
   submit() {
     const formData = this.form.value;
     this.setService.submitted = true;
