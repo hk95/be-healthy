@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set, FoodInArray } from '../interfaces/set';
-import { combineLatest, Observable, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { combineLatest, Observable, of, observable } from 'rxjs';
+import { switchMap, map, take } from 'rxjs/operators';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { Location } from '@angular/common';
 
@@ -22,7 +22,7 @@ export class SetService {
     private location: Location
   ) {}
 
-  getSets(userId: string): Observable<Set[]> {
+  getSets(userId: string): Observable<Set[]> | Observable<null> {
     return this.db
       .collection<Set>(`users/${userId}/sets`, (ref) =>
         ref.orderBy('updatedAt', 'desc')
@@ -30,17 +30,21 @@ export class SetService {
       .valueChanges()
       .pipe(
         switchMap((sets: Set[]) => {
-          const allSets = sets.map((set) => {
-            return this.db
-              .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
-              .valueChanges()
-              .pipe(
-                map((foodsArray: Set[]) => {
-                  return Object.assign(set, { foodsArray });
-                })
-              );
-          });
-          return combineLatest([...allSets]);
+          if (sets && sets.length > 0) {
+            const allSets = sets.map((set) => {
+              return this.db
+                .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
+                .valueChanges()
+                .pipe(
+                  map((foodsArray: Set[]) => {
+                    return Object.assign(set, { foodsArray });
+                  })
+                );
+            });
+            return combineLatest([...allSets]);
+          } else {
+            return of(null);
+          }
         })
       );
   }
