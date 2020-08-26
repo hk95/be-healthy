@@ -15,7 +15,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
 import { FoodOrRecipe } from 'src/app/interfaces/set';
-import { FormGuard } from 'src/app/guards/form.guard';
 
 @Component({
   selector: 'app-set-editor',
@@ -41,7 +40,7 @@ export class SetEditorComponent implements OnInit {
 
   form = this.fb.group({
     setTitle: ['', [Validators.required, Validators.maxLength(50)]],
-    foodsArray: this.fb.array([], [Validators.required]),
+    foodsArray: this.fb.array([]),
     setCal: [
       '',
       [Validators.required, Validators.min(0), Validators.max(5000)],
@@ -103,25 +102,25 @@ export class SetEditorComponent implements OnInit {
   ) {
     this.route.queryParamMap.subscribe((setId) => {
       this.query = setId.get('id');
+      this.setService
+        .getSetByIdWithFoods(this.userId, this.query)
+        .pipe(take(1))
+        .subscribe((set) => {
+          if (set) {
+            this.title = '編集';
+            this.form.patchValue(set);
+            this.breakfast = set.breakfast;
+            this.lunch = set.lunch;
+            this.dinner = set.dinner;
+            this.preFoods = [...set.foodsArray];
+          }
+        });
     });
     this.recipeService
       .getMyRecipes(this.userId)
       .pipe(take(1))
       .subscribe((recipes) => {
         this.myRecipes = recipes;
-      });
-    this.setService
-      .getSetByIdWithFoods(this.userId, this.query)
-      .pipe(take(1))
-      .subscribe((set) => {
-        if (set) {
-          this.title = '編集';
-          this.form.patchValue(set);
-          this.breakfast = this.form.value.breakfast;
-          this.lunch = this.form.value.lunch;
-          this.dinner = this.form.value.dinner;
-          this.preFoods = [...set.foodsArray];
-        }
       });
   }
 

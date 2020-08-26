@@ -4,7 +4,11 @@
       <mat-icon>clear</mat-icon>
     </button>
     <h1>マイセット{{ title || '作成' }}画面</h1>
-    <button mat-raised-button color="primary" [disabled]="form.invalid">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid || preFoods.length === 0"
+    >
       保存
     </button>
   </div>
