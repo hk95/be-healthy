@@ -17,6 +17,7 @@ export class SetDetailComponent implements OnInit {
   userId: string = this.authService.uid;
   set: Set & { foodsArray: FoodInArray[] };
   mealOfSet: Meal;
+  loading = true;
   constructor(
     private route: ActivatedRoute,
     private setService: SetService,
@@ -36,6 +37,7 @@ export class SetDetailComponent implements OnInit {
           lunch: set.lunch,
           dinner: set.dinner,
         };
+        this.loading = false;
       });
   }
 

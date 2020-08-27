@@ -1,10 +1,5 @@
 <div class="nav">
-  <button
-    class="back-to-page"
-    mat-icon-button
-    mat-raised-button
-    routerLink="/menu"
-  >
+  <button class="back-to-page" mat-icon-button routerLink="/menu">
     <mat-icon>navigate_before</mat-icon>
   </button>
   <h1>マイセット詳細画面</h1>
@@ -12,7 +7,6 @@
     <button
       class="update-to-page"
       mat-icon-button
-      mat-raised-button
       color="primary"
       routerLink="/set-editor"
       [queryParams]="{ id: setId }"
@@ -21,7 +15,6 @@
     </button>
     <button
       mat-icon-button
-      mat-raised-button
       class="delete"
       color="warn"
       (click)="openDeleteDialog()"
@@ -30,8 +23,12 @@
     </button>
   </div>
 </div>
+
+<div class="spinner" *ngIf="loading">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
 <div class="container">
-  <div class="set-detail">
+  <div class="set-detail" *ngIf="!loading">
     <div *ngIf="set">
       <div class="content__head">
         <h2 class="content__name">セット名</h2>
