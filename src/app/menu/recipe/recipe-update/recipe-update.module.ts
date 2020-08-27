@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [RecipeUpdateComponent],
@@ -22,6 +24,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MatSlideToggleModule,
     MatDialogModule,
     ImageCropperModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
 })
 export class RecipeUpdateModule {}
