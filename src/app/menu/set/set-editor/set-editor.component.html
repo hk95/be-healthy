@@ -125,7 +125,34 @@
           </mat-tab>
 
           <mat-tab class="mat-tab-label" label="レシピ集">
-            <div class="grid">
+            <ng-template #noMyRecipe>
+              <div class="no-recipe">
+                <img
+                  class="no-recipe__image"
+                  src="assets/images/recipe.svg"
+                  alt=""
+                />
+                <p class="no-recipe__text">
+                  マイレシピはまだ登録されていません。
+                </p>
+                <p class="no-recipe__text no-recipe__text--end">
+                  オリジナルの１品を登録しましょう。
+                </p>
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  class="no-recipe__button"
+                  type="button"
+                  (click)="forwardbackToForm()"
+                >
+                  <mat-icon>add</mat-icon><span>登録する</span>
+                </button>
+              </div>
+            </ng-template>
+            <div
+              class="grid"
+              *ngIf="myRecipes && myRecipes.length > 0; else noMyRecipe"
+            >
               <div class="recipes" *ngFor="let recipe of myRecipes">
                 <div
                   class="recipe"

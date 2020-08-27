@@ -50,7 +50,7 @@ p {
     font-size: 15px;
   }
   &__input {
-    height: 15px;
+    height: 22px;
     font-size: 17px;
     background: #ffff;
   }
@@ -244,4 +244,25 @@ p {
 
 .mat-tab-label {
   width: 50%;
+}
+.no-recipe {
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
+  margin-top: 16px;
+  &__image {
+    justify-self: center;
+    margin-bottom: 8px;
+  }
+  &__text {
+    justify-self: center;
+    opacity: 0.87;
+    &--end {
+      margin-bottom: 8px;
+    }
+  }
+  &__button {
+    justify-self: center;
+    max-width: 200px;
+  }
 }
