@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+<mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
 <div *ngIf="!loading">
   <ng-template #noSet>
     <div class="no">
@@ -102,7 +102,7 @@
       </div>
     </div>
   </div>
-  <div class="wrap">
+  <div class="wrap" *ngIf="sets && sets.length > 0">
     <button mat-fab color="primary" class="nav" (click)="forwardbackToForm()">
       <mat-icon>add</mat-icon>
     </button>
