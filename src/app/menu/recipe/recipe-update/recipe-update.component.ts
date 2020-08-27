@@ -37,8 +37,8 @@ export class RecipeUpdateComponent implements OnInit {
   public: boolean;
 
   form = this.fb.group({
-    recipeTitle: ['', [Validators.required]],
-    recipeDescription: [''],
+    recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
+    recipeDescription: ['', [Validators.maxLength(500)]],
     ingredientDetails: this.fb.array(
       [],
       [Validators.required, Validators.minLength(1)]
@@ -53,6 +53,9 @@ export class RecipeUpdateComponent implements OnInit {
   });
   get recipeTitle(): FormControl {
     return this.form.get('recipeTitle') as FormControl;
+  }
+  get descriptionControl(): FormControl {
+    return this.form.get('recipeDescription') as FormControl;
   }
   get ingredientDetails(): FormArray {
     return this.form.get('ingredientDetails') as FormArray;
