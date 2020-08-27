@@ -24,11 +24,11 @@ p {
   background: #ffff;
   padding: 8px;
   height: 56px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   @include mat-elevation(1);
 }
 .title {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   &__name-field {
@@ -56,10 +56,12 @@ p {
   }
 
   img {
-    width: 100%;
-    height: 67%;
+    background: #ffff center/cover;
+    max-width: 300px;
+    width: 40%;
+    display: block;
+    margin: 0 auto;
     border-radius: 10px;
-    background: #ffff;
     cursor: pointer;
     &:hover {
       @include mat-elevation(2);
@@ -68,15 +70,18 @@ p {
 }
 
 .summary {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
 }
 
 .ingredient {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid #dbdbdb;
+  background: #fff;
+  @include mat-elevation(1);
   &__title {
     display: flex;
     justify-content: space-between;
@@ -110,6 +115,12 @@ p {
 }
 
 .process {
+  margin-bottom: 32px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  @include mat-elevation(1);
   &__title {
     display: flex;
     justify-content: space-between;
@@ -117,25 +128,58 @@ p {
       align-self: flex-end;
     }
   }
-  margin-bottom: 48px;
-  border-bottom: 1px solid #dbdbdb;
-  display: flex;
-  flex-direction: column;
+
   p {
     margin: 0;
     color: #767676;
   }
-  &__wrapper {
-    padding: 8px;
-    border-top: 1px solid #dbdbdb;
-    background: #ffff;
+
+  &__header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    &--index {
+      max-width: 10%;
+      padding-left: 8px;
+    }
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
   }
+  &__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 65px;
+      height: 65px;
+      border-radius: 5px;
+      background: #ffff;
+      cursor: pointer;
+      &:hover {
+        @include mat-elevation(2);
+      }
+    }
+    &--index {
+      max-width: 10%;
+      padding-left: 8px;
+    }
+    &--image-form {
+      height: 70px;
+    }
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+
   &__number {
     margin: 0;
     margin-left: 8px;
     min-height: 30px;
+  }
+  &__image-form {
+    display: none;
   }
   &__image {
     width: 65px;
@@ -151,25 +195,20 @@ p {
       @include mat-elevation(2);
     }
   }
-  &__description {
-    border: none;
+  &__form-field {
+    margin-top: 8px;
+    width: 100%;
+    max-width: 300px;
   }
-  img {
-    width: 65px;
-    height: 65px;
-    border-radius: 5px;
-    background: #ffff;
-    cursor: pointer;
-    &:hover {
-      @include mat-elevation(2);
-    }
-  }
+  // &__description {
+  //   width: 90%;
+  // }
 }
 .nutrition {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   border-bottom: 1px solid #dbdbdb;
   &__detail {
-    height: 35px;
+    // height: 35px;
     padding: 0 8px;
     border-top: 1px solid #dbdbdb;
     background: #ffff;
@@ -180,17 +219,15 @@ p {
   &__name {
     margin: 0;
   }
-  &__amount-unit {
-    text-align: right;
-    display: flex;
-    span {
-      text-align: right;
-      width: 30px;
-      margin-left: 8px;
-    }
+
+  &__form-fied {
+    width: 48%;
+    max-width: 250px;
+    margin-top: 8px;
+    font-size: 7px;
   }
   &__amount {
-    text-align: right;
+    font-size: 14px;
   }
 }
 
@@ -201,5 +238,5 @@ p {
   background: #fff;
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
-  padding: 0 8px;
+  padding: 8px;
 }
