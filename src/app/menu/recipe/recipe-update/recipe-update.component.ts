@@ -10,6 +10,7 @@ import {
   Validators,
   FormControl,
   FormArray,
+  AbstractControl,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RecipeThumbnailComponent } from 'src/app/dialogs/recipe-thumbnail/recipe-thumbnail.component';
@@ -18,6 +19,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-update',
@@ -39,10 +41,7 @@ export class RecipeUpdateComponent implements OnInit {
   form = this.fb.group({
     recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
     recipeDescription: ['', [Validators.maxLength(500)]],
-    ingredientDetails: this.fb.array(
-      [],
-      [Validators.required, Validators.minLength(1)]
-    ),
+    ingredients: this.fb.array([], [Validators.required]),
     processDetails: this.fb.array([]),
     recipeCal: [''],
     recipeProtein: [''],
@@ -51,18 +50,21 @@ export class RecipeUpdateComponent implements OnInit {
     recipeDietaryFiber: [''],
     recipeSugar: [''],
   });
+  displayedColumns: string[] = ['name', 'amount'];
   get recipeTitle(): FormControl {
     return this.form.get('recipeTitle') as FormControl;
   }
   get descriptionControl(): FormControl {
     return this.form.get('recipeDescription') as FormControl;
   }
-  get ingredientDetails(): FormArray {
-    return this.form.get('ingredientDetails') as FormArray;
+  get ingredients(): FormArray {
+    return this.form.get('ingredients') as FormArray;
   }
+
   get processDetails(): FormArray {
     return this.form.get('processDetails') as FormArray;
   }
+  dataSource = new BehaviorSubject<AbstractControl[]>([]);
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -85,7 +87,7 @@ export class RecipeUpdateComponent implements OnInit {
                 amountAndUnit: food.amountAndUnit,
               });
               this.ingredientQuanity++;
-              this.ingredientDetails.push(ingredientFormGroup);
+              this.ingredients.push(ingredientFormGroup);
             });
           }
           if (recipe.processes) {
@@ -101,31 +103,36 @@ export class RecipeUpdateComponent implements OnInit {
         } else {
           console.log('error');
         }
+        this.addIngredinet();
       });
     });
   }
 
   addIngredinet() {
     const ingredientFormGroup = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
       amountAndUnit: ['', [Validators.required]],
     });
-    this.ingredientDetails.push(ingredientFormGroup);
+    this.ingredients.push(ingredientFormGroup);
     this.ingredientQuanity++;
+    this.dataSource.next(this.ingredients.controls);
   }
   editIngredient() {
     if (!this.ingredient) {
       this.ingredient = true;
+      this.displayedColumns.push('delete');
     } else {
       this.ingredient = false;
+      this.displayedColumns.pop();
     }
   }
   removeIngredinet(index: number) {
-    this.ingredientDetails.removeAt(index);
+    this.ingredients.removeAt(index);
     this.ingredientQuanity--;
     if (this.ingredientQuanity === 0) {
       this.ingredient = false;
     }
+    this.dataSource.next(this.ingredients.controls);
   }
 
   addProcess() {
@@ -208,7 +215,7 @@ export class RecipeUpdateComponent implements OnInit {
         recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
         recipeDietaryFiber: formData.recipeDietaryFiber,
         recipeSugar: formData.recipeSugar,
-        foods: formData.ingredientDetails,
+        foods: formData.ingredients,
         public: this.public,
         authorId: this.authService.uid,
       },

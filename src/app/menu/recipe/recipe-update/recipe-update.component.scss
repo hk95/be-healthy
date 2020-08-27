@@ -10,12 +10,6 @@ h2 {
   font-weight: normal;
   margin: 0;
 }
-input {
-  display: block;
-  margin: 0;
-  justify-self: center;
-  border: none;
-}
 p {
   margin: 0;
 }
@@ -81,7 +75,6 @@ p {
 
 .ingredient {
   margin-bottom: 48px;
-  border-bottom: 1px solid #dbdbdb;
   display: flex;
   flex-direction: column;
   &__title {
@@ -91,17 +84,28 @@ p {
       align-self: flex-end;
     }
   }
-  &__detail {
-    height: 30px;
-    padding: 0 8px;
+
+  &__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffff;
-    border-top: 1px solid #dbdbdb;
+    justify-content: center;
+
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
   }
-  &__amount {
-    text-align: right;
+  &__cell {
+    display: flex;
+    justify-content: center;
+
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+  &__form-field {
+    width: 90%;
+    max-width: 300px;
   }
 }
 
