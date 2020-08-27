@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [RecipeUpdateComponent],
@@ -26,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
     ImageCropperModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTableModule,
   ],
 })
 export class RecipeUpdateModule {}
