@@ -5,7 +5,7 @@ import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of, merge } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
 import { User } from '../interfaces/user';
@@ -68,24 +68,34 @@ export class RecipeService {
       )
       .valueChanges()
       .pipe(
-        switchMap((publicRecipes: Recipe[]) => {
-          publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
-            return recipe.authorId !== userId;
-          });
+        switchMap((publicRecipes?: Recipe[]) => {
+          if (publicRecipes.length > 0) {
+            publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
+              return recipe.authorId !== userId;
+            });
 
-          const authorIds: string[] = [
-            ...new Set(publicRecipes.map((recipe: Recipe) => recipe.authorId)),
-          ];
+            const authorIds: string[] = [
+              ...new Set(
+                publicRecipes.map((recipe: Recipe) => recipe.authorId)
+              ),
+            ];
 
-          const users$: Observable<User[]> = combineLatest(
-            authorIds.map((authorId: string) =>
-              this.userService.getUser(authorId)
-            )
-          );
-          return combineLatest([of(publicExcludeMyRecipes), users$]);
+            const users$: Observable<User[]> = combineLatest(
+              authorIds.map((authorId: string) =>
+                this.userService.getUser(authorId)
+              )
+            );
+            if (publicExcludeMyRecipes.length) {
+              return combineLatest([of(publicExcludeMyRecipes), users$]);
+            } else {
+              return combineLatest([of(null), of(null)]);
+            }
+          } else {
+            return combineLatest([of(null), of(null)]);
+          }
         }),
         map(([recipes, users]) => {
-          if (users[0]?.userId) {
+          if (users && users.length > 0) {
             return recipes.map((recipe: Recipe) => {
               return {
                 ...recipe,
@@ -101,20 +111,14 @@ export class RecipeService {
     return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
-  tentativeCreateRecipe(): Promise<void> {
+  tentativeCreateRecipe() {
     const recipeId = this.db.createId();
-    return this.db
-      .doc(`recipes/${recipeId}`)
-      .set({
-        recipeId,
-      })
-      .then(() => {
-        this.router.navigate(['/recipe-create'], {
-          queryParams: {
-            id: recipeId,
-          },
-        });
-      });
+
+    return this.router.navigate(['/recipe-update'], {
+      queryParams: {
+        id: recipeId,
+      },
+    });
   }
   tentativeDelRecipe(recipeId): Promise<void> {
     return this.db
@@ -154,7 +158,10 @@ export class RecipeService {
   ): Promise<void> {
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .update({ ...recipe, processes, updatedAt: firestore.Timestamp.now() })
+      .set(
+        { ...recipe, processes, updatedAt: firestore.Timestamp.now() },
+        { merge: true }
+      )
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
