@@ -1,5 +1,5 @@
 import { firestore } from 'firebase';
-import { User } from './user';
+import { BasicInfo } from './basic-info';
 
 export interface Recipe {
   recipeId: string;
@@ -20,5 +20,5 @@ export interface Recipe {
 }
 
 export interface RecipeWithAuthor extends Recipe {
-  author: User;
+  author: BasicInfo;
 }
