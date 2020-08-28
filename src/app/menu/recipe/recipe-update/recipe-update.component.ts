@@ -37,6 +37,8 @@ export class RecipeUpdateComponent implements OnInit {
   process = false;
   processQuanity = 0;
   public = false;
+  isCreating: boolean;
+  userId = this.authService.uid;
 
   form = this.fb.group({
     recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
@@ -106,8 +108,8 @@ export class RecipeUpdateComponent implements OnInit {
             });
           }
         } else {
+          this.isCreating = true;
           this.addIngredinet();
-          this.addProcess();
         }
       });
     });
@@ -207,6 +209,9 @@ export class RecipeUpdateComponent implements OnInit {
     this.processImageInput.nativeElement.value = '';
   }
   back(): void {
+    if (this.isCreating) {
+      this.deleteImage();
+    }
     this.location.back();
   }
   changePublic() {
@@ -235,10 +240,13 @@ export class RecipeUpdateComponent implements OnInit {
         recipeSugar: formData.recipeSugar,
         foods: formData.ingredients,
         public: this.public,
-        authorId: this.authService.uid,
+        authorId: this.userId,
       },
       sendProcesses
     );
+  }
+  deleteImage() {
+    this.recipeService.deleteUpdatedImage(this.userId, this.query);
   }
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
