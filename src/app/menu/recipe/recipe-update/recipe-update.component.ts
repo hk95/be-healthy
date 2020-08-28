@@ -36,7 +36,7 @@ export class RecipeUpdateComponent implements OnInit {
   ingredientQuanity = 0;
   process = false;
   processQuanity = 0;
-  public: boolean;
+  public = false;
 
   form = this.fb.group({
     recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
@@ -91,6 +91,7 @@ export class RecipeUpdateComponent implements OnInit {
               });
               this.ingredientQuanity++;
               this.ingredients.push(ingredientFormGroup);
+              this.dataSource.next(this.ingredients.controls);
             });
           }
           if (recipe.processes) {
@@ -101,13 +102,13 @@ export class RecipeUpdateComponent implements OnInit {
               this.processQuanity++;
               this.ProcessURLs.push(process.photoURL);
               this.processes.push(processFormGroup);
+              this.processSource.next(this.processes.controls);
             });
           }
         } else {
-          console.log('error');
+          this.addIngredinet();
+          this.addProcess();
         }
-        this.addIngredinet();
-        this.addProcess();
       });
     });
   }
@@ -207,6 +208,13 @@ export class RecipeUpdateComponent implements OnInit {
   }
   back(): void {
     this.location.back();
+  }
+  changePublic() {
+    if (this.public) {
+      this.public = false;
+    } else {
+      this.public = true;
+    }
   }
   updateRecipe() {
     const formData = this.form.value;
