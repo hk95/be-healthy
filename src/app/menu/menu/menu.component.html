@@ -9,13 +9,39 @@
   <span *ngIf="queryParams[1] === 'lunch'">昼食登録へ戻る</span>
   <span *ngIf="queryParams[1] === 'dinner'">夕食登録へ戻る</span>
 </button>
-<mat-tab-group mat-align-tabs="center" class="tabs">
+
+<div class="tabs">
+  <nav
+    mat-tab-nav-bar
+    mat-align-tabs="center"
+    animationDuration="0ms"
+    [disablePagination]="true"
+  >
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="set-list"
+      routerLinkActive
+      #rla0="routerLinkActive"
+      [active]="rla0.isActive"
+    >
+      マイセット
+    </a>
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="recipe-list"
+      routerLinkActive
+      #rla1="routerLinkActive"
+      [active]="rla1.isActive"
+    >
+      レシピ
+    </a>
+  </nav>
+
   <div class="container">
-    <mat-tab label="マイセット"
-      ><div class="tab"><app-set></app-set></div
-    ></mat-tab>
-    <mat-tab label="レシピ"
-      ><div class="tab"><app-recipe></app-recipe></div
-    ></mat-tab>
+    <div class="tab">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-</mat-tab-group>
+</div>
