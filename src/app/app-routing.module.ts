@@ -9,15 +9,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   {
-    path: 'recipe-create',
-    loadChildren: () =>
-      import('./menu/recipe/recipe-create/recipe-create.module').then(
-        (m) => m.RecipeCreateModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'recipe-detail',
     loadChildren: () =>
       import('./menu/recipe/recipe-detail/recipe-detail.module').then(
