@@ -11,6 +11,7 @@ import { RecipeWithAuthor } from '../interfaces/recipe';
 import { User } from '../interfaces/user';
 import { UserService } from './user.service';
 import { Location } from '@angular/common';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,8 @@ export class RecipeService {
     private snackBar: MatSnackBar,
     private router: Router,
     private userService: UserService,
-    private location: Location
+    private location: Location,
+    private fns: AngularFireFunctions
   ) {}
   getAllRecipes() {
     this.allRecipes$ = this.db
@@ -166,5 +168,10 @@ export class RecipeService {
       .put(file);
     const imageURL: string = await result.ref.getDownloadURL();
     return imageURL;
+  }
+
+  async deleteUpdatedImage(userId: string, recipeId: string) {
+    const callable = this.fns.httpsCallable('deleteRecipeImage');
+    return callable({ userId, recipeId });
   }
 }
