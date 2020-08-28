@@ -10,31 +10,41 @@ h2 {
   font-weight: normal;
   margin: 0;
 }
-input {
-  display: block;
+p {
   margin: 0;
-  justify-self: center;
-  border: none;
 }
-
+.form-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 32px 8px;
+  background: #fff;
+  @include mat-elevation(1);
+}
 .head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-  height: 30px;
-  margin-bottom: 48px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #ffff;
+  padding: 8px;
+  height: 56px;
+  @include mat-elevation(1);
 }
 .title {
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 48px;
-  &__name {
-    margin-bottom: 8px;
-    height: 25px;
-    border: 1px solid #dbdbdb;
+  &__name-field {
+    margin-bottom: 16px;
+    font-size: 15px;
   }
-  &__form {
+  &__name-form {
+    font-size: 16px;
+  }
+
+  &__image-form {
     display: none;
   }
   &__thumbnail-button {
@@ -49,14 +59,14 @@ input {
       @include mat-elevation(2);
     }
   }
-  p {
-    margin: 0;
-  }
+
   img {
-    width: 100%;
-    height: 67%;
+    background: #ffff center/cover;
+    max-width: 300px;
+    width: 60%;
+    display: block;
+    margin: 0 auto;
     border-radius: 10px;
-    background: #ffff;
     cursor: pointer;
     &:hover {
       @include mat-elevation(2);
@@ -65,20 +75,18 @@ input {
 }
 
 .summary {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-  textarea {
-    border: 1px solid #dbdbdb;
-    height: 100px;
-  }
 }
 
 .ingredient {
-  margin-bottom: 48px;
-  border-bottom: 1px solid #dbdbdb;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid #dbdbdb;
+  background: #fff;
+  @include mat-elevation(1);
   &__title {
     display: flex;
     justify-content: space-between;
@@ -86,21 +94,38 @@ input {
       align-self: flex-end;
     }
   }
-  &__detail {
-    height: 30px;
-    padding: 0 8px;
+
+  &__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #ffff;
-    border-top: 1px solid #dbdbdb;
+    justify-content: center;
+
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
   }
-  &__amount {
-    text-align: right;
+  &__cell {
+    display: flex;
+    justify-content: center;
+
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+  &__form-field {
+    width: 90%;
+    max-width: 300px;
   }
 }
 
 .process {
+  margin-bottom: 32px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  @include mat-elevation(1);
   &__title {
     display: flex;
     justify-content: space-between;
@@ -108,25 +133,58 @@ input {
       align-self: flex-end;
     }
   }
-  margin-bottom: 48px;
-  border-bottom: 1px solid #dbdbdb;
-  display: flex;
-  flex-direction: column;
+
   p {
     margin: 0;
     color: #767676;
   }
-  &__wrapper {
-    padding: 8px;
-    border-top: 1px solid #dbdbdb;
-    background: #ffff;
+
+  &__header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    &--index {
+      max-width: 10%;
+      padding-left: 8px;
+    }
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
   }
+  &__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 65px;
+      height: 65px;
+      border-radius: 5px;
+      background: #ffff;
+      cursor: pointer;
+      &:hover {
+        @include mat-elevation(2);
+      }
+    }
+    &--index {
+      max-width: 10%;
+      padding-left: 8px;
+    }
+    &--image-form {
+      height: 70px;
+    }
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+
   &__number {
     margin: 0;
     margin-left: 8px;
     min-height: 30px;
+  }
+  &__image-form {
+    display: none;
   }
   &__image {
     width: 65px;
@@ -142,25 +200,20 @@ input {
       @include mat-elevation(2);
     }
   }
-  &__description {
-    border: none;
+  &__form-field {
+    margin-top: 8px;
+    width: 100%;
+    max-width: 300px;
   }
-  img {
-    width: 65px;
-    height: 65px;
-    border-radius: 5px;
-    background: #ffff;
-    cursor: pointer;
-    &:hover {
-      @include mat-elevation(2);
-    }
-  }
+  // &__description {
+  //   width: 90%;
+  // }
 }
 .nutrition {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   border-bottom: 1px solid #dbdbdb;
   &__detail {
-    height: 35px;
+    // height: 35px;
     padding: 0 8px;
     border-top: 1px solid #dbdbdb;
     background: #ffff;
@@ -171,17 +224,15 @@ input {
   &__name {
     margin: 0;
   }
-  &__amount-unit {
-    text-align: right;
-    display: flex;
-    span {
-      text-align: right;
-      width: 30px;
-      margin-left: 8px;
-    }
+
+  &__form-fied {
+    width: 48%;
+    max-width: 250px;
+    margin-top: 8px;
+    font-size: 7px;
   }
   &__amount {
-    text-align: right;
+    font-size: 14px;
   }
 }
 
@@ -190,7 +241,6 @@ input {
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  border-top: 1px solid #dbdbdb;
-  border-bottom: 1px solid #dbdbdb;
-  padding: 0 8px;
+  max-width: 700px;
+  padding: 8px;
 }

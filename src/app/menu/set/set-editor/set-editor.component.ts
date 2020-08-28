@@ -15,7 +15,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
 import { FoodOrRecipe } from 'src/app/interfaces/set';
-import { FormGuard } from 'src/app/guards/form.guard';
 
 @Component({
   selector: 'app-set-editor',
@@ -41,24 +40,56 @@ export class SetEditorComponent implements OnInit {
 
   form = this.fb.group({
     setTitle: ['', [Validators.required, Validators.maxLength(50)]],
-    breakfast: [''],
-    lunch: [''],
-    dinner: [''],
-    foodsArray: this.fb.array([], [Validators.required]),
-    setCal: [''],
-    setProtein: [''],
-    setFat: [''],
-    setTotalCarbohydrate: [''],
-    setDietaryFiber: [''],
-    setSugar: [''],
+    foodsArray: this.fb.array([]),
+    setCal: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setProtein: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setFat: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setTotalCarbohydrate: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setDietaryFiber: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setSugar: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
   });
-  get titleControle() {
+  get titleControl(): FormControl {
     return this.form.get('setTitle') as FormControl;
+  }
+  get setCalControl(): FormControl {
+    return this.form.get('setCal') as FormControl;
+  }
+  get setProteinControl(): FormControl {
+    return this.form.get('setProtein') as FormControl;
+  }
+  get setFatControl(): FormControl {
+    return this.form.get('setFat') as FormControl;
+  }
+  get setTotalCarbohydrateControl(): FormControl {
+    return this.form.get('setTotalCarbohydrate') as FormControl;
+  }
+  get setDietaryFiberControl(): FormControl {
+    return this.form.get('setDietaryFiber') as FormControl;
+  }
+  get setSugarControl(): FormControl {
+    return this.form.get('setSugar') as FormControl;
   }
   get foodsArray(): FormArray {
     return this.form.get('foodsArray') as FormArray;
   }
-
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -67,30 +98,29 @@ export class SetEditorComponent implements OnInit {
     private recipeService: RecipeService,
     private authService: AuthService,
     private setService: SetService,
-    private dialog: MatDialog,
-    private formGurad: FormGuard
+    private dialog: MatDialog
   ) {
     this.route.queryParamMap.subscribe((setId) => {
       this.query = setId.get('id');
+      this.setService
+        .getSetByIdWithFoods(this.userId, this.query)
+        .pipe(take(1))
+        .subscribe((set) => {
+          if (set) {
+            this.title = '編集';
+            this.form.patchValue(set);
+            this.breakfast = set.breakfast;
+            this.lunch = set.lunch;
+            this.dinner = set.dinner;
+            this.preFoods = [...set.foodsArray];
+          }
+        });
     });
     this.recipeService
       .getMyRecipes(this.userId)
       .pipe(take(1))
       .subscribe((recipes) => {
         this.myRecipes = recipes;
-      });
-    this.setService
-      .getSetByIdWithFoods(this.userId, this.query)
-      .pipe(take(1))
-      .subscribe((set) => {
-        if (set) {
-          this.title = '編集';
-          this.form.patchValue(set);
-          this.breakfast = this.form.value.breakfast;
-          this.lunch = this.form.value.lunch;
-          this.dinner = this.form.value.dinner;
-          this.preFoods = [...set.foodsArray];
-        }
       });
   }
 
@@ -111,7 +141,7 @@ export class SetEditorComponent implements OnInit {
         foodTotalCarbohydrate: food.foodTotalCarbohydrate,
         foodSugar: food.foodSugar,
         foodDietaryFiber: food.foodDietaryFiber,
-        amount,
+        amount: [amount, [Validators.max(1000)]],
       });
       this.foodsArray.push(foodFormGroup);
       this.currentCal =
@@ -211,27 +241,32 @@ export class SetEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-  changeBreakfast() {
-    if (!this.breakfast) {
-      this.breakfast = true;
-    } else {
-      this.breakfast = false;
+  changeMeal(meal: string) {
+    switch (meal) {
+      case 'breakfast':
+        if (!this.breakfast) {
+          this.breakfast = true;
+        } else {
+          this.breakfast = false;
+        }
+        break;
+      case 'lunch':
+        if (!this.lunch) {
+          this.lunch = true;
+        } else {
+          this.lunch = false;
+        }
+        break;
+      case 'dinner':
+        if (!this.dinner) {
+          this.dinner = true;
+        } else {
+          this.dinner = false;
+        }
+        break;
     }
   }
-  changeLunch() {
-    if (!this.lunch) {
-      this.lunch = true;
-    } else {
-      this.lunch = false;
-    }
-  }
-  changeDinner() {
-    if (!this.dinner) {
-      this.dinner = true;
-    } else {
-      this.dinner = false;
-    }
-  }
+
   submit() {
     const formData = this.form.value;
     this.setService.submitted = true;
@@ -256,6 +291,9 @@ export class SetEditorComponent implements OnInit {
       width: '100%',
       data: recipeId,
     });
+  }
+  forwardbackToForm() {
+    this.recipeService.tentativeCreateRecipe();
   }
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {

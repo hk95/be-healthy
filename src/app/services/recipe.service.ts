@@ -5,12 +5,13 @@ import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, of, merge } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
 import { User } from '../interfaces/user';
 import { UserService } from './user.service';
 import { Location } from '@angular/common';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,8 @@ export class RecipeService {
     private snackBar: MatSnackBar,
     private router: Router,
     private userService: UserService,
-    private location: Location
+    private location: Location,
+    private fns: AngularFireFunctions
   ) {}
   getAllRecipes() {
     this.allRecipes$ = this.db
@@ -68,29 +70,41 @@ export class RecipeService {
       )
       .valueChanges()
       .pipe(
-        switchMap((publicRecipes: Recipe[]) => {
-          publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
-            return recipe.authorId !== userId;
-          });
+        switchMap((publicRecipes?: Recipe[]) => {
+          if (publicRecipes.length > 0) {
+            publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
+              return recipe.authorId !== userId;
+            });
 
-          const authorIds: string[] = [
-            ...new Set(publicRecipes.map((recipe: Recipe) => recipe.authorId)),
-          ];
+            const authorIds: string[] = [
+              ...new Set(
+                publicRecipes.map((recipe: Recipe) => recipe.authorId)
+              ),
+            ];
 
-          const users$: Observable<User[]> = combineLatest(
-            authorIds.map((authorId: string) =>
-              this.userService.getUser(authorId)
-            )
-          );
-          return combineLatest([of(publicExcludeMyRecipes), users$]);
+            const users$: Observable<User[]> = combineLatest(
+              authorIds.map((authorId: string) =>
+                this.userService.getUser(authorId)
+              )
+            );
+            if (publicExcludeMyRecipes.length) {
+              return combineLatest([of(publicExcludeMyRecipes), users$]);
+            } else {
+              return combineLatest([of(null), of(null)]);
+            }
+          } else {
+            return combineLatest([of(null), of(null)]);
+          }
         }),
         map(([recipes, users]) => {
-          return recipes.map((recipe: Recipe) => {
-            return {
-              ...recipe,
-              author: users.find((user) => user.userId === recipe.authorId),
-            };
-          });
+          if (users && users.length > 0) {
+            return recipes.map((recipe: Recipe) => {
+              return {
+                ...recipe,
+                author: users.find((user?) => user.userId === recipe.authorId),
+              };
+            });
+          }
         })
       );
   }
@@ -99,60 +113,26 @@ export class RecipeService {
     return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
-  tentativeCreateRecipe(): Promise<void> {
+  tentativeCreateRecipe() {
     const recipeId = this.db.createId();
-    return this.db
-      .doc(`recipes/${recipeId}`)
-      .set({
-        recipeId,
-      })
-      .then(() => {
-        this.router.navigate(['/recipe-create'], {
-          queryParams: {
-            id: recipeId,
-          },
-        });
-      });
-  }
-  tentativeDelRecipe(recipeId): Promise<void> {
-    return this.db
-      .doc(`recipes/${recipeId}`)
-      .delete()
-      .then(() => {
-        this.router.navigateByUrl('/menu');
-      });
+
+    return this.router.navigate(['/recipe-update'], {
+      queryParams: {
+        id: recipeId,
+      },
+    });
   }
 
-  createRecipe(
-    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
-    processes
-  ): Promise<void> {
-    return this.db
-      .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .set(
-        {
-          ...recipe,
-          processes,
-          updatedAt: firestore.Timestamp.now(),
-        },
-        {
-          merge: true,
-        }
-      )
-      .then(() => {
-        this.snackBar.open('レシピを作成しました', null, {
-          duration: 2000,
-        });
-        this.router.navigateByUrl('menu');
-      });
-  }
   updateRecipe(
     recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
     processes
   ): Promise<void> {
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .update({ ...recipe, processes, updatedAt: firestore.Timestamp.now() })
+      .set(
+        { ...recipe, processes, updatedAt: firestore.Timestamp.now() },
+        { merge: true }
+      )
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
@@ -188,5 +168,10 @@ export class RecipeService {
       .put(file);
     const imageURL: string = await result.ref.getDownloadURL();
     return imageURL;
+  }
+
+  async deleteUpdatedImage(userId: string, recipeId: string) {
+    const callable = this.fns.httpsCallable('deleteRecipeImage');
+    return callable({ userId, recipeId });
   }
 }

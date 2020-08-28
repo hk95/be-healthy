@@ -17,6 +17,7 @@ export class SetDetailComponent implements OnInit {
   userId: string = this.authService.uid;
   set: Set & { foodsArray: FoodInArray[] };
   mealOfSet: Meal;
+  loading = true;
   constructor(
     private route: ActivatedRoute,
     private setService: SetService,
@@ -36,21 +37,10 @@ export class SetDetailComponent implements OnInit {
           lunch: set.lunch,
           dinner: set.dinner,
         };
+        this.loading = false;
       });
   }
-  updateMeal(setId: string, meal: string, bool: boolean) {
-    this.setService.updateMeal(this.userId, setId, meal, bool);
-    if (meal === 'breakfast') {
-      this.mealOfSet.breakfast = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    } else if (meal === 'lunch') {
-      this.mealOfSet.lunch = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    } else {
-      this.mealOfSet.dinner = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    }
-  }
+
   openDeleteDialog(): void {
     this.dialog.open(DeleteDialogComponent, {
       width: '80%',

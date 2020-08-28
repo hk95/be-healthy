@@ -1,12 +1,23 @@
+@import '~@angular/material/theming';
+.set-detail {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;
+  background: #fff;
+  padding: 32px 4px;
+  @include mat-elevation(1);
+}
 .nav {
-  position: absolute;
-  width: 95%;
-  position: fixed;
-  top: 8px;
+  position: sticky;
+  padding: 0 8px;
+  top: 0;
   z-index: 5;
   display: flex;
   justify-content: space-between;
-  padding: 8px;
+  align-items: center;
+  height: 56px;
+  background: #fff;
+  @include mat-elevation(1);
 }
 .update-to-page {
   margin-right: 16px;
@@ -28,24 +39,41 @@ h3 {
   font-weight: normal;
   margin: 0;
 }
+p {
+  margin: 0;
+}
 
 .content {
+  height: 24px;
+  padding: 8px;
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
   margin-bottom: 24px;
-  padding: 0 8px;
   background: #ffff;
   display: flex;
   justify-content: space-between;
   &__head {
-    margin-top: 80px;
+    @media screen and(min-width:750px) {
+      margin-top: 32px;
+    }
   }
-  &--buttons {
-    background: #fafafa;
+  &--meals {
     border: none;
   }
-  p {
-    margin: 0;
+
+  &__meal-name {
+    box-sizing: border-box;
+    font-size: 14px;
+    height: 32px;
+    width: 68px;
+    padding: 0 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(#000000, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    margin-top: 4px;
   }
 }
 .not-seletected {
@@ -61,9 +89,6 @@ h3 {
     justify-content: space-between;
     padding: 8px 8px;
     border-bottom: 1px solid #dbdbdb;
-    p {
-      margin: 0;
-    }
   }
 }
 
@@ -74,10 +99,13 @@ h3 {
   &__detail {
     display: flex;
     justify-content: space-between;
-    padding: 0 8px;
+    padding: 8px;
     border-bottom: 1px solid #dbdbdb;
-    p {
-      margin: 0;
-    }
+    height: 24px;
   }
+}
+.spinner {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
 }
