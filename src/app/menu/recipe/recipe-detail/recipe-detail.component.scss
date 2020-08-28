@@ -28,6 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
   margin-bottom: 32px;
 }
 h1 {
@@ -38,7 +39,6 @@ h1 {
   align-items: center;
 }
 h2 {
-  padding-left: 8px;
   font-size: 14px;
   font-weight: normal;
   margin: 0;
@@ -63,6 +63,7 @@ p {
   justify-content: space-between;
   h2 {
     align-self: flex-end;
+    overflow-wrap: anywhere;
   }
   h4 {
     padding: 4px;
@@ -83,7 +84,7 @@ p {
   background: #ffff;
   display: flex;
   justify-content: space-between;
-
+  overflow-wrap: anywhere;
   &__point {
     height: 120px;
   }
@@ -95,15 +96,25 @@ p {
   padding: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: #fff;
   border-top: 1px solid #dbdbdb;
+  &__name {
+    width: 40%;
+    overflow-wrap: anywhere;
+  }
+  &__amount {
+    width: 40%;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
 }
 .processes {
   margin-bottom: 32px;
 }
 .process {
   display: flex;
-
+  justify-content: space-between;
   background: #ffff;
   border-top: 1px solid #dbdbdb;
   padding: 8px;
