@@ -61,6 +61,8 @@ p {
     color: #8a98ba;
     margin: 0px;
     margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__cal {
     margin: 0px;
@@ -73,14 +75,21 @@ p {
     margin-left: 8px;
     font-size: 15px;
     font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 .create {
-  position: absolute;
-  position: fixed;
-  bottom: 80px;
-  right: 24px;
-  z-index: 5;
+  display: flex;
+  justify-content: flex-end;
+  &__button {
+    position: fixed;
+    z-index: 5;
+    bottom: 80px;
+    @media screen and(max-width:750px) {
+      right: 24px;
+    }
+  }
 }
 .no-recipe {
   margin: 0 auto;
@@ -101,4 +110,8 @@ p {
     justify-self: center;
     max-width: 200px;
   }
+}
+.spinner {
+  margin: 0 auto;
+  margin-top: 32px;
 }
