@@ -1,90 +1,96 @@
-<h1>マイレシピ</h1>
-<div class="border"></div>
+<mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
+<div *ngIf="!loading">
+  <h1>マイレシピ</h1>
+  <div class="border"></div>
 
-<ng-template #noMyRecipe>
-  <div class="no-recipe">
-    <img class="no-recipe__image" src="assets/images/recipe.svg" alt="" />
-    <p class="no-recipe__text">マイレシピはまだ登録されていません。</p>
-    <p class="no-recipe__text">オリジナルの１品を登録しましょう。</p>
-    <button
-      mat-stroked-button
-      color="primary"
-      class="no-recipe__button"
-      (click)="forwardbackToForm()"
+  <ng-template #noMyRecipe>
+    <div class="no-recipe">
+      <img class="no-recipe__image" src="assets/images/recipe.svg" alt="" />
+      <p class="no-recipe__text">マイレシピはまだ登録されていません。</p>
+      <p class="no-recipe__text">オリジナルの１品を登録しましょう。</p>
+      <button
+        mat-stroked-button
+        color="primary"
+        class="no-recipe__button"
+        (click)="forwardbackToForm()"
+      >
+        <mat-icon>add</mat-icon><span>登録する</span>
+      </button>
+    </div>
+  </ng-template>
+  <div class="grid" *ngIf="myRecipes; else noMyRecipe">
+    <div
+      class="recipe"
+      *ngFor="let recipe of myRecipes"
+      routerLink="/recipe-detail"
+      [queryParams]="{ id: recipe.recipeId }"
     >
-      <mat-icon>add</mat-icon><span>登録する</span>
+      <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+
+      <div class="recipe__row">
+        <img
+          class="recipe__icon"
+          [src]="recipe.author.avatarURL"
+          alt="プロフィールアイコン"
+        />
+        <p class="recipe__author">
+          {{ recipe.author.name }}
+        </p>
+      </div>
+      <h2 class="recipe__title">
+        {{ recipe.recipeTitle }}
+      </h2>
+      <p *ngIf="recipe.recipeCal" class="recipe__cal">
+        {{ recipe.recipeCal }}kcal
+      </p>
+      <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
+    </div>
+  </div>
+  <h1>他ユーザーのレシピ</h1>
+  <div class="border"></div>
+  <ng-template #noPublicRecipe>
+    <div class="no-recipe">
+      <p class="no-recipe__text">他ユーザーのレシピはまだありません。</p>
+    </div>
+  </ng-template>
+  <div class="grid" *ngIf="publicRecipes; else noPublicRecipe">
+    <div
+      class="recipe"
+      *ngFor="let recipe of publicRecipes"
+      routerLink="/recipe-detail"
+      [queryParams]="{ id: recipe.recipeId }"
+    >
+      <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+
+      <div class="recipe__row">
+        <img
+          class="recipe__icon"
+          [src]="recipe.author.avatarURL"
+          alt="プロフィールアイコン"
+        />
+        <p class="recipe__author">
+          {{ recipe.author.name }}
+        </p>
+      </div>
+      <h2 class="recipe__title">
+        {{ recipe.recipeTitle }}
+      </h2>
+      <p *ngIf="recipe.recipeCal" class="recipe__cal">
+        {{ recipe.recipeCal }}kcal
+      </p>
+      <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
+    </div>
+  </div>
+
+  <div class="create">
+    <button
+      *ngIf="myRecipes"
+      mat-fab
+      color="primary"
+      (click)="forwardbackToForm()"
+      class="create__button"
+    >
+      <mat-icon>add</mat-icon>
     </button>
   </div>
-</ng-template>
-<div class="grid" *ngIf="myRecipes$ | async as myRecipes; else noMyRecipe">
-  <div
-    class="recipe"
-    *ngFor="let recipe of myRecipes"
-    routerLink="/recipe-detail"
-    [queryParams]="{ id: recipe.recipeId }"
-  >
-    <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
-
-    <div class="recipe__row">
-      <img
-        class="recipe__icon"
-        [src]="recipe.author.avatarURL"
-        alt="プロフィールアイコン"
-      />
-      <p class="recipe__author">{{ recipe.author.name }}</p>
-    </div>
-    <h2 class="recipe__title">
-      {{ recipe.recipeTitle }}
-    </h2>
-    <p *ngIf="recipe.recipeCal" class="recipe__cal">
-      {{ recipe.recipeCal }}kcal
-    </p>
-    <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
-  </div>
 </div>
-<h1>他ユーザーのレシピ</h1>
-<div class="border"></div>
-<ng-template #noPublicRecipe>
-  <div class="no-recipe">
-    <p class="no-recipe__text">他ユーザーのレシピはまだありません。</p>
-  </div>
-</ng-template>
-<div
-  class="grid"
-  *ngIf="publicRecipes$ | async as publicRecipes; else noPublicRecipe"
->
-  <div
-    class="recipe"
-    *ngFor="let recipe of publicRecipes"
-    routerLink="/recipe-detail"
-    [queryParams]="{ id: recipe.recipeId }"
-  >
-    <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
-
-    <div class="recipe__row">
-      <img
-        class="recipe__icon"
-        [src]="recipe.author.avatarURL"
-        alt="プロフィールアイコン"
-      />
-      <p class="recipe__author">{{ recipe.author.name }}</p>
-    </div>
-    <h2 class="recipe__title">
-      {{ recipe.recipeTitle }}
-    </h2>
-    <p *ngIf="recipe.recipeCal" class="recipe__cal">
-      {{ recipe.recipeCal }}kcal
-    </p>
-    <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
-  </div>
-</div>
-
-<button
-  *ngIf="myRecipes$ | async as myRecipes"
-  mat-fab
-  color="primary"
-  (click)="forwardbackToForm()"
-  class="create"
->
-  <mat-icon>add</mat-icon>
-</button>
