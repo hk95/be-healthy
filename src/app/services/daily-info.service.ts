@@ -34,7 +34,7 @@ export class DailyInfoService {
   ) {}
   goToSetPage(date: string, meal: string) {
     this.queryParams = [date, meal];
-    this.router.navigateByUrl('/menu');
+    this.router.navigateByUrl('/menu/set-list');
   }
   changeMeal(meal: string) {
     this.whichMeal = meal;
