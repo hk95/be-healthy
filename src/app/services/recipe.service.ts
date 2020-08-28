@@ -120,38 +120,7 @@ export class RecipeService {
       },
     });
   }
-  tentativeDelRecipe(recipeId): Promise<void> {
-    return this.db
-      .doc(`recipes/${recipeId}`)
-      .delete()
-      .then(() => {
-        this.router.navigateByUrl('/menu');
-      });
-  }
 
-  createRecipe(
-    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
-    processes
-  ): Promise<void> {
-    return this.db
-      .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .set(
-        {
-          ...recipe,
-          processes,
-          updatedAt: firestore.Timestamp.now(),
-        },
-        {
-          merge: true,
-        }
-      )
-      .then(() => {
-        this.snackBar.open('レシピを作成しました', null, {
-          duration: 2000,
-        });
-        this.router.navigateByUrl('menu');
-      });
-  }
   updateRecipe(
     recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
     processes
