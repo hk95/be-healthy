@@ -1,6 +1,6 @@
 <div class="contents" *ngIf="recipe$ | async as recipe">
   <div class="nav">
-    <button class="back-to-page" mat-icon-button routerLink="/menu">
+    <button class="back-to-page" mat-icon-button routerLink="/menu/recipe-list">
       <mat-icon>navigate_before</mat-icon>
     </button>
     <h1>レシピ詳細画面</h1>
@@ -55,8 +55,8 @@
       <h2 class="content__name">材料</h2>
       <div class="ingredients">
         <div class="ingredient" *ngFor="let food of recipe.foods">
-          <p>{{ food.name }}</p>
-          <p>{{ food.amountAndUnit }}</p>
+          <p class="ingredient__name">{{ food.name }}</p>
+          <p class="ingredient__amount">{{ food.amountAndUnit }}</p>
         </div>
         <div class="border"></div>
       </div>
