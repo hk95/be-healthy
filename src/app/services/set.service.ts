@@ -168,7 +168,7 @@ export class SetService {
         this.snackBar.open('マイセットを削除しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/menu');
+        this.router.navigateByUrl('/menu/set-list');
       })
       .catch((err) => {
         console.log('failes', err);
