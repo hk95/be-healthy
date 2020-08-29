@@ -160,12 +160,13 @@
                     openRecipe(recipe.recipeId); $event.stopPropagation()
                   "
                 >
-                  <img
-                    class="recipe__thumbnail"
-                    [src]="recipe.recipeThumbnailURL"
-                    alt=""
-                  />
-
+                  <figure class="recipe__thumbnail">
+                    <img
+                      class="recipe__image"
+                      [src]="recipe.recipeThumbnailURL"
+                      alt=""
+                    />
+                  </figure>
                   <div class="recipe__row">
                     <img
                       class="recipe__icon"

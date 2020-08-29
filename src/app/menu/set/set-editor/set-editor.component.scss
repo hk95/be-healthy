@@ -147,7 +147,6 @@ p {
 }
 .recipe {
   width: 140px;
-  height: 190px;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -163,10 +162,16 @@ p {
   }
   &__thumbnail {
     width: 140px;
-    height: 120px;
+    height: 94px;
     border-radius: 10px 10px 0px 0px;
-    margin-bottom: 8px;
     background: #c6c6c6 center/cover;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+  }
+  &__image {
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
   }
   &__row {
     display: flex;
@@ -183,6 +188,8 @@ p {
     color: #8a98ba;
     margin: 0px;
     margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__cal {
     margin: 0px;
@@ -195,12 +202,15 @@ p {
     margin-left: 8px;
     font-size: 15px;
     font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 70%;
   }
   &__add {
     z-index: 10;
     position: absolute;
-    right: 8px;
-    bottom: 8px;
+    right: 0px;
+    bottom: 0px;
   }
 }
 .nutrition {
