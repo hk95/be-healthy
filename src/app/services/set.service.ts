@@ -154,11 +154,7 @@ export class SetService {
       this.db.doc(`users/${userId}/sets/${setId}`).update({ dinner: bool });
     }
   }
-  deleteFoodOfSet(userId: string, setId: string, foodsArrayId: string) {
-    return this.db
-      .doc(`users/${userId}/sets/${setId}/foodsArray/${foodsArrayId}`)
-      .delete();
-  }
+
   async deleteSet(userId: string, setId: string): Promise<void> {
     const callable = this.fns.httpsCallable('deleteSet');
 
