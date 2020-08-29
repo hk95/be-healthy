@@ -5,13 +5,15 @@ import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, combineLatest, of, merge } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
 import { User } from '../interfaces/user';
 import { UserService } from './user.service';
 import { Location } from '@angular/common';
 import { AngularFireFunctions } from '@angular/fire/functions';
+import { BasicInfoService } from './basic-info.service';
+import { BasicInfo } from '../interfaces/basic-info';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,8 @@ export class RecipeService {
     private router: Router,
     private userService: UserService,
     private location: Location,
-    private fns: AngularFireFunctions
+    private fns: AngularFireFunctions,
+    private basicInfoService: BasicInfoService
   ) {}
   getAllRecipes() {
     this.allRecipes$ = this.db
@@ -45,18 +48,20 @@ export class RecipeService {
           ...new Set(myRecipes.map((recipe: Recipe) => recipe.authorId)),
         ];
 
-        const users$: Observable<User[]> = combineLatest(
+        const basicInfos$: Observable<BasicInfo[]> = combineLatest(
           authorIds.map((authorId: string) =>
-            this.userService.getUser(authorId)
+            this.basicInfoService.getBasicInfo(authorId)
           )
         );
-        return combineLatest([of(myRecipes), users$]);
+        return combineLatest([of(myRecipes), basicInfos$]);
       }),
-      map(([recipes, users]) => {
+      map(([recipes, basicInfos]) => {
         return recipes.map((recipe: Recipe) => {
           return {
             ...recipe,
-            author: users.find((user) => user.userId === recipe.authorId),
+            author: basicInfos.find(
+              (basicInfo) => basicInfo.userId === recipe.authorId
+            ),
           };
         });
       })
@@ -82,13 +87,13 @@ export class RecipeService {
               ),
             ];
 
-            const users$: Observable<User[]> = combineLatest(
+            const basicInfos$: Observable<BasicInfo[]> = combineLatest(
               authorIds.map((authorId: string) =>
-                this.userService.getUser(authorId)
+                this.basicInfoService.getBasicInfo(authorId)
               )
             );
             if (publicExcludeMyRecipes.length) {
-              return combineLatest([of(publicExcludeMyRecipes), users$]);
+              return combineLatest([of(publicExcludeMyRecipes), basicInfos$]);
             } else {
               return combineLatest([of(null), of(null)]);
             }
@@ -96,12 +101,14 @@ export class RecipeService {
             return combineLatest([of(null), of(null)]);
           }
         }),
-        map(([recipes, users]) => {
-          if (users && users.length > 0) {
+        map(([recipes, basicInfos]) => {
+          if (basicInfos && basicInfos.length > 0) {
             return recipes.map((recipe: Recipe) => {
               return {
                 ...recipe,
-                author: users.find((user?) => user.userId === recipe.authorId),
+                author: basicInfos.find(
+                  (basicInfo?) => basicInfo.userId === recipe.authorId
+                ),
               };
             });
           }
@@ -140,7 +147,8 @@ export class RecipeService {
         this.location.back();
       });
   }
-  deleteRecipe(recipeId: string): Promise<void> {
+  async deleteRecipe(userId: string, recipeId: string): Promise<void> {
+    this.deleteUpdatedImage(userId, recipeId);
     return this.db
       .doc<Recipe>(`recipes/${recipeId}`)
       .delete()
@@ -171,7 +179,7 @@ export class RecipeService {
   }
 
   async deleteUpdatedImage(userId: string, recipeId: string) {
-    const callable = this.fns.httpsCallable('deleteRecipeImage');
+    const callable = this.fns.httpsCallable('deleteUpdatedImage');
     return callable({ userId, recipeId });
   }
 }
