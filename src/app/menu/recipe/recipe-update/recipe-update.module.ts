@@ -12,6 +12,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [RecipeUpdateComponent],
@@ -28,6 +29,7 @@ import { MatTableModule } from '@angular/material/table';
     MatFormFieldModule,
     MatInputModule,
     MatTableModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class RecipeUpdateModule {}

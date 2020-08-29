@@ -37,6 +37,7 @@ export class RecipeUpdateComponent implements OnInit {
   process = false;
   processQuanity = 0;
   public = false;
+  loading: boolean;
   isCreating: boolean;
   userId = this.authService.uid;
 
@@ -78,6 +79,7 @@ export class RecipeUpdateComponent implements OnInit {
     private recipeService: RecipeService,
     private authService: AuthService
   ) {
+    this.loading = true;
     this.route.queryParamMap.subscribe((recipeId) => {
       this.query = recipeId.get('id');
       this.recipeService.getRecipeByRecipeId(this.query).subscribe((recipe) => {
@@ -111,6 +113,7 @@ export class RecipeUpdateComponent implements OnInit {
           this.isCreating = true;
           this.addIngredinet();
         }
+        this.loading = false;
       });
     });
   }
