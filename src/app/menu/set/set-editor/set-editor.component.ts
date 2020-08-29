@@ -194,7 +194,6 @@ export class SetEditorComponent implements OnInit {
     }
   }
   removeFood(index: number, food) {
-    this.setService.deleteFoodOfSet(this.userId, this.query, food.setId);
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
     if (food.recipeCal) {
