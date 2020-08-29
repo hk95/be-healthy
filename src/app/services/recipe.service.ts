@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
-import { User } from '../interfaces/user';
 import { UserService } from './user.service';
 import { Location } from '@angular/common';
 import { AngularFireFunctions } from '@angular/fire/functions';
@@ -44,26 +43,32 @@ export class RecipeService {
 
     return myRecipes$.pipe(
       switchMap((myRecipes: Recipe[]) => {
-        const authorIds: string[] = [
-          ...new Set(myRecipes.map((recipe: Recipe) => recipe.authorId)),
-        ];
+        if (myRecipes.length > 0) {
+          const authorIds: string[] = [
+            ...new Set(myRecipes.map((recipe: Recipe) => recipe.authorId)),
+          ];
 
-        const basicInfos$: Observable<BasicInfo[]> = combineLatest(
-          authorIds.map((authorId: string) =>
-            this.basicInfoService.getBasicInfo(authorId)
-          )
-        );
-        return combineLatest([of(myRecipes), basicInfos$]);
+          const basicInfos$: Observable<BasicInfo[]> = combineLatest(
+            authorIds.map((authorId: string) =>
+              this.basicInfoService.getBasicInfo(authorId)
+            )
+          );
+          return combineLatest([of(myRecipes), basicInfos$]);
+        } else {
+          return combineLatest([of(null), of(null)]);
+        }
       }),
       map(([recipes, basicInfos]) => {
-        return recipes.map((recipe: Recipe) => {
-          return {
-            ...recipe,
-            author: basicInfos.find(
-              (basicInfo) => basicInfo.userId === recipe.authorId
-            ),
-          };
-        });
+        if (recipes && recipes.length > 0) {
+          return recipes.map((recipe: Recipe) => {
+            return {
+              ...recipe,
+              author: basicInfos.find(
+                (basicInfo) => basicInfo.userId === recipe.authorId
+              ),
+            };
+          });
+        }
       })
     );
   }
@@ -156,7 +161,7 @@ export class RecipeService {
         this.snackBar.open('レシピを削除しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('menu');
+        this.router.navigateByUrl('menu/recipe-list');
       });
   }
 
