@@ -1,43 +1,32 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SetService } from 'src/app/services/set.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { Observable, Subscription } from 'rxjs';
-import { Set, Meal } from 'src/app/interfaces/set';
+import { Set, FoodInArray } from 'src/app/interfaces/set';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-set',
   templateUrl: './set.component.html',
   styleUrls: ['./set.component.scss'],
 })
-export class SetComponent implements OnInit, OnDestroy {
-  setId: string;
-  userId = this.authService.uid;
-  sets: Set[];
-  mealOfAllSets: Meal[];
+export class SetComponent implements OnInit {
+  private setId: string;
+  private getNumber = 10;
+  private userId = this.authService.uid;
+  private lastDoc: QueryDocumentSnapshot<Set>;
+
+  sets: Set[] = new Array();
   loading: boolean;
-  setSub: Subscription;
+  isNext: boolean;
+
   constructor(
     private setService: SetService,
     private router: Router,
     private authService: AuthService
   ) {
-    this.loading = true;
-    this.setSub = this.setService
-      .getSets(this.authService.uid)
-      .subscribe((sets?) => {
-        if (sets && sets.length > 0) {
-          this.sets = sets;
-          this.mealOfAllSets = sets.map((set) => {
-            return {
-              breakfast: set.breakfast,
-              lunch: set.lunch,
-              dinner: set.dinner,
-            };
-          });
-        }
-        this.loading = false;
-      });
+    this.getSets();
   }
   forwardbackToForm() {
     this.setId = this.setService.getTentativeRecipeId();
@@ -47,9 +36,30 @@ export class SetComponent implements OnInit, OnDestroy {
       },
     });
   }
-
-  ngOnInit(): void {}
-  ngOnDestroy(): void {
-    this.setSub.unsubscribe();
+  getSets() {
+    this.loading = true;
+    this.setService
+      .getSets(this.userId, this.getNumber, this.lastDoc)
+      .pipe(take(1))
+      .subscribe((sets) => {
+        if (sets && sets.length > 0) {
+          sets.forEach(
+            (set: {
+              data: Set & FoodInArray[];
+              nextLastDoc: QueryDocumentSnapshot<Set>;
+            }) => {
+              this.sets.push(set.data);
+              this.lastDoc = set.nextLastDoc;
+            }
+          );
+          if (sets.length >= this.getNumber) {
+            this.isNext = true;
+          } else {
+            this.isNext = false;
+          }
+        }
+        this.loading = false;
+      });
   }
+  ngOnInit(): void {}
 }

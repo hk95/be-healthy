@@ -60,46 +60,43 @@
           <div class="meals">
             <p
               class="card__meal-name"
-              [style.background]="
-                mealOfAllSets[i].breakfast ? '#009688' : '#ffff'
-              "
+              [style.background]="set.breakfast ? '#009688' : '#ffff'"
               [style.border]="
-                mealOfAllSets[i].breakfast
-                  ? 'none'
-                  : '1px solid rgba(#000000, 0.12)'
+                set.breakfast ? 'none' : '1px solid rgba(#000000, 0.12)'
               "
-              [style.color]="mealOfAllSets[i].breakfast ? '#ffff' : '#009688'"
+              [style.color]="set.breakfast ? '#ffff' : '#009688'"
             >
               朝食
             </p>
             <p
               class="card__meal-name"
-              [style.background]="mealOfAllSets[i].lunch ? '#009688' : '#ffff'"
+              [style.background]="set.lunch ? '#009688' : '#ffff'"
               [style.border]="
-                mealOfAllSets[i].lunch
-                  ? 'none'
-                  : '1px solid rgba(#000000, 0.12)'
+                set.lunch ? 'none' : '1px solid rgba(#000000, 0.12)'
               "
-              [style.color]="mealOfAllSets[i].lunch ? '#ffff' : '#009688'"
+              [style.color]="set.lunch ? '#ffff' : '#009688'"
             >
               昼食
             </p>
 
             <p
               class="card__meal-name"
-              [style.background]="mealOfAllSets[i].dinner ? '#009688' : '#ffff'"
+              [style.background]="set.dinner ? '#009688' : '#ffff'"
               [style.border]="
-                mealOfAllSets[i].dinner
-                  ? 'none'
-                  : '1px solid rgba(#000000, 0.12)'
+                set.dinner ? 'none' : '1px solid rgba(#000000, 0.12)'
               "
-              [style.color]="mealOfAllSets[i].dinner ? '#ffff' : '#009688'"
+              [style.color]="set.dinner ? '#ffff' : '#009688'"
             >
               夕食
             </p>
           </div>
         </div>
       </div>
+    </div>
+    <div class="more-button" *ngIf="isNext">
+      <button mat-flat-button color="primary" *ngIf="sets" (click)="getSets()">
+        もっと見る
+      </button>
     </div>
   </div>
   <div class="wrap" *ngIf="sets && sets.length > 0">
