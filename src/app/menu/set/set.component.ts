@@ -54,9 +54,9 @@ export class SetComponent implements OnInit {
           );
           if (sets.length >= this.getNumber) {
             this.isNext = true;
-          } else {
-            this.isNext = false;
           }
+        } else {
+          this.isNext = false;
         }
         this.loading = false;
       });
