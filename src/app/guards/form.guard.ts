@@ -1,7 +1,6 @@
-import { Injectable, ViewChild } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { RecipeCreateComponent } from '../menu/recipe/recipe-create/recipe-create.component';
 import { RecipeUpdateComponent } from '../menu/recipe/recipe-update/recipe-update.component';
 import { SetEditorComponent } from '../menu/set/set-editor/set-editor.component';
 import { SetService } from '../services/set.service';
@@ -10,14 +9,11 @@ import { SetService } from '../services/set.service';
   providedIn: 'root',
 })
 export class FormGuard
-  implements CanDeactivate<RecipeCreateComponent | RecipeUpdateComponent> {
+  implements CanDeactivate<RecipeUpdateComponent | SetEditorComponent> {
   constructor(private setService: SetService) {}
 
   canDeactivate(
-    component:
-      | RecipeCreateComponent
-      | RecipeUpdateComponent
-      | SetEditorComponent
+    component: RecipeUpdateComponent | SetEditorComponent
   ): Observable<boolean> | boolean {
     if (
       component.form.pristine ||
