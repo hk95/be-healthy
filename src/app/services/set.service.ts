@@ -214,6 +214,9 @@ export class SetService {
   async deleteSet(userId: string, setId: string): Promise<void> {
     const callable = this.fns.httpsCallable('deleteSet');
 
+    this.snackBar.open('マイセットを削除中...', null, {
+      duration: null,
+    });
     return await callable({ userId, setId })
       .toPromise()
       .then(() => {
@@ -222,8 +225,11 @@ export class SetService {
         });
         this.router.navigateByUrl('/menu/set-list');
       })
-      .catch((err) => {
-        console.log('failes', err);
+      .catch(() => {
+        this.snackBar.open('マイセットの削除にしました', null, {
+          duration: 2000,
+        });
+        this.router.navigateByUrl('/menu/set-list');
       });
   }
 }
