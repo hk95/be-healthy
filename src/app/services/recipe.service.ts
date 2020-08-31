@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  QueryDocumentSnapshot,
+  DocumentChangeAction,
+} from '@angular/fire/firestore';
 import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,7 +12,6 @@ import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
-import { UserService } from './user.service';
 import { Location } from '@angular/common';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { BasicInfoService } from './basic-info.service';
@@ -24,28 +27,109 @@ export class RecipeService {
     public storage: AngularFireStorage,
     private snackBar: MatSnackBar,
     private router: Router,
-    private userService: UserService,
     private location: Location,
     private fns: AngularFireFunctions,
     private basicInfoService: BasicInfoService
   ) {}
-  getAllRecipes() {
-    this.allRecipes$ = this.db
-      .collection<Recipe>(`recipes`, (ref) => ref.orderBy('updatedAt', 'desc'))
-      .valueChanges();
-  }
-  getMyRecipes(userId: string): Observable<RecipeWithAuthor[]> {
+  getMyRecipes(
+    userId: string,
+    getNumber: number,
+    lastDoc?: QueryDocumentSnapshot<Recipe>
+  ): Observable<{
+    data: RecipeWithAuthor[];
+    nextLastDoc: QueryDocumentSnapshot<Recipe>;
+  }> {
     const myRecipes$ = this.db
-      .collection<Recipe>(`recipes`, (ref) =>
-        ref.where('authorId', '==', userId).orderBy('updatedAt', 'desc')
-      )
-      .valueChanges();
+      .collection<Recipe>(`recipes`, (ref) => {
+        let query = ref
+          .where('authorId', '==', userId)
+          .orderBy('updatedAt', 'desc')
+          .limit(getNumber);
+        if (lastDoc) {
+          query = query.startAfter(lastDoc).limit(getNumber);
+        }
+        return query;
+      })
+      .snapshotChanges();
+
+    let nextLastDoc: QueryDocumentSnapshot<Recipe>;
 
     return myRecipes$.pipe(
-      switchMap((myRecipes: Recipe[]) => {
+      switchMap((myRecipes: DocumentChangeAction<Recipe>[]) => {
         if (myRecipes.length > 0) {
+          nextLastDoc = myRecipes[myRecipes.length - 1].payload.doc;
+
+          const RecipeWithoutAuthor = myRecipes.map((recipe) =>
+            recipe.payload.doc.data()
+          );
+          const basicInfo$ = this.basicInfoService.getBasicInfo(userId);
+
+          return combineLatest([of(RecipeWithoutAuthor), basicInfo$]);
+        } else {
+          return of([]);
+        }
+      }),
+      map(([recipes, basicInfo]): {
+        data: RecipeWithAuthor[];
+        nextLastDoc: QueryDocumentSnapshot<Recipe>;
+      } => {
+        if (recipes && recipes.length > 0 && basicInfo) {
+          const recipeswithAuthor: RecipeWithAuthor[] = recipes.map(
+            (recipe: Recipe) => {
+              return {
+                ...recipe,
+                author: basicInfo,
+              };
+            }
+          );
+
+          return {
+            data: recipeswithAuthor,
+            nextLastDoc,
+          };
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+
+  getPublicRecipes(
+    getNumber: number,
+    lastDoc: QueryDocumentSnapshot<Recipe>
+  ): Observable<{
+    data: RecipeWithAuthor[];
+    nextLastDoc: QueryDocumentSnapshot<Recipe>;
+  }> {
+    const publicRecipes$ = this.db
+      .collection<Recipe>(`recipes`, (ref) => {
+        let query = ref
+          .where('public', '==', true)
+          .orderBy('updatedAt', 'desc')
+          .limit(getNumber);
+        if (lastDoc) {
+          query = query.startAfter(lastDoc).limit(getNumber);
+        }
+        return query;
+      })
+      .snapshotChanges();
+    let nextLastDoc: QueryDocumentSnapshot<Recipe>;
+    return publicRecipes$.pipe(
+      switchMap((publicRecipes?: DocumentChangeAction<Recipe>[]) => {
+        if (publicRecipes.length > 0) {
+          nextLastDoc = publicRecipes[publicRecipes.length - 1].payload.doc;
+
+          const publicRecipesWithoutAuthor: Recipe[] = publicRecipes.map(
+            (recipeOfDoc) => recipeOfDoc.payload.doc.data()
+          );
+
           const authorIds: string[] = [
-            ...new Set(myRecipes.map((recipe: Recipe) => recipe.authorId)),
+            ...new Set(
+              publicRecipes.map(
+                (recipe: DocumentChangeAction<Recipe>) =>
+                  recipe.payload.doc.data().authorId
+              )
+            ),
           ];
 
           const basicInfos$: Observable<BasicInfo[]> = combineLatest(
@@ -53,72 +137,37 @@ export class RecipeService {
               this.basicInfoService.getBasicInfo(authorId)
             )
           );
-          return combineLatest([of(myRecipes), basicInfos$]);
+          if (publicRecipesWithoutAuthor.length) {
+            return combineLatest([of(publicRecipesWithoutAuthor), basicInfos$]);
+          } else {
+            return combineLatest([of(null), of(null)]);
+          }
         } else {
           return combineLatest([of(null), of(null)]);
         }
       }),
       map(([recipes, basicInfos]) => {
-        if (recipes && recipes.length > 0) {
-          return recipes.map((recipe: Recipe) => {
-            return {
-              ...recipe,
-              author: basicInfos.find(
-                (basicInfo) => basicInfo.userId === recipe.authorId
-              ),
-            };
-          });
-        }
-      })
-    );
-  }
-  getPublicRecipes(userId: string): Observable<RecipeWithAuthor[]> {
-    let publicExcludeMyRecipes: Recipe[] = [];
-    return this.db
-      .collection<Recipe>(`recipes`, (ref) =>
-        ref.where('public', '==', true).orderBy('updatedAt', 'desc')
-      )
-      .valueChanges()
-      .pipe(
-        switchMap((publicRecipes?: Recipe[]) => {
-          if (publicRecipes.length > 0) {
-            publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
-              return recipe.authorId !== userId;
-            });
-
-            const authorIds: string[] = [
-              ...new Set(
-                publicRecipes.map((recipe: Recipe) => recipe.authorId)
-              ),
-            ];
-
-            const basicInfos$: Observable<BasicInfo[]> = combineLatest(
-              authorIds.map((authorId: string) =>
-                this.basicInfoService.getBasicInfo(authorId)
-              )
-            );
-            if (publicExcludeMyRecipes.length) {
-              return combineLatest([of(publicExcludeMyRecipes), basicInfos$]);
-            } else {
-              return combineLatest([of(null), of(null)]);
-            }
-          } else {
-            return combineLatest([of(null), of(null)]);
-          }
-        }),
-        map(([recipes, basicInfos]) => {
-          if (basicInfos && basicInfos.length > 0) {
-            return recipes.map((recipe: Recipe) => {
+        if (basicInfos && basicInfos.length > 0) {
+          const publicRecipes: RecipeWithAuthor[] = recipes.map(
+            (recipe: Recipe) => {
               return {
                 ...recipe,
                 author: basicInfos.find(
                   (basicInfo?) => basicInfo.userId === recipe.authorId
                 ),
               };
-            });
-          }
-        })
-      );
+            }
+          );
+
+          return {
+            data: publicRecipes,
+            nextLastDoc,
+          };
+        } else {
+          return null;
+        }
+      })
+    );
   }
 
   getRecipeByRecipeId(recipeId: string): Observable<Recipe> {
@@ -127,7 +176,6 @@ export class RecipeService {
 
   tentativeCreateRecipe() {
     const recipeId = this.db.createId();
-
     return this.router.navigate(['/recipe-update'], {
       queryParams: {
         id: recipeId,
