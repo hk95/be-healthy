@@ -13,8 +13,6 @@ import { switchMap, map } from 'rxjs/operators';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { Location } from '@angular/common';
 
-import { Recipe } from '../interfaces/recipe';
-
 @Injectable({
   providedIn: 'root',
 })
