@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  QueryDocumentSnapshot,
+  DocumentChangeAction,
+} from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set, FoodInArray } from '../interfaces/set';
-import { combineLatest, Observable, of, observable } from 'rxjs';
-import { switchMap, map, take } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { Location } from '@angular/common';
+
+import { Recipe } from '../interfaces/recipe';
 
 @Injectable({
   providedIn: 'root',
@@ -22,31 +28,79 @@ export class SetService {
     private location: Location
   ) {}
 
-  getSets(userId: string): Observable<Set[]> | Observable<null> {
-    return this.db
-      .collection<Set>(`users/${userId}/sets`, (ref) =>
-        ref.orderBy('updatedAt', 'desc')
-      )
-      .valueChanges()
-      .pipe(
-        switchMap((sets: Set[]) => {
-          if (sets && sets.length > 0) {
-            const allSets = sets.map((set) => {
-              return this.db
-                .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
-                .valueChanges()
-                .pipe(
-                  map((foodsArray: Set[]) => {
-                    return Object.assign(set, { foodsArray });
-                  })
-                );
-            });
-            return combineLatest([...allSets]);
-          } else {
-            return of(null);
-          }
-        })
-      );
+  getSets(
+    userId: string,
+    getNumber: number,
+    lastDoc?: QueryDocumentSnapshot<Set>
+  ): Observable<
+    {
+      data: Set & FoodInArray[];
+      nextLastDoc: QueryDocumentSnapshot<Set>;
+    }[]
+  > {
+    const setWithoutFoodsArray$ = this.db
+      .collection<Set>(`users/${userId}/sets`, (ref) => {
+        let query = ref.orderBy('updatedAt').limit(getNumber);
+        if (lastDoc) {
+          query = query.startAfter(lastDoc).limit(getNumber);
+        }
+        return query;
+      })
+      .snapshotChanges();
+
+    let nextLastDoc: QueryDocumentSnapshot<Set>;
+    let setsWithoutFoodsArray: Set[];
+
+    return setWithoutFoodsArray$.pipe(
+      switchMap((sets: DocumentChangeAction<Set>[]) => {
+        if (sets.length > 0) {
+          nextLastDoc = sets[sets.length - 1].payload.doc;
+
+          setsWithoutFoodsArray = sets.map((set: DocumentChangeAction<Set>) => {
+            return set.payload.doc.data();
+          });
+
+          const allSets: Observable<
+            Set & { foodsArray: FoodInArray[] }
+          >[] = setsWithoutFoodsArray.map((set: Set) => {
+            return this.db
+              .collection<FoodInArray>(
+                `users/${userId}/sets/${set.setId}/foodsArray`
+              )
+              .valueChanges()
+              .pipe(
+                map((foodsArray: FoodInArray[]) => {
+                  return Object.assign(set, { foodsArray });
+                })
+              );
+          });
+
+          return combineLatest([...allSets]);
+        } else {
+          return of([]);
+        }
+      }),
+      map((allSets: (Set & FoodInArray[])[]): {
+        data: Set & FoodInArray[];
+        nextLastDoc: QueryDocumentSnapshot<Set>;
+      }[] => {
+        if (allSets.length > 0) {
+          return allSets.map((allSet: Set & FoodInArray[]): {
+            data: Set & FoodInArray[];
+            nextLastDoc: QueryDocumentSnapshot<Set>;
+          } => {
+            return {
+              data: {
+                ...allSet,
+              },
+              nextLastDoc,
+            };
+          });
+        } else {
+          return null;
+        }
+      })
+    );
   }
   getSetsOfMeal(userId: string, meal: string): Observable<Set[]> {
     return this.db
@@ -57,12 +111,16 @@ export class SetService {
       .pipe(
         switchMap((sets: Set[]) => {
           if (sets.length) {
-            const allSets = sets.map((set) => {
+            const allSets: Observable<
+              Set & { foodsArray: FoodInArray[] }
+            >[] = sets.map((set) => {
               return this.db
-                .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
+                .collection<FoodInArray>(
+                  `users/${userId}/sets/${set.setId}/foodsArray`
+                )
                 .valueChanges()
                 .pipe(
-                  map((foodsArray: Set[]) => {
+                  map((foodsArray: FoodInArray[]) => {
                     return Object.assign(set, { foodsArray });
                   })
                 );
