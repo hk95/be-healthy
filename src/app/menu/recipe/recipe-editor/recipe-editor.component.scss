@@ -1,0 +1,250 @@
+@import '~@angular/material/theming';
+
+h1 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 0;
+}
+h2 {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0;
+}
+p {
+  margin: 0;
+}
+.form-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 32px 8px;
+  background: #fff;
+  @include mat-elevation(1);
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #ffff;
+  padding: 8px;
+  height: 56px;
+  @include mat-elevation(1);
+}
+.title {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  &__name-field {
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+  &__name-form {
+    font-size: 16px;
+  }
+
+  &__image-form {
+    display: none;
+  }
+  &__thumbnail-button {
+    height: 120px;
+    background: #fff;
+    border: 1px dashed hsl(0, 0%, 86%);
+    border-radius: 10px;
+    outline: none;
+    color: #767676;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+
+  img {
+    background: #ffff center/cover;
+    max-width: 300px;
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+}
+
+.summary {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ingredient {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #dbdbdb;
+  background: #fff;
+  @include mat-elevation(1);
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      align-self: flex-end;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: center;
+
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+  &__cell {
+    display: flex;
+    justify-content: center;
+
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+  &__form-field {
+    width: 90%;
+    max-width: 300px;
+  }
+}
+
+.process {
+  margin-bottom: 32px;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  @include mat-elevation(1);
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    h2 {
+      align-self: flex-end;
+    }
+  }
+
+  p {
+    margin: 0;
+    color: #767676;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    &--index {
+      max-width: 10%;
+      padding-left: 8px;
+    }
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+  &__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 65px;
+      height: 65px;
+      border-radius: 5px;
+      background: #ffff;
+      cursor: pointer;
+      &:hover {
+        @include mat-elevation(2);
+      }
+    }
+    &--index {
+      max-width: 10%;
+      padding-left: 8px;
+    }
+    &--image-form {
+      height: 70px;
+    }
+    &--end {
+      max-width: 40px;
+      padding: 0 16px;
+    }
+  }
+
+  &__number {
+    margin: 0;
+    margin-left: 8px;
+    min-height: 30px;
+  }
+  &__image-form {
+    display: none;
+  }
+  &__image {
+    width: 65px;
+    height: 65px;
+    padding: 0;
+    background: #fff;
+    border: 1px dashed #dbdbdb;
+    border-radius: 5px;
+    outline: none;
+    color: #767676;
+    cursor: pointer;
+    &:hover {
+      @include mat-elevation(2);
+    }
+  }
+  &__form-field {
+    margin-top: 8px;
+    width: 100%;
+    max-width: 300px;
+  }
+  // &__description {
+  //   width: 90%;
+  // }
+}
+.nutrition {
+  margin-bottom: 32px;
+  border-bottom: 1px solid #dbdbdb;
+  &__detail {
+    // height: 35px;
+    padding: 0 8px;
+    border-top: 1px solid #dbdbdb;
+    background: #ffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__name {
+    margin: 0;
+  }
+
+  &__form-fied {
+    width: 48%;
+    max-width: 250px;
+    margin-top: 8px;
+    font-size: 7px;
+  }
+  &__amount {
+    font-size: 14px;
+  }
+}
+
+.public {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  max-width: 700px;
+  padding: 8px;
+}
+.spinner {
+  margin: 0 auto;
+  margin-top: 32px;
+}
