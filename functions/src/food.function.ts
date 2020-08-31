@@ -8,7 +8,11 @@ export const createFood = functions
   .firestore.document('foods/{foodId}')
   .onCreate((snap) => {
     const data = snap.data();
-    return algolia.saveRecord('foods', data);
+    if (data) {
+      return algolia.saveRecord('foods', data, data.foodId);
+    } else {
+      return;
+    }
   });
 
 export const deleteFood = functions
@@ -29,5 +33,9 @@ export const updateFood = functions
   .firestore.document('foods/{foodId}')
   .onUpdate((change) => {
     const data = change.after.data();
-    return algolia.saveRecord('foods', data, true);
+    if (data) {
+      return algolia.saveRecord('foods', data, data.foodId, true);
+    } else {
+      return;
+    }
   });
