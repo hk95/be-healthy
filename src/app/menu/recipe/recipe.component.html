@@ -1,5 +1,9 @@
-<mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
-<div *ngIf="!loading">
+<mat-spinner
+  *ngIf="myRecipeloading && publicRecipeloading"
+  class="spinner"
+  diameter="50"
+></mat-spinner>
+<div *ngIf="!myRecipeloading && !publicRecipeloading">
   <h1>マイレシピ</h1>
   <div class="border"></div>
 
@@ -18,7 +22,7 @@
       </button>
     </div>
   </ng-template>
-  <div class="grid" *ngIf="myRecipes; else noMyRecipe">
+  <div class="grid" *ngIf="myRecipes && myRecipes.length > 0; else noMyRecipe">
     <div
       class="recipe"
       *ngFor="let recipe of myRecipes"
@@ -28,34 +32,43 @@
       <figure class="recipe__thumbnail">
         <img class="recipe__image" [src]="recipe.recipeThumbnailURL" alt="" />
       </figure>
-
-      <div class="recipe__row">
-        <img
-          class="recipe__icon"
-          [src]="recipe.author.avatarURL"
-          alt="プロフィールアイコン"
-        />
-        <p class="recipe__author">
-          {{ recipe.author.name }}
+      <div class="recipe__content">
+        <div class="recipe__row">
+          <img
+            class="recipe__icon"
+            [src]="recipe.author.avatarURL"
+            alt="プロフィールアイコン"
+          />
+          <p class="recipe__author">
+            {{ recipe.author.name }}
+          </p>
+        </div>
+        <h2 class="recipe__title">
+          {{ recipe.recipeTitle }}
+        </h2>
+        <p class="recipe__cal">
+          {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
         </p>
       </div>
-      <h2 class="recipe__title">
-        {{ recipe.recipeTitle }}
-      </h2>
-      <p *ngIf="recipe.recipeCal" class="recipe__cal">
-        {{ recipe.recipeCal }}kcal
-      </p>
-      <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
     </div>
   </div>
-  <h1>他ユーザーのレシピ</h1>
+  <div class="more-button" *ngIf="isMyRecipeNext">
+    <button mat-flat-button color="primary" (click)="getMyRecipes()">
+      もっと見る
+    </button>
+  </div>
+
+  <h1>公開レシピ</h1>
   <div class="border"></div>
   <ng-template #noPublicRecipe>
     <div class="no-recipe">
-      <p class="no-recipe__text">他ユーザーのレシピはまだありません。</p>
+      <p class="no-recipe__text">公開されているレシピはまだありません。</p>
     </div>
   </ng-template>
-  <div class="grid" *ngIf="publicRecipes; else noPublicRecipe">
+  <div
+    class="grid"
+    *ngIf="publicRecipes && publicRecipes.length > 0; else noPublicRecipe"
+  >
     <div
       class="recipe"
       *ngFor="let recipe of publicRecipes"
@@ -63,30 +76,40 @@
       [queryParams]="{ id: recipe.recipeId }"
     >
       <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
-
-      <div class="recipe__row">
-        <img
-          class="recipe__icon"
-          [src]="recipe.author.avatarURL"
-          alt="プロフィールアイコン"
-        />
-        <p class="recipe__author">
-          {{ recipe.author.name }}
+      <div class="recipe__content">
+        <div class="recipe__row">
+          <img
+            class="recipe__icon"
+            [src]="recipe.author.avatarURL"
+            alt="プロフィールアイコン"
+          />
+          <p class="recipe__author">
+            {{ recipe.author.name }}
+          </p>
+        </div>
+        <h2 class="recipe__title">
+          {{ recipe.recipeTitle }}
+        </h2>
+        <p class="recipe__cal">
+          {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
         </p>
       </div>
-      <h2 class="recipe__title">
-        {{ recipe.recipeTitle }}
-      </h2>
-      <p *ngIf="recipe.recipeCal" class="recipe__cal">
-        {{ recipe.recipeCal }}kcal
-      </p>
-      <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
     </div>
+  </div>
+  <div class="more-button" *ngIf="isPublicRecipeNext">
+    <button
+      mat-flat-button
+      type="button"
+      color="primary"
+      (click)="getPublicRecipes()"
+    >
+      もっと見る
+    </button>
   </div>
 
   <div class="create">
     <button
-      *ngIf="myRecipes"
+      *ngIf="myRecipes && myRecipes.length > 0"
       mat-fab
       color="primary"
       (click)="forwardbackToForm()"
