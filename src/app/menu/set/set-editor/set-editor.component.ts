@@ -16,17 +16,24 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
 import { FoodOrRecipe } from 'src/app/interfaces/set';
 
+import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-set-editor',
   templateUrl: './set-editor.component.html',
   styleUrls: ['./set-editor.component.scss'],
 })
 export class SetEditorComponent implements OnInit {
+  private userId = this.authService.uid;
+  private query: string;
+  private getNumber = 10;
+  private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
+
   title: string;
   config = this.searchService.config;
-  query: string;
-  userId = this.authService.uid;
-  myRecipes = [];
+  myRecipes: RecipeWithAuthor[] = new Array();
+  isNext: boolean;
   currentCal = 0;
   currentProtein = 0;
   currentFat = 0;
@@ -116,14 +123,35 @@ export class SetEditorComponent implements OnInit {
           }
         });
     });
-    this.recipeService
-      .getMyRecipes(this.userId)
-      .pipe(take(1))
-      .subscribe((recipes) => {
-        this.myRecipes = recipes;
-      });
+    this.getMyRecipes();
   }
-
+  getMyRecipes() {
+    this.recipeService
+      .getMyRecipes(this.userId, this.getNumber, this.lastMyRecipeDoc)
+      .pipe(take(1))
+      .subscribe(
+        (doc: {
+          data: RecipeWithAuthor[];
+          nextLastDoc: QueryDocumentSnapshot<Recipe>;
+        }) => {
+          if (doc) {
+            this.lastMyRecipeDoc = doc.nextLastDoc;
+            if (doc.data && doc.data.length > 0) {
+              doc.data.forEach((recipe: RecipeWithAuthor) => {
+                this.myRecipes.push(recipe);
+                if (doc.data.length >= this.getNumber) {
+                  this.isNext = true;
+                } else {
+                  this.isNext = false;
+                }
+              });
+            }
+          } else {
+            this.isNext = false;
+          }
+        }
+      );
+  }
   addFood(food: FoodOrRecipe, preAmount: number) {
     const amount = Number(preAmount);
     this.preFoods.push({

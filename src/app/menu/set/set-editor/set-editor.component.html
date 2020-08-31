@@ -167,32 +167,43 @@
                       alt=""
                     />
                   </figure>
-                  <div class="recipe__row">
-                    <img
-                      class="recipe__icon"
-                      [src]="recipe.author.avatarURL"
-                      alt="プロフィールアイコン"
-                    />
-                    <p class="recipe__author">{{ recipe.author.name }}</p>
+                  <div class="recipe__content">
+                    <div class="recipe__row">
+                      <img
+                        class="recipe__icon"
+                        [src]="recipe.author.avatarURL"
+                        alt="プロフィールアイコン"
+                      />
+                      <p class="recipe__author">{{ recipe.author.name }}</p>
+                    </div>
+                    <h2 class="recipe__title">
+                      {{ recipe.recipeTitle }}
+                    </h2>
+                    <p class="recipe__cal">
+                      {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
+                    </p>
+                    <button
+                      class="recipe__add"
+                      type="button"
+                      mat-icon-button
+                      color="primary"
+                      (click)="addFood(recipe, 1); $event.stopPropagation()"
+                    >
+                      <mat-icon>add_box</mat-icon>
+                    </button>
                   </div>
-                  <h2 class="recipe__title">
-                    {{ recipe.recipeTitle }}
-                  </h2>
-                  <p *ngIf="recipe.recipeCal" class="recipe__cal">
-                    {{ recipe.recipeCal }}kcal
-                  </p>
-                  <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
-                  <button
-                    class="recipe__add"
-                    type="button"
-                    mat-icon-button
-                    color="primary"
-                    (click)="addFood(recipe, 1); $event.stopPropagation()"
-                  >
-                    <mat-icon>add_box</mat-icon>
-                  </button>
                 </div>
               </div>
+            </div>
+            <div class="more-button" *ngIf="isNext">
+              <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="getMyRecipes()"
+              >
+                もっと見る
+              </button>
             </div>
           </mat-tab>
         </mat-tab-group>
