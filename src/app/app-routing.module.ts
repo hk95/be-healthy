@@ -18,10 +18,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'recipe-update',
+    path: 'recipe-editor',
     loadChildren: () =>
-      import('./menu/recipe/recipe-update/recipe-update.module').then(
-        (m) => m.RecipeUpdateModule
+      import('./menu/recipe/recipe-editor/recipe-editor.module').then(
+        (m) => m.RecipeEditorModule
       ),
     canLoad: [AuthGuard],
     canActivate: [AuthGuard],
