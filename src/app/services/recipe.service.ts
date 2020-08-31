@@ -176,7 +176,7 @@ export class RecipeService {
 
   tentativeCreateRecipe() {
     const recipeId = this.db.createId();
-    return this.router.navigate(['/recipe-update'], {
+    return this.router.navigate(['/recipe-editor'], {
       queryParams: {
         id: recipeId,
       },
