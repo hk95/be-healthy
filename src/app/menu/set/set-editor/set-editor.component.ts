@@ -121,8 +121,6 @@ export class SetEditorComponent implements OnInit {
             this.breakfast = set.breakfast;
             this.lunch = set.lunch;
             this.dinner = set.dinner;
-            // this.preFoods = [...set.foodsArray];
-            // console.log(set.foodsArray);
 
             set.foodsArray.forEach((food) => {
               if (food.food) {
@@ -251,13 +249,9 @@ export class SetEditorComponent implements OnInit {
     }
   }
   removeFood(index: number, food: FoodInArray) {
-    console.log(food.amount);
-
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
     if (food.recipe && food.recipe.recipeCal > 0) {
-      console.log(food.recipe);
-
       this.currentCal =
         Math.round((this.currentCal - food.recipe.recipeCal) * 10) / 10;
       this.currentProtein =
