@@ -32,13 +32,13 @@ export class SetService {
     lastDoc?: QueryDocumentSnapshot<Set>
   ): Observable<
     {
-      data: Set & FoodInArray[];
+      data: Set;
       nextLastDoc: QueryDocumentSnapshot<Set>;
     }[]
   > {
-    const setWithoutFoodsArray$ = this.db
+    const setsDoc$ = this.db
       .collection<Set>(`users/${userId}/sets`, (ref) => {
-        let query = ref.orderBy('updatedAt').limit(getNumber);
+        let query = ref.orderBy('updatedAt', 'desc').limit(getNumber);
         if (lastDoc) {
           query = query.startAfter(lastDoc).limit(getNumber);
         }
@@ -47,49 +47,49 @@ export class SetService {
       .snapshotChanges();
 
     let nextLastDoc: QueryDocumentSnapshot<Set>;
-    let setsWithoutFoodsArray: Set[];
+    let setsData: Set[];
 
-    return setWithoutFoodsArray$.pipe(
-      switchMap((sets: DocumentChangeAction<Set>[]) => {
-        if (sets.length > 0) {
-          nextLastDoc = sets[sets.length - 1].payload.doc;
+    return setsDoc$.pipe(
+      switchMap((setsDoc: DocumentChangeAction<Set>[]) => {
+        if (setsDoc.length > 0) {
+          nextLastDoc = setsDoc[setsDoc.length - 1].payload.doc;
 
-          setsWithoutFoodsArray = sets.map((set: DocumentChangeAction<Set>) => {
+          setsData = setsDoc.map((set: DocumentChangeAction<Set>) => {
             return set.payload.doc.data();
           });
 
-          const allSets: Observable<
-            Set & { foodsArray: FoodInArray[] }
-          >[] = setsWithoutFoodsArray.map((set: Set) => {
-            return this.db
-              .collection<FoodInArray>(
-                `users/${userId}/sets/${set.setId}/foodsArray`
-              )
-              .valueChanges()
-              .pipe(
-                map((foodsArray: FoodInArray[]) => {
-                  return Object.assign(set, { foodsArray });
-                })
-              );
-          });
+          // const allSets: Observable<
+          //   Set & { foodsArray: FoodInArray[] }
+          // >[] = setsWithoutFoodsArray.map((set: Set) => {
+          //   return this.db
+          //     .collection<FoodInArray>(
+          //       `users/${userId}/sets/${set.setId}/foodsArray`
+          //     )
+          //     .valueChanges()
+          //     .pipe(
+          //       map((foodsArray: FoodInArray[]) => {
+          //         return Object.assign(set, { foodsArray });
+          //       })
+          //     );
+          // });
 
-          return combineLatest([...allSets]);
+          return of(setsData);
         } else {
           return of([]);
         }
       }),
-      map((allSets: (Set & FoodInArray[])[]): {
-        data: Set & FoodInArray[];
+      map((sets: Set[]): {
+        data: Set;
         nextLastDoc: QueryDocumentSnapshot<Set>;
       }[] => {
-        if (allSets.length > 0) {
-          return allSets.map((allSet: Set & FoodInArray[]): {
-            data: Set & FoodInArray[];
+        if (sets.length > 0) {
+          return sets.map((set: Set): {
+            data: Set;
             nextLastDoc: QueryDocumentSnapshot<Set>;
           } => {
             return {
               data: {
-                ...allSet,
+                ...set,
               },
               nextLastDoc,
             };
@@ -162,37 +162,13 @@ export class SetService {
   getTentativeRecipeId(): string {
     return this.db.createId();
   }
-  createSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
+  updateSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
+    const updatedAt = firestore.Timestamp.now();
     return this.db
       .doc(`users/${set.userId}/sets/${set.setId}`)
       .set({
-        setId: set.setId,
-        setTitle: set.setTitle,
-        breakfast: set.breakfast,
-        lunch: set.lunch,
-        dinner: set.dinner,
-        setCal: set.setCal,
-        setProtein: set.setProtein,
-        setFat: set.setFat,
-        setTotalCarbohydrate: set.setTotalCarbohydrate,
-        setDietaryFiber: set.setDietaryFiber,
-        setSugar: set.setSugar,
-        updatedAt: firestore.Timestamp.now(),
-      })
-      .then(() => {
-        if (set.foodsArray.length) {
-          set.foodsArray.forEach((food) => {
-            const foodsArrayId = this.db.createId();
-            this.db
-              .doc(
-                `users/${set.userId}/sets/${set.setId}/foodsArray/${foodsArrayId}`
-              )
-              .set({
-                ...food,
-                setId: foodsArrayId,
-              });
-          });
-        }
+        ...set,
+        updatedAt,
       })
       .then(() => {
         this.snackBar.open('マイセットを保存しました', null, {
@@ -212,13 +188,9 @@ export class SetService {
   }
 
   async deleteSet(userId: string, setId: string): Promise<void> {
-    const callable = this.fns.httpsCallable('deleteSet');
-
-    this.snackBar.open('マイセットを削除中...', null, {
-      duration: null,
-    });
-    return await callable({ userId, setId })
-      .toPromise()
+    this.db
+      .doc(`users/${userId}/sets/${setId}`)
+      .delete()
       .then(() => {
         this.snackBar.open('マイセットを削除しました', null, {
           duration: 2000,
