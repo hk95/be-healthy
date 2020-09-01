@@ -44,10 +44,7 @@ export class SetComponent implements OnInit {
       .subscribe((sets) => {
         if (sets && sets.length > 0) {
           sets.forEach(
-            (set: {
-              data: Set & FoodInArray[];
-              nextLastDoc: QueryDocumentSnapshot<Set>;
-            }) => {
+            (set: { data: Set; nextLastDoc: QueryDocumentSnapshot<Set> }) => {
               this.sets.push(set.data);
               this.lastDoc = set.nextLastDoc;
             }

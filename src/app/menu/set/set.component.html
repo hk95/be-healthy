@@ -48,7 +48,11 @@
                 <li
                   *ngFor="let food of set.foodsArray | slice: 0:5; index as j"
                 >
-                  <p>{{ food.foodName }}</p>
+                  <p>
+                    {{
+                      food.food ? food.food.foodName : food.recipe.recipeTitle
+                    }}
+                  </p>
                   <span *ngIf="j === 4 ? true : false"
                     ><mat-icon>more_horiz</mat-icon></span
                   >
