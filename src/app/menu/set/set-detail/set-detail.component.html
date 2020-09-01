@@ -40,31 +40,27 @@
       <div class="content content--meals">
         <p
           class="content__meal-name"
-          [style.background]="mealOfSet.breakfast ? '#009688' : '#ffff'"
+          [style.background]="set.breakfast ? '#009688' : '#ffff'"
           [style.border]="
-            mealOfSet.breakfast ? 'none' : '1px solid rgba(#000000, 0.12)'
+            set.breakfast ? 'none' : '1px solid rgba(#000000, 0.12)'
           "
-          [style.color]="mealOfSet.breakfast ? '#ffff' : '#009688'"
+          [style.color]="set.breakfast ? '#ffff' : '#009688'"
         >
           朝食
         </p>
         <p
           class="content__meal-name"
-          [style.background]="mealOfSet.lunch ? '#009688' : '#ffff'"
-          [style.border]="
-            mealOfSet.lunch ? 'none' : '1px solid rgba(#000000, 0.12)'
-          "
-          [style.color]="mealOfSet.lunch ? '#ffff' : '#009688'"
+          [style.background]="set.lunch ? '#009688' : '#ffff'"
+          [style.border]="set.lunch ? 'none' : '1px solid rgba(#000000, 0.12)'"
+          [style.color]="set.lunch ? '#ffff' : '#009688'"
         >
           昼食
         </p>
         <p
           class="content__meal-name"
-          [style.background]="mealOfSet.dinner ? '#009688' : '#ffff'"
-          [style.border]="
-            mealOfSet.dinner ? 'none' : '1px solid rgba(#000000, 0.12)'
-          "
-          [style.color]="mealOfSet.dinner ? '#ffff' : '#009688'"
+          [style.background]="set.dinner ? '#009688' : '#ffff'"
+          [style.border]="set.dinner ? 'none' : '1px solid rgba(#000000, 0.12)'"
+          [style.color]="set.dinner ? '#ffff' : '#009688'"
         >
           夕食
         </p>
@@ -73,8 +69,13 @@
       <h2 class="content__name">食べ物一覧</h2>
       <div class="food">
         <div class="food__detail" *ngFor="let food of set.foodsArray">
-          <h3 class="food__name">{{ food.foodName }}</h3>
-          <p>{{ food.amount }}g</p>
+          <h3 class="food__name">
+            {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+          </h3>
+          <p>
+            {{ food.amount }}
+            <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+          </p>
         </div>
       </div>
 
@@ -83,35 +84,35 @@
       <div class="nutrition">
         <div class="nutrition__detail">
           <h3 class="nutrition__name">総カロリー</h3>
-          <p>{{ set.setCal }}kcal</p>
+          <p>{{ set.setCal }} kcal</p>
         </div>
         <div class="nutrition__detail">
           <h3 class="nutrition__name">タンパク質</h3>
-          <p>{{ set.setProtein }}g</p>
+          <p>{{ set.setProtein }} g</p>
         </div>
         <div class="nutrition__detail">
           <h3 class="nutrition__name">
             脂質
           </h3>
-          <p>{{ set.setFat }}g</p>
+          <p>{{ set.setFat }} g</p>
         </div>
         <div class="nutrition__detail">
           <h3 class="nutrition__name">
             糖質
           </h3>
-          <p>{{ set.setSugar }}g</p>
+          <p>{{ set.setSugar }} g</p>
         </div>
         <div class="nutrition__detail">
           <h3 class="nutrition__name">
             食物繊維
           </h3>
-          <p>{{ set.setDietaryFiber }}g</p>
+          <p>{{ set.setDietaryFiber }} g</p>
         </div>
         <div class="nutrition__detail">
           <h3 class="nutrition__name">
             炭水化物
           </h3>
-          <p>{{ set.setTotalCarbohydrate }}g</p>
+          <p>{{ set.setTotalCarbohydrate }} g</p>
         </div>
       </div>
     </div>
