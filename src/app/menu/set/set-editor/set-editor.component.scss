@@ -73,6 +73,9 @@ p {
     background: #fff;
     max-height: 480px;
   }
+  &__validation {
+    margin-left: 8px;
+  }
   &--choice {
     max-height: 480px;
     overflow: auto;

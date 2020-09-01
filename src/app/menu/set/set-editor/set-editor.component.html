@@ -108,14 +108,25 @@
                         </mat-form-field>
 
                         <button
+                          *ngIf="preFoods.length < arrayLimit; else limit"
                           class="food__button"
                           mat-icon-button
                           type="button"
                           color="primary"
-                          (click)="addFood(food, amount.value)"
+                          (click)="addFood(amount.value, food, null)"
                         >
                           <mat-icon>add_box</mat-icon>
                         </button>
+                        <ng-template #limit>
+                          <button
+                            class="food__button"
+                            mat-icon-button
+                            type="button"
+                            disabled
+                          >
+                            <mat-icon>add_box</mat-icon>
+                          </button>
+                        </ng-template>
                       </div>
                     </div>
                   </div>
@@ -183,14 +194,27 @@
                       {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
                     </p>
                     <button
+                      *ngIf="preFoods.length < arrayLimit; else limit"
                       class="recipe__add"
                       type="button"
                       mat-icon-button
                       color="primary"
-                      (click)="addFood(recipe, 1); $event.stopPropagation()"
+                      (click)="
+                        addFood(1, null, recipe); $event.stopPropagation()
+                      "
                     >
                       <mat-icon>add_box</mat-icon>
                     </button>
+                    <ng-template #limit>
+                      <button
+                        class="recipe__add"
+                        type="button"
+                        mat-icon-button
+                        disabled
+                      >
+                        <mat-icon>add_box</mat-icon>
+                      </button></ng-template
+                    >
                   </div>
                 </div>
               </div>
@@ -209,23 +233,34 @@
         </mat-tab-group>
       </div>
 
-      <h2 *ngIf="preFoods && preFoods.length > 0; else noFood">選択中</h2>
+      <h2
+        *ngIf="preFoods && preFoods.length > 0; else noFood"
+        [style.color]="preFoods.length === arrayLimit ? '#E25241' : '#000'"
+      >
+        選択中<span
+          class="foods__validation"
+          *ngIf="preFoods.length === arrayLimit"
+          >これ以上選択できません</span
+        >
+      </h2>
       <ng-template #noFood><h2>*食べ物を選択してください</h2></ng-template>
       <div class="foods foods--choice">
         <div class="food" *ngFor="let food of preFoods; let i = index">
           <div class="food__name">
             <p class="food__name--with-amount">
-              {{ food.foodName || food.recipeTitle }}
+              {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
             </p>
             <span class="food__amountper">
-              {{ food.foodCalPerAmount || food.recipeCal }}kcal/{{
-                food.unit || 'セット'
-              }}
+              {{
+                food.food
+                  ? food.food.foodCalPerAmount
+                  : food.recipe.recipeCal || 0
+              }}kcal/{{ food.food ? food.food.unit : 'セット' }}
             </span>
           </div>
           <div class="food__row">
             <p>{{ food.amount }}</p>
-            <span>{{ food.unit || 'セット' }}</span>
+            <span>{{ food.food ? food.food.unit : 'セット' }}</span>
             <p class="spacer"></p>
             <p class="food__cal"></p>
 
