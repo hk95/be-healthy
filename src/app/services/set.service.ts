@@ -58,21 +58,6 @@ export class SetService {
             return set.payload.doc.data();
           });
 
-          // const allSets: Observable<
-          //   Set & { foodsArray: FoodInArray[] }
-          // >[] = setsWithoutFoodsArray.map((set: Set) => {
-          //   return this.db
-          //     .collection<FoodInArray>(
-          //       `users/${userId}/sets/${set.setId}/foodsArray`
-          //     )
-          //     .valueChanges()
-          //     .pipe(
-          //       map((foodsArray: FoodInArray[]) => {
-          //         return Object.assign(set, { foodsArray });
-          //       })
-          //     );
-          // });
-
           return of(setsData);
         } else {
           return of([]);
@@ -130,31 +115,7 @@ export class SetService {
         })
       );
   }
-  getSetByIdWithFoods(
-    userId: string,
-    setId: string
-  ): Observable<Set & { foodsArray: FoodInArray[] }> {
-    return this.db
-      .doc<Set>(`users/${userId}/sets/${setId}`)
-      .valueChanges()
-      .pipe(
-        switchMap((set: Set) => {
-          const setWithArray$: Observable<
-            Set & { foodsArray: FoodInArray[] }
-          > = this.db
-            .collection<FoodInArray>(`users/${userId}/sets/${setId}/foodsArray`)
-            .valueChanges()
-            .pipe(
-              map((foodsArray: FoodInArray[]) => {
-                if (foodsArray.length > 0) {
-                  return Object.assign(set, { foodsArray });
-                }
-              })
-            );
-          return setWithArray$;
-        })
-      );
-  }
+
   getSetById(userId: string, setId: string): Observable<Set> {
     return this.db.doc<Set>(`users/${userId}/sets/${setId}`).valueChanges();
   }
