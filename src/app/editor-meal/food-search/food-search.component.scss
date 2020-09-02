@@ -1,11 +1,17 @@
 .search-box {
-  margin: 16px auto;
+  margin: 0 auto;
+  margin-bottom: 16px;
+}
+::ng-deep .ais-SearchBox-input {
+  padding: 0.3rem 2rem;
+  opacity: 0.87;
 }
 
 .food {
   display: flex;
   background: #fff;
   align-items: center;
+  padding: 8px;
   &__fav {
     margin: 0 8px 0 0px;
   }
@@ -17,26 +23,35 @@
   }
   &__name {
     font-size: 14px;
-    margin: 8px 8px 8px 0;
-    width: 100px;
+    margin-right: 8px;
+    width: 40%;
     &--with-amount {
       margin: 0;
     }
   }
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  &__amount-form {
-    display: block;
-    border: 1px solid #707070;
-    width: 10%;
-    border-radius: 5px;
-    height: 20px;
+
+  &__choice {
+    display: flex;
+    flex-direction: column;
     margin-right: 8px;
+    width: 30%;
   }
-}
-button {
-  margin: 0 8px;
+  &__choice-form-field {
+    font-size: 6px;
+    margin-bottom: 4px;
+  }
+  &__choice-input {
+    display: block;
+    width: 95%;
+    font-size: 13px;
+    text-align: right;
+  }
+  &__cal {
+    margin: 0;
+    text-align: right;
+    font-size: 12px;
+    opacity: 0.87;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
