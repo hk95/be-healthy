@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SetService } from 'src/app/services/set.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { Set, FoodInArray } from 'src/app/interfaces/set';
+import { Set } from 'src/app/interfaces/set';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 
