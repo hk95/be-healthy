@@ -117,6 +117,13 @@ p {
     width: 90%;
     max-width: 300px;
   }
+  &__wrap {
+    display: flex;
+    align-items: center;
+  }
+  &__validation {
+    color: #e25241;
+  }
 }
 
 .process {
@@ -205,15 +212,18 @@ p {
     width: 100%;
     max-width: 300px;
   }
-  // &__description {
-  //   width: 90%;
-  // }
+  &__wrap {
+    display: flex;
+    align-items: center;
+  }
+  &__validation {
+    color: #e25241;
+  }
 }
 .nutrition {
   margin-bottom: 32px;
   border-bottom: 1px solid #dbdbdb;
   &__detail {
-    // height: 35px;
     padding: 0 8px;
     border-top: 1px solid #dbdbdb;
     background: #ffff;

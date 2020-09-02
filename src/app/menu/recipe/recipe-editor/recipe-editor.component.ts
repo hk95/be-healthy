@@ -21,25 +21,26 @@ import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
 @Component({
   selector: 'app-recipe-editor',
   templateUrl: './recipe-editor.component.html',
   styleUrls: ['./recipe-editor.component.scss'],
 })
 export class RecipeEditorComponent implements OnInit {
-  thumbnailURL: string = null;
-  ProcessURLs = [];
-  query: string;
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
+  thumbnailURL: string = null;
+  processURLs = [];
+  query: string;
   ingredient = false;
-  ingredientQuanity = 0;
   process = false;
-  processQuanity = 0;
   public = false;
   loading: boolean;
   isCreating: boolean;
   userId = this.authService.uid;
+  limitIngredientArray = 100;
+  limitProcessArray = 30;
 
   form = this.fb.group({
     recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
@@ -64,7 +65,6 @@ export class RecipeEditorComponent implements OnInit {
   get ingredients(): FormArray {
     return this.form.get('ingredients') as FormArray;
   }
-
   get processes(): FormArray {
     return this.form.get('processes') as FormArray;
   }
@@ -93,7 +93,6 @@ export class RecipeEditorComponent implements OnInit {
                 name: food.name,
                 amountAndUnit: food.amountAndUnit,
               });
-              this.ingredientQuanity++;
               this.ingredients.push(ingredientFormGroup);
               this.dataSource.next(this.ingredients.controls);
             });
@@ -103,8 +102,7 @@ export class RecipeEditorComponent implements OnInit {
               const processFormGroup = this.fb.group({
                 description: process.description,
               });
-              this.processQuanity++;
-              this.ProcessURLs.push(process.photoURL);
+              this.processURLs.push(process.photoURL);
               this.processes.push(processFormGroup);
               this.processSource.next(this.processes.controls);
             });
@@ -121,10 +119,9 @@ export class RecipeEditorComponent implements OnInit {
   addIngredinet() {
     const ingredientFormGroup = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
-      amountAndUnit: ['', [Validators.required]],
+      amountAndUnit: ['', [Validators.required, Validators.maxLength(20)]],
     });
     this.ingredients.push(ingredientFormGroup);
-    this.ingredientQuanity++;
     this.dataSource.next(this.ingredients.controls);
   }
   editIngredient() {
@@ -138,8 +135,7 @@ export class RecipeEditorComponent implements OnInit {
   }
   removeIngredinet(index: number) {
     this.ingredients.removeAt(index);
-    this.ingredientQuanity--;
-    if (this.ingredientQuanity === 0) {
+    if (this.ingredients.length === 0) {
       this.ingredient = false;
       this.displayedColumns.pop();
     }
@@ -151,8 +147,7 @@ export class RecipeEditorComponent implements OnInit {
       description: ['', [Validators.required, Validators.maxLength(500)]],
     });
     this.processes.push(processFormGroup);
-    this.processQuanity++;
-    this.ProcessURLs.push(null);
+    this.processURLs.push(null);
     this.processSource.next(this.processes.controls);
   }
   editProcess() {
@@ -166,9 +161,8 @@ export class RecipeEditorComponent implements OnInit {
   }
   removeProcess(index: number) {
     this.processes.removeAt(index);
-    this.processQuanity--;
-    this.ProcessURLs.splice(index, 1);
-    if (this.processQuanity === 0) {
+    this.processURLs.splice(index, 1);
+    if (this.processes.length === 0) {
       this.process = false;
       this.displayedColumnsProcess.pop();
     }
@@ -200,13 +194,13 @@ export class RecipeEditorComponent implements OnInit {
         width: '80%',
         data: {
           imageFile,
-          processImageURL: this.ProcessURLs[index],
+          processImageURL: this.processURLs[index],
           recipeId: this.query,
         },
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        this.ProcessURLs.splice(index, 1, result);
+        this.processURLs.splice(index, 1, result);
       });
     }
     this.processImageInput.nativeElement.value = '';
@@ -226,27 +220,27 @@ export class RecipeEditorComponent implements OnInit {
   }
   updateRecipe() {
     const formData = this.form.value;
-    const sendProcesses = this.ProcessURLs.map((v, index) => {
-      return { ...formData.processes[index], photoURL: v };
-    });
-    this.recipeService.updateRecipe(
-      {
-        recipeId: this.query,
-        recipeTitle: formData.recipeTitle,
-        recipeThumbnailURL: this.thumbnailURL,
-        recipeDescription: formData.recipeDescription,
-        recipeCal: formData.recipeCal,
-        recipeProtein: formData.recipeProtein,
-        recipeFat: formData.recipeFat,
-        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
-        recipeDietaryFiber: formData.recipeDietaryFiber,
-        recipeSugar: formData.recipeSugar,
-        foods: formData.ingredients,
-        public: this.public,
-        authorId: this.userId,
-      },
-      sendProcesses
+    const sendProcesses: ProcessOfRecipe[] = this.processURLs.map(
+      (v, index) => {
+        return { ...formData.processes[index], photoURL: v };
+      }
     );
+    this.recipeService.updateRecipe({
+      recipeId: this.query,
+      recipeTitle: formData.recipeTitle,
+      recipeThumbnailURL: this.thumbnailURL,
+      recipeDescription: formData.recipeDescription,
+      recipeCal: formData.recipeCal,
+      recipeProtein: formData.recipeProtein,
+      recipeFat: formData.recipeFat,
+      recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
+      recipeDietaryFiber: formData.recipeDietaryFiber,
+      recipeSugar: formData.recipeSugar,
+      public: this.public,
+      authorId: this.userId,
+      foods: formData.ingredients,
+      processes: sendProcesses,
+    });
   }
   deleteImage() {
     this.recipeService.deleteUpdatedImage(this.userId, this.query);
