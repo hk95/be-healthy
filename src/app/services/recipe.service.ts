@@ -183,16 +183,12 @@ export class RecipeService {
     });
   }
 
-  updateRecipe(
-    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
-    processes
-  ): Promise<void> {
+  updateRecipe(recipe: Recipe): Promise<void> {
+    const updatedAt = firestore.Timestamp.now();
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .set(
-        { ...recipe, processes, updatedAt: firestore.Timestamp.now() },
-        { merge: true }
-      )
+      .set({ ...recipe, updatedAt }, { merge: true })
+
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
