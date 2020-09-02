@@ -44,7 +44,6 @@ p {
 }
 
 .content {
-  height: 24px;
   padding: 8px;
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
@@ -52,6 +51,7 @@ p {
   background: #ffff;
   display: flex;
   justify-content: space-between;
+  overflow-wrap: anywhere;
   &__head {
     @media screen and(min-width:750px) {
       margin-top: 32px;
@@ -87,8 +87,16 @@ p {
   &__detail {
     display: flex;
     justify-content: space-between;
-    padding: 8px 8px;
+    align-items: center;
+    padding: 8px;
     border-bottom: 1px solid #dbdbdb;
+  }
+  &__content {
+    overflow-wrap: anywhere;
+    width: 48%;
+    &--right {
+      text-align: right;
+    }
   }
 }
 

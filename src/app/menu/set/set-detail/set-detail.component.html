@@ -69,10 +69,10 @@
       <h2 class="content__name">食べ物一覧</h2>
       <div class="food">
         <div class="food__detail" *ngFor="let food of set.foodsArray">
-          <h3 class="food__name">
+          <h3 class="food__content">
             {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
           </h3>
-          <p>
+          <p class="food__content food__content--right">
             {{ food.amount }}
             <span>{{ food.food ? food.food.unit : 'セット' }}</span>
           </p>
