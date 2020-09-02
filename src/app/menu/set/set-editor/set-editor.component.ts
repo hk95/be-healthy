@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -19,17 +19,19 @@ import { FoodInArray } from 'src/app/interfaces/set';
 import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Food } from 'src/app/interfaces/food';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-set-editor',
   templateUrl: './set-editor.component.html',
   styleUrls: ['./set-editor.component.scss'],
 })
-export class SetEditorComponent implements OnInit {
+export class SetEditorComponent implements OnInit, OnDestroy {
   private userId = this.authService.uid;
   private query: string;
   private getNumber = 10;
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
+  private subscription: Subscription;
 
   title: string;
   config = this.searchService.config;
@@ -109,7 +111,7 @@ export class SetEditorComponent implements OnInit {
     private setService: SetService,
     private dialog: MatDialog
   ) {
-    this.route.queryParamMap.subscribe((setId) => {
+    this.subscription = this.route.queryParamMap.subscribe((setId) => {
       this.query = setId.get('id');
       this.setService
         .getSetById(this.userId, this.query)
@@ -301,7 +303,6 @@ export class SetEditorComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
   changeMeal(meal: string) {
     switch (meal) {
       case 'breakfast':
@@ -365,5 +366,9 @@ export class SetEditorComponent implements OnInit {
   }
   backToMenu() {
     this.location.back();
+  }
+  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
