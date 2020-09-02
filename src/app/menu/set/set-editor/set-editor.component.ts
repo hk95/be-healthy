@@ -46,7 +46,7 @@ export class SetEditorComponent implements OnInit {
   lunch = false;
   dinner = false;
 
-  arrayLimit = 5;
+  arrayLimit = 30;
   form = this.fb.group({
     setTitle: ['', [Validators.required, Validators.maxLength(50)]],
     foodsArray: this.fb.array([]),
