@@ -1,66 +1,55 @@
 @import '~@angular/material/theming';
-// .no {
-//   margin: 0 auto;
-//   display: flex;
-//   flex-direction: column;
-//   &__title {
-//     font-size: 18px;
-//     display: flex;
-//   }
-//   &__example {
-//     font-size: 15px;
-//     margin: 0;
-//     color: rgba(#000000, 0.6);
-//   }
-//   &__image {
-//     background: center/cover;
-//     max-width: 100%;
-//   }
-//   &__create {
-//     margin: 0 auto 16px auto;
-//     max-width: 200px;
-//   }
-// }
-// .food {
-//   display: flex;
-//   align-items: center;
-//   background: #fff;
-//   &__fav {
-//     margin: 0 8px 0 0px;
-//   }
-//   &__amountper {
-//     font-size: 12px;
-//     opacity: 0.7;
-//     margin: 0;
-//     color: #009688;
-//   }
-//   &__name {
-//     font-size: 14px;
-//     margin: 8px 8px 8px 0;
-//     width: 100px;
-//     &--with-amount {
-//       margin: 0;
-//     }
-//   }
-// }
-// button {
-//   margin: 0 8px;
-// }
-// .mat-tab-labels {
-//   background: #fff;
-// }
+.no {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    font-size: 18px;
+    display: flex;
+    @media screen and (min-width: 750px) {
+      justify-content: center;
+    }
+  }
+  &__text {
+    @media screen and (min-width: 750px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__example {
+    font-size: 15px;
+    margin: 0;
+    color: rgba(#000000, 0.6);
+  }
+  &__image {
+    background: center/cover;
+    width: 100%;
+    max-width: 300px;
+  }
+  &__create {
+    margin: 0 auto 16px auto;
+    max-width: 200px;
+  }
+}
+
 .mat-tab-label {
   width: 25%;
   padding: 0 !important;
   margin: 0 4px;
 }
-// .set-unit {
-//   font-size: 13px;
-// }
+
 .tab {
-  background: #fff;
   max-width: 700px;
   margin: 0 auto;
   padding: 32px 8px;
-  @include mat-elevation(2);
+  &--content {
+    @include mat-elevation(2);
+    background: #fff;
+  }
 }
