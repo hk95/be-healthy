@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DailyMealWithSet } from '../interfaces/daily-info';
+import { DailyMeal } from '../interfaces/daily-info';
 
 @Pipe({
   name: 'nutrition',
 })
 export class NutritionPipe implements PipeTransform {
   transform(
-    meals: DailyMealWithSet[],
+    meals: DailyMeal[],
     whichMeal: string,
     nutrition: string,
-    meals2?: DailyMealWithSet[],
-    meals3?: DailyMealWithSet[]
+    meals2?: DailyMeal[],
+    meals3?: DailyMeal[]
   ) {
     let totalResult = 0;
     const calculation = (amount: number, value: number) => {
