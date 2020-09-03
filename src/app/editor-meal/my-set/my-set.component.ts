@@ -52,15 +52,9 @@ export class MySetComponent implements OnInit, OnDestroy {
       }
     });
   }
-  addSet(amount: number, setId: string, setCal: number) {
-    const meal: DailyMeal = { mealId: '', setId, amount };
-    this.dailyInfoService.addMeal(
-      meal,
-      this.authService.uid,
-      this.date,
-      'set',
-      setCal
-    );
+  addSet(amount: number, set: Set) {
+    const meal: DailyMeal = { mealId: '', set, amount };
+    this.dailyInfoService.addMeal(meal, this.authService.uid, this.date, 'set');
   }
 
   outSet(setId: string) {
