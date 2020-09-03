@@ -1,34 +1,40 @@
 <ng-template #noSet>
-  <div class="no">
-    <h3 class="no__title">
-      <mat-icon color="primary">bookmark</mat-icon
-      >マイセットはまだ登録されていません。
-    </h3>
+  <div class="tab">
+    <div class="no">
+      <h3 class="no__title">
+        <span class="mat-icon"
+          ><mat-icon color="primary">bookmark</mat-icon></span
+        >マイセットはまだ登録されていません。
+      </h3>
 
-    <p>食べる頻度が多い食べ物をまとめて登録できる機能です。</p>
-    <figure>
-      <p class="no__example">（例）カレーセット</p>
-      <img class="no__image" src="/assets/images/ex-set.png/" alt="" />
-    </figure>
-    <p>
-      自分だけのマイセットを登録しましょう！
-    </p>
-    <button
-      mat-stroked-button
-      color="primary"
-      (click)="goToSetPage()"
-      class="no__create"
-    >
-      <mat-icon>add</mat-icon><span>登録する</span>
-    </button>
+      <p class="no__text">
+        食べる頻度が多い食べ物をまとめて登録できる機能です。
+      </p>
+      <figure class="no__figure">
+        <p class="no__example">（例）カレーセット</p>
+        <img class="no__image" src="/assets/images/ex-set.png/" alt="" />
+      </figure>
+      <p class="no__text">
+        自分だけのマイセットを登録しましょう！
+      </p>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="goToSetPage()"
+        class="no__create"
+      >
+        <mat-icon>add</mat-icon><span>登録する</span>
+      </button>
+    </div>
   </div>
 </ng-template>
+
 <div *ngIf="sets$ | async as sets">
-  <div *ngIf="sets.length > 0; else noSet">
-    <div *ngFor="let set of sets">
+  <div class="tab tab--content" *ngIf="sets.length > 0; else noSet">
+    <div *ngFor="let set of sets; index as i">
       <div class="food">
         <button
-          class="food__book"
+          class="food__icon"
           mat-icon-button
           color="primary"
           (click)="outSet(set.setId)"
@@ -42,26 +48,37 @@
           </p>
           <span class="food__amountper"> {{ set.setCal }}kcal/セット </span>
         </div>
+        <div class="spacer"></div>
 
-        <input
-          class="food__amount-form"
-          text="number"
-          max="100"
-          min="0"
-          step="0.1"
-          [(ngModel)]="amount[set.setId]"
-          type="number"
-        />
-        <span class="set-unit">セット</span>
-        <p class="spacer"></p>
-        <p class="food__cal">
-          {{ set.setCal * amount[set.setId] | number: '1.1-1' }}kcal
-        </p>
+        <form class="food__choice" [formGroup]="amountForm">
+          <mat-form-field class="food__choice-form-field" appearance="outline">
+            <input
+              matInput
+              class="food__choice-input"
+              autocomplete="off"
+              formControlName="amount"
+              [max]="maxAmount"
+              [min]="minAmount"
+              step="0.1"
+              [(ngModel)]="amount[i]"
+              type="number"
+            />
+            <span matSuffix>セット</span>
+            <mat-error *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
+              >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+            >
+          </mat-form-field>
+          <p class="food__cal">
+            {{ set.setCal * amount[i] | number: '1.1-1' }}
+            kcal
+          </p>
+        </form>
 
         <button
           mat-icon-button
           color="primary"
-          (click)="addSet(amount[set.setId], set.setId, set.setCal)"
+          (click)="addSet(amount[i], set.setId, set.setCal)"
+          [disabled]="amount[i] > maxAmount || amount[i] < minAmount"
         >
           <mat-icon>add_box</mat-icon>
         </button>
