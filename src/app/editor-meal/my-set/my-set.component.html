@@ -1,3 +1,4 @@
+<mat-spinner class="spinner" diameter="40" *ngIf="loading"></mat-spinner>
 <ng-template #noSet>
   <div class="tab">
     <div class="no">
@@ -29,15 +30,15 @@
   </div>
 </ng-template>
 
-<div *ngIf="sets$ | async as sets">
-  <div class="tab tab--content" *ngIf="sets.length > 0; else noSet">
+<div *ngIf="!loading">
+  <div class="tab tab--content" *ngIf="sets && sets.length > 0; else noSet">
     <div *ngFor="let set of sets; index as i">
       <div class="food">
         <button
           class="food__icon"
           mat-icon-button
           color="primary"
-          (click)="outSet(set.setId)"
+          (click)="outSet(set.setId, i)"
         >
           <mat-icon>bookmark</mat-icon>
         </button>
@@ -83,6 +84,11 @@
           <mat-icon>add_box</mat-icon>
         </button>
       </div>
+    </div>
+    <div class="more-button" *ngIf="isNext">
+      <button mat-flat-button color="primary" *ngIf="sets" (click)="getSets()">
+        もっと見る
+      </button>
     </div>
   </div>
 </div>
