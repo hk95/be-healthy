@@ -51,7 +51,6 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
-        console.log(this.date, 'ts');
       }
     });
   }
