@@ -16,7 +16,18 @@ export const createUser = functions
         userId: user.uid,
       })
       .then(() => {
-        console.log('success');
+        db.doc(`users/${user.uid}/basicInfo/${user.uid}`)
+          .set({
+            userName: user.displayName,
+            avatarURL: user.photoURL,
+            usreId: user.uid,
+          })
+          .then(() => {
+            console.log('created');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);

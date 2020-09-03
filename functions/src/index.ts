@@ -6,6 +6,7 @@ export * from './food.function';
 export * from './set.function';
 export * from './meal.function';
 export * from './average.function';
+export * from './recipe.function';
 export * from './stripe/customer.function';
 export * from './stripe/payment-method.function';
 export * from './stripe/intent.function';

@@ -10,6 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgAisModule } from 'angular-instantsearch';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [SetEditorComponent],
@@ -23,6 +26,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTabsModule,
     NgAisModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
   ],
 })
 export class SetEditorModule {}

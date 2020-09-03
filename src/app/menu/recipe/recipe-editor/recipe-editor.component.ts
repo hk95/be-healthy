@@ -5,11 +5,13 @@ import {
   ElementRef,
   HostListener,
 } from '@angular/core';
+
 import {
   FormBuilder,
   Validators,
   FormControl,
   FormArray,
+  AbstractControl,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { RecipeThumbnailComponent } from 'src/app/dialogs/recipe-thumbnail/recipe-thumbnail.component';
@@ -18,32 +20,33 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
-
+import { BehaviorSubject } from 'rxjs';
+import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
 @Component({
-  selector: 'app-recipe-update',
-  templateUrl: './recipe-update.component.html',
-  styleUrls: ['./recipe-update.component.scss'],
+  selector: 'app-recipe-editor',
+  templateUrl: './recipe-editor.component.html',
+  styleUrls: ['./recipe-editor.component.scss'],
 })
-export class RecipeUpdateComponent implements OnInit {
-  thumbnailURL: string = null;
-  ProcessURLs = [];
-  query: string;
+export class RecipeEditorComponent implements OnInit {
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
+  thumbnailURL: string = null;
+  processURLs = [];
+  query: string;
   ingredient = false;
-  ingredientQuanity = 0;
   process = false;
-  processQuanity = 0;
-  public: boolean;
+  public = false;
+  loading: boolean;
+  isCreating: boolean;
+  userId = this.authService.uid;
+  limitIngredientArray = 100;
+  limitProcessArray = 30;
 
   form = this.fb.group({
-    recipeTitle: ['', [Validators.required]],
-    recipeDescription: [''],
-    ingredientDetails: this.fb.array(
-      [],
-      [Validators.required, Validators.minLength(1)]
-    ),
-    processDetails: this.fb.array([]),
+    recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
+    recipeDescription: ['', [Validators.maxLength(500)]],
+    ingredients: this.fb.array([], [Validators.required]),
+    processes: this.fb.array([]),
     recipeCal: [''],
     recipeProtein: [''],
     recipeFat: [''],
@@ -51,15 +54,23 @@ export class RecipeUpdateComponent implements OnInit {
     recipeDietaryFiber: [''],
     recipeSugar: [''],
   });
+  displayedColumns: string[] = ['name', 'amount'];
+  displayedColumnsProcess: string[] = ['index', 'image', 'description'];
   get recipeTitle(): FormControl {
     return this.form.get('recipeTitle') as FormControl;
   }
-  get ingredientDetails(): FormArray {
-    return this.form.get('ingredientDetails') as FormArray;
+  get descriptionControl(): FormControl {
+    return this.form.get('recipeDescription') as FormControl;
   }
-  get processDetails(): FormArray {
-    return this.form.get('processDetails') as FormArray;
+  get ingredients(): FormArray {
+    return this.form.get('ingredients') as FormArray;
   }
+  get processes(): FormArray {
+    return this.form.get('processes') as FormArray;
+  }
+  dataSource = new BehaviorSubject<AbstractControl[]>([]);
+  processSource = new BehaviorSubject<AbstractControl[]>([]);
+
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -68,6 +79,7 @@ export class RecipeUpdateComponent implements OnInit {
     private recipeService: RecipeService,
     private authService: AuthService
   ) {
+    this.loading = true;
     this.route.queryParamMap.subscribe((recipeId) => {
       this.query = recipeId.get('id');
       this.recipeService.getRecipeByRecipeId(this.query).subscribe((recipe) => {
@@ -81,8 +93,8 @@ export class RecipeUpdateComponent implements OnInit {
                 name: food.name,
                 amountAndUnit: food.amountAndUnit,
               });
-              this.ingredientQuanity++;
-              this.ingredientDetails.push(ingredientFormGroup);
+              this.ingredients.push(ingredientFormGroup);
+              this.dataSource.next(this.ingredients.controls);
             });
           }
           if (recipe.processes) {
@@ -90,63 +102,71 @@ export class RecipeUpdateComponent implements OnInit {
               const processFormGroup = this.fb.group({
                 description: process.description,
               });
-              this.processQuanity++;
-              this.ProcessURLs.push(process.photoURL);
-              this.processDetails.push(processFormGroup);
+              this.processURLs.push(process.photoURL);
+              this.processes.push(processFormGroup);
+              this.processSource.next(this.processes.controls);
             });
           }
         } else {
-          console.log('error');
+          this.isCreating = true;
+          this.addIngredinet();
         }
+        this.loading = false;
       });
     });
   }
 
   addIngredinet() {
     const ingredientFormGroup = this.fb.group({
-      name: ['', [Validators.required]],
-      amountAndUnit: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(50)]],
+      amountAndUnit: ['', [Validators.required, Validators.maxLength(20)]],
     });
-    this.ingredientDetails.push(ingredientFormGroup);
-    this.ingredientQuanity++;
+    this.ingredients.push(ingredientFormGroup);
+    this.dataSource.next(this.ingredients.controls);
   }
   editIngredient() {
     if (!this.ingredient) {
       this.ingredient = true;
+      this.displayedColumns.push('delete');
     } else {
       this.ingredient = false;
+      this.displayedColumns.pop();
     }
   }
   removeIngredinet(index: number) {
-    this.ingredientDetails.removeAt(index);
-    this.ingredientQuanity--;
-    if (this.ingredientQuanity === 0) {
+    this.ingredients.removeAt(index);
+    if (this.ingredients.length === 0) {
       this.ingredient = false;
+      this.displayedColumns.pop();
     }
+    this.dataSource.next(this.ingredients.controls);
   }
 
   addProcess() {
     const processFormGroup = this.fb.group({
-      description: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
     });
-    this.processDetails.push(processFormGroup);
-    this.processQuanity++;
-    this.ProcessURLs.push(null);
+    this.processes.push(processFormGroup);
+    this.processURLs.push(null);
+    this.processSource.next(this.processes.controls);
   }
   editProcess() {
     if (!this.process) {
       this.process = true;
+      this.displayedColumnsProcess.push('delete');
     } else {
       this.process = false;
+      this.displayedColumnsProcess.pop();
     }
   }
   removeProcess(index: number) {
-    this.processDetails.removeAt(index);
-    this.processQuanity--;
-    this.ProcessURLs.splice(index, 1);
-    if (this.processQuanity === 0) {
+    this.processes.removeAt(index);
+    this.processURLs.splice(index, 1);
+    if (this.processes.length === 0) {
       this.process = false;
+      this.displayedColumnsProcess.pop();
     }
+    this.processSource.next(this.processes.controls);
   }
 
   thumbnailDialog(event) {
@@ -174,43 +194,56 @@ export class RecipeUpdateComponent implements OnInit {
         width: '80%',
         data: {
           imageFile,
-          processImageURL: this.ProcessURLs[index],
+          processImageURL: this.processURLs[index],
           recipeId: this.query,
         },
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        this.ProcessURLs.splice(index, 1, result);
+        this.processURLs.splice(index, 1, result);
       });
     }
     this.processImageInput.nativeElement.value = '';
   }
   back(): void {
+    if (this.isCreating) {
+      this.deleteImage();
+    }
     this.location.back();
+  }
+  changePublic() {
+    if (this.public) {
+      this.public = false;
+    } else {
+      this.public = true;
+    }
   }
   updateRecipe() {
     const formData = this.form.value;
-    const sendProcesses = this.ProcessURLs.map((v, index) => {
-      return { ...formData.processDetails[index], photoURL: v };
-    });
-    this.recipeService.updateRecipe(
-      {
-        recipeId: this.query,
-        recipeTitle: formData.recipeTitle,
-        recipeThumbnailURL: this.thumbnailURL,
-        recipeDescription: formData.recipeDescription,
-        recipeCal: formData.recipeCal,
-        recipeProtein: formData.recipeProtein,
-        recipeFat: formData.recipeFat,
-        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
-        recipeDietaryFiber: formData.recipeDietaryFiber,
-        recipeSugar: formData.recipeSugar,
-        foods: formData.ingredientDetails,
-        public: this.public,
-        authorId: this.authService.uid,
-      },
-      sendProcesses
+    const sendProcesses: ProcessOfRecipe[] = this.processURLs.map(
+      (v, index) => {
+        return { ...formData.processes[index], photoURL: v };
+      }
     );
+    this.recipeService.updateRecipe({
+      recipeId: this.query,
+      recipeTitle: formData.recipeTitle,
+      recipeThumbnailURL: this.thumbnailURL,
+      recipeDescription: formData.recipeDescription,
+      recipeCal: formData.recipeCal,
+      recipeProtein: formData.recipeProtein,
+      recipeFat: formData.recipeFat,
+      recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
+      recipeDietaryFiber: formData.recipeDietaryFiber,
+      recipeSugar: formData.recipeSugar,
+      public: this.public,
+      authorId: this.userId,
+      foods: formData.ingredients,
+      processes: sendProcesses,
+    });
+  }
+  deleteImage() {
+    this.recipeService.deleteUpdatedImage(this.userId, this.query);
   }
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {

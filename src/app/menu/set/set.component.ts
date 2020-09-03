@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SetService } from 'src/app/services/set.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { Observable } from 'rxjs';
-import { Set, Meal } from 'src/app/interfaces/set';
+import { Set } from 'src/app/interfaces/set';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -12,29 +12,21 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./set.component.scss'],
 })
 export class SetComponent implements OnInit {
-  setId: string;
-  userId = this.authService.uid;
-  sets$: Observable<Set[]> = this.setService.getSets(this.userId).pipe(take(1));
-  sets: Set[];
-  mealOfAllSets: Meal[];
+  private setId: string;
+  private getNumber = 10;
+  private userId = this.authService.uid;
+  private lastDoc: QueryDocumentSnapshot<Set>;
+
+  sets: Set[] = new Array();
+  loading: boolean;
+  isNext: boolean;
+
   constructor(
     private setService: SetService,
     private router: Router,
     private authService: AuthService
   ) {
-    this.setService
-      .getSets(this.authService.uid)
-      .pipe(take(1))
-      .subscribe((sets) => {
-        this.sets = sets;
-        this.mealOfAllSets = sets.map((set) => {
-          return {
-            breakfast: set.breakfast,
-            lunch: set.lunch,
-            dinner: set.dinner,
-          };
-        });
-      });
+    this.getSets();
   }
   forwardbackToForm() {
     this.setId = this.setService.getTentativeRecipeId();
@@ -44,18 +36,27 @@ export class SetComponent implements OnInit {
       },
     });
   }
-  updateMeal(setId: string, meal: string, bool: boolean, index: number) {
-    this.setService.updateMeal(this.userId, setId, meal, bool);
-    if (meal === 'breakfast') {
-      this.mealOfAllSets[index].breakfast = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    } else if (meal === 'lunch') {
-      this.mealOfAllSets[index].lunch = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    } else {
-      this.mealOfAllSets[index].dinner = bool;
-      this.setService.updateMeal(this.userId, setId, meal, bool);
-    }
+  getSets() {
+    this.loading = true;
+    this.setService
+      .getSets(this.userId, this.getNumber, this.lastDoc)
+      .pipe(take(1))
+      .subscribe((sets) => {
+        if (sets && sets.length > 0) {
+          sets.forEach(
+            (set: { data: Set; nextLastDoc: QueryDocumentSnapshot<Set> }) => {
+              this.sets.push(set.data);
+              this.lastDoc = set.nextLastDoc;
+            }
+          );
+          if (sets.length >= this.getNumber) {
+            this.isNext = true;
+          }
+        } else {
+          this.isNext = false;
+        }
+        this.loading = false;
+      });
   }
   ngOnInit(): void {}
 }

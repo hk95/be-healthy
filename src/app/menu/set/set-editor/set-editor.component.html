@@ -1,313 +1,452 @@
-<div class="container">
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div class="head">
-      <button type="button" mat-icon-button (click)="backToMenu()">
-        <mat-icon>clear</mat-icon>
-      </button>
-      <h1>マイセット{{ title || '作成' }}画面</h1>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="preFoods.length === 0 || titleControle.hasError('required')"
-      >
-        保存
-      </button>
-    </div>
-    <div class="title">
-      <h2>
-        セットタイトル<span
-          *ngIf="!(titleControle.dirty || titleControle.touched)"
-          >*</span
-        >
-        <span
-          class="validators"
-          *ngIf="
-            titleControle.hasError('required') &&
-            (titleControle.dirty || titleControle.touched)
-          "
-        >
-          *必須入力です
-        </span>
-        <span class="validators" *ngIf="titleControle.hasError('maxlength')">
-          *50文字以内で入力してください
-        </span>
-      </h2>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="head">
+    <button type="button" mat-icon-button (click)="backToMenu()">
+      <mat-icon>clear</mat-icon>
+    </button>
+    <h1>マイセット{{ title || '作成' }}画面</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid || preFoods.length === 0"
+    >
+      保存
+    </button>
+  </div>
+  <div class="container">
+    <div class="editor-wrap">
+      <div class="title">
+        <mat-form-field class="title__form-field" appearance="outline">
+          <mat-label>セットタイトル</mat-label>
+          <input
+            matInput
+            placeholder="カレー定食"
+            formControlName="setTitle"
+            class="title__input"
+            type="text"
+            required
+          />
+          <mat-error *ngIf="titleControl.hasError('required')"
+            >必須入力です</mat-error
+          >
+          <mat-error *ngIf="titleControl.hasError('maxlength')"
+            >入力文字数が多すぎます</mat-error
+          >
+        </mat-form-field>
+      </div>
 
-      <input
-        placeholder="セット名"
-        formControlName="setTitle"
-        class="title__name"
-        type="text"
-        required
-      />
-    </div>
+      <div class="meal">
+        <h2>登録する食事を選択してください</h2>
 
-    <div class="meal">
-      <button
-        type="button"
-        mat-stroked-button
-        color="primary"
-        class="not-seletected"
-        *ngIf="!breakfast"
-        (click)="changeBreakfast()"
-      >
-        朝食
-      </button>
-      <button
-        type="button"
-        mat-flat-button
-        color="primary"
-        *ngIf="breakfast"
-        (click)="changeBreakfast()"
-      >
-        朝食
-      </button>
-      <button
-        type="button"
-        mat-stroked-button
-        color="primary"
-        class="not-seletected"
-        *ngIf="!lunch"
-        (click)="changeLunch()"
-      >
-        昼食
-      </button>
-      <button
-        type="button"
-        mat-flat-button
-        color="primary"
-        *ngIf="lunch"
-        (click)="changeLunch()"
-      >
-        昼食
-      </button>
-      <button
-        type="button"
-        mat-stroked-button
-        color="primary"
-        class="not-seletected"
-        *ngIf="!dinner"
-        (click)="changeDinner()"
-      >
-        夕食
-      </button>
-      <button
-        type="button"
-        mat-flat-button
-        color="primary"
-        *ngIf="dinner"
-        (click)="changeDinner()"
-      >
-        夕食
-      </button>
-    </div>
-    <div class="foods">
+        <div class="meal__buttons">
+          <mat-checkbox
+            color="primary"
+            [(checked)]="breakfast"
+            (change)="changeMeal('breakfast')"
+            >朝食</mat-checkbox
+          >
+          <mat-checkbox
+            color="primary"
+            [(checked)]="lunch"
+            (change)="changeMeal('lunch')"
+            >昼食</mat-checkbox
+          ><mat-checkbox
+            color="primary"
+            [(checked)]="dinner"
+            (change)="changeMeal('dinner')"
+            >夕食</mat-checkbox
+          >
+        </div>
+      </div>
       <h2>食べ物登録</h2>
-      <mat-tab-group mat-align-tabs="start">
-        <mat-tab label="食べ物リストから探す">
-          <ais-instantsearch [config]="config">
-            <div class="search-box">
-              <ais-search-box placeholder="食べ物を入力してください">
-              </ais-search-box>
-            </div>
-            <ais-configure
-              [searchParameters]="{ hitsPerPage: 5 }"
-            ></ais-configure>
-            <ais-hits>
-              <ng-template let-hits="hits">
-                <div *ngFor="let food of hits">
-                  <div class="food">
-                    <div class="food__name">
-                      <p class="food__name--with-amount">{{ food.foodName }}</p>
-                      <span class="food__amountper">
-                        {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
-                      </span>
-                    </div>
-                    <div class="food__row">
-                      <input
-                        class="food__amount-form"
-                        max="100"
-                        min="0"
-                        step="0.1"
-                        #amount
-                        type="number"
-                      />
-                      <span>{{ food.unit }}</span>
+      <div class="foods">
+        <mat-tab-group
+          class="mat-tab-labels"
+          mat-align-tabs="center"
+          [disablePagination]="true"
+        >
+          <mat-tab class="mat-tab-label" label="食べ物リスト">
+            <ais-instantsearch [config]="config">
+              <div class="search-box">
+                <ais-search-box placeholder="食べ物を入力してください">
+                </ais-search-box>
+              </div>
+              <ais-configure
+                [searchParameters]="{ hitsPerPage: 5 }"
+              ></ais-configure>
+              <ais-hits>
+                <ng-template let-hits="hits">
+                  <div *ngFor="let food of hits">
+                    <div class="food">
+                      <div class="food__name">
+                        <p class="food__name--with-amount">
+                          {{ food.foodName }}
+                        </p>
+                        <span class="food__amountper">
+                          {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
+                        </span>
+                      </div>
                       <p class="spacer"></p>
-                      <p class="food__cal"></p>
+                      <div class="food__row food__row--form">
+                        <mat-form-field
+                          class="food__form-field"
+                          appearance="outline"
+                        >
+                          <input
+                            matInput
+                            class="food__amount-form"
+                            max="100"
+                            min="0"
+                            step="0.1"
+                            #amount
+                            type="number"
+                            autocomplete="off"
+                          />
+                          <span class="nutrition__prefix" matPrefix></span>
+                          <span class="nutrition__prefix" matSuffix>{{
+                            food.unit
+                          }}</span>
+                        </mat-form-field>
 
-                      <button
-                        mat-icon-button
-                        type="button"
-                        color="primary"
-                        (click)="addFood(food, amount.value)"
-                      >
-                        <mat-icon>add_box</mat-icon>
-                      </button>
+                        <button
+                          *ngIf="preFoods.length < arrayLimit; else limit"
+                          class="food__button"
+                          mat-icon-button
+                          type="button"
+                          color="primary"
+                          (click)="addFood(amount.value, food, null)"
+                        >
+                          <mat-icon>add_box</mat-icon>
+                        </button>
+                        <ng-template #limit>
+                          <button
+                            class="food__button"
+                            mat-icon-button
+                            type="button"
+                            disabled
+                          >
+                            <mat-icon>add_box</mat-icon>
+                          </button>
+                        </ng-template>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ng-template>
-            </ais-hits>
-          </ais-instantsearch>
-        </mat-tab>
+                </ng-template>
+              </ais-hits>
+            </ais-instantsearch>
+          </mat-tab>
 
-        <mat-tab label="レシピ集から探す">
-          <div class="grid">
-            <div class="recipes" *ngFor="let recipe of myRecipes">
-              <div
-                class="recipe"
-                (click)="openRecipe(recipe.recipeId); $event.stopPropagation()"
-              >
+          <mat-tab class="mat-tab-label" label="レシピ集">
+            <ng-template #noMyRecipe>
+              <div class="no-recipe">
                 <img
-                  class="recipe__thumbnail"
-                  [src]="recipe.recipeThumbnailURL"
+                  class="no-recipe__image"
+                  src="assets/images/recipe.svg"
                   alt=""
                 />
-
-                <div class="recipe__row">
-                  <img
-                    class="recipe__icon"
-                    [src]="recipe.author.avatarURL"
-                    alt="プロフィールアイコン"
-                  />
-                  <p class="recipe__author">{{ recipe.author.name }}</p>
-                </div>
-                <h2 class="recipe__title">
-                  {{ recipe.recipeTitle }}
-                </h2>
-                <p *ngIf="recipe.recipeCal" class="recipe__cal">
-                  {{ recipe.recipeCal }}kcal
+                <p class="no-recipe__text">
+                  マイレシピはまだ登録されていません。
                 </p>
-                <p *ngIf="!recipe.recipeCal" class="recipe__cal">--</p>
+                <p class="no-recipe__text no-recipe__text--end">
+                  オリジナルの１品を登録しましょう。
+                </p>
                 <button
-                  class="recipe__add"
-                  type="button"
-                  mat-icon-button
+                  mat-stroked-button
                   color="primary"
-                  (click)="addFood(recipe, 1); $event.stopPropagation()"
+                  class="no-recipe__button"
+                  type="button"
+                  (click)="forwardbackToForm()"
                 >
-                  <mat-icon>add_box</mat-icon>
+                  <mat-icon>add</mat-icon><span>登録する</span>
                 </button>
               </div>
+            </ng-template>
+            <div
+              class="grid"
+              *ngIf="myRecipes && myRecipes.length > 0; else noMyRecipe"
+            >
+              <div class="recipes" *ngFor="let recipe of myRecipes">
+                <div
+                  class="recipe"
+                  (click)="
+                    openRecipe(recipe.recipeId); $event.stopPropagation()
+                  "
+                >
+                  <figure class="recipe__thumbnail">
+                    <img
+                      class="recipe__image"
+                      [src]="recipe.recipeThumbnailURL"
+                      alt=""
+                    />
+                  </figure>
+                  <div class="recipe__content">
+                    <div class="recipe__row">
+                      <img
+                        class="recipe__icon"
+                        [src]="recipe.author.avatarURL"
+                        alt="プロフィールアイコン"
+                      />
+                      <p class="recipe__author">{{ recipe.author.name }}</p>
+                    </div>
+                    <h2 class="recipe__title">
+                      {{ recipe.recipeTitle }}
+                    </h2>
+                    <p class="recipe__cal">
+                      {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
+                    </p>
+                    <button
+                      *ngIf="preFoods.length < arrayLimit; else limit"
+                      class="recipe__add"
+                      type="button"
+                      mat-icon-button
+                      color="primary"
+                      (click)="
+                        addFood(1, null, recipe); $event.stopPropagation()
+                      "
+                    >
+                      <mat-icon>add_box</mat-icon>
+                    </button>
+                    <ng-template #limit>
+                      <button
+                        class="recipe__add"
+                        type="button"
+                        mat-icon-button
+                        disabled
+                      >
+                        <mat-icon>add_box</mat-icon>
+                      </button></ng-template
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
+            <div class="more-button" *ngIf="isNext">
+              <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="getMyRecipes()"
+              >
+                もっと見る
+              </button>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <h2
+        *ngIf="preFoods && preFoods.length > 0; else noFood"
+        [style.color]="preFoods.length === arrayLimit ? '#E25241' : '#000'"
+      >
+        選択中<span
+          class="foods__validation"
+          *ngIf="preFoods.length === arrayLimit"
+          >これ以上選択できません</span
+        >
+      </h2>
+      <ng-template #noFood><h2>*食べ物を選択してください</h2></ng-template>
+      <div class="foods foods--choice">
+        <div class="food" *ngFor="let food of preFoods; let i = index">
+          <div class="food__name">
+            <p class="food__name--with-amount">
+              {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+            </p>
+            <span class="food__amountper">
+              {{
+                food.food
+                  ? food.food.foodCalPerAmount
+                  : food.recipe.recipeCal || 0
+              }}kcal/{{ food.food ? food.food.unit : 'セット' }}
+            </span>
           </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
+          <div class="food__row">
+            <p>{{ food.amount }}</p>
+            <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+            <p class="spacer"></p>
+            <p class="food__cal"></p>
 
-    <h2 *ngIf="preFoods.length > 0; else noFood">選択中</h2>
-    <ng-template #noFood><h2>*食べ物を選択してください</h2></ng-template>
-    <div class="foods foods--choice">
-      <div class="food" *ngFor="let food of preFoods; let i = index">
-        <div class="food__name">
-          <p class="food__name--with-amount">
-            {{ food.foodName || food.recipeTitle }}
-          </p>
-          <span class="food__amountper">
-            {{ food.foodCalPerAmount || food.recipeCal }}kcal/{{
-              food.unit || 'セット'
-            }}
-          </span>
-        </div>
-        <div class="food__row">
-          <p>{{ food.amount }}</p>
-          <span>{{ food.unit || 'セット' }}</span>
-          <p class="spacer"></p>
-          <p class="food__cal"></p>
-
-          <button
-            mat-icon-button
-            color="warn"
-            type="button"
-            (click)="removeFood(i, food)"
-          >
-            <mat-icon>clear</mat-icon>
-          </button>
+            <button
+              mat-icon-button
+              color="warn"
+              type="button"
+              (click)="removeFood(i, food)"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="nutrition">
       <h2>栄養素</h2>
-      <div class="nutrition__detail">
-        <p class="nutrition__name">総カロリー</p>
-        <div class="nutrition__amount-unit">
-          <input
-            formControlName="setCal"
-            class="nutrition__amount"
-            type="number"
-            [(ngModel)]="currentCal"
-            step="0.1"
-          />
-          <span>kcal</span>
+      <div class="nutrition">
+        <div class="nutrition__detail nutrition__detail--top">
+          <p class="nutrition__name">総カロリー</p>
+          <div class="nutrition__amount-unit">
+            <mat-form-field class="nutrition__form-field" appearance="outline">
+              <input
+                matInput
+                formControlName="setCal"
+                class="nutrition__amount"
+                autocomplete="off"
+                type="number"
+                [(ngModel)]="currentCal"
+                step="0.1"
+                min="0"
+                max="5000"
+              />
+              <span class="nutrition__prefix" matPrefix></span>
+              <span class="nutrition__prefix" matSuffix>kcal</span>
+              <mat-error
+                *ngIf="
+                  setCalControl.hasError('required') ||
+                  setCalControl.hasError('min') ||
+                  setCalControl.hasError('max')
+                "
+                >0-5000の範囲で調整してください</mat-error
+              >
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div class="nutrition__detail">
-        <p class="nutrition__name">タンパク質</p>
-        <div class="nutrition__amount-unit">
-          <input
-            formControlName="setProtein"
-            class="nutrition__amount"
-            type="number"
-            [(ngModel)]="currentProtein"
-            step="0.1"
-          />
-          <span class="nutrition__unit">g</span>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">タンパク質</p>
+          <div class="nutrition__amount-unit">
+            <mat-form-field class="nutrition__form-field" appearance="outline">
+              <input
+                matInput
+                formControlName="setProtein"
+                class="nutrition__amount"
+                autocomplete="off"
+                type="number"
+                [(ngModel)]="currentProtein"
+                step="0.1"
+                min="0"
+                max="5000"
+              />
+              <span class="nutrition__prefix" matPrefix></span>
+              <span class="nutrition__prefix" matSuffix>g</span>
+              <mat-error
+                *ngIf="
+                  setProteinControl.hasError('required') ||
+                  setProteinControl.hasError('min') ||
+                  setProteinControl.hasError('max')
+                "
+                >0-5000の範囲で調整してください</mat-error
+              >
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div class="nutrition__detail">
-        <p class="nutrition__name">脂質</p>
-        <div class="nutrition__amount-unit">
-          <input
-            formControlName="setFat"
-            class="nutrition__amount"
-            type="number"
-            [(ngModel)]="currentFat"
-            step="0.1"
-          />
-          <span class="nutrition__unit">g</span>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">脂質</p>
+          <div class="nutrition__amount-unit">
+            <mat-form-field class="nutrition__form-field" appearance="outline">
+              <input
+                matInput
+                formControlName="setFat"
+                class="nutrition__amount"
+                autocomplete="off"
+                type="number"
+                [(ngModel)]="currentFat"
+                step="0.1"
+                min="0"
+                max="5000"
+              />
+              <span class="nutrition__prefix" matPrefix></span>
+              <span class="nutrition__prefix" matSuffix>g</span>
+              <mat-error
+                *ngIf="
+                  setFatControl.hasError('required') ||
+                  setFatControl.hasError('min') ||
+                  setFatControl.hasError('max')
+                "
+                >0-5000の範囲で調整してください</mat-error
+              ></mat-form-field
+            >
+          </div>
         </div>
-      </div>
-      <div class="nutrition__detail">
-        <p class="nutrition__name">糖質</p>
-        <div class="nutrition__amount-unit">
-          <input
-            formControlName="setTotalCarbohydrate"
-            class="nutrition__amount"
-            type="number"
-            [(ngModel)]="currentSugar"
-            step="0.1"
-          />
-          <span class="nutrition__unit">g</span>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">糖質</p>
+          <div class="nutrition__amount-unit">
+            <mat-form-field class="nutrition__form-field" appearance="outline">
+              <input
+                matInput
+                formControlName="setTotalCarbohydrate"
+                class="nutrition__amount"
+                autocomplete="off"
+                type="number"
+                [(ngModel)]="currentSugar"
+                step="0.1"
+                min="0"
+                max="5000"
+              />
+              <span class="nutrition__prefix" matPrefix></span>
+              <span class="nutrition__prefix" matSuffix>g</span>
+              <mat-error
+                *ngIf="
+                  setTotalCarbohydrateControl.hasError('required') ||
+                  setTotalCarbohydrateControl.hasError('min') ||
+                  setTotalCarbohydrateControl.hasError('max')
+                "
+                >0-5000の範囲で調整してください</mat-error
+              ></mat-form-field
+            >
+          </div>
         </div>
-      </div>
-      <div class="nutrition__detail">
-        <p class="nutrition__name">食物繊維</p>
-        <div class="nutrition__amount-unit">
-          <input
-            formControlName="setDietaryFiber"
-            class="nutrition__amount"
-            type="number"
-            [(ngModel)]="currentDietaryFiber"
-            step="0.1"
-          />
-          <span class="nutrition__unit">g</span>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">食物繊維</p>
+          <div class="nutrition__amount-unit">
+            <mat-form-field class="nutrition__form-field" appearance="outline">
+              <input
+                matInput
+                formControlName="setDietaryFiber"
+                class="nutrition__amount"
+                autocomplete="off"
+                type="number"
+                [(ngModel)]="currentDietaryFiber"
+                step="0.1"
+                min="0"
+                max="5000"
+              />
+              <span class="nutrition__prefix" matPrefix></span>
+              <span class="nutrition__prefix" matSuffix>g</span>
+              <mat-error
+                *ngIf="
+                  setDietaryFiberControl.hasError('required') ||
+                  setDietaryFiberControl.hasError('min') ||
+                  setDietaryFiberControl.hasError('max')
+                "
+                >0-5000の範囲で調整してください</mat-error
+              ></mat-form-field
+            >
+          </div>
         </div>
-      </div>
-      <div class="nutrition__detail">
-        <p class="nutrition__name">炭水化物</p>
-        <div class="nutrition__amount-unit">
-          <input
-            formControlName="setSugar"
-            class="nutrition__amount"
-            type="number"
-            [(ngModel)]="currentTotalCarbohydrate"
-            step="0.1"
-          />
-          <span class="nutrition__unit">g</span>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">炭水化物</p>
+          <div class="nutrition__amount-unit">
+            <mat-form-field class="nutrition__form-field" appearance="outline">
+              <input
+                matInput
+                formControlName="setSugar"
+                class="nutrition__amount"
+                autocomplete="off"
+                type="number"
+                [(ngModel)]="currentTotalCarbohydrate"
+                step="0.1"
+                min="0"
+                max="5000"
+              />
+              <span class="nutrition__prefix" matPrefix></span>
+              <span class="nutrition__prefix" matSuffix>g</span>
+              <mat-error
+                *ngIf="
+                  setSugarControl.hasError('required') ||
+                  setSugarControl.hasError('min') ||
+                  setSugarControl.hasError('max')
+                "
+                >0-5000の範囲で調整してください</mat-error
+              ></mat-form-field
+            >
+          </div>
         </div>
       </div>
     </div>
-  </form>
-</div>
+  </div>
+</form>

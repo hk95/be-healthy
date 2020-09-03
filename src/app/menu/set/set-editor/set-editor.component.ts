@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -14,51 +14,93 @@ import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
-import { FoodOrRecipe } from 'src/app/interfaces/set';
-import { FormGuard } from 'src/app/guards/form.guard';
+import { FoodInArray } from 'src/app/interfaces/set';
+
+import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { Food } from 'src/app/interfaces/food';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-set-editor',
   templateUrl: './set-editor.component.html',
   styleUrls: ['./set-editor.component.scss'],
 })
-export class SetEditorComponent implements OnInit {
+export class SetEditorComponent implements OnInit, OnDestroy {
+  private userId = this.authService.uid;
+  private query: string;
+  private getNumber = 10;
+  private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
+  private subscription: Subscription;
+
   title: string;
   config = this.searchService.config;
-  query: string;
-  userId = this.authService.uid;
-  myRecipes = [];
+  myRecipes: RecipeWithAuthor[] = new Array();
+  isNext: boolean;
   currentCal = 0;
   currentProtein = 0;
   currentFat = 0;
   currentTotalCarbohydrate = 0;
   currentSugar = 0;
   currentDietaryFiber = 0;
-  preFoods = [];
+  preFoods: FoodInArray[] = new Array();
   breakfast = false;
   lunch = false;
   dinner = false;
 
+  arrayLimit = 30;
   form = this.fb.group({
     setTitle: ['', [Validators.required, Validators.maxLength(50)]],
-    breakfast: [''],
-    lunch: [''],
-    dinner: [''],
-    foodsArray: this.fb.array([], [Validators.required]),
-    setCal: [''],
-    setProtein: [''],
-    setFat: [''],
-    setTotalCarbohydrate: [''],
-    setDietaryFiber: [''],
-    setSugar: [''],
+    foodsArray: this.fb.array([]),
+    setCal: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setProtein: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setFat: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setTotalCarbohydrate: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setDietaryFiber: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
+    setSugar: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(5000)],
+    ],
   });
-  get titleControle() {
+  get titleControl(): FormControl {
     return this.form.get('setTitle') as FormControl;
+  }
+  get setCalControl(): FormControl {
+    return this.form.get('setCal') as FormControl;
+  }
+  get setProteinControl(): FormControl {
+    return this.form.get('setProtein') as FormControl;
+  }
+  get setFatControl(): FormControl {
+    return this.form.get('setFat') as FormControl;
+  }
+  get setTotalCarbohydrateControl(): FormControl {
+    return this.form.get('setTotalCarbohydrate') as FormControl;
+  }
+  get setDietaryFiberControl(): FormControl {
+    return this.form.get('setDietaryFiber') as FormControl;
+  }
+  get setSugarControl(): FormControl {
+    return this.form.get('setSugar') as FormControl;
   }
   get foodsArray(): FormArray {
     return this.form.get('foodsArray') as FormArray;
   }
-
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -67,53 +109,108 @@ export class SetEditorComponent implements OnInit {
     private recipeService: RecipeService,
     private authService: AuthService,
     private setService: SetService,
-    private dialog: MatDialog,
-    private formGurad: FormGuard
+    private dialog: MatDialog
   ) {
-    this.route.queryParamMap.subscribe((setId) => {
+    this.subscription = this.route.queryParamMap.subscribe((setId) => {
       this.query = setId.get('id');
+      this.setService
+        .getSetById(this.userId, this.query)
+        .pipe(take(1))
+        .subscribe((set) => {
+          if (set) {
+            this.title = '編集';
+            this.form.patchValue(set);
+            this.breakfast = set.breakfast;
+            this.lunch = set.lunch;
+            this.dinner = set.dinner;
+
+            set.foodsArray.forEach((food) => {
+              if (food.food) {
+                this.createArray(food.amount, food.food);
+              } else {
+                this.createArray(food.amount, null, food.recipe);
+              }
+            });
+          }
+        });
     });
-    this.recipeService
-      .getMyRecipes(this.userId)
-      .pipe(take(1))
-      .subscribe((recipes) => {
-        this.myRecipes = recipes;
-      });
-    this.setService
-      .getSetByIdWithFoods(this.userId, this.query)
-      .pipe(take(1))
-      .subscribe((set) => {
-        if (set) {
-          this.title = '編集';
-          this.form.patchValue(set);
-          this.breakfast = this.form.value.breakfast;
-          this.lunch = this.form.value.lunch;
-          this.dinner = this.form.value.dinner;
-          this.preFoods = [...set.foodsArray];
-        }
-      });
+    this.getMyRecipes();
   }
 
-  addFood(food: FoodOrRecipe, preAmount: number) {
-    const amount = Number(preAmount);
-    this.preFoods.push({
-      ...food,
-      amount,
-    });
-    if (food.foodId) {
-      const foodFormGroup = this.fb.group({
-        foodId: food.foodId,
-        foodName: food.foodName,
-        unit: food.unit,
-        foodCalPerAmount: food.foodCalPerAmount,
-        foodProtein: food.foodProtein,
-        foodFat: food.foodFat,
-        foodTotalCarbohydrate: food.foodTotalCarbohydrate,
-        foodSugar: food.foodSugar,
-        foodDietaryFiber: food.foodDietaryFiber,
+  getMyRecipes() {
+    this.recipeService
+      .getMyRecipes(this.userId, this.getNumber, this.lastMyRecipeDoc)
+      .pipe(take(1))
+      .subscribe(
+        (doc: {
+          data: RecipeWithAuthor[];
+          nextLastDoc: QueryDocumentSnapshot<Recipe>;
+        }) => {
+          if (doc) {
+            this.lastMyRecipeDoc = doc.nextLastDoc;
+            if (doc.data && doc.data.length > 0) {
+              doc.data.forEach((recipe: RecipeWithAuthor) => {
+                this.myRecipes.push(recipe);
+                if (doc.data.length >= this.getNumber) {
+                  this.isNext = true;
+                } else {
+                  this.isNext = false;
+                }
+              });
+            }
+          } else {
+            this.isNext = false;
+          }
+        }
+      );
+  }
+  createArray(preAmount: number, food?: Food, recipe?: Recipe) {
+    const amount = Number(preAmount ? preAmount : 0);
+    if (food) {
+      this.preFoods.push({
+        food: { ...food },
         amount,
       });
+      const foodFormGroup = this.fb.group({
+        food: {
+          foodId: food.foodId,
+          foodName: food.foodName,
+          unit: food.unit,
+          foodCalPerAmount: food.foodCalPerAmount,
+          foodProtein: food.foodProtein,
+          foodFat: food.foodFat,
+          foodTotalCarbohydrate: food.foodTotalCarbohydrate,
+          foodSugar: food.foodSugar,
+          foodDietaryFiber: food.foodDietaryFiber,
+        },
+        amount: [amount, [Validators.max(1000)]],
+      });
       this.foodsArray.push(foodFormGroup);
+    } else {
+      this.preFoods.push({
+        recipe: { ...recipe },
+        amount,
+      });
+      const foodFormGroup = this.fb.group({
+        recipe: {
+          recipeId: recipe.recipeId,
+          recipeTitle: recipe.recipeTitle,
+          recipeCal: recipe.recipeCal,
+          recipeProtein: recipe.recipeProtein,
+          recipeFat: recipe.recipeFat,
+          recipeTotalCarbohydrate: recipe.recipeTotalCarbohydrate,
+          recipeSugar: recipe.recipeSugar,
+          recipeDietaryFiber: recipe.recipeDietaryFiber,
+        },
+        amount: [amount, [Validators.max(1000)]],
+      });
+      this.foodsArray.push(foodFormGroup);
+    }
+  }
+  addFood(preAmount: number, food?: Food, recipe?: Recipe) {
+    const amount = Number(preAmount ? preAmount : 0);
+    if (food) {
+      this.createArray(preAmount, food);
       this.currentCal =
         Math.round((this.currentCal + food.foodCalPerAmount * amount) * 10) /
         10;
@@ -134,108 +231,108 @@ export class SetEditorComponent implements OnInit {
           (this.currentDietaryFiber + food.foodDietaryFiber * amount) * 10
         ) / 10;
     } else {
-      const foodFormGroup = this.fb.group({
-        recipeId: food.recipeId,
-        foodName: food.recipeTitle,
-        recipeCal: food.recipeCal,
-        recipeProtein: food.recipeProtein,
-        recipeFat: food.recipeFat,
-        recipeTotalCarbohydrate: food.recipeTotalCarbohydrate,
-        recipeSugar: food.recipeSugar,
-        recipeDietaryFiber: food.recipeDietaryFiber,
-        amount,
-      });
-      this.foodsArray.push(foodFormGroup);
+      this.createArray(preAmount, food, recipe);
       this.currentCal =
-        Math.round((this.currentCal + food.recipeCal) * 10) / 10;
+        Math.round((this.currentCal + recipe.recipeCal) * 10) / 10;
       this.currentProtein =
-        Math.round((this.currentProtein + food.recipeProtein) * 10) / 10;
+        Math.round((this.currentProtein + recipe.recipeProtein) * 10) / 10;
       this.currentFat =
-        Math.round((this.currentFat + food.recipeFat) * 10) / 10;
+        Math.round((this.currentFat + recipe.recipeFat) * 10) / 10;
       this.currentTotalCarbohydrate =
         Math.round(
-          (this.currentTotalCarbohydrate + food.recipeTotalCarbohydrate) * 10
+          (this.currentTotalCarbohydrate + recipe.recipeTotalCarbohydrate) * 10
         ) / 10;
       this.currentSugar =
-        Math.round((this.currentSugar + food.recipeSugar) * 10) / 10;
+        Math.round((this.currentSugar + recipe.recipeSugar) * 10) / 10;
       this.currentDietaryFiber =
-        Math.round((this.currentDietaryFiber + food.recipeDietaryFiber) * 10) /
-        10;
+        Math.round(
+          (this.currentDietaryFiber + recipe.recipeDietaryFiber) * 10
+        ) / 10;
     }
   }
-  removeFood(index: number, food) {
-    this.setService.deleteFoodOfSet(this.userId, this.query, food.setId);
+  removeFood(index: number, food: FoodInArray) {
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
-    if (food.recipeCal) {
+    if (food.recipe && food.recipe.recipeCal > 0) {
       this.currentCal =
-        Math.round((this.currentCal - food.recipeCal) * 10) / 10;
+        Math.round((this.currentCal - food.recipe.recipeCal) * 10) / 10;
       this.currentProtein =
-        Math.round((this.currentProtein - food.recipeProtein) * 10) / 10;
+        Math.round((this.currentProtein - food.recipe.recipeProtein) * 10) / 10;
       this.currentFat =
-        Math.round((this.currentFat - food.recipeFat) * 10) / 10;
-      this.currentTotalCarbohydrate =
-        Math.round(
-          (this.currentTotalCarbohydrate - food.recipeTotalCarbohydrate) * 10
-        ) / 10;
-      this.currentSugar =
-        Math.round((this.currentSugar - food.recipeSugar) * 10) / 10;
-      this.currentDietaryFiber =
-        Math.round((this.currentDietaryFiber - food.recipeDietaryFiber) * 10) /
-        10;
-    } else {
-      this.currentCal =
-        Math.round(
-          (this.currentCal - food.foodCalPerAmount * food.amount) * 10
-        ) / 10;
-      this.currentProtein =
-        Math.round(
-          (this.currentProtein - food.foodProtein * food.amount) * 10
-        ) / 10;
-      this.currentFat =
-        Math.round((this.currentFat - food.foodFat * food.amount) * 10) / 10;
+        Math.round((this.currentFat - food.recipe.recipeFat) * 10) / 10;
       this.currentTotalCarbohydrate =
         Math.round(
           (this.currentTotalCarbohydrate -
-            food.foodTotalCarbohydrate * food.amount) *
+            food.recipe.recipeTotalCarbohydrate) *
             10
         ) / 10;
       this.currentSugar =
-        Math.round((this.currentSugar - food.foodSugar * food.amount) * 10) /
-        10;
+        Math.round((this.currentSugar - food.recipe.recipeSugar) * 10) / 10;
       this.currentDietaryFiber =
         Math.round(
-          (this.currentDietaryFiber - food.foodDietaryFiber * food.amount) * 10
+          (this.currentDietaryFiber - food.recipe.recipeDietaryFiber) * 10
+        ) / 10;
+    } else if (food.food.foodCalPerAmount && food.amount > 0) {
+      this.currentCal =
+        Math.round(
+          (this.currentCal - food.food.foodCalPerAmount * food.amount) * 10
+        ) / 10;
+      this.currentProtein =
+        Math.round(
+          (this.currentProtein - food.food.foodProtein * food.amount) * 10
+        ) / 10;
+      this.currentFat =
+        Math.round((this.currentFat - food.food.foodFat * food.amount) * 10) /
+        10;
+      this.currentTotalCarbohydrate =
+        Math.round(
+          (this.currentTotalCarbohydrate -
+            food.food.foodTotalCarbohydrate * food.amount) *
+            10
+        ) / 10;
+      this.currentSugar =
+        Math.round(
+          (this.currentSugar - food.food.foodSugar * food.amount) * 10
+        ) / 10;
+      this.currentDietaryFiber =
+        Math.round(
+          (this.currentDietaryFiber -
+            food.food.foodDietaryFiber * food.amount) *
+            10
         ) / 10;
     }
   }
 
-  ngOnInit(): void {}
-  changeBreakfast() {
-    if (!this.breakfast) {
-      this.breakfast = true;
-    } else {
-      this.breakfast = false;
+  changeMeal(meal: string) {
+    switch (meal) {
+      case 'breakfast':
+        if (!this.breakfast) {
+          this.breakfast = true;
+        } else {
+          this.breakfast = false;
+        }
+        break;
+      case 'lunch':
+        if (!this.lunch) {
+          this.lunch = true;
+        } else {
+          this.lunch = false;
+        }
+        break;
+      case 'dinner':
+        if (!this.dinner) {
+          this.dinner = true;
+        } else {
+          this.dinner = false;
+        }
+        break;
     }
   }
-  changeLunch() {
-    if (!this.lunch) {
-      this.lunch = true;
-    } else {
-      this.lunch = false;
-    }
-  }
-  changeDinner() {
-    if (!this.dinner) {
-      this.dinner = true;
-    } else {
-      this.dinner = false;
-    }
-  }
+
   submit() {
     const formData = this.form.value;
     this.setService.submitted = true;
-    this.setService.createSet({
+    this.setService.updateSet({
       setId: this.query,
       userId: this.userId,
       setTitle: formData.setTitle,
@@ -257,6 +354,9 @@ export class SetEditorComponent implements OnInit {
       data: recipeId,
     });
   }
+  forwardbackToForm() {
+    this.recipeService.tentativeCreateRecipe();
+  }
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.form.dirty) {
@@ -266,5 +366,9 @@ export class SetEditorComponent implements OnInit {
   }
   backToMenu() {
     this.location.back();
+  }
+  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

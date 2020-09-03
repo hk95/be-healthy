@@ -1,38 +1,44 @@
+@import '~@angular/material/theming';
 .nav {
-  position: absolute;
-  width: 95%;
-  position: fixed;
-  top: 8px;
+  background: #fff;
+  position: sticky;
+  top: 0;
   z-index: 5px;
   display: flex;
   justify-content: space-between;
   padding: 8px;
+  @include mat-elevation(1);
 }
 .update-to-page {
   margin-right: 16px;
 }
 .thumbnail {
+  display: block;
+  margin: 0 auto;
+  border-radius: 4px;
   width: 100%;
-  height: 245px;
+  max-width: 450px;
   background: center/cover;
   margin-bottom: 32px;
 }
 .no-thumbnail {
   height: 150px;
-  width: 100%;
+  max-width: 300px;
   background: #c6c6c6;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
   margin-bottom: 32px;
 }
 h1 {
   font-size: 18px;
   font-weight: normal;
   margin: 0;
+  display: flex;
+  align-items: center;
 }
 h2 {
-  padding-left: 8px;
   font-size: 14px;
   font-weight: normal;
   margin: 0;
@@ -42,11 +48,22 @@ h3 {
   font-weight: normal;
   margin: 0;
 }
+p {
+  margin: 0;
+}
+.recipe-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 32px 8px;
+  background: #fff;
+  @include mat-elevation(1);
+}
 .content-head {
   display: flex;
   justify-content: space-between;
   h2 {
     align-self: flex-end;
+    overflow-wrap: anywhere;
   }
   h4 {
     padding: 4px;
@@ -63,13 +80,11 @@ h3 {
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
   margin-bottom: 24px;
-  padding: 0 8px;
+  padding: 8px;
   background: #ffff;
   display: flex;
   justify-content: space-between;
-  p {
-    margin: 0;
-  }
+  overflow-wrap: anywhere;
   &__point {
     height: 120px;
   }
@@ -78,13 +93,20 @@ h3 {
   margin-bottom: 32px;
 }
 .ingredient {
-  padding: 0 8px;
+  padding: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: #fff;
   border-top: 1px solid #dbdbdb;
-  p {
-    margin: 0;
+  &__name {
+    width: 40%;
+    overflow-wrap: anywhere;
+  }
+  &__amount {
+    width: 40%;
+    overflow-wrap: anywhere;
+    text-align: right;
   }
 }
 .processes {
@@ -92,24 +114,26 @@ h3 {
 }
 .process {
   display: flex;
+  justify-content: space-between;
   background: #ffff;
   border-top: 1px solid #dbdbdb;
   padding: 8px;
+  &__index {
+    margin: 0 8px;
+    min-height: 30px;
+  }
   &__wrapper {
     display: flex;
     margin-right: 16px;
-    p {
-      margin: 0 8px;
-      min-height: 30px;
-    }
-    img {
-      width: 65px;
-      height: 65px;
-      border-radius: 5px;
-    }
+  }
+  &__image {
+    width: 65px;
+    height: 65px;
+    border-radius: 5px;
+    align-self: center;
   }
   &__description {
-    margin: 0;
+    overflow-wrap: anywhere;
   }
 }
 
@@ -121,9 +145,6 @@ h3 {
 .nutrition__detail {
   display: flex;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 8px;
   border-bottom: 1px solid #dbdbdb;
-  p {
-    margin: 0;
-  }
 }

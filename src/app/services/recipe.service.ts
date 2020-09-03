@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  QueryDocumentSnapshot,
+  DocumentChangeAction,
+} from '@angular/fire/firestore';
 import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,9 +12,10 @@ import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
-import { User } from '../interfaces/user';
-import { UserService } from './user.service';
 import { Location } from '@angular/common';
+import { AngularFireFunctions } from '@angular/fire/functions';
+import { BasicInfoService } from './basic-info.service';
+import { BasicInfo } from '../interfaces/basic-info';
 
 @Injectable({
   providedIn: 'root',
@@ -22,137 +27,168 @@ export class RecipeService {
     public storage: AngularFireStorage,
     private snackBar: MatSnackBar,
     private router: Router,
-    private userService: UserService,
-    private location: Location
+    private location: Location,
+    private fns: AngularFireFunctions,
+    private basicInfoService: BasicInfoService
   ) {}
-  getAllRecipes() {
-    this.allRecipes$ = this.db
-      .collection<Recipe>(`recipes`, (ref) => ref.orderBy('updatedAt', 'desc'))
-      .valueChanges();
-  }
-  getMyRecipes(userId: string): Observable<RecipeWithAuthor[]> {
+  getMyRecipes(
+    userId: string,
+    getNumber: number,
+    lastDoc?: QueryDocumentSnapshot<Recipe>
+  ): Observable<{
+    data: RecipeWithAuthor[];
+    nextLastDoc: QueryDocumentSnapshot<Recipe>;
+  }> {
     const myRecipes$ = this.db
-      .collection<Recipe>(`recipes`, (ref) =>
-        ref.where('authorId', '==', userId).orderBy('updatedAt', 'desc')
-      )
-      .valueChanges();
+      .collection<Recipe>(`recipes`, (ref) => {
+        let query = ref
+          .where('authorId', '==', userId)
+          .orderBy('updatedAt', 'desc')
+          .limit(getNumber);
+        if (lastDoc) {
+          query = query.startAfter(lastDoc).limit(getNumber);
+        }
+        return query;
+      })
+      .snapshotChanges();
+
+    let nextLastDoc: QueryDocumentSnapshot<Recipe>;
 
     return myRecipes$.pipe(
-      switchMap((myRecipes: Recipe[]) => {
-        const authorIds: string[] = [
-          ...new Set(myRecipes.map((recipe: Recipe) => recipe.authorId)),
-        ];
+      switchMap((myRecipes: DocumentChangeAction<Recipe>[]) => {
+        if (myRecipes.length > 0) {
+          nextLastDoc = myRecipes[myRecipes.length - 1].payload.doc;
 
-        const users$: Observable<User[]> = combineLatest(
-          authorIds.map((authorId: string) =>
-            this.userService.getUser(authorId)
-          )
-        );
-        return combineLatest([of(myRecipes), users$]);
+          const RecipeWithoutAuthor = myRecipes.map((recipe) =>
+            recipe.payload.doc.data()
+          );
+          const basicInfo$ = this.basicInfoService.getBasicInfo(userId);
+
+          return combineLatest([of(RecipeWithoutAuthor), basicInfo$]);
+        } else {
+          return of([]);
+        }
       }),
-      map(([recipes, users]) => {
-        return recipes.map((recipe: Recipe) => {
+      map(([recipes, basicInfo]): {
+        data: RecipeWithAuthor[];
+        nextLastDoc: QueryDocumentSnapshot<Recipe>;
+      } => {
+        if (recipes && recipes.length > 0 && basicInfo) {
+          const recipeswithAuthor: RecipeWithAuthor[] = recipes.map(
+            (recipe: Recipe) => {
+              return {
+                ...recipe,
+                author: basicInfo,
+              };
+            }
+          );
+
           return {
-            ...recipe,
-            author: users.find((user) => user.userId === recipe.authorId),
+            data: recipeswithAuthor,
+            nextLastDoc,
           };
-        });
+        } else {
+          return null;
+        }
       })
     );
   }
-  getPublicRecipes(userId: string): Observable<RecipeWithAuthor[]> {
-    let publicExcludeMyRecipes: Recipe[] = [];
-    return this.db
-      .collection<Recipe>(`recipes`, (ref) =>
-        ref.where('public', '==', true).orderBy('updatedAt', 'desc')
-      )
-      .valueChanges()
-      .pipe(
-        switchMap((publicRecipes: Recipe[]) => {
-          publicExcludeMyRecipes = publicRecipes.filter((recipe) => {
-            return recipe.authorId !== userId;
-          });
+
+  getPublicRecipes(
+    getNumber: number,
+    lastDoc: QueryDocumentSnapshot<Recipe>
+  ): Observable<{
+    data: RecipeWithAuthor[];
+    nextLastDoc: QueryDocumentSnapshot<Recipe>;
+  }> {
+    const publicRecipes$ = this.db
+      .collection<Recipe>(`recipes`, (ref) => {
+        let query = ref
+          .where('public', '==', true)
+          .orderBy('updatedAt', 'desc')
+          .limit(getNumber);
+        if (lastDoc) {
+          query = query.startAfter(lastDoc).limit(getNumber);
+        }
+        return query;
+      })
+      .snapshotChanges();
+    let nextLastDoc: QueryDocumentSnapshot<Recipe>;
+    return publicRecipes$.pipe(
+      switchMap((publicRecipes?: DocumentChangeAction<Recipe>[]) => {
+        if (publicRecipes.length > 0) {
+          nextLastDoc = publicRecipes[publicRecipes.length - 1].payload.doc;
+
+          const publicRecipesWithoutAuthor: Recipe[] = publicRecipes.map(
+            (recipeOfDoc) => recipeOfDoc.payload.doc.data()
+          );
 
           const authorIds: string[] = [
-            ...new Set(publicRecipes.map((recipe: Recipe) => recipe.authorId)),
+            ...new Set(
+              publicRecipes.map(
+                (recipe: DocumentChangeAction<Recipe>) =>
+                  recipe.payload.doc.data().authorId
+              )
+            ),
           ];
 
-          const users$: Observable<User[]> = combineLatest(
+          const basicInfos$: Observable<BasicInfo[]> = combineLatest(
             authorIds.map((authorId: string) =>
-              this.userService.getUser(authorId)
+              this.basicInfoService.getBasicInfo(authorId)
             )
           );
-          return combineLatest([of(publicExcludeMyRecipes), users$]);
-        }),
-        map(([recipes, users]) => {
-          return recipes.map((recipe: Recipe) => {
-            return {
-              ...recipe,
-              author: users.find((user) => user.userId === recipe.authorId),
-            };
-          });
-        })
-      );
+          if (publicRecipesWithoutAuthor.length) {
+            return combineLatest([of(publicRecipesWithoutAuthor), basicInfos$]);
+          } else {
+            return combineLatest([of(null), of(null)]);
+          }
+        } else {
+          return combineLatest([of(null), of(null)]);
+        }
+      }),
+      map(([recipes, basicInfos]) => {
+        if (basicInfos && basicInfos.length > 0) {
+          const publicRecipes: RecipeWithAuthor[] = recipes.map(
+            (recipe: Recipe) => {
+              return {
+                ...recipe,
+                author: basicInfos.find(
+                  (basicInfo?) => basicInfo.userId === recipe.authorId
+                ),
+              };
+            }
+          );
+
+          return {
+            data: publicRecipes,
+            nextLastDoc,
+          };
+        } else {
+          return null;
+        }
+      })
+    );
   }
 
   getRecipeByRecipeId(recipeId: string): Observable<Recipe> {
     return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
-  tentativeCreateRecipe(): Promise<void> {
+  tentativeCreateRecipe() {
     const recipeId = this.db.createId();
-    return this.db
-      .doc(`recipes/${recipeId}`)
-      .set({
-        recipeId,
-      })
-      .then(() => {
-        this.router.navigate(['/recipe-create'], {
-          queryParams: {
-            id: recipeId,
-          },
-        });
-      });
-  }
-  tentativeDelRecipe(recipeId): Promise<void> {
-    return this.db
-      .doc(`recipes/${recipeId}`)
-      .delete()
-      .then(() => {
-        this.router.navigateByUrl('/menu');
-      });
+    return this.router.navigate(['/recipe-editor'], {
+      queryParams: {
+        id: recipeId,
+      },
+    });
   }
 
-  createRecipe(
-    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
-    processes
-  ): Promise<void> {
+  updateRecipe(recipe: Recipe): Promise<void> {
+    const updatedAt = firestore.Timestamp.now();
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .set(
-        {
-          ...recipe,
-          processes,
-          updatedAt: firestore.Timestamp.now(),
-        },
-        {
-          merge: true,
-        }
-      )
-      .then(() => {
-        this.snackBar.open('レシピを作成しました', null, {
-          duration: 2000,
-        });
-        this.router.navigateByUrl('menu');
-      });
-  }
-  updateRecipe(
-    recipe: Omit<Recipe, 'processes' | 'updatedAt'>,
-    processes
-  ): Promise<void> {
-    return this.db
-      .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .update({ ...recipe, processes, updatedAt: firestore.Timestamp.now() })
+      .set({ ...recipe, updatedAt }, { merge: true })
+
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
@@ -160,7 +196,8 @@ export class RecipeService {
         this.location.back();
       });
   }
-  deleteRecipe(recipeId: string): Promise<void> {
+  async deleteRecipe(userId: string, recipeId: string): Promise<void> {
+    this.deleteUpdatedImage(userId, recipeId);
     return this.db
       .doc<Recipe>(`recipes/${recipeId}`)
       .delete()
@@ -168,7 +205,7 @@ export class RecipeService {
         this.snackBar.open('レシピを削除しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('menu');
+        this.router.navigateByUrl('menu/recipe-list');
       });
   }
 
@@ -188,5 +225,10 @@ export class RecipeService {
       .put(file);
     const imageURL: string = await result.ref.getDownloadURL();
     return imageURL;
+  }
+
+  async deleteUpdatedImage(userId: string, recipeId: string) {
+    const callable = this.fns.httpsCallable('deleteUpdatedImage');
+    return callable({ userId, recipeId });
   }
 }

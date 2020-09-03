@@ -41,13 +41,13 @@ export class ProfileComponent implements OnInit {
   submit() {
     const formData = this.form.value;
     this.basicInfoService.updateBasicInfo({
-      userName: formData.userName,
+      name: formData.userName,
       gender: formData.gender,
       height: formData.height,
       goalWeight: formData.goalWeight,
       goalFat: formData.goalFat,
       goalCal: formData.goalCal,
-      authorId: this.authService.uid,
+      userId: this.authService.uid,
     });
   }
 }

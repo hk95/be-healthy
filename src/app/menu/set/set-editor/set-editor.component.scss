@@ -1,4 +1,11 @@
 @import '~@angular/material/theming';
+.editor-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #ffff;
+  padding: 32px 8px 8px 8px;
+  @include mat-elevation(1);
+}
 h1 {
   font-size: 20px;
   font-weight: normal;
@@ -26,40 +33,51 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-  height: 30px;
-  margin-bottom: 48px;
+  padding: 0 8px;
+  height: 56px;
+  @include mat-elevation(1);
+  z-index: 5;
+  position: sticky;
+  top: 0;
+  background: #fff;
 }
 .title {
   display: flex;
   flex-direction: column;
   margin-bottom: 24px;
-  &__name {
-    margin-bottom: 8px;
-    height: 25px;
-    border: 1px solid #dbdbdb;
+
+  &__form-field {
+    font-size: 15px;
   }
-  &__form {
-    display: none;
-  }
-  p {
-    margin: 0;
+  &__input {
+    height: 22px;
+    font-size: 17px;
+    background: #ffff;
   }
 }
 .meal {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   margin-bottom: 24px;
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .foods {
   margin-bottom: 32px;
+  border-radius: 4px;
+
   mat-tab-group {
     background: #fff;
-    max-height: 400px;
+    max-height: 480px;
+  }
+  &__validation {
+    margin-left: 8px;
   }
   &--choice {
-    max-height: 400px;
+    max-height: 480px;
     overflow: auto;
   }
 }
@@ -76,6 +94,7 @@ p {
     font-size: 14px;
     margin: 8px 8px 8px 0;
     width: 200px;
+    color: rgba(#000000, 0.87);
     &--with-amount {
       margin: 0;
     }
@@ -88,27 +107,37 @@ p {
   }
   &__row {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
+    &--form {
+      max-width: 300px;
+      width: 60%;
+    }
   }
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input {
-    display: block;
-    border: 1px solid #707070;
-    border-radius: 5px;
-    height: 20px;
+
+  &__form-field {
+    font-size: 5px;
+    color: rgba(#000000, 0.87);
     margin-right: 8px;
-    text-align: right;
+    width: 50%;
+  }
+  &__amount-form {
+    font-size: 15px;
+    width: 100%;
+  }
+  &__prefix {
+    font-size: 15px;
+    margin: 0 4px;
+  }
+  &__button {
+    margin-bottom: 8px;
   }
 }
 .search-box {
   margin: 16px auto;
+  padding: 0 8px;
 }
 .grid {
-  height: 340px;
   overflow: auto;
   display: grid;
   gap: 16px;
@@ -120,8 +149,8 @@ p {
   justify-content: center;
 }
 .recipe {
+  max-height: 170px;
   width: 140px;
-  height: 190px;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -137,14 +166,23 @@ p {
   }
   &__thumbnail {
     width: 140px;
-    height: 120px;
+    height: 94px;
     border-radius: 10px 10px 0px 0px;
-    margin-bottom: 8px;
     background: #c6c6c6 center/cover;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__image {
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+  }
+  &__content {
+    padding: 8px;
   }
   &__row {
     display: flex;
-    padding: 0px 8px;
     align-items: center;
   }
   &__icon {
@@ -157,37 +195,43 @@ p {
     color: #8a98ba;
     margin: 0px;
     margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   &__cal {
-    margin: 0px;
-    margin-left: 8px;
     font-size: 12px;
     color: #8a98ba;
   }
   &__title {
     margin: 0;
-    margin-left: 8px;
     font-size: 15px;
     font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 70%;
   }
   &__add {
     z-index: 10;
     position: absolute;
-    right: 8px;
-    bottom: 8px;
+    right: 0px;
+    bottom: 0px;
   }
 }
 .nutrition {
   margin-bottom: 48px;
   border-bottom: 1px solid #dbdbdb;
+
   &__detail {
-    height: 35px;
+    height: 70px;
     padding: 0 8px;
     border-top: 1px solid #dbdbdb;
-    background: #ffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    &--top {
+      border: none;
+    }
   }
   &__name {
     margin: 0;
@@ -195,14 +239,49 @@ p {
   &__amount-unit {
     text-align: right;
     display: flex;
-    span {
-      text-align: right;
-      width: 30px;
-      margin-left: 8px;
-    }
+    justify-content: flex-end;
+    width: 60%;
+    max-width: 300px;
   }
   &__amount {
-    text-align: right;
     font-size: 15px;
   }
+  &__form-field {
+    font-size: 5px;
+    width: 65%;
+  }
+  &__prefix {
+    font-size: 15px;
+    width: 30px;
+    margin: 0 4px;
+  }
+}
+
+.mat-tab-label {
+  width: 50%;
+}
+.no-recipe {
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
+  margin-top: 16px;
+  &__image {
+    justify-self: center;
+    margin-bottom: 8px;
+  }
+  &__text {
+    justify-self: center;
+    opacity: 0.87;
+    &--end {
+      margin-bottom: 8px;
+    }
+  }
+  &__button {
+    justify-self: center;
+    max-width: 200px;
+  }
+}
+.more-button {
+  display: flex;
+  justify-content: center;
 }

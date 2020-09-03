@@ -4,11 +4,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/interfaces/recipe';
 import { AuthService } from 'src/app/services/auth.service';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
