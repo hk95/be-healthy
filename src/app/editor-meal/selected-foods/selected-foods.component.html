@@ -1,36 +1,39 @@
+<mat-spinner class="spinner" diameter="40" *ngIf="loading"></mat-spinner>
 <ng-template #noSelected>
-  <div class="tab">
-    <div class="no">
-      <h3 class="no__title">
-        <mat-icon color="primary">info</mat-icon
-        >食べ物はまだ選択されていません。
-      </h3>
-      <mat-card
-        class="card"
-        routerLink="/editor-meal/search"
-        [queryParams]="{ date: date, meal: meal }"
-      >
-        <p class="card__title card__title--food">食材リストから探す</p>
-        <img
-          class="card__food"
-          mat-card-image
-          src="/assets/images/no-food.png/"
-          alt=""
-        />
-      </mat-card>
-      <mat-card
-        class="card"
-        routerLink="/editor-meal/my-set"
-        [queryParams]="{ date: date, meal: meal }"
-      >
-        <p class="card__title">マイセットから探す</p>
-        <img
-          class="card__set"
-          mat-card-image
-          src="/assets/images/no-set.png/"
-          alt=""
-        />
-      </mat-card>
+  <div *ngIf="!loading">
+    <div class="tab">
+      <div class="no">
+        <h3 class="no__title">
+          <mat-icon color="primary">info</mat-icon
+          >食べ物はまだ選択されていません。
+        </h3>
+        <mat-card
+          class="card"
+          routerLink="/editor-meal/search"
+          [queryParams]="{ date: date, meal: meal }"
+        >
+          <p class="card__title card__title--food">食材リストから探す</p>
+          <img
+            class="card__food"
+            mat-card-image
+            src="/assets/images/no-food.png/"
+            alt=""
+          />
+        </mat-card>
+        <mat-card
+          class="card"
+          routerLink="/editor-meal/my-set"
+          [queryParams]="{ date: date, meal: meal }"
+        >
+          <p class="card__title">マイセットから探す</p>
+          <img
+            class="card__set"
+            mat-card-image
+            src="/assets/images/no-set.png/"
+            alt=""
+          />
+        </mat-card>
+      </div>
     </div>
   </div>
 </ng-template>
@@ -51,10 +54,13 @@
     <div class="food">
       <div class="food__wrap">
         <p class="food__name">
-          {{ foodOrSet.food.foodName || foodOrSet.set.setTitle }}
+          {{
+            foodOrSet.food ? foodOrSet.food.foodName : foodOrSet.set.setTitle
+          }}
         </p>
         <p class="food__selected-amount">
-          {{ foodOrSet.amount }}{{ foodOrSet.food.unit || 'セット' }}
+          {{ foodOrSet.amount
+          }}{{ foodOrSet.food ? foodOrSet.food.unit : 'セット' }}
         </p>
       </div>
       <div class="spacer"></div>
@@ -62,8 +68,9 @@
         <p class="food__cal">
           {{
             foodOrSet.amount *
-              (foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal)
-              | number: '1.1-1'
+              (foodOrSet.food
+                ? foodOrSet.food.foodCalPerAmount
+                : foodOrSet.set.setCal) | number: '1.1-1'
           }}
           kcal
         </p>
@@ -76,7 +83,9 @@
           deleteMeal(
             foodOrSet.mealId,
             foodOrSet.amount,
-            foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal
+            foodOrSet.food
+              ? foodOrSet.food.foodCalPerAmount
+              : foodOrSet.set.setCal
           )
         "
       >
