@@ -7,6 +7,7 @@ import { DailyMeal } from 'src/app/interfaces/daily-info';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AverageService } from 'src/app/services/average.service';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-fav-foods',
@@ -14,13 +15,24 @@ import { AverageService } from 'src/app/services/average.service';
   styleUrls: ['./fav-foods.component.scss'],
 })
 export class FavFoodsComponent implements OnInit, OnDestroy {
-  amount = {};
+  amount = [].fill(0);
   date: string;
   meal: string;
   routerSub: Subscription;
   favFoods$: Observable<Food[]> = this.foodService.getFavFoods(
     this.authService.uid
   );
+  minAmount = 0;
+  maxAmount = 10000;
+  amountForm = this.fb.group({
+    amount: [
+      0,
+      [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
+    ],
+  });
+  get amountControl(): FormControl {
+    return this.amountForm.get('amount') as FormControl;
+  }
 
   constructor(
     private foodService: FoodService,
@@ -28,7 +40,8 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     private dailyInfoService: DailyInfoService,
     private route: ActivatedRoute,
     private router: Router,
-    private averageService: AverageService
+    private averageService: AverageService,
+    private fb: FormBuilder
   ) {
     this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
@@ -37,7 +50,6 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
-        console.log(this.date, 'ts');
       }
     });
   }
