@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { FavFoodsComponent } from './fav-foods/fav-foods.component';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class EditorMealModule {}
