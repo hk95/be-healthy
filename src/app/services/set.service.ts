@@ -49,26 +49,7 @@ export class SetService {
       .collection<Set>(`users/${userId}/sets`, (ref) =>
         ref.orderBy('updatedAt', 'desc').where(meal, '==', true)
       )
-      .valueChanges()
-      .pipe(
-        switchMap((sets: Set[]) => {
-          if (sets.length) {
-            const allSets = sets.map((set) => {
-              return this.db
-                .collection<Set>(`users/${userId}/sets/${set.setId}/foodsArray`)
-                .valueChanges()
-                .pipe(
-                  map((foodsArray: Set[]) => {
-                    return Object.assign(set, { foodsArray });
-                  })
-                );
-            });
-            return combineLatest([...allSets]);
-          } else {
-            return of([]);
-          }
-        })
-      );
+      .valueChanges();
   }
   getSetByIdWithFoods(
     userId: string,
