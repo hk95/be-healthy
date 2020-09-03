@@ -7,6 +7,7 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SetService } from 'src/app/services/set.service';
 import { AverageService } from 'src/app/services/average.service';
+import { Validators, FormControl, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-my-set',
@@ -14,19 +15,31 @@ import { AverageService } from 'src/app/services/average.service';
   styleUrls: ['./my-set.component.scss'],
 })
 export class MySetComponent implements OnInit, OnDestroy {
-  amount = {};
+  amount = [].fill(0);
   date: string;
   meal: string;
   sets$: Observable<Set[]>;
   totalCal$: Observable<number>;
   routerSub: Subscription;
+  minAmount = 0;
+  maxAmount = 100;
+  amountForm = this.fb.group({
+    amount: [
+      0,
+      [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
+    ],
+  });
+  get amountControl(): FormControl {
+    return this.amountForm.get('amount') as FormControl;
+  }
   constructor(
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
     private setService: SetService,
     private router: Router,
-    private averageService: AverageService
+    private averageService: AverageService,
+    private fb: FormBuilder
   ) {
     this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
@@ -36,19 +49,12 @@ export class MySetComponent implements OnInit, OnDestroy {
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
-        console.log(this.date, 'ts');
       }
     });
   }
-  addSet(amount: number, setId: string, setCal: number) {
-    const meal: DailyMeal = { mealId: '', setId, amount };
-    this.dailyInfoService.addMeal(
-      meal,
-      this.authService.uid,
-      this.date,
-      'set',
-      setCal
-    );
+  addSet(amount: number, set: Set) {
+    const meal: DailyMeal = { mealId: '', set, amount };
+    this.dailyInfoService.addMeal(meal, this.authService.uid, this.date, 'set');
   }
 
   outSet(setId: string) {

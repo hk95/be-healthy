@@ -1,74 +1,96 @@
+<mat-spinner class="spinner" diameter="40" *ngIf="loading"></mat-spinner>
 <ng-template #noSelected>
-  <div class="no">
-    <h3 class="no__title">
-      <mat-icon color="primary">info</mat-icon>食べ物はまだ選択されていません。
-    </h3>
-    <mat-card
-      class="card"
-      routerLink="/editor-meal/search"
-      [queryParams]="{ date: date, meal: meal }"
-    >
-      <p class="card__title card__title--food">食材リストから探す</p>
-      <img
-        class="card__food"
-        mat-card-image
-        src="/assets/images/no-food.png/"
-        alt=""
-      />
-    </mat-card>
-    <mat-card
-      class="card"
-      routerLink="/editor-meal/my-set"
-      [queryParams]="{ date: date, meal: meal }"
-    >
-      <p class="card__title">マイセットから探す</p>
-      <img
-        class="card__set"
-        mat-card-image
-        src="/assets/images/no-set.png/"
-        alt=""
-      />
-    </mat-card>
+  <div *ngIf="!loading">
+    <div class="tab">
+      <div class="no">
+        <h3 class="no__title">
+          <mat-icon color="primary">info</mat-icon
+          >食べ物はまだ選択されていません。
+        </h3>
+        <mat-card
+          class="card"
+          routerLink="/editor-meal/search"
+          [queryParams]="{ date: date, meal: meal }"
+        >
+          <p class="card__title card__title--food">食材リストから探す</p>
+          <img
+            class="card__food"
+            mat-card-image
+            src="/assets/images/no-food.png/"
+            alt=""
+          />
+        </mat-card>
+        <mat-card
+          class="card"
+          routerLink="/editor-meal/my-set"
+          [queryParams]="{ date: date, meal: meal }"
+        >
+          <p class="card__title">マイセットから探す</p>
+          <img
+            class="card__set"
+            mat-card-image
+            src="/assets/images/no-set.png/"
+            alt=""
+          />
+        </mat-card>
+      </div>
+    </div>
   </div>
 </ng-template>
-<p *ngIf="totalCal$ | async as totalCal; else noSelected">
-  <span *ngIf="meal === 'breakfast'">朝食</span>
-  <span *ngIf="meal === 'lunch'">昼食</span>
-  <span *ngIf="meal === 'dinner'">夕食</span>
-  摂取カロリー： {{ totalCal | number: '1.1-1' }} kcal
-</p>
 
-<div *ngFor="let foodOrSet of selectedFoodsOrSets$ | async">
-  <p class="border"></p>
-  <div class="food">
-    <p class="food__name">
-      {{ foodOrSet.food.foodName || foodOrSet.set.setTitle }}
-    </p>
-    <p class="spacer"></p>
-    <p class="food__amount">
-      （{{ foodOrSet.amount }}{{ foodOrSet.food.unit || 'セット' }}）
-    </p>
-    <p class="food__cal">
-      {{
-        foodOrSet.amount *
-          (foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal)
-          | number: '1.1-1'
-      }}
-      kcal
-    </p>
+<div
+  class="tab tab--content"
+  *ngIf="totalCal$ | async as totalCal; else noSelected"
+>
+  <div class="total">
+    <dt class="total__title">
+      合計摂取カロリー
+    </dt>
+    <dd class="total__cal">{{ totalCal | number: '1.1-1' }} kcal</dd>
+  </div>
 
-    <button
-      mat-icon-button
-      color="warn"
-      (click)="
-        deleteMeal(
-          foodOrSet.mealId,
-          foodOrSet.amount,
-          foodOrSet.food.foodCalPerAmount || foodOrSet.set.setCal
-        )
-      "
-    >
-      <mat-icon>clear</mat-icon>
-    </button>
+  <div *ngFor="let foodOrSet of selectedFoodsOrSets$ | async">
+    <p class="border"></p>
+    <div class="food">
+      <div class="food__wrap">
+        <p class="food__name">
+          {{
+            foodOrSet.food ? foodOrSet.food.foodName : foodOrSet.set.setTitle
+          }}
+        </p>
+        <p class="food__selected-amount">
+          {{ foodOrSet.amount
+          }}{{ foodOrSet.food ? foodOrSet.food.unit : 'セット' }}
+        </p>
+      </div>
+      <div class="spacer"></div>
+      <div>
+        <p class="food__cal">
+          {{
+            foodOrSet.amount *
+              (foodOrSet.food
+                ? foodOrSet.food.foodCalPerAmount
+                : foodOrSet.set.setCal) | number: '1.1-1'
+          }}
+          kcal
+        </p>
+      </div>
+
+      <button
+        mat-icon-button
+        color="warn"
+        (click)="
+          deleteMeal(
+            foodOrSet.mealId,
+            foodOrSet.amount,
+            foodOrSet.food
+              ? foodOrSet.food.foodCalPerAmount
+              : foodOrSet.set.setCal
+          )
+        "
+      >
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

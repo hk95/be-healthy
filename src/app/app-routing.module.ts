@@ -110,7 +110,7 @@ const routes: Routes = [
         path: 'editor-meal',
         loadChildren: () =>
           import('./editor-meal/editor-meal.module').then(
-            (m) => m.EditorBreakfastModule
+            (m) => m.EditorMealModule
           ),
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
