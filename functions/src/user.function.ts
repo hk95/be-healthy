@@ -20,11 +20,6 @@ export const createUser = functions
           .set({
             userName: user.displayName,
             avatarURL: user.photoURL,
-            gender: '',
-            height: '',
-            goalWeight: '',
-            goalFat: '',
-            goalCal: '',
             usreId: user.uid,
           })
           .then(() => {
