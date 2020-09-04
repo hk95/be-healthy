@@ -73,9 +73,9 @@ export class MySetComponent implements OnInit, OnDestroy {
               this.lastDoc = set.nextLastDoc;
             }
           );
-          if (sets.length >= this.getNumber) {
-            this.isNext = true;
-          }
+          sets.length >= this.getNumber
+            ? (this.isNext = true)
+            : (this.isNext = false);
         } else {
           this.isNext = false;
         }
