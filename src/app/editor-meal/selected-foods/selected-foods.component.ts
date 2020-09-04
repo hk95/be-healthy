@@ -18,7 +18,6 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
   meal: string;
   selectedFoodsOrSets$: Observable<DailyMeal[]>;
   totalCal$: Observable<number>;
-  routerSub: Subscription;
   subscription = new Subscription();
   loading: boolean;
 
@@ -70,7 +69,6 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     this.subscription.add(routerSub);
   }
   deleteMeal(mealId: string, amount: number, cal: number) {
-    console.log(this.date);
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
       this.date,
