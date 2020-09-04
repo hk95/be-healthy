@@ -1,30 +1,31 @@
-<ng-template #noFav>
-  <div class="tab">
-    <div class="no">
-      <h3 class="no__title">
-        お気に入りの食材はまだ登録されていません。
-      </h3>
+<mat-spinner class="spinner" diameter="40" *ngIf="loading"></mat-spinner>
+<div *ngIf="!loading">
+  <ng-template #noFav>
+    <div class="tab">
+      <div class="no">
+        <h3 class="no__title">
+          お気に入りの食材はまだ登録されていません。
+        </h3>
 
-      <p class="no__text">
-        検索タブでお気に入り食材に<span class="mat-icon"
-          ><mat-icon color="warn">favorite</mat-icon></span
-        >ボタンを押して登録しましょう！
-      </p>
-      <button
-        mat-stroked-button
-        color="primary"
-        routerLink="/editor-meal/search"
-        [queryParams]="{ date: date, meal: meal }"
-        routerLinkActive="router-link-active"
-        class="no__create"
-      >
-        <mat-icon>add</mat-icon><span>登録する</span>
-      </button>
+        <p class="no__text">
+          検索タブでお気に入り食材に<span class="mat-icon"
+            ><mat-icon color="warn">favorite</mat-icon></span
+          >ボタンを押して登録しましょう！
+        </p>
+        <button
+          mat-stroked-button
+          color="primary"
+          routerLink="/editor-meal/search"
+          [queryParams]="{ date: date, meal: meal }"
+          routerLinkActive="router-link-active"
+          class="no__create"
+        >
+          <mat-icon>add</mat-icon><span>登録する</span>
+        </button>
+      </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
 
-<div *ngIf="favFoods$ | async as favFoods">
   <div class="tab tab--content" *ngIf="favFoods.length > 0; else noFav">
     <div *ngFor="let food of favFoods; index as i">
       <div class="food">
@@ -32,7 +33,7 @@
           class="food__icon"
           mat-icon-button
           color="warn"
-          (click)="unLikeFavFood(food.foodId)"
+          (click)="unLikeFavFood(food.foodId, i)"
         >
           <mat-icon>favorite</mat-icon>
         </button>
@@ -79,6 +80,11 @@
           <mat-icon>add_box</mat-icon>
         </button>
       </div>
+    </div>
+    <div class="more-button" *ngIf="isNext">
+      <button mat-flat-button color="primary" (click)="getFoods()">
+        もっと見る
+      </button>
     </div>
   </div>
 </div>
