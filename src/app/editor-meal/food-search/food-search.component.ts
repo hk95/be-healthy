@@ -6,10 +6,11 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
 import { Food } from 'src/app/interfaces/food';
 import { DailyMeal } from 'src/app/interfaces/daily-info';
-import { Observable, Subscription } from 'rxjs';
-import { FavFood } from 'src/app/interfaces/fav-food';
+import { Subscription } from 'rxjs';
 import { AverageService } from 'src/app/services/average.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
+import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-food-search',
@@ -17,15 +18,13 @@ import { FormControl, Validators, FormBuilder } from '@angular/forms';
   styleUrls: ['./food-search.component.scss'],
 })
 export class FoodSearchComponent implements OnInit, OnDestroy {
+  getNumber = 500;
   amount = [].fill(0);
   date: string;
   meal: string;
-  favFoods$: Observable<FavFood[]> = this.foodService.getFavFoods(
-    this.authService.uid
-  );
-  isLikedlist = [];
+  isLikedlist: string[] = new Array();
   config = this.searchService.config;
-  routerSub: Subscription;
+  subscription = new Subscription();
   minAmount = 0;
   maxAmount = 10000;
   amountForm = this.fb.group({
@@ -47,23 +46,40 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     private averageService: AverageService,
     private fb: FormBuilder
   ) {
-    this.route.queryParamMap.subscribe((paramMaps) => {
+    const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
+      this.getFavFoods();
     });
-    this.favFoods$.subscribe((foods: Food[]) => {
-      this.isLikedlist = [...new Set(foods.map((food) => food.foodId))];
-    });
-    this.routerSub = this.router.events.subscribe((event) => {
+
+    const routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
       }
     });
+    this.subscription.add(routeSub);
+    this.subscription.add(routerSub);
   }
-
-  likeFavFood(foodId: string) {
-    this.foodService.likeFavFood(this.authService.uid, foodId);
-    this.isLikedlist.push(foodId);
+  getFavFoods() {
+    this.foodService
+      .getFavFoods(this.authService.uid, this.getNumber)
+      .pipe(take(1))
+      .subscribe((foods) => {
+        if (foods && foods.length > 0) {
+          foods.forEach(
+            (food: {
+              data: Food;
+              nextLastDoc: QueryDocumentSnapshot<Food>;
+            }) => {
+              this.isLikedlist.push(food.data.foodId);
+            }
+          );
+        }
+      });
+  }
+  likeFavFood(food: Food) {
+    this.foodService.likeFavFood(this.authService.uid, food);
+    this.isLikedlist.push(food.foodId);
   }
   unLikeFavFood(foodId: string) {
     this.foodService.unLikeFavFood(this.authService.uid, foodId);
@@ -84,6 +100,6 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
   ngOnDestroy() {
-    this.routerSub.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }

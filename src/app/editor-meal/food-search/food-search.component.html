@@ -10,6 +10,9 @@
     <ais-configure [searchParameters]="{ hitsPerPage: 10 }"></ais-configure>
     <ais-hits>
       <ng-template let-hits="hits">
+        <p class="limit-fav" *ngIf="isLikedlist.length === getNumber">
+          ＊これ以上お気に入りに登録できません
+        </p>
         <div *ngFor="let food of hits; index as i">
           <div class="food">
             <button
@@ -26,7 +29,8 @@
               class="food__icon"
               mat-icon-button
               *ngIf="!isLikedlist.includes(food.foodId)"
-              (click)="likeFavFood(food.foodId)"
+              (click)="likeFavFood(food)"
+              [disabled]="isLikedlist.length === getNumber"
             >
               <mat-icon>favorite_border</mat-icon>
             </button>
