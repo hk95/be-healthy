@@ -7,7 +7,6 @@ import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
 
-import { SetService } from './set.service';
 import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
