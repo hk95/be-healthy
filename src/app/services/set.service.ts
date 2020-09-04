@@ -41,10 +41,8 @@ export class SetService {
         if (lastDoc && !meal) {
           query = query.startAfter(lastDoc).limit(getNumber);
         } else if (!lastDoc && meal) {
-          console.log(meal);
           query = query.where(meal, '==', true).limit(getNumber);
         } else if (lastDoc && meal) {
-          console.log(meal);
           query = query
             .where(meal, '==', true)
             .startAfter(lastDoc)
