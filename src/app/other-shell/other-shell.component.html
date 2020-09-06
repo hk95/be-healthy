@@ -1,17 +1,70 @@
 <div>
   <mat-toolbar class="toolbar">
     <mat-toolbar-row class="toolbar__content">
-      <ng-container *ngIf="(title$ | async) == 'その他'; else other">
+      <ng-container *ngIf="(title$ | async) === 'その他'; else other">
         <a class="logo" routerLink="">
           <img class="logo__image" src="/assets/images/logo.svg" alt="" />
         </a>
       </ng-container>
+
       <ng-template #other>
         <a mat-button routerLink="/more" class="toolbar__back">
           <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
         </a>
       </ng-template>
       <h1 class="toolbar__title">{{ title$ | async }}</h1>
+
+      <div class="navs" *ngIf="(title$ | async) === 'その他'">
+        <button
+          [style.opacity]="(title$ | async) === 'グラフ' ? 1 : 0.3"
+          mat-icon-button
+          color="primary"
+          matTooltip="グラフ"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="navs__item"
+          routerLink="/graph"
+        >
+          <mat-icon>show_chart</mat-icon>
+        </button>
+        <button
+          [style.opacity]="(title$ | async) === 'マイメニュー' ? 1 : 0.3"
+          mat-icon-button
+          color="primary"
+          matTooltip="マイメニュー"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="navs__item"
+          routerLink="/menu/set-list"
+        >
+          <mat-icon>menu_book</mat-icon>
+        </button>
+      </div>
+      <div class="mypage" *ngIf="(title$ | async) === 'その他'">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <img
+            [src]="
+              (basicInfo$ | async)
+                ? (basicInfo$ | async).avatarURL
+                : 'assets/images/user-avatar.svg'
+            "
+            alt="avatar"
+            class="avatar-image"
+          />
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>login</mat-icon>
+            <span>ログアウト</span>
+          </button>
+          <button mat-menu-item routerLink="/more">
+            <mat-icon>more_horiz</mat-icon>
+            <span>その他</span>
+          </button>
+          <button mat-menu-item routerLink="/billing">
+            <mat-icon>support</mat-icon>
+            <span>開発者を応援する</span>
+          </button>
+        </mat-menu>
+      </div>
     </mat-toolbar-row>
   </mat-toolbar>
 

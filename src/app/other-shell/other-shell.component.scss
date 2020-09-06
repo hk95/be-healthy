@@ -35,3 +35,27 @@
     vertical-align: middle;
   }
 }
+
+.navs {
+  position: fixed;
+  right: 64px;
+  @media screen and (max-width: 750px) {
+    display: none;
+  }
+}
+.mypage {
+  grid-area: icon;
+  justify-self: end;
+  position: fixed;
+  right: 16px;
+}
+.avatar-image {
+  border-radius: 50%;
+  width: 40px;
+  background: center/cover;
+}
+
+button.mat-menu-item {
+  width: 100%;
+  margin: 0;
+}
