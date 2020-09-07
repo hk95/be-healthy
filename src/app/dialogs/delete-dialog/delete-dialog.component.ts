@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { SetService } from 'src/app/services/set.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -16,15 +17,16 @@ export class DeleteDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA)
     private data: {
-      recipeId?: string;
-      userId?: string;
-      setId?: string;
       title: string;
+      userId?: string;
+      recipeId?: string;
+      setId?: string;
     },
 
     private recipeService: RecipeService,
     private setService: SetService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   deleteRecipe() {
@@ -32,6 +34,9 @@ export class DeleteDialogComponent implements OnInit {
   }
   deleteSet() {
     this.setService.deleteSet(this.data.userId, this.setId);
+  }
+  deleteUserAccount() {
+    this.userService.deleteUserAccount();
   }
   ngOnInit(): void {}
 }

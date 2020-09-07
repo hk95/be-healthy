@@ -1,4 +1,9 @@
-<h2 mat-dialog-title><mat-icon>info</mat-icon>{{ title }}を削除しますか？</h2>
+<h2 mat-dialog-title *ngIf="title !== 'アカウント削除'">
+  <mat-icon>info</mat-icon>{{ title }}を削除しますか？
+</h2>
+<h2 mat-dialog-title *ngIf="title === 'アカウント削除'">
+  <mat-icon>info</mat-icon>アカウント情報は復元できません。よろしいですか？
+</h2>
 
 <mat-dialog-actions>
   <button mat-stroked-button mat-dialog-close>キャンセル</button>
@@ -16,6 +21,15 @@
     mat-raised-button
     color="warn"
     (click)="deleteSet()"
+    mat-dialog-close
+  >
+    削除
+  </button>
+  <button
+    *ngIf="title === 'アカウント削除'"
+    mat-raised-button
+    color="warn"
+    (click)="deleteUserAccount()"
     mat-dialog-close
   >
     削除
