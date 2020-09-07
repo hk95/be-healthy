@@ -41,11 +41,14 @@
       <div class="mypage" *ngIf="(title$ | async) === 'その他'">
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <img
-            [src]="
-              (basicInfo$ | async)
-                ? (basicInfo$ | async).avatarURL
-                : 'assets/images/user-avatar.svg'
-            "
+            *ngIf="basicInfo$ | async as basicInfo"
+            [src]="basicInfo.avatarURL"
+            alt="avatar"
+            class="avatar-image"
+          />
+          <img
+            *ngIf="!(basicInfo$ | async)"
+            src="/assets/images/user-avatar.svg"
             alt="avatar"
             class="avatar-image"
           />
