@@ -1,9 +1,7 @@
 import * as functions from 'firebase-functions';
-import { auth } from 'firebase-admin';
-
+import * as admin from 'firebase-admin';
 import { db } from './db';
 import { deleteCollection } from './utils/firebase.function';
-import admin = require('firebase-admin');
 
 const firebase_tools = require('firebase-tools');
 const storage = admin.storage().bucket();
@@ -11,7 +9,7 @@ const storage = admin.storage().bucket();
 export const createUser = functions
   .region('asia-northeast1')
   .auth.user()
-  .onCreate(async (user: auth.UserRecord) => {
+  .onCreate(async (user) => {
     db.doc(`users/${user.uid}`)
       .set({
         name: user.displayName,
@@ -46,7 +44,7 @@ export const deleteUserAccount = functions
     memory: '2GB',
   })
   .auth.user()
-  .onDelete(async (user: auth.UserRecord) => {
+  .onDelete(async (user) => {
     const userId = user.uid;
 
     const userInfoPath = `users/${userId}`;
