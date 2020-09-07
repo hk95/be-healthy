@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
   avatarURL: string;
   basicInfo: BasicInfo;
   form = this.fb.group({
-    userName: ['', [Validators.required, Validators.maxLength(this.maxLength)]],
+    name: ['', [Validators.required, Validators.maxLength(this.maxLength)]],
     gender: ['', [Validators.pattern(/male|female|other/)]],
     height: [
       '',
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
     goalCal: ['', [Validators.min(this.minCal), Validators.max(this.maxCal)]],
   });
   get nameControl(): FormControl {
-    return this.form.get('userName') as FormControl;
+    return this.form.get('name') as FormControl;
   }
   get heigtControl(): FormControl {
     return this.form.get('height') as FormControl;
@@ -82,7 +82,7 @@ export class ProfileComponent implements OnInit {
   submit() {
     const formData = this.form.value;
     this.basicInfoService.updateBasicInfo({
-      name: formData.userName,
+      name: formData.name,
       gender: formData.gender,
       height: formData.height,
       goalWeight: formData.goalWeight,
