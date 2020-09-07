@@ -1,0 +1,35 @@
+.delete {
+  padding: 16px 0;
+  &__title {
+    margin: 0;
+    font-size: 19px;
+    padding: 16px 8px;
+  }
+  &__text {
+    margin: 0;
+    padding: 16px 8px;
+    margin-bottom: 24px;
+  }
+  &__button {
+    border: none;
+    width: 100%;
+    padding: 8px;
+  }
+}
+
+.account {
+  margin: 0;
+  padding: 8px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 50px 1fr;
+  &__image {
+    width: 40px;
+    background: center/cover;
+    border-radius: 50%;
+  }
+  &__name {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}

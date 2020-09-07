@@ -1,1 +1,32 @@
-<p>account works!</p>
+<div class="delete">
+  <figure class="account">
+    <img
+      *ngIf="basicInfo$ | async as basicInfo"
+      class="account__image"
+      [src]="basicInfo.avatarURL"
+      alt=""
+    />
+    <img
+      *ngIf="!(basicInfo$ | async)"
+      class="account__image"
+      src="/assets/images/user-avatar.svg"
+      alt=""
+    />
+    <p *ngIf="basicInfo$ | async as basicInfo" class="account__name">
+      {{ basicInfo.name }}
+    </p>
+  </figure>
+  <h2 class="delete__title">アカウントが削除されます</h2>
+  <div class="border"></div>
+  <p class="delete__text">
+    アカウントの削除プロセスを開始します。アカウントの削除が完了すると、データの復元はできず、公開しているレシピなどの全データは表示されません。
+  </p>
+  <button
+    class="delete__button"
+    (click)="openDeleteDialog()"
+    mat-stroked-button
+    color="warn"
+  >
+    アカウント削除
+  </button>
+</div>
