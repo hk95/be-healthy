@@ -15,13 +15,16 @@ export class OtherShellComponent implements OnInit {
   basicInfo$: Observable<BasicInfo> = this.basicInfoService.getBasicInfo(
     this.authService.uid
   );
+
   constructor(
     private othreShellService: OthreShellService,
     private authService: AuthService,
     private basicInfoService: BasicInfoService
   ) {}
+
   logout() {
     this.authService.logout();
   }
+
   ngOnInit(): void {}
 }
