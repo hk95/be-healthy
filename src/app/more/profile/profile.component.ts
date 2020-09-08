@@ -13,6 +13,8 @@ import { AvatarComponent } from 'src/app/dialogs/avatar/avatar.component';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
+  private userId = this.authService.uid;
+
   maxLength = 50;
   maxHeight = 250;
   minHeight = 100;
@@ -66,17 +68,15 @@ export class ProfileComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.otherShellService.setTitle('ユーザー情報');
-    this.basicInfoService
-      .getBasicInfo(this.authService.uid)
-      .subscribe((basicInfo) => {
-        if (basicInfo) {
-          this.basicInfo = basicInfo;
-          this.form.patchValue(basicInfo);
-          this.avatarURL = basicInfo.avatarURL
-            ? basicInfo.avatarURL
-            : 'assets/images/user-avatar.svg';
-        }
-      });
+    this.basicInfoService.getBasicInfo(this.userId).subscribe((basicInfo) => {
+      if (basicInfo) {
+        this.basicInfo = basicInfo;
+        this.form.patchValue(basicInfo);
+        this.avatarURL = basicInfo.avatarURL
+          ? basicInfo.avatarURL
+          : 'assets/images/user-avatar.svg';
+      }
+    });
   }
 
   submit() {
@@ -88,7 +88,7 @@ export class ProfileComponent implements OnInit {
       goalWeight: formData.goalWeight,
       goalFat: formData.goalFat,
       goalCal: formData.goalCal,
-      userId: this.authService.uid,
+      userId: this.userId,
       avatarURL: this.avatarURL,
     });
   }
