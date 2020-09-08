@@ -13,11 +13,12 @@ import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dial
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-  private userId = this.authService.uid;
+  private readonly userId = this.authService.uid;
 
   basicInfo$: Observable<BasicInfo> = this.basicInfoService.getBasicInfo(
     this.userId
   );
+
   constructor(
     private othreShellService: OthreShellService,
     private basicInfoService: BasicInfoService,
@@ -26,6 +27,7 @@ export class AccountComponent implements OnInit {
   ) {
     this.othreShellService.setTitle('アカウント削除');
   }
+
   openDeleteDialog(): void {
     this.dialog.open(DeleteDialogComponent, {
       width: '50%',
