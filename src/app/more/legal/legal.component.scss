@@ -3,44 +3,55 @@ h2 {
   font-size: 18px;
   color: rgba(#000000, 0.8);
 }
+
 p {
   margin: 0;
 }
+
 .wrap {
   margin: 0 auto;
   margin-bottom: 48px;
   max-width: 600px;
+
   &--head {
     margin-top: 24px;
   }
+
   &--end {
     margin-bottom: 96px;
   }
+
   &__title {
     margin-bottom: 16px;
   }
+
   &__text {
     margin-left: 16px;
     margin-bottom: 8px;
   }
+
   &__establishment {
     text-align: right;
   }
 }
+
 .list {
   list-style: none;
   padding-left: 16px;
   margin: 0;
+
   &__text {
     margin-bottom: 8px;
   }
 }
+
 .link {
   height: 24px;
   color: #337ab7;
   text-decoration: none;
   display: inline-flex;
 }
+
 mat-icon {
   font-size: 16px;
   display: inline-flex;
