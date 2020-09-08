@@ -11,6 +11,7 @@ import { BasicInfoService } from 'src/app/services/basic-info.service';
 })
 export class AvatarComponent implements OnInit {
   croppedImage: string;
+
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -20,9 +21,11 @@ export class AvatarComponent implements OnInit {
     private authService: AuthService,
     private basicInfoService: BasicInfoService
   ) {}
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
   }
+
   async uploadImage(): Promise<void> {
     const file: Blob = base64ToFile(this.croppedImage);
     const downloadURL: string = await this.basicInfoService.uploadAvatar(
