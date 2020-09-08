@@ -7,10 +7,9 @@ import {
 import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Set, FoodInArray } from '../interfaces/set';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Set } from '../interfaces/set';
+import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { AngularFireFunctions } from '@angular/fire/functions';
 import { Location } from '@angular/common';
 
 @Injectable({
@@ -22,14 +21,14 @@ export class SetService {
     private db: AngularFirestore,
     private router: Router,
     private snackBar: MatSnackBar,
-    private fns: AngularFireFunctions,
     private location: Location
   ) {}
 
   getSets(
     userId: string,
     getNumber: number,
-    lastDoc?: QueryDocumentSnapshot<Set>
+    lastDoc?: QueryDocumentSnapshot<Set>,
+    meal?: string
   ): Observable<
     {
       data: Set;
@@ -39,8 +38,15 @@ export class SetService {
     const setsDoc$ = this.db
       .collection<Set>(`users/${userId}/sets`, (ref) => {
         let query = ref.orderBy('updatedAt', 'desc').limit(getNumber);
-        if (lastDoc) {
+        if (lastDoc && !meal) {
           query = query.startAfter(lastDoc).limit(getNumber);
+        } else if (!lastDoc && meal) {
+          query = query.where(meal, '==', true).limit(getNumber);
+        } else if (lastDoc && meal) {
+          query = query
+            .where(meal, '==', true)
+            .startAfter(lastDoc)
+            .limit(getNumber);
         }
         return query;
       })
@@ -57,7 +63,6 @@ export class SetService {
           setsData = setsDoc.map((set: DocumentChangeAction<Set>) => {
             return set.payload.doc.data();
           });
-
           return of(setsData);
         } else {
           return of([]);
@@ -84,36 +89,6 @@ export class SetService {
         }
       })
     );
-  }
-  getSetsOfMeal(userId: string, meal: string): Observable<Set[]> {
-    return this.db
-      .collection<Set>(`users/${userId}/sets`, (ref) =>
-        ref.orderBy('updatedAt', 'desc').where(meal, '==', true)
-      )
-      .valueChanges()
-      .pipe(
-        switchMap((sets: Set[]) => {
-          if (sets.length) {
-            const allSets: Observable<
-              Set & { foodsArray: FoodInArray[] }
-            >[] = sets.map((set) => {
-              return this.db
-                .collection<FoodInArray>(
-                  `users/${userId}/sets/${set.setId}/foodsArray`
-                )
-                .valueChanges()
-                .pipe(
-                  map((foodsArray: FoodInArray[]) => {
-                    return Object.assign(set, { foodsArray });
-                  })
-                );
-            });
-            return combineLatest([...allSets]);
-          } else {
-            return of([]);
-          }
-        })
-      );
   }
 
   getSetById(userId: string, setId: string): Observable<Set> {

@@ -1,4 +1,17 @@
 @import '~@angular/material/theming';
+.total {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  opacity: 0.87;
+  margin-bottom: 24px;
+  &__cal {
+    margin: 0;
+    overflow-wrap: anywhere;
+    width: 50%;
+    text-align: right;
+  }
+}
 .card {
   cursor: pointer;
   margin: 0 auto 24px;
@@ -27,4 +40,37 @@
     max-width: 120px;
     margin: 0 auto;
   }
+}
+.food {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  &__wrap {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  }
+  &__name {
+    overflow-wrap: anywhere;
+    width: 100%;
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.87;
+  }
+  &__selected-amount {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.87;
+  }
+  &__cal {
+    margin: 0;
+    text-align: right;
+    font-size: 14px;
+    opacity: 0.87;
+    overflow-wrap: anywhere;
+  }
+}
+.spinner {
+  margin: 0 auto;
+  margin-top: 32px;
 }

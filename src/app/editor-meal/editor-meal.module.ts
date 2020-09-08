@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { EditorBreakfastRoutingModule } from './editor-meal-routing.module';
+import { EditorMealRoutingModule } from './editor-meal-routing.module';
 import { EditorMealComponent } from './editor-meal/editor-meal.component';
 
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FoodSearchComponent } from './food-search/food-search.component';
 import { NgAisModule } from 'angular-instantsearch';
 import { MySetComponent } from './my-set/my-set.component';
@@ -15,6 +15,8 @@ import { SelectedFoodsComponent } from './selected-foods/selected-foods.componen
 import { MatCardModule } from '@angular/material/card';
 
 import { FavFoodsComponent } from './fav-foods/fav-foods.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -26,13 +28,16 @@ import { FavFoodsComponent } from './fav-foods/fav-foods.component';
   ],
   imports: [
     CommonModule,
-    EditorBreakfastRoutingModule,
+    EditorMealRoutingModule,
     MatIconModule,
     MatTabsModule,
     FormsModule,
     MatButtonModule,
     NgAisModule,
     MatCardModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
   ],
 })
-export class EditorBreakfastModule {}
+export class EditorMealModule {}

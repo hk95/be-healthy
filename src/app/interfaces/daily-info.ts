@@ -17,10 +17,6 @@ export interface DailyInfo {
 export interface DailyMeal {
   mealId: string;
   food?: Food;
-  setId?: string;
-  amount: number;
-}
-
-export interface DailyMealWithSet extends DailyMeal {
   set?: Set;
+  amount: number;
 }

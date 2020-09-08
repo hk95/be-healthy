@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  QueryDocumentSnapshot,
+  DocumentChangeAction,
+} from '@angular/fire/firestore';
 import { Food } from '../interfaces/food';
-import { Observable, combineLatest, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
-import { FavFood } from '../interfaces/fav-food';
+import { Observable, of } from 'rxjs';
+import { switchMap, take, map } from 'rxjs/operators';
+import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +15,11 @@ import { FavFood } from '../interfaces/fav-food';
 export class FoodService {
   constructor(private db: AngularFirestore) {}
 
-  likeFavFood(userId: string, foodId: string): Promise<void> {
-    return this.db.doc(`users/${userId}/favFoods/${foodId}`).set({ foodId });
+  likeFavFood(userId: string, food: Food): Promise<void> {
+    const updatedAt = firestore.Timestamp.now();
+    return this.db
+      .doc(`users/${userId}/favFoods/${food.foodId}`)
+      .set({ ...food, updatedAt });
   }
   unLikeFavFood(userId: string, foodId: string): Promise<void> {
     return this.db.doc(`users/${userId}/favFoods/${foodId}`).delete();
@@ -21,22 +28,51 @@ export class FoodService {
   getFoodByFoodId(foodId: string): Observable<Food> {
     return this.db.doc<Food>(`foods/${foodId}`).valueChanges().pipe(take(1));
   }
-  getFavFoods(userId: string): Observable<Food[]> {
-    return this.db
-      .collection<FavFood>(`users/${userId}/favFoods`)
-      .valueChanges()
-      .pipe(
-        switchMap((favFoods: FavFood[]) => {
-          if (favFoods.length) {
-            return combineLatest(
-              favFoods.map((favFood: FavFood) =>
-                this.db.doc<Food>(`foods/${favFood.foodId}`).valueChanges()
-              )
-            );
-          } else {
-            return of([]);
-          }
-        })
-      );
+  getFavFoods(
+    userId: string,
+    getNumber: number,
+    lastDoc?: QueryDocumentSnapshot<Food>
+  ): Observable<
+    {
+      data: Food;
+      nextLastDoc: QueryDocumentSnapshot<Food>;
+    }[]
+  > {
+    const foodsDoc$ = this.db
+      .collection<Food>(`users/${userId}/favFoods`, (ref) => {
+        let query = ref.orderBy('updatedAt', 'desc').limit(getNumber);
+        if (lastDoc) {
+          query = query.startAfter(lastDoc).limit(getNumber);
+        }
+        return query;
+      })
+      .snapshotChanges();
+    let nextLastDoc: QueryDocumentSnapshot<Food>;
+    let foodsData: Food[];
+    return foodsDoc$.pipe(
+      switchMap((foodsDoc: DocumentChangeAction<Food>[]) => {
+        if (foodsDoc.length > 0) {
+          nextLastDoc = foodsDoc[foodsDoc.length - 1].payload.doc;
+          foodsData = foodsDoc.map((foodDoc) => foodDoc.payload.doc.data());
+          return of(foodsData);
+        } else {
+          return of([]);
+        }
+      }),
+      map((foods: Food[]) => {
+        if (foods.length > 0) {
+          return foods.map((food: Food) => {
+            return {
+              data: {
+                ...food,
+              },
+              nextLastDoc,
+            };
+          });
+        } else {
+          return null;
+        }
+      })
+    );
   }
 }

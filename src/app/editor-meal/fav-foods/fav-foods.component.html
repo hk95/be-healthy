@@ -1,72 +1,90 @@
-<ng-template #noFav>
-  <div class="no">
-    <h3 class="no__title">
-      <mat-icon color="warn">favorite</mat-icon
-      >お気に入りの食材はまだ登録されていません。
-    </h3>
+<mat-spinner class="spinner" diameter="40" *ngIf="loading"></mat-spinner>
+<div *ngIf="!loading">
+  <ng-template #noFav>
+    <div class="tab">
+      <div class="no-select">
+        <h3 class="no-select__title">
+          お気に入りの食材はまだ登録されていません。
+        </h3>
 
-    <p>
-      お気に入り食材を検索タブから登録しましょう！
-    </p>
-    <button
-      mat-stroked-button
-      color="primary"
-      routerLink="/editor-meal/search"
-      [queryParams]="{ date: date, meal: meal }"
-      routerLinkActive="router-link-active"
-      class="no__create"
-    >
-      <mat-icon>add</mat-icon><span>登録する</span>
-    </button>
-  </div>
-</ng-template>
-<div *ngIf="favFoods$ | async as favFoods">
-  <div *ngIf="favFoods.length > 0; else noFav">
-    <div *ngFor="let favFood of favFoods">
+        <p class="no-select__text">
+          検索タブでお気に入り食材に<span class="mat-icon"
+            ><mat-icon color="warn">favorite</mat-icon></span
+          >ボタンを押して登録しましょう！
+        </p>
+        <button
+          mat-stroked-button
+          color="primary"
+          routerLink="/editor-meal/search"
+          [queryParams]="{ date: date, meal: meal }"
+          routerLinkActive="router-link-active"
+          class="no-select__create"
+        >
+          <mat-icon>add</mat-icon><span>登録する</span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="tab tab--content" *ngIf="favFoods.length > 0; else noFav">
+    <div *ngFor="let food of favFoods; index as i">
       <div class="food">
         <button
-          class="food__fav"
+          class="food__icon"
           mat-icon-button
           color="warn"
-          (click)="unLikeFavFood(favFood.foodId)"
+          (click)="unLikeFavFood(food.foodId, i)"
         >
           <mat-icon>favorite</mat-icon>
         </button>
 
         <div class="food__name">
           <p class="food__name--with-amount">
-            {{ favFood.foodName }}
+            {{ food.foodName }}
           </p>
           <span class="food__amountper">
-            {{ favFood.foodCalPerAmount }}kcal/{{ favFood.unit }}
+            {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
           </span>
         </div>
-
-        <input
-          class="food__amount-form"
-          text="number"
-          max="100"
-          min="0"
-          step="0.1"
-          [(ngModel)]="amount[favFood.foodId]"
-          type="number"
-        />
-        <span>{{ favFood.unit }}</span>
-        <p class="spacer"></p>
-        <p class="food__cal">
-          {{
-            favFood.foodCalPerAmount * amount[favFood.foodId] | number: '1.1-1'
-          }}kcal
-        </p>
+        <div class="spacer"></div>
+        <form class="food__choice" [formGroup]="amountForm">
+          <mat-form-field class="food__choice-form-field" appearance="outline">
+            <input
+              matInput
+              class="food__choice-input"
+              autocomplete="off"
+              formControlName="amount"
+              [max]="maxAmount"
+              [min]="minAmount"
+              step="0.1"
+              [(ngModel)]="amount[i]"
+              type="number"
+            />
+            <span matSuffix>{{ food.unit }}</span>
+            <mat-error *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
+              >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+            >
+          </mat-form-field>
+          <p class="food__cal">
+            {{ food.foodCalPerAmount * amount[i] | number: '1.1-1' }}
+            kcal
+          </p>
+        </form>
 
         <button
           mat-icon-button
           color="primary"
-          (click)="addFood(amount[favFood.foodId], favFood)"
+          (click)="addFood(amount[i], food)"
+          [disabled]="amount[i] > maxAmount || amount[i] < minAmount"
         >
           <mat-icon>add_box</mat-icon>
         </button>
       </div>
+    </div>
+    <div class="more-button" *ngIf="isNext">
+      <button mat-flat-button color="primary" (click)="getFoods()">
+        もっと見る
+      </button>
     </div>
   </div>
 </div>

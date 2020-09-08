@@ -107,7 +107,6 @@ export class AverageService {
     const dayOfYear = await moment(allDataOfDate).dayOfYear();
     const dayOfMonth = await moment(allDataOfDate).date();
     const dayOfWeek = await moment(allDataOfDate).weekday();
-    console.log(year, month, week);
 
     await this.db.doc(`users/${userId}/averagesYear/${year}年体重`).set(
       {
@@ -238,8 +237,6 @@ export class AverageService {
     const dayOfYear = await moment(allDataOfDate).dayOfYear();
     const dayOfMonth = await moment(allDataOfDate).date();
     const dayOfWeek = await moment(allDataOfDate).weekday();
-    console.log(year, month, week);
-    console.log(this.totalCal);
 
     await this.db.doc(`users/${userId}/averagesYear/${year}年カロリー`).set(
       {

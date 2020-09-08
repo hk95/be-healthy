@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
 import { Observable } from 'rxjs';
-import { DailyInfo, DailyMealWithSet } from '../interfaces/daily-info';
+import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
@@ -24,9 +24,9 @@ export class DailyDetailComponent implements OnInit {
     memo: ['', [Validators.maxLength(1000)]],
   });
 
-  MealsOfBreakfast: DailyMealWithSet[] = [];
-  MealsOfLunch: DailyMealWithSet[] = [];
-  MealsOfDinner: DailyMealWithSet[] = [];
+  MealsOfBreakfast: DailyMeal[] = [];
+  MealsOfLunch: DailyMeal[] = [];
+  MealsOfDinner: DailyMeal[] = [];
 
   totalCal = 0;
 

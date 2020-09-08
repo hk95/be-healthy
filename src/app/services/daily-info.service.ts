@@ -2,17 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
+import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
-import { map, switchMap } from 'rxjs/operators';
-import {
-  DailyInfo,
-  DailyMeal,
-  DailyMealWithSet,
-} from '../interfaces/daily-info';
-import { Set } from '../interfaces/set';
-import { SetService } from './set.service';
-import { Food } from '../interfaces/food';
+import { map } from 'rxjs/operators';
+import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
+
 import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
@@ -29,7 +23,6 @@ export class DailyInfoService {
     private db: AngularFirestore,
     private snackBar: MatSnackBar,
     private router: Router,
-    private setService: SetService,
     private fns: AngularFireFunctions
   ) {}
   goToSetPage(date: string, meal: string) {
@@ -153,67 +146,10 @@ export class DailyInfoService {
     userId: string,
     date: string,
     whichMeal: string
-  ): Observable<DailyMealWithSet[]> {
+  ): Observable<DailyMeal[]> {
     return this.db
       .collection<DailyMeal>(`users/${userId}/dailyInfos/${date}/${whichMeal}`)
-      .valueChanges()
-      .pipe(
-        switchMap((meals: DailyMeal[]) => {
-          if (meals.length) {
-            const setIds: string[] = [
-              ...new Set(
-                meals
-                  .filter((meal) => meal.setId !== undefined)
-                  .map((set) => set.setId)
-              ),
-            ];
-            const sets$: Observable<Set[]> = combineLatest(
-              setIds.map((setId: string) =>
-                this.setService.getSetById(userId, setId)
-              )
-            );
-            const foods: Food[] = [
-              ...new Set(
-                meals
-                  .filter((meal) => meal.setId === undefined)
-                  .map((food) => {
-                    return food.food;
-                  })
-              ),
-            ];
-            if (setIds.length >= 1 && foods.length >= 1) {
-              return combineLatest([of(meals), sets$, of(foods)]);
-            } else if (setIds.length >= 1 && !foods.length) {
-              return combineLatest([of(meals), sets$, of([])]);
-            } else if (!setIds.length && foods.length >= 1) {
-              return combineLatest([of(meals), of([]), of(foods)]);
-            }
-          } else {
-            return of([]);
-          }
-        }),
-        map(([meals, sets, foods]) => {
-          if (meals?.length) {
-            return meals.map((meal) => {
-              if (!meal.setId) {
-                return {
-                  ...meal,
-                  set: 'food',
-                  ...foods,
-                };
-              } else if (!meal.food) {
-                return {
-                  ...meal,
-                  set: sets.find((set) => set.setId === meal.setId),
-                  food: 'set',
-                };
-              }
-            });
-          } else {
-            return [];
-          }
-        })
-      );
+      .valueChanges();
   }
   getAllSelectedFoodsOrSets(userId: string, date: string) {
     return combineLatest([
@@ -227,8 +163,7 @@ export class DailyInfoService {
     mealContet: Omit<DailyMeal, 'mealId'>,
     userId: string,
     date: string,
-    foodOrSet: string,
-    setCal?: number
+    foodOrSet: string
   ): Promise<void> {
     const mealId = this.db.createId();
     this.db
@@ -240,27 +175,20 @@ export class DailyInfoService {
         });
       });
     const callable = this.fns.httpsCallable('addMeal');
+    let cal = 0;
     if (foodOrSet === 'food') {
-      const amount = mealContet.amount;
-      const cal = mealContet.food.foodCalPerAmount;
-      return callable({
-        userId,
-        date,
-        meal: this.whichMeal,
-        amount,
-        cal,
-      }).toPromise();
+      cal = mealContet.food.foodCalPerAmount;
     } else if (foodOrSet === 'set') {
-      const amount = mealContet.amount;
-      const cal = setCal;
-      return callable({
-        userId,
-        date,
-        meal: this.whichMeal,
-        amount,
-        cal,
-      }).toPromise();
+      cal = mealContet.set.setCal;
     }
+    const amount = mealContet.amount;
+    return callable({
+      userId,
+      date,
+      meal: this.whichMeal,
+      amount,
+      cal,
+    }).toPromise();
   }
 
   deleteMeal(

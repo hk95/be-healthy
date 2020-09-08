@@ -1,62 +1,87 @@
-<ais-instantsearch [config]="config">
-  <div class="search-box">
-    <ais-search-box placeholder="食べ物を入力してください"> </ais-search-box>
-  </div>
-  <ais-configure [searchParameters]="{ hitsPerPage: 10 }"></ais-configure>
-  <ais-hits>
-    <ng-template let-hits="hits">
-      <div *ngFor="let food of hits">
-        <div class="food">
-          <button
-            class="food__fav"
-            mat-icon-button
-            color="warn"
-            *ngIf="isLikedlist.includes(food.foodId)"
-            (click)="unLikeFavFood(food.foodId)"
-          >
-            <mat-icon>favorite</mat-icon>
-          </button>
+<div class="tab tab--content">
+  <ais-instantsearch [config]="config">
+    <div class="search-box">
+      <ais-search-box
+        class="ais-search-box-input"
+        placeholder="食べ物を入力してください"
+      >
+      </ais-search-box>
+    </div>
+    <ais-configure [searchParameters]="{ hitsPerPage: 10 }"></ais-configure>
+    <ais-hits>
+      <ng-template let-hits="hits">
+        <p class="limit-fav" *ngIf="isLikedlist.length === getNumber">
+          ＊これ以上お気に入りに登録できません
+        </p>
+        <div *ngFor="let food of hits; index as i">
+          <div class="food">
+            <button
+              class="food__icon"
+              mat-icon-button
+              color="warn"
+              *ngIf="isLikedlist.includes(food.foodId)"
+              (click)="unLikeFavFood(food.foodId)"
+            >
+              <mat-icon>favorite</mat-icon>
+            </button>
 
-          <button
-            class="food__fav"
-            mat-icon-button
-            *ngIf="!isLikedlist.includes(food.foodId)"
-            (click)="likeFavFood(food.foodId)"
-          >
-            <mat-icon>favorite_border</mat-icon>
-          </button>
-          <div class="food__name">
-            <p class="food__name--with-amount">{{ food.foodName }}</p>
-            <span class="food__amountper">
-              {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
-            </span>
+            <button
+              class="food__icon"
+              mat-icon-button
+              *ngIf="!isLikedlist.includes(food.foodId)"
+              (click)="likeFavFood(food)"
+              [disabled]="isLikedlist.length === getNumber"
+            >
+              <mat-icon>favorite_border</mat-icon>
+            </button>
+            <div class="food__name">
+              <p class="food__name--with-amount">{{ food.foodName }}</p>
+              <span class="food__amountper">
+                {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
+              </span>
+            </div>
+            <div class="spacer"></div>
+
+            <form class="food__choice" [formGroup]="amountForm">
+              <mat-form-field
+                class="food__choice-form-field"
+                appearance="outline"
+              >
+                <input
+                  matInput
+                  class="food__choice-input"
+                  autocomplete="off"
+                  formControlName="amount"
+                  [max]="maxAmount"
+                  [min]="minAmount"
+                  step="0.1"
+                  [(ngModel)]="amount[i]"
+                  type="number"
+                />
+                <span matSuffix>{{ food.unit }}</span>
+                <mat-error
+                  *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
+                  >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+                >
+              </mat-form-field>
+              <p class="food__cal">
+                {{ food.foodCalPerAmount * amount[i] | number: '1.1-1' }}
+                kcal
+              </p>
+            </form>
+
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="addFood(amount[i], food)"
+              [disabled]="amount[i] > maxAmount || amount[i] < minAmount"
+            >
+              <mat-icon>add_box</mat-icon>
+            </button>
           </div>
-
-          <input
-            class="food__amount-form"
-            max="100"
-            min="0"
-            step="0.1"
-            [(ngModel)]="amount[food.foodId]"
-            type="number"
-          />
-          <span>{{ food.unit }}</span>
-          <p class="spacer"></p>
-          <p class="food__cal">
-            {{
-              food.foodCalPerAmount * amount[food.foodId] | number: '1.1-1'
-            }}kcal
-          </p>
-
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="addFood(amount[food.foodId], food)"
-          >
-            <mat-icon>add_box</mat-icon>
-          </button>
         </div>
-      </div>
-    </ng-template>
-  </ais-hits>
-</ais-instantsearch>
+        <div *ngIf="hits.length === 0">該当する食べ物はありません</div>
+      </ng-template>
+    </ais-hits>
+  </ais-instantsearch>
+</div>

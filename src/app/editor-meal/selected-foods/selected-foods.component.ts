@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, of, Subscription } from 'rxjs';
-import { DailyMealWithSet } from 'src/app/interfaces/daily-info';
+
 import { switchMap } from 'rxjs/operators';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AverageService } from 'src/app/services/average.service';
+import { DailyMeal } from 'src/app/interfaces/daily-info';
 
 @Component({
   selector: 'app-selected-foods',
@@ -15,9 +16,11 @@ import { AverageService } from 'src/app/services/average.service';
 export class SelectedFoodsComponent implements OnInit, OnDestroy {
   date: string;
   meal: string;
-  selectedFoodsOrSets$: Observable<DailyMealWithSet[]>;
+  selectedFoodsOrSets$: Observable<DailyMeal[]>;
   totalCal$: Observable<number>;
-  routerSub: Subscription;
+  subscription = new Subscription();
+  loading: boolean;
+
   constructor(
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
@@ -25,7 +28,8 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     private router: Router,
     private averageService: AverageService
   ) {
-    this.route.queryParamMap.subscribe((paramMaps) => {
+    this.loading = true;
+    const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
       this.selectedFoodsOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
@@ -33,30 +37,38 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
         this.date,
         this.meal
       );
+
       this.totalCal$ = this.selectedFoodsOrSets$.pipe(
         switchMap((meals) => {
-          let currentcal = 0;
-          meals.forEach((meal) => {
-            if (meal.set.setCal) {
-              return (currentcal += meal.set.setCal * meal.amount);
-            } else if (meal.food.foodCalPerAmount) {
-              return (currentcal += meal.food.foodCalPerAmount * meal.amount);
-            }
-          });
-          return of(currentcal);
+          if (meals) {
+            let currentcal = 0;
+            meals.forEach((meal) => {
+              if (meal.set) {
+                return (currentcal += meal.set.setCal * meal.amount);
+              } else if (meal.food) {
+                return (currentcal += meal.food.foodCalPerAmount * meal.amount);
+              }
+            });
+            this.loading = false;
+            return of(currentcal);
+          } else {
+            this.loading = false;
+            return;
+          }
         })
       );
     });
 
-    this.routerSub = this.router.events.subscribe((event) => {
+    const routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
-        console.log(this.date, 'ts');
       }
     });
+
+    this.subscription.add(routeSub);
+    this.subscription.add(routerSub);
   }
   deleteMeal(mealId: string, amount: number, cal: number) {
-    console.log(this.date);
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
       this.date,
@@ -92,6 +104,6 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    this.routerSub.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }
