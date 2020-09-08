@@ -13,17 +13,17 @@ import { AvatarComponent } from 'src/app/dialogs/avatar/avatar.component';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  private userId = this.authService.uid;
+  private readonly userId = this.authService.uid;
 
-  maxLength = 50;
-  maxHeight = 250;
-  minHeight = 100;
-  minWeight = 30;
-  maxWeight = 200;
-  minFat = 0;
-  maxFat = 100;
-  minCal = 0;
-  maxCal = 10000;
+  readonly maxLength = 50;
+  readonly maxHeight = 250;
+  readonly minHeight = 100;
+  readonly minWeight = 30;
+  readonly maxWeight = 200;
+  readonly minFat = 0;
+  readonly maxFat = 100;
+  readonly minCal = 0;
+  readonly maxCal = 10000;
   avatarURL: string;
   basicInfo: BasicInfo;
   form = this.fb.group({
@@ -60,6 +60,7 @@ export class ProfileComponent implements OnInit {
     { viewValue: '男性', value: 'male' },
     { viewValue: '女性', value: 'female' },
   ];
+
   constructor(
     private otherShellService: OthreShellService,
     private basicInfoService: BasicInfoService,
@@ -68,6 +69,7 @@ export class ProfileComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.otherShellService.setTitle('ユーザー情報');
+
     this.basicInfoService.getBasicInfo(this.userId).subscribe((basicInfo) => {
       if (basicInfo) {
         this.basicInfo = basicInfo;
@@ -92,6 +94,7 @@ export class ProfileComponent implements OnInit {
       avatarURL: this.avatarURL,
     });
   }
+
   openAvatarDialog(event) {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
@@ -101,7 +104,6 @@ export class ProfileComponent implements OnInit {
           imageFile,
         },
       });
-
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.avatarURL = result;
@@ -109,5 +111,6 @@ export class ProfileComponent implements OnInit {
       });
     }
   }
+
   ngOnInit(): void {}
 }
