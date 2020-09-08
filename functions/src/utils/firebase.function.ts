@@ -1,23 +1,23 @@
 import { db } from '../db';
 
-export function deleteCollection(
+export const deleteCollection = (
   collectionPath:
     | FirebaseFirestore.Query<FirebaseFirestore.DocumentData>
     | FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>
-): Promise<void> {
+): Promise<void> => {
   const batchSize: number = 500;
   const query = collectionPath.limit(batchSize);
   return new Promise((resolve, reject) =>
     deleteQueryBatch(query, batchSize, resolve, reject)
   );
-}
+};
 
-function deleteQueryBatch(
+const deleteQueryBatch = (
   query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData>,
   batchSize: number,
   resolve: any,
   reject: any
-) {
+) => {
   query
     .get()
     .then((snapshot) => {
@@ -39,4 +39,4 @@ function deleteQueryBatch(
       );
     })
     .catch(reject);
-}
+};
