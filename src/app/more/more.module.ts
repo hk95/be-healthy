@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { UsageComponent } from './usage/usage.component';
+import { UsageTopComponent } from './usage-top/usage-top.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     TermsComponent,
     LegalComponent,
     ContactComponent,
+    UsageComponent,
+    UsageTopComponent,
   ],
   imports: [
     CommonModule,

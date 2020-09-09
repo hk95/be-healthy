@@ -5,7 +5,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './account/account.component';
 import { TermsComponent } from './terms/terms.component';
 import { LegalComponent } from './legal/legal.component';
-import { ContactComponent } from './contact/contact.component';
+import { UsageComponent } from './usage/usage.component';
+import { UsageTopComponent } from './usage-top/usage-top.component';
 
 const routes: Routes = [
   {
@@ -29,8 +30,26 @@ const routes: Routes = [
     component: LegalComponent,
   },
   {
-    path: 'contact',
-    component: ContactComponent,
+    path: 'usage',
+    component: UsageComponent,
+    children: [
+      {
+        path: '',
+        component: UsageTopComponent,
+      },
+      // {
+      //   path: 'fav-foods',
+      //   component: FavFoodsComponent,
+      // },
+      // {
+      //   path: 'my-set',
+      //   component: MySetComponent,
+      // },
+      // {
+      //   path: 'selected-foods',
+      //   component: SelectedFoodsComponent,
+      // },
+    ],
   },
 ];
 
