@@ -8,6 +8,9 @@ import { LegalComponent } from './legal/legal.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { UsageComponent } from './usage/usage.component';
 import { UsageTopComponent } from './usage-top/usage-top.component';
+import { UsageMenuComponent } from './usage-menu/usage-menu.component';
+import { UsageMealComponent } from './usage-meal/usage-meal.component';
+import { UsageGraphComponent } from './usage-graph/usage-graph.component';
 
 const routes: Routes = [
   {
@@ -42,18 +45,18 @@ const routes: Routes = [
         path: '',
         component: UsageTopComponent,
       },
-      // {
-      //   path: 'fav-foods',
-      //   component: FavFoodsComponent,
-      // },
-      // {
-      //   path: 'my-set',
-      //   component: MySetComponent,
-      // },
-      // {
-      //   path: 'selected-foods',
-      //   component: SelectedFoodsComponent,
-      // },
+      {
+        path: 'menu',
+        component: UsageMenuComponent,
+      },
+      {
+        path: 'meal',
+        component: UsageMealComponent,
+      },
+      {
+        path: 'graph',
+        component: UsageGraphComponent,
+      },
     ],
   },
 ];
