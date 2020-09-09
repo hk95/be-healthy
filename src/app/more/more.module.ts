@@ -16,6 +16,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { UsageComponent } from './usage/usage.component';
+import { UsageTopComponent } from './usage-top/usage-top.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     TermsComponent,
     LegalComponent,
     ContactComponent,
+    UsageComponent,
+    UsageTopComponent,
   ],
   imports: [
     CommonModule,
