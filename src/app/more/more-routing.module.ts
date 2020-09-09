@@ -6,6 +6,7 @@ import { AccountComponent } from './account/account.component';
 import { TermsComponent } from './terms/terms.component';
 import { LegalComponent } from './legal/legal.component';
 import { ContactComponent } from './contact/contact.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -15,10 +16,14 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'account',
     component: AccountComponent,
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'terms',

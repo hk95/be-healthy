@@ -1,88 +1,164 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form class="form" [formGroup]="form" (ngSubmit)="submit()">
   <div class="profile">
-    <p class="profile__title">プロフィール</p>
+    <h2 class="profile__title">プロフィール</h2>
     <div class="profile__content">
-      <div class="profile__card">
-        <dl>
-          <dt>名前</dt>
-          <dd>
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">ユーザーネーム</dt>
+        <dd class="profile__content-right">
+          <mat-form-field class="profile__field">
             <input
-              formControlName="userName"
-              class="profile__form-text"
+              matInput
+              formControlName="name"
+              class="profile__input"
               type="text"
             />
-          </dd>
-        </dl>
-      </div>
-      <div class="profile__card">
-        <dl>
-          <dt>性別</dt>
-          <dd class="profile__form">
-            <select formControlName="gender">
-              <option value="other">未選択</option>
-              <option value="male">男性</option>
-              <option value="female">女性</option>
-            </select>
-          </dd>
-        </dl>
-      </div>
-      <div class="profile__card">
-        <dl>
-          <dt>身長</dt>
-          <dd>
+            <mat-error *ngIf="nameControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error *ngIf="nameControl.hasError('maxlength')"
+              >{{ maxLength }}以内で入力してください</mat-error
+            >
+          </mat-form-field>
+        </dd>
+      </dl>
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">性別</dt>
+        <dd class="profile__content-right">
+          <mat-form-field class="profile__field">
+            <mat-select formControlName="gender" class="profile__select">
+              <mat-option *ngFor="let type of genderTypes" [value]="type.value">
+                {{ type.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </dd>
+      </dl>
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">アバター</dt>
+        <dd class="avatar">
+          <img class="avatar__image" [src]="avatarURL" alt="" />
+          <input
+            #avatar
+            class="avatar__image-form"
+            type="file"
+            (change)="openAvatarDialog($event)"
+            accept=".png, .jpg, .jpeg"
+          />
+          <button
+            class="avatar__button"
+            mat-stroked-button
+            color="primary"
+            type="button"
+            (click)="avatar.click()"
+          >
+            変更する
+          </button>
+        </dd>
+      </dl>
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">身長</dt>
+        <dd class="profile__content-right">
+          <mat-form-field class="profile__field">
             <input
+              matInput
               formControlName="height"
-              class="profile__form-text"
-              type="text"
-            /><span>cm</span>
-          </dd>
-        </dl>
-      </div>
+              class="profile__input"
+              autocomplete="off"
+              type="number"
+              [min]="minHeight"
+              [max]="maxHeight"
+            /><span matSuffix>cm</span>
+            <mat-error
+              *ngIf="
+                heigtControl.hasError('min') || heigtControl.hasError('max')
+              "
+              >{{ minHeight }}-{{
+                maxHeight
+              }}の範囲で入力してください</mat-error
+            ></mat-form-field
+          >
+        </dd>
+      </dl>
     </div>
   </div>
   <div class="profile">
-    <p class="profile__title">目標</p>
+    <h2 class="profile__title">目標</h2>
     <div class="profile__content">
-      <div class="profile__card">
-        <dl>
-          <dt>目標体重</dt>
-          <dd>
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">目標体重</dt>
+        <dd class="profile__content-right">
+          <mat-form-field class="profile__field">
             <input
+              matInput
               formControlName="goalWeight"
-              class="profile__form-text"
-              type="text"
-            /><span>kg</span>
-          </dd>
-        </dl>
-      </div>
-      <div class="profile__card">
-        <div class="profile__card">
-          <dl>
-            <dt>目標体脂肪率</dt>
-            <dd>
-              <input
-                formControlName="goalFat"
-                class="profile__form-text"
-                type="text"
-              /><span>%</span>
-            </dd>
-          </dl>
-        </div>
-        <div class="profile__card">
-          <dl>
-            <dt>目標摂取カロリー</dt>
-            <dd>
-              <input
-                formControlName="goalCal"
-                class="profile__form-text"
-                type="text"
-              /><span>kcal</span>
-            </dd>
-          </dl>
-        </div>
-      </div>
+              class="profile__input"
+              autocomplete="off"
+              type="number"
+              [min]="minWeight"
+              [max]="maxWeight"
+            /><span matSuffix>kg</span>
+            <mat-error
+              *ngIf="
+                weightControl.hasError('min') || weightControl.hasError('max')
+              "
+              >{{ minWeight }}-{{
+                maxWeight
+              }}の範囲で入力してください</mat-error
+            >
+          </mat-form-field>
+        </dd>
+      </dl>
+
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">目標体脂肪率</dt>
+        <dd class="profile__content-right">
+          <mat-form-field class="profile__field">
+            <input
+              matInput
+              formControlName="goalFat"
+              class="profile__input"
+              autocomplete="off"
+              type="number"
+              [min]="minFat"
+              [max]="maxFat"
+            /><span matSuffix>%</span>
+            <mat-error
+              *ngIf="fatControl.hasError('min') || fatControl.hasError('max')"
+              >{{ minFat }}-{{ maxFat }}の範囲で入力してください</mat-error
+            >
+          </mat-form-field>
+        </dd>
+      </dl>
+
+      <dl class="profile__wrap">
+        <dt class="profile__content-left">目標摂取カロリー</dt>
+        <dd class="profile__content-right">
+          <mat-form-field class="profile__field">
+            <input
+              matInput
+              formControlName="goalCal"
+              class="profile__input"
+              autocomplete="off"
+              type="number"
+              [min]="minCal"
+              [max]="maxCal"
+            /><span matSuffix>kcal</span>
+            <mat-error
+              *ngIf="calControl.hasError('min') || calControl.hasError('max')"
+              >{{ minCal }}-{{ maxCal }}の範囲で入力してください</mat-error
+            >
+          </mat-form-field>
+        </dd>
+      </dl>
     </div>
   </div>
 
-  <button mat-raised-button color="primary">更新する</button>
+  <button
+    [disabled]="form.invalid"
+    mat-raised-button
+    class="submit-button"
+    color="primary"
+  >
+    更新する
+  </button>
 </form>

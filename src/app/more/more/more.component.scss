@@ -1,15 +1,21 @@
-.more-card {
+.list {
+  border-radius: 0;
   display: grid;
   grid-template-columns: 1fr;
   padding: 8px;
-  border: 1px solid 0.7;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
+
 .wrapper {
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 p {
+  margin: 0;
   font-size: 16px;
 }
