@@ -42,7 +42,7 @@ const routes: Routes = [
     component: UsageComponent,
     children: [
       {
-        path: '',
+        path: 'top',
         component: UsageTopComponent,
       },
       {
