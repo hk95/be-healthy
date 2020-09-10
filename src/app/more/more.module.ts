@@ -21,6 +21,7 @@ import { UsageTopComponent } from './usage-top/usage-top.component';
 import { UsageMenuComponent } from './usage-menu/usage-menu.component';
 import { UsageMealComponent } from './usage-meal/usage-meal.component';
 import { UsageGraphComponent } from './usage-graph/usage-graph.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { UsageGraphComponent } from './usage-graph/usage-graph.component';
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    MatTabsModule,
   ],
 })
 export class MoreModule {}
