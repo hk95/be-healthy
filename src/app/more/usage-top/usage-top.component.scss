@@ -1,3 +1,10 @@
+p {
+  margin: 0 auto;
+  max-width: 500px;
+  font-family: 'Yuanti SC';
+  font-weight: lighter;
+}
+
 .wrap-title {
   font-size: 16px;
 }
@@ -14,12 +21,15 @@
           'card-text  card-text';
         gap: 16px;
       }
+
       &--calendar {
         align-items: center;
         grid-template-areas: 'calendar calendar-text';
+        gap: 16px;
       }
     }
   }
+
   &__card {
     max-width: 300px;
     grid-area: card;
@@ -30,6 +40,7 @@
       margin-bottom: 32px;
     }
   }
+
   &__text {
     line-height: 24px;
 
@@ -55,6 +66,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 8px;
+
     @media screen and(max-width:750px) {
       margin-bottom: 32px;
     }
@@ -66,18 +78,22 @@
     flex-direction: column;
     align-items: center;
   }
+
   &__icon-image {
     width: 40px;
     height: 40px;
     margin-bottom: 8px;
+
     &--breakfast {
       width: 55px;
     }
   }
+
   &__icon-name {
     font-size: 14px;
     color: #009688;
   }
+
   &__calendar {
     max-width: 300px;
     display: block;
