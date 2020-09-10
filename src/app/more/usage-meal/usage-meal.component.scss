@@ -1,13 +1,28 @@
 @import '~@angular/material/theming';
 
-.tabs {
-  margin: 32px auto;
-  background: #fff;
-  padding: 16px;
-  @include mat-elevation(2);
+.meal-container {
+  padding: 32px 0;
 }
 
-.tab {
+.wrap {
+  &__title {
+    margin: 0 auto;
+    font-family: 'Yuanti SC';
+    font-weight: lighter;
+    text-align: center;
+    color: #009688;
+    margin-bottom: 16px;
+  }
+  &__image {
+    width: 100%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 8px;
+  }
+}
+
+.wrap-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,6 +36,11 @@
     margin: 0;
     width: 40%;
     max-width: 150px;
+
+    &--number {
+      border-bottom: none;
+      color: #e25241;
+    }
   }
 
   &__discription {
@@ -38,4 +58,8 @@
 
 .link:hover {
   text-decoration: underline;
+}
+
+.border {
+  margin: 40px 0;
 }
