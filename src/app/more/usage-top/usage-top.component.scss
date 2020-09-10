@@ -10,10 +10,12 @@ p {
 }
 
 .top {
+  padding: 32px 0;
+
   &__discription {
-    margin: 40px 0;
     @media screen and(min-width:750px) {
       display: grid;
+
       &--card {
         grid-template-areas:
           'card icon-text '
@@ -36,6 +38,7 @@ p {
     justify-self: center;
     display: block;
     margin: 0 auto;
+
     @media screen and(max-width:750px) {
       margin-bottom: 32px;
     }
@@ -46,9 +49,11 @@ p {
 
     @media screen and(min-width:750px) {
       text-align: center;
+
       &--card {
         grid-area: card-text;
       }
+
       &--calendar {
         grid-area: calendar-text;
       }
@@ -60,6 +65,7 @@ p {
     align-self: center;
     margin-bottom: 32px;
   }
+
   &__icons {
     grid-area: icons;
     width: 100%;
@@ -100,4 +106,8 @@ p {
     margin: 0 auto;
     grid-area: calendar;
   }
+}
+
+.border {
+  margin: 40px auto;
 }

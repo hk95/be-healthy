@@ -32,14 +32,6 @@ p {
 .graph {
   padding: 32px 0;
 
-  &__discription {
-    margin-bottom: 40px;
-  }
-
-  &__wrap {
-    margin: 40px auto;
-  }
-
   &__text {
     margin-bottom: 16px;
   }
@@ -64,4 +56,8 @@ p {
 
 .link:hover {
   text-decoration: underline;
+}
+
+.border {
+  margin: 40px auto;
 }
