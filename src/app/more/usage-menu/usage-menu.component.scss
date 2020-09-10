@@ -12,6 +12,10 @@ p {
   max-width: 500px;
   font-family: 'Yuanti SC';
   font-weight: lighter;
+
+  @media screen and(min-width:750px) {
+    text-align: center;
+  }
 }
 
 .menu {
