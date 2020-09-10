@@ -1,3 +1,51 @@
-<div class="container">
+<div class="tabs">
+  <nav
+    mat-tab-nav-bar
+    mat-align-tabs="center"
+    animationDuration="0ms"
+    [disablePagination]="true"
+  >
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="top"
+      routerLinkActive
+      #rla0="routerLinkActive"
+      [active]="rla0.isActive"
+    >
+      TOP
+    </a>
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="meal"
+      routerLinkActive
+      #rla1="routerLinkActive"
+      [active]="rla1.isActive"
+    >
+      食事登録
+    </a>
+    <a
+      class="mat-tab-label mat-tab-label--menu"
+      mat-tab-link
+      routerLink="menu"
+      routerLinkActive
+      #rla2="routerLinkActive"
+      [active]="rla2.isActive"
+    >
+      マイメニュー
+    </a>
+    <a
+      class="mat-tab-label"
+      mat-tab-link
+      routerLink="graph"
+      routerLinkActive
+      #rla3="routerLinkActive"
+      [active]="rla3.isActive"
+    >
+      グラフ
+    </a>
+  </nav>
+
   <router-outlet></router-outlet>
 </div>
