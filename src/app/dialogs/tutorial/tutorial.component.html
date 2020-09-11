@@ -1,0 +1,22 @@
+<h2 mat-dialog-title class="title">
+  ようこそ
+</h2>
+
+<div mat-dialog-content>
+  <img src="/assets/images/hello.svg" alt="" class="image" />
+  <p class="text">Be Healthyをご利用いただきありがとうございます。</p>
+  <p class="text">健康的な生活を目指して頑張りましょう！</p>
+</div>
+<mat-dialog-actions class="actions">
+  <button
+    class="actions__button"
+    mat-stroked-button
+    color="primary"
+    (click)="goToUsage()"
+  >
+    使用方法を見る
+  </button>
+  <button class="actions__button" mat-stroked-button mat-dialog-close>
+    さっそく使う
+  </button>
+</mat-dialog-actions>

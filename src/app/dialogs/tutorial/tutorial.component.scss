@@ -1,0 +1,48 @@
+.title {
+  color: #009688;
+  margin: 0 auto;
+  font-family: 'Yuanti SC';
+  font-weight: lighter;
+  text-align: center;
+}
+
+.image {
+  width: 80%;
+  max-width: 400px;
+  display: block;
+  margin: 0 auto;
+}
+
+.text {
+  color: #009688;
+  margin: 0 auto;
+  max-width: 500px;
+  font-family: 'Yuanti SC';
+  font-weight: lighter;
+  text-align: center;
+}
+
+.actions {
+  padding-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media screen and(max-width:750px) {
+    grid-template-columns: 1fr;
+  }
+
+  &__button {
+    max-width: 150px;
+    justify-self: center;
+
+    @media screen and(max-width:750px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.mat-dialog-actions .mat-button-base + .mat-button-base,
+.mat-dialog-actions .mat-mdc-button-base + .mat-mdc-button-base {
+  margin-left: 0;
+}
