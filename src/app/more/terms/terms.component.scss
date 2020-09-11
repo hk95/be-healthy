@@ -1,0 +1,49 @@
+h2 {
+  margin: 0;
+  font-size: 18px;
+  color: rgba(#000000, 0.8);
+}
+
+p {
+  margin: 0;
+}
+
+.wrap {
+  margin: 0 auto;
+  margin-bottom: 48px;
+  max-width: 600px;
+
+  &--head {
+    margin-top: 24px;
+  }
+
+  &--end {
+    margin-bottom: 0px;
+  }
+
+  &__title {
+    margin-bottom: 16px;
+  }
+
+  &__text {
+    margin-bottom: 8px;
+  }
+
+  &__establishment {
+    text-align: right;
+  }
+}
+
+.list {
+  padding-left: 24px;
+  margin: 0;
+
+  &__text {
+    margin-bottom: 8px;
+  }
+}
+
+.link {
+  color: rgb(226, 82, 65);
+  text-decoration: none;
+}
