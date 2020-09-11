@@ -2,15 +2,15 @@
   <mat-toolbar class="toolbar">
     <mat-toolbar-row class="toolbar__content">
       <ng-container *ngIf="(title$ | async) === 'その他'; else other">
-        <button class="logo" routerLink="">
+        <a class="logo" routerLink="">
           <img class="logo__image" src="/assets/images/logo.svg" alt="" />
-        </button>
+        </a>
       </ng-container>
 
       <ng-template #other>
-        <a mat-button (click)="backToPage()" class="toolbar__back">
+        <button mat-button (click)="backToPage()" class="toolbar__back">
           <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
-        </a>
+        </button>
       </ng-template>
       <h1 class="toolbar__title">{{ title$ | async }}</h1>
 
