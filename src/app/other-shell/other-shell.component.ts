@@ -4,6 +4,7 @@ import { OthreShellService } from '../services/othre-shell.service';
 import { AuthService } from '../services/auth.service';
 import { BasicInfoService } from '../services/basic-info.service';
 import { BasicInfo } from '../interfaces/basic-info';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-other-shell',
@@ -19,8 +20,13 @@ export class OtherShellComponent implements OnInit {
   constructor(
     private othreShellService: OthreShellService,
     private authService: AuthService,
-    private basicInfoService: BasicInfoService
+    private basicInfoService: BasicInfoService,
+    private location: Location
   ) {}
+
+  backToPage() {
+    this.location.back();
+  }
 
   logout() {
     this.authService.logout();
