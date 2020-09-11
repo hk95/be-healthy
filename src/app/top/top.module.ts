@@ -11,6 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetailComponent } from './detail/detail.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [TopComponent, DetailComponent],
@@ -23,6 +25,8 @@ import { DetailComponent } from './detail/detail.component';
     MatIconModule,
     FullCalendarModule,
     MatTooltipModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   providers: [DatePipe],
 })
