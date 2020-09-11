@@ -1,4 +1,4 @@
-<div *ngIf="!(basicInfo$ | async); else loading" class="top">
+<div *ngIf="basicInfo$ | async; else loading" class="top">
   <div class="calendar-wrap">
     <full-calendar class="calendar" [options]="calendarOptions"></full-calendar>
   </div>
