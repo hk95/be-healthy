@@ -1,4 +1,4 @@
-<div class="top">
+<div *ngIf="!(basicInfo$ | async); else loading" class="top">
   <div class="calendar-wrap">
     <full-calendar class="calendar" [options]="calendarOptions"></full-calendar>
   </div>
@@ -7,3 +7,8 @@
     <app-detail></app-detail>
   </div>
 </div>
+
+<ng-template #loading>
+  <mat-spinner class="spinner" diameter="50"></mat-spinner>
+  <h2 class="loading-title">データ構成中...</h2>
+</ng-template>
