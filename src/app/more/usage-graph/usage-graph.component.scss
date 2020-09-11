@@ -32,6 +32,12 @@ p {
 .graph {
   padding: 32px 0;
 
+  &__discription {
+    @media screen and (max-width: 750px) {
+      text-align: left;
+    }
+  }
+
   &__text {
     margin-bottom: 16px;
   }
