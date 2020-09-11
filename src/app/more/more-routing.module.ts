@@ -5,7 +5,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './account/account.component';
 import { TermsComponent } from './terms/terms.component';
 import { LegalComponent } from './legal/legal.component';
-import { ContactComponent } from './contact/contact.component';
 import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [

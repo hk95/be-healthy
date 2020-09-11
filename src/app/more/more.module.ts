@@ -7,7 +7,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './account/account.component';
 import { TermsComponent } from './terms/terms.component';
 import { LegalComponent } from './legal/legal.component';
-import { ContactComponent } from './contact/contact.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +23,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     AccountComponent,
     TermsComponent,
     LegalComponent,
-    ContactComponent,
   ],
   imports: [
     CommonModule,
