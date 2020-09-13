@@ -54,7 +54,7 @@ service cloud.firestore {
       allow read: if request.auth.uid != null;
       allow create: if request.auth.uid != null;
       allow update: if request.auth.uid == resource.data.authorId && resource.data.authorId == request.resource.data.authorId;
-      allow delete: if request.auth.uid == resource.data.authorIdfalse;
+      allow delete: if request.auth.uid == resource.data.authorId;
    }
 
     match /customers/{userId} {
