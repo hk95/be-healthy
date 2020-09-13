@@ -6,7 +6,7 @@ service cloud.firestore {
         allow write: if false;
 
       match /basicInfo/{userId} {
-        allow read: if request.auth.uid == userId;
+        allow read: if request.auth.uid != null;
         allow create: if false;
         allow update: if request.auth.uid == userId;
         allow update: if false;
@@ -15,7 +15,7 @@ service cloud.firestore {
       match /dailyInfos/{dailyId=**} {
         allow read: if request.auth.uid == userId;
         allow create: if request.auth.uid == userId;
-        allow update: if request.auth.uid == userId && request.resource.data.userId && resource.data.authoerId;
+        allow update: if request.auth.uid == userId && request.resource.data.userId && resource.data.authorId;
         allow create: if false;
      }
 
@@ -38,6 +38,13 @@ service cloud.firestore {
     match /foods/{foodId} {
       allow read: if request.auth.uid != null;
       allow write: if false;
+   }
+
+    match /recipes/{recipeId} {
+      allow read: if request.auth.uid != null;
+      allow create: if request.auth.uid != null;
+      allow update: if request.auth.uid == resource.data.authorId && resource.data.authorId == request.resource.data.authorId;
+      allow delete: if request.auth.uid == resource.data.authorIdfalse;
    }
   }
 }
