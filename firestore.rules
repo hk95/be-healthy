@@ -3,7 +3,9 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{userId} {
         allow read: if request.auth.uid == userId;
-        allow write: if false;
+        allow create: if false;
+        allow update: if request.auth.uid == userId;
+        allow delete: if false;
 
       match /basicInfo/{userId} {
         allow read: if request.auth.uid != null;
@@ -15,8 +17,13 @@ service cloud.firestore {
       match /dailyInfos/{dailyId=**} {
         allow read: if request.auth.uid == userId;
         allow create: if request.auth.uid == userId;
-        allow update: if request.auth.uid == userId && request.resource.data.userId && resource.data.authorId;
-        allow create: if false;
+        allow update: if request.auth.uid == userId;
+        allow delete: if false;
+     }
+
+      match /sets/{setId=**} {
+        allow read: if request.auth.uid == userId;
+        allow write: if request.auth.uid == userId;
      }
 
       match /averagesWeek/{week=**} {
@@ -45,6 +52,11 @@ service cloud.firestore {
       allow create: if request.auth.uid != null;
       allow update: if request.auth.uid == resource.data.authorId && resource.data.authorId == request.resource.data.authorId;
       allow delete: if request.auth.uid == resource.data.authorIdfalse;
+   }
+
+    match /customers/{userId} {
+      allow read: if false;
+      allow write: if false;
    }
   }
 }
