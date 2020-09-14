@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 20;
 
   &__meal {
     position: absolute;
