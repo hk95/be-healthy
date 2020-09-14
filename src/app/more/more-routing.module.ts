@@ -32,10 +32,6 @@ const routes: Routes = [
     path: 'legal',
     component: LegalComponent,
   },
-  {
-    path: 'contact',
-    component: ContactComponent,
-  },
 ];
 
 @NgModule({
