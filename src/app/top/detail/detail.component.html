@@ -1,8 +1,11 @@
 <div *ngIf="dailyInfos$ | async as dailyInfos">
   <div class="grid">
     <div *ngFor="let dailyInfo of dailyInfos; index as i">
+      <h4 *ngIf="i === 0" class="wrap-title">今日の記録</h4>
+      <h4 *ngIf="i === 1" class="wrap-title">過去１週間の記録</h4>
       <mat-card
         class="card"
+        [ngClass]="i === 0 ? 'card--today' : ''"
         routerLink="/daily-detail"
         [queryParams]="{ date: dailyInfo.date }"
       >

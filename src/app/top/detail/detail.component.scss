@@ -12,6 +12,10 @@ p {
   grid-template-columns: 1fr;
   gap: 16px;
 }
+.wrap-title {
+  font-weight: normal;
+  margin: 0;
+}
 .card {
   display: flex;
   outline: none;
@@ -19,6 +23,12 @@ p {
   width: 100%;
   margin: 0 auto;
   cursor: pointer;
+
+  &--today {
+    border: 2px solid #009688;
+    margin-bottom: 32px;
+  }
+
   @media screen and (min-width: 750px) {
     max-width: 420px;
     min-width: 380px;
