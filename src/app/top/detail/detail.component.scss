@@ -3,19 +3,23 @@
 * {
   box-sizing: border-box;
 }
+
 p {
   margin: 0;
 }
+
 .grid {
   min-width: 300px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
+
 .wrap-title {
   font-weight: normal;
   margin: 0;
 }
+
 .card {
   display: flex;
   outline: none;
@@ -33,16 +37,20 @@ p {
     max-width: 420px;
     min-width: 380px;
   }
+
   &:hover {
     @include mat-elevation(3);
   }
+
   &__title {
     font-weight: normal;
     margin-bottom: 16px;
   }
+
   &__weight {
     margin-bottom: 8px;
   }
+
   &__fat {
     margin-bottom: 8px;
   }
@@ -54,9 +62,11 @@ p {
     flex-direction: column;
   }
 }
+
 .wrap {
   display: flex;
   margin-bottom: 8px;
+
   &--column {
     flex-direction: column;
   }
@@ -76,12 +86,15 @@ p {
   margin: 0 4px;
   z-index: 10;
 }
+
 .icon {
   width: 22px;
+
   &--breakfast {
     width: 40px;
   }
 }
+
 .no-registration {
   opacity: 0.3;
 }
