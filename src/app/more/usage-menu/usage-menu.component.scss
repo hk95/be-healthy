@@ -1,0 +1,76 @@
+h3 {
+  margin: 0 auto;
+  max-width: 500px;
+  font-family: 'Yuanti SC';
+  font-weight: lighter;
+  text-align: center;
+  color: #009688;
+}
+
+p {
+  margin: 0 auto;
+  max-width: 500px;
+  font-family: 'Yuanti SC';
+  font-weight: lighter;
+
+  @media screen and(min-width:750px) {
+    text-align: center;
+  }
+}
+
+.menu {
+  padding: 32px 0;
+
+  &__discription {
+    margin-bottom: 48px;
+  }
+
+  &__title {
+    margin-bottom: 16px;
+  }
+
+  &__texts {
+    margin-bottom: 32px;
+  }
+
+  &__emphasis {
+    color: #009688;
+  }
+
+  &__image-text {
+    color: #737373;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  &__image-wrap {
+    margin: 0;
+    margin-bottom: 32px;
+  }
+
+  &__image {
+    width: 80%;
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
+
+    &--photo {
+      width: 100%;
+      max-width: 500px;
+      margin-top: 8px;
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    max-width: 500;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 150px 150px;
+    grid-area: 24px;
+  }
+}
+
+.border {
+  margin: 40px auto;
+}

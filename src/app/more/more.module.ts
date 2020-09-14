@@ -16,6 +16,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { UsageComponent } from './usage/usage.component';
+import { UsageTopComponent } from './usage-top/usage-top.component';
+import { UsageMenuComponent } from './usage-menu/usage-menu.component';
+import { UsageMealComponent } from './usage-meal/usage-meal.component';
+import { UsageGraphComponent } from './usage-graph/usage-graph.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -25,6 +31,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     TermsComponent,
     LegalComponent,
     ContactComponent,
+    UsageComponent,
+    UsageTopComponent,
+    UsageMenuComponent,
+    UsageMealComponent,
+    UsageGraphComponent,
   ],
   imports: [
     CommonModule,
@@ -38,6 +49,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    MatTabsModule,
   ],
 })
 export class MoreModule {}

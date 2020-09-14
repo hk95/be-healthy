@@ -8,9 +8,9 @@
       </ng-container>
 
       <ng-template #other>
-        <a mat-button routerLink="/more" class="toolbar__back">
+        <button mat-button (click)="backToPage()" class="toolbar__back">
           <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
-        </a>
+        </button>
       </ng-template>
       <h1 class="toolbar__title">{{ title$ | async }}</h1>
 

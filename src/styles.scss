@@ -15,23 +15,28 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   background-color: #fafafafa;
 }
+
 .border {
   margin: 0;
   border-top: 1px solid #000;
   opacity: 0.2;
 }
+
 .container {
   padding: 0 8px;
   padding-bottom: 48px;
   max-width: 700px;
   margin: 0 auto;
+
   @media screen and (max-width: 750px) {
     padding-bottom: 80px;
+    margin: 0;
   }
 }
 

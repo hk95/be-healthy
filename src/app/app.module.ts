@@ -44,6 +44,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CreditCardComponent } from './dialogs/credit-card/credit-card.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { AvatarComponent } from './dialogs/avatar/avatar.component';
+import { TutorialComponent } from './dialogs/tutorial/tutorial.component';
 
 registerLocaleData(localeJa);
 FullCalendarModule.registerPlugins([dayGridPlugin]);
@@ -63,6 +64,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     CreditCardComponent,
     ConfirmDialogComponent,
     AvatarComponent,
+    TutorialComponent,
   ],
   imports: [
     BrowserModule,

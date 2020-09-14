@@ -5,8 +5,12 @@ import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './account/account.component';
 import { TermsComponent } from './terms/terms.component';
 import { LegalComponent } from './legal/legal.component';
-import { ContactComponent } from './contact/contact.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { UsageComponent } from './usage/usage.component';
+import { UsageTopComponent } from './usage-top/usage-top.component';
+import { UsageMenuComponent } from './usage-menu/usage-menu.component';
+import { UsageMealComponent } from './usage-meal/usage-meal.component';
+import { UsageGraphComponent } from './usage-graph/usage-graph.component';
 
 const routes: Routes = [
   {
@@ -34,8 +38,26 @@ const routes: Routes = [
     component: LegalComponent,
   },
   {
-    path: 'contact',
-    component: ContactComponent,
+    path: 'usage',
+    component: UsageComponent,
+    children: [
+      {
+        path: 'top',
+        component: UsageTopComponent,
+      },
+      {
+        path: 'menu',
+        component: UsageMenuComponent,
+      },
+      {
+        path: 'meal',
+        component: UsageMealComponent,
+      },
+      {
+        path: 'graph',
+        component: UsageGraphComponent,
+      },
+    ],
   },
 ];
 
