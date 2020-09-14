@@ -12,6 +12,7 @@
     'text image'
     'button image';
   background: #fafafa;
+
   @media screen and (max-width: 750px) {
     gap: 16px;
     grid-template-columns: 1fr;
@@ -33,6 +34,7 @@
     width: 100%;
     line-height: 1.5;
   }
+
   &__text {
     width: 100%;
     margin: 0;
@@ -41,20 +43,21 @@
     font-size: 22px;
     grid-area: text;
   }
+
   &__button {
     height: 40px;
     max-width: 200px;
     cursor: pointer;
-    // border-width: 0;
-
     color: #737373;
     white-space: nowrap;
 
     grid-area: button;
+
     @media screen and (max-width: 750px) {
       justify-self: center;
     }
   }
+
   &__button-icon {
     display: inline-block;
     vertical-align: middle;
@@ -62,6 +65,7 @@
     height: 18px;
     box-sizing: border-box;
   }
+
   &__button-text {
     display: inline-block;
     vertical-align: middle;
@@ -69,11 +73,59 @@
     font-weight: bold;
     font-family: 'Roboto', arial, sans-serif;
   }
+
   &__image {
     grid-area: image;
     align-self: center;
     justify-self: center;
     width: 100%;
     max-width: 380px;
+  }
+}
+
+.footer {
+  padding: 32px 0;
+  background: #ffffff;
+
+  &__wrap {
+    padding: 0;
+    display: grid;
+    gap: 8px;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 16px;
+
+    @media screen and(max-width:750px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__link {
+    font-size: 13px;
+    max-width: 240px;
+    text-decoration: none;
+    color: #919191;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__creater {
+    display: block;
+    font-size: 13px;
+    color: #444444;
+    text-align: center;
+    margin: 0 atuo;
+  }
+
+  &__creater-link {
+    font-size: 13px;
+    color: #444444;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
