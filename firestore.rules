@@ -1,47 +1,42 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedInWithMyId(userId) {
+      return request.auth.uid == userId;
+    }
+
     match /users/{userId} {
-        allow read: if request.auth.uid == userId;
-        allow create: if request.auth.uid == userId;
-        allow update: if request.auth.uid == userId;
-        allow delete: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
 
       match /basicInfo/{userId} {
         allow read: if request.auth.uid != null;
         allow create: if false;
-        allow update: if request.auth.uid == userId;
+        allow update: if signedInWithMyId(userId);
         allow delete: if false;
       }
 
       match /dailyInfos/{dailyId=**} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
      }
 
       match /sets/{setId=**} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
      }
 
       match /favFoods/{foodId=**} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
      }
 
       match /averagesWeek/{week=**} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
      }
 
       match /averagesMonth/{month=**} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
      }
 
       match /averagesYear/{year=**} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
+        allow read, write: if signedInWithMyId(userId);
      }
    }
 
