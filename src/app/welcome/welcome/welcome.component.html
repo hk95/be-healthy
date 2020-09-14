@@ -1,23 +1,35 @@
 <div class="welcome">
-  <h1 class="welcome__catcopy">
-    明日のために理想の体調と体型を作りましょう
-  </h1>
-  <p class="welcome__text">
-    日々の食事、体重、体脂肪を記録し、食事のP（タンパク質）F（脂質）C（炭水化物）バランスや摂取カロリー・体重・体脂肪の遷移を数値として把握できるサービスです。
-  </p>
-  <button
-    mat-raised-button
-    color="basic"
-    type="button"
-    class="welcome__button"
-    (click)="login()"
-  >
-    <img src="/assets/images/google.svg" alt="" class="welcome__button-icon" />
+  <img
+    src="/assets/images/logo-welcome.svg
+"
+    alt=""
+    class="welcome__logo"
+  />
+  <div class="welcome__wrap">
+    <h1 class="welcome__catcopy">
+      明日のために理想の体調と体型を作りましょう
+    </h1>
+    <p class="welcome__text">
+      日々の食事、体重、体脂肪を記録し、食事のP（タンパク質）F（脂質）C（炭水化物）バランスや摂取カロリー・体重・体脂肪の遷移を数値として把握できるサービスです。
+    </p>
+    <button
+      mat-raised-button
+      color="basic"
+      type="button"
+      class="welcome__button"
+      (click)="login()"
+    >
+      <img
+        src="/assets/images/google.svg"
+        alt=""
+        class="welcome__button-icon"
+      />
 
-    <span class="welcome__button-text">Googleでログイン</span>
-  </button>
+      <span class="welcome__button-text">Googleでログイン</span>
+    </button>
 
-  <img class="welcome__image" src="/assets/images/welcome.svg" alt="" />
+    <img class="welcome__image" src="/assets/images/welcome.svg" alt="" />
+  </div>
 </div>
 <div class="border"></div>
 <footer class="footer">
