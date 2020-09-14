@@ -1,4 +1,15 @@
 @import '~@angular/material/theming';
+.back {
+  height: 40px;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
 .no-select {
   margin: 0 auto;
   display: flex;
@@ -36,6 +47,12 @@
     margin: 0 auto 16px auto;
     max-width: 200px;
   }
+}
+.tabs {
+  background: #fafafa;
+  z-index: 5;
+  position: sticky;
+  top: 0;
 }
 .mat-tab-label {
   width: 25%;

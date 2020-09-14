@@ -1,56 +1,60 @@
-<div class="tabs">
-  <nav
-    mat-tab-nav-bar
-    mat-align-tabs="center"
-    animationDuration="0ms"
-    [disablePagination]="true"
-  >
-    <a
-      class="mat-tab-label"
-      mat-tab-link
-      routerLink="search"
-      [queryParams]="{ date: date, meal: meal }"
-      routerLinkActive
-      #rla0="routerLinkActive"
-      [active]="rla0.isActive"
+<div class="edtor-meal">
+  <button class="back" routerLink="/" mat-stroked-button>
+    <mat-icon>navigate_before</mat-icon>TOP
+  </button>
+  <div class="tabs">
+    <nav
+      mat-tab-nav-bar
+      mat-align-tabs="center"
+      animationDuration="0ms"
+      [disablePagination]="true"
     >
-      検索
-    </a>
-    <a
-      class="mat-tab-label"
-      mat-tab-link
-      routerLink="fav-foods"
-      [queryParams]="{ date: date, meal: meal }"
-      routerLinkActive
-      #rla1="routerLinkActive"
-      [active]="rla1.isActive"
-    >
-      お気に入り
-    </a>
-    <a
-      class="mat-tab-label"
-      mat-tab-link
-      routerLink="my-set"
-      [queryParams]="{ date: date, meal: meal }"
-      routerLinkActive
-      #rla2="routerLinkActive"
-      [active]="rla2.isActive"
-    >
-      マイセット
-    </a>
-    <a
-      class="mat-tab-label"
-      mat-tab-link
-      routerLink="selected-foods"
-      [queryParams]="{ date: date, meal: meal }"
-      routerLinkActive
-      #rla3="routerLinkActive"
-      [active]="rla3.isActive"
-    >
-      選択項目
-    </a>
-  </nav>
-
+      <a
+        class="mat-tab-label"
+        mat-tab-link
+        routerLink="search"
+        [queryParams]="{ date: date, meal: meal }"
+        routerLinkActive
+        #rla0="routerLinkActive"
+        [active]="rla0.isActive"
+      >
+        検索
+      </a>
+      <a
+        class="mat-tab-label"
+        mat-tab-link
+        routerLink="fav-foods"
+        [queryParams]="{ date: date, meal: meal }"
+        routerLinkActive
+        #rla1="routerLinkActive"
+        [active]="rla1.isActive"
+      >
+        お気に入り
+      </a>
+      <a
+        class="mat-tab-label"
+        mat-tab-link
+        routerLink="my-set"
+        [queryParams]="{ date: date, meal: meal }"
+        routerLinkActive
+        #rla2="routerLinkActive"
+        [active]="rla2.isActive"
+      >
+        マイセット
+      </a>
+      <a
+        class="mat-tab-label"
+        mat-tab-link
+        routerLink="selected-foods"
+        [queryParams]="{ date: date, meal: meal }"
+        routerLinkActive
+        #rla3="routerLinkActive"
+        [active]="rla3.isActive"
+      >
+        選択項目
+      </a>
+    </nav>
+  </div>
   <div class="container">
     <router-outlet></router-outlet>
   </div>
