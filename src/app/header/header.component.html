@@ -89,8 +89,7 @@
       <div class="mypage">
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <img
-            *ngIf="avatarURL"
-            [src]="avatarURL"
+            [src]="avatarURL ? avatarURL : '/assets/images/user-avatar.svg'"
             alt="avatar"
             class="avatar-image"
           />
