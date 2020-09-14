@@ -1,8 +1,61 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
+    function signedInWithMyId(userId) {
+      return request.auth.uid == userId;
     }
+
+    match /users/{userId} {
+        allow read, write: if signedInWithMyId(userId);
+
+      match /basicInfo/{userId} {
+        allow read: if request.auth.uid != null;
+        allow create: if false;
+        allow update: if signedInWithMyId(userId);
+        allow delete: if false;
+      }
+
+      match /dailyInfos/{dailyId=**} {
+        allow read, write: if signedInWithMyId(userId);
+     }
+
+      match /sets/{setId=**} {
+        allow read, write: if signedInWithMyId(userId);
+     }
+
+      match /favFoods/{foodId=**} {
+        allow read, write: if signedInWithMyId(userId);
+     }
+
+      match /averagesWeek/{week=**} {
+        allow read, write: if signedInWithMyId(userId);
+     }
+
+      match /averagesMonth/{month=**} {
+        allow read, write: if signedInWithMyId(userId);
+     }
+
+      match /averagesYear/{year=**} {
+        allow read, write: if signedInWithMyId(userId);
+     }
+   }
+
+    match /foods/{foodId} {
+      allow read: if request.auth.uid != null;
+      allow write: if false;
+   }
+
+    match /recipes/{recipeId} {
+      allow read: if request.auth.uid != null;
+      allow create: if request.auth.uid != null;
+      allow update: if request.auth.uid == resource.data.authorId && resource.data.authorId == request.resource.data.authorId;
+      allow delete: if request.auth.uid == resource.data.authorId;
+   }
+
+    match /customers/{userId} {
+      allow read: if false;
+      allow write: if false;
+   }
   }
 }
+
