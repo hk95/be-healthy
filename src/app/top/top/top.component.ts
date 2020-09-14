@@ -51,18 +51,12 @@ export class TopComponent implements OnInit {
   }
 
   isInitLogin() {
+    this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
     if (this.authService.isInitialLogin) {
-      this.basicInfo$ = this.basicInfoService.getBasicInfo(
-        this.authService.uid
-      );
       this.dialog.open(TutorialComponent, {
         width: '100%',
       });
       this.authService.isInitialLogin = false;
-    } else {
-      this.basicInfo$ = this.basicInfoService.getBasicInfo(
-        this.authService.uid
-      );
     }
   }
 
