@@ -29,6 +29,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     AccountComponent,
     TermsComponent,
     LegalComponent,
+    UsageComponent,
+    UsageTopComponent,
+    UsageMenuComponent,
+    UsageMealComponent,
+    UsageGraphComponent,
   ],
   imports: [
     CommonModule,
