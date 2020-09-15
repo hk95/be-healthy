@@ -75,7 +75,9 @@
       routerLink="/recipe-detail"
       [queryParams]="{ id: recipe.recipeId }"
     >
-      <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+      <figure class="recipe__thumbnail">
+        <img class="recipe__image" [src]="recipe.recipeThumbnailURL" alt="" />
+      </figure>
       <div class="recipe__content">
         <div class="recipe__row">
           <img
