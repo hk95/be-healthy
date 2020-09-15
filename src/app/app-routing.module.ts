@@ -98,15 +98,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'editor-list',
-        loadChildren: () =>
-          import('./editor-list/editor-list.module').then(
-            (m) => m.EditorListModule
-          ),
-        canLoad: [AuthGuard],
-        canActivate: [AuthGuard],
-      },
-      {
         path: 'editor-meal',
         loadChildren: () =>
           import('./editor-meal/editor-meal.module').then(

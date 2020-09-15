@@ -4,6 +4,8 @@
       <img class="logo__image" src="/assets/images/logo.svg" alt="" />
     </div>
 
+    <div class="spacer"></div>
+
     <ng-container *ngIf="!selectedValue">
       <h1 class="title" *ngIf="!(title$ | async).includes('2')">
         {{ title$ | async }}
@@ -25,19 +27,18 @@
         <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
       </mat-form-field>
     </ng-container>
-    <div class="header__wrapper">
-      <ng-container *ngIf="selectedValue">
+
+    <div class="header__meal" *ngIf="selectedValue">
+      <ng-container>
         <h1 class="other-title" (click)="picker.open()">
           {{ title$ | async }}
         </h1>
-
         <mat-form-field class="example-full-width" style="display: none;">
           <input
             matInput
             [matDatepicker]="picker"
             (dateChange)="changeDate($event)"
           />
-
           <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>
         </mat-form-field>
         <button class="meal" mat-button [matMenuTriggerFor]="meal">
@@ -57,54 +58,57 @@
       </ng-container>
     </div>
 
-    <div class="navs">
-      <button
-        [style.opacity]="(title$ | async) === 'グラフ' ? 1 : 0.3"
-        mat-icon-button
-        color="primary"
-        matTooltip="グラフ"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        class="navs__item"
-        routerLink="/graph"
-      >
-        <mat-icon>show_chart</mat-icon>
-      </button>
-      <button
-        [style.opacity]="(title$ | async) === 'マイメニュー' ? 1 : 0.3"
-        mat-icon-button
-        color="primary"
-        matTooltip="マイメニュー"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        class="navs__item"
-        routerLink="/menu/set-list"
-      >
-        <mat-icon>menu_book</mat-icon>
-      </button>
-    </div>
+    <div class="spacer"></div>
 
-    <div class="mypage">
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <img
-          *ngIf="avatarURL"
-          [src]="avatarURL"
-          alt="avatar"
-          class="avatar-image"
-        />
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>login</mat-icon>
-          <span>ログアウト</span>
+    <div class="header__wrap">
+      <div class="navs">
+        <button
+          [style.opacity]="(title$ | async) === 'グラフ' ? 1 : 0.3"
+          mat-icon-button
+          color="primary"
+          matTooltip="グラフ"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="navs__item"
+          routerLink="/graph"
+        >
+          <mat-icon>show_chart</mat-icon>
         </button>
-        <button mat-menu-item *ngIf="more" routerLink="/more">
-          <mat-icon>more_horiz</mat-icon>
-          <span>その他</span>
+        <button
+          [style.opacity]="(title$ | async) === 'マイメニュー' ? 1 : 0.3"
+          mat-icon-button
+          color="primary"
+          matTooltip="マイメニュー"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="navs__item"
+          routerLink="/menu/set-list"
+        >
+          <mat-icon>menu_book</mat-icon>
         </button>
-        <button mat-menu-item routerLink="/billing">
-          <mat-icon>support</mat-icon>
-          <span>開発者を応援する</span>
+      </div>
+
+      <div class="mypage">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <img
+            [src]="avatarURL ? avatarURL : '/assets/images/user-avatar.svg'"
+            alt="avatar"
+            class="avatar-image"
+          />
         </button>
-      </mat-menu>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>login</mat-icon>
+            <span>ログアウト</span>
+          </button>
+          <button mat-menu-item *ngIf="more" routerLink="/more">
+            <mat-icon>more_horiz</mat-icon>
+            <span>その他</span>
+          </button>
+          <button mat-menu-item routerLink="/billing">
+            <mat-icon>support</mat-icon>
+            <span>開発者を応援する</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

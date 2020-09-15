@@ -1,29 +1,39 @@
 * {
   box-sizing: border-box;
 }
+
 .top {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-direction: column;
+
   @media screen and (min-width: 750px) {
+    margin: 0 auto;
+    max-width: 850px;
     padding-top: 24px;
+    justify-content: space-between;
     flex-direction: row;
   }
+
+  &__wrap {
+    padding: 8px 8px 80px 8px;
+  }
 }
+
 .calendar-wrap {
   max-width: 500px;
   width: 100%;
-  margin: 0 auto;
+
   @media screen and (min-width: 750px) {
     position: sticky;
-    top: 136px;
-    height: 400px;
+    top: 128px;
+    align-self: baseline;
+    width: 45%;
     margin-top: 48px;
-    margin-left: 0px;
-    margin-right: 0px;
   }
 }
+
 .calendar {
   max-width: 500px;
   width: 100%;
@@ -36,37 +46,45 @@
   .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 8px;
   }
+
   .fc .fc-toolbar-title {
     font-size: 18px;
     font-weight: normal;
     margin: 0;
   }
+
   .fc .fc-daygrid-day-frame {
     position: relative;
     height: 45px;
     max-width: 500px;
   }
+
   .fc-col-header {
     width: 100%;
   }
+
   .fc-theme-standard td,
   .fc-theme-standard th {
     cursor: pointer;
   }
+
   .fc .fc-daygrid-day-number {
     padding: 4px;
     font-size: 14px;
   }
+
   .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
     position: relative;
     min-height: 0;
     height: 15px;
   }
+
   .fc .fc-col-header-cell-cushion {
     display: inline-block;
     padding: 2px 4px;
     font-weight: normal;
   }
+
   .fc .fc-button:not(:disabled) {
     height: 25px;
     cursor: pointer;
@@ -78,6 +96,7 @@
     color: black;
     border: none;
   }
+
   .fc .fc-button .fc-icon {
     font-size: 18px;
     height: 16px;

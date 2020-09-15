@@ -19,8 +19,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./top.component.scss'],
 })
 export class TopComponent implements OnInit {
-  date: string;
-  weelList = ['日', '月', '火', '水', '木', '金', '土'];
+  private readonly weekList = ['日', '月', '火', '水', '木', '金', '土'];
+  private date: string;
 
   calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
@@ -61,7 +61,7 @@ export class TopComponent implements OnInit {
   }
 
   handleDateClick(arg) {
-    const week = this.weelList[arg.dayEl.cellIndex];
+    const week = this.weekList[arg.dayEl.cellIndex];
     this.date = arg.dateStr
       .slice(2)
       .replace(/-/g, '.')
