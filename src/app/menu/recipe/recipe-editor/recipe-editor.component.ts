@@ -42,7 +42,7 @@ export class RecipeEditorComponent implements OnInit {
   loading: boolean;
   isCreating: boolean;
   maxTitleLength = 50;
-  maxRecipeDescriptionLength = 500;
+  maxDescriptionLength = 500;
   maxIngredinetNameLength = 50;
   maxIngredinetUnitLength = 20;
   limitIngredientArray = 100;
@@ -55,10 +55,7 @@ export class RecipeEditorComponent implements OnInit {
       '',
       [Validators.required, Validators.maxLength(this.maxTitleLength)],
     ],
-    recipeDescription: [
-      '',
-      [Validators.maxLength(this.maxRecipeDescriptionLength)],
-    ],
+    recipeDescription: ['', [Validators.maxLength(this.maxDescriptionLength)]],
     ingredients: this.fb.array([], [Validators.required]),
     processes: this.fb.array([]),
     recipeCal: [
@@ -142,6 +139,7 @@ export class RecipeEditorComponent implements OnInit {
   get recipeSugarControl(): FormControl {
     return this.form.get('recipeSugar') as FormControl;
   }
+
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
   processSource = new BehaviorSubject<AbstractControl[]>([]);
 
@@ -230,7 +228,10 @@ export class RecipeEditorComponent implements OnInit {
 
   addProcess() {
     const processFormGroup = this.fb.group({
-      description: ['', [Validators.required, Validators.maxLength(500)]],
+      description: [
+        '',
+        [Validators.required, Validators.maxLength(this.maxDescriptionLength)],
+      ],
     });
     this.processes.push(processFormGroup);
     this.processURLs.push(null);

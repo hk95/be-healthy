@@ -116,9 +116,14 @@ p {
     }
   }
 
+  &__row {
+    height: 80px;
+  }
+
   &__cell {
     display: flex;
     justify-content: center;
+    height: 100%;
 
     &--end {
       max-width: 40px;
@@ -178,14 +183,21 @@ p {
     }
   }
 
+  &__row {
+    height: 150px;
+  }
+
   &__cell {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
 
     img {
-      width: 65px;
-      height: 65px;
+      width: 25vw;
+      height: 25vw;
+      max-width: 100px;
+      max-height: 100px;
       border-radius: 5px;
       background: #ffff;
       cursor: pointer;
@@ -198,10 +210,6 @@ p {
     &--index {
       max-width: 10%;
       padding-left: 8px;
-    }
-
-    &--image-form {
-      height: 70px;
     }
 
     &--end {
@@ -221,8 +229,10 @@ p {
   }
 
   &__image {
-    width: 65px;
-    height: 65px;
+    width: 25vw;
+    height: 25vw;
+    max-width: 100px;
+    max-height: 100px;
     padding: 0;
     background: #fff;
     border: 1px dashed #dbdbdb;
