@@ -36,7 +36,7 @@
         <div class="spacer"></div>
         <mat-card-actions class="card__icons">
           <div class="wrap">
-            <button
+            <a
               mat-icon-button
               color="primar"
               matTooltip="体重・体脂肪"
@@ -52,8 +52,9 @@
                 src="/assets/images/scale.svg"
                 alt=""
               />
-            </button>
-            <button
+            </a>
+
+            <a
               mat-icon-button
               color="primar"
               matTooltip="メモ"
@@ -61,6 +62,7 @@
               class="box"
               (click)="$event.stopPropagation()"
               routerLink="/daily-detail"
+              fragment="memo"
               [queryParams]="{ date: dailyInfo.date }"
             >
               <img
@@ -70,10 +72,10 @@
             "
                 alt=""
               />
-            </button>
+            </a>
           </div>
           <div class="wrap">
-            <button
+            <a
               mat-icon-button
               color="primar"
               matTooltip="朝食"
@@ -90,8 +92,8 @@
             "
                 alt=""
               />
-            </button>
-            <button
+            </a>
+            <a
               mat-icon-button
               color="primar"
               matTooltip="昼食"
@@ -108,8 +110,8 @@
             "
                 alt=""
               />
-            </button>
-            <button
+            </a>
+            <a
               mat-icon-button
               color="primar"
               matTooltip="夕食"
@@ -126,7 +128,7 @@
             "
                 alt=""
               />
-            </button>
+            </a>
           </div>
         </mat-card-actions>
       </mat-card>
