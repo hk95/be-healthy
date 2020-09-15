@@ -1,27 +1,27 @@
 <mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
 <div *ngIf="!loading">
   <ng-template #noSet>
-    <div class="no">
-      <h3 class="no__title">
+    <div class="no-set">
+      <h3 class="no-set__title">
         <mat-icon color="primary">bookmark</mat-icon
         >マイセットはまだ登録されていません。
       </h3>
 
-      <p class="no__text no__text--long">
+      <p class="no-set__text no__text--long">
         食べる頻度が多い食べ物をまとめて登録できる機能です。
       </p>
-      <figure class="no__figure">
-        <p class="no__example">（例）カレーセット</p>
-        <img class="no__image" src="/assets/images/ex-set.png" alt="" />
+      <figure class="no-set__figure">
+        <p class="no-set__example">（例）カレーセット</p>
+        <img class="no-set__image" src="/assets/images/ex-set.png" alt="" />
       </figure>
-      <p class="no__text">
+      <p class="no-set__text">
         自分だけのマイセットを登録しましょう！
       </p>
       <button
         mat-stroked-button
         color="primary"
         (click)="forwardbackToForm()"
-        class="no__create"
+        class="no-set__create"
       >
         <mat-icon>add</mat-icon><span>登録する</span>
       </button>
