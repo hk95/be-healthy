@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ViewportScroller } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Event, Router, Scroll } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
+    @Inject(DOCUMENT) private rootDocument: HTMLDocument
   ) {
+    if (!environment.production) {
+      this.rootDocument
+        .querySelector('[rel=icon]')
+        .setAttribute('href', 'favicon-dev.svg');
+    }
+
     this.subscription = this.router.events
       .pipe(filter((e: Event): e is Scroll => e instanceof Scroll))
       .subscribe((e) => {
