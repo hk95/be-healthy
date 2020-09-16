@@ -13,6 +13,7 @@ import {
   AverageOfYear,
   AverageOfWeek,
 } from 'src/app/interfaces/average';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-graph',
@@ -20,23 +21,23 @@ import {
   styleUrls: ['./graph.component.scss'],
 })
 export class GraphComponent implements OnInit, OnDestroy {
-  events: string[] = [];
+  private readonly userId = this.authService.uid;
+  private subscription = new Subscription();
+  private dates: string[] = this.getDates(new Date());
+  private goalWeight = 0;
+  private goalFat = 0;
+  private goalCal = 0;
+  private preWeight = [];
+  private preFat = [];
+  private preTotalCal = [];
+  private goalWeightList = [];
+  private goalFatList = [];
+  private goalTotalCalList = [];
+
   today = new Date();
-  dates: string[] = this.getDates(new Date());
-  basicInfo: BasicInfo;
-  goalWeight = 0;
-  goalFat = 0;
-  goalCal = 0;
   dataWeight: any[] = [];
   dataFat: any[] = [];
   dataTotalCal: any[] = [];
-  preData = [];
-  preWeight = [];
-  preFat = [];
-  preTotalCal = [];
-  goalWeightList = [];
-  goalFatList = [];
-  goalTotalCalList = [];
   graphTitle = '体重';
   typeOfGraph = 'day';
   weightGraph = true;
@@ -78,13 +79,13 @@ export class GraphComponent implements OnInit, OnDestroy {
       this.totalCalGraph = true;
       this.legend = true;
     }
-    this.basicInfoService
-      .getBasicInfo(this.authService.uid)
-      .subscribe((basicInfo) => {
+    this.subscription = this.basicInfoService
+      .getBasicInfo(this.userId)
+      .subscribe((basicInfo: BasicInfo) => {
         if (basicInfo !== undefined) {
-          this.goalWeight = basicInfo.goalWeight;
-          this.goalFat = basicInfo.goalFat;
-          this.goalCal = basicInfo.goalCal;
+          this.goalWeight = basicInfo.goalWeight ? basicInfo.goalWeight : 0;
+          this.goalFat = basicInfo.goalFat ? basicInfo.goalFat : 0;
+          this.goalCal = basicInfo.goalCal ? basicInfo.goalCal : 0;
         }
       });
     this.createGraphOfDay(this.today);
@@ -109,13 +110,13 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   createGraphOfDay(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
     this.typeOfGraph = 'day';
-    this.dates = [];
+    this.dates = new Array();
     this.preWeight = [];
-    this.preFat = [];
-    this.preTotalCal = [];
-    this.goalWeightList = [];
-    this.goalFatList = [];
-    this.goalTotalCalList = [];
+    this.preFat = new Array();
+    this.preTotalCal = new Array();
+    this.goalWeightList = new Array();
+    this.goalFatList = new Array();
+    this.goalTotalCalList = new Array();
 
     if (event) {
       this.dates = this.getDates(event.value);
@@ -124,9 +125,9 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
 
     this.dailyInfoService
-      .getDailyInfosEveryWeek(this.authService.uid, this.dates)
+      .getDailyInfosEveryWeek(this.userId, this.dates)
       .forEach((dailyInfo$, index) => {
-        dailyInfo$.subscribe((dailyInfo) => {
+        this.subscription = dailyInfo$.subscribe((dailyInfo) => {
           if (dailyInfo !== undefined) {
             this.preWeight.unshift({
               name: this.dates[index],
@@ -248,9 +249,9 @@ export class GraphComponent implements OnInit, OnDestroy {
     if (event) {
       date = event.value;
     }
-    this.averageService
+    this.subscription = this.averageService
       .getAveragesOfWeek(
-        this.authService.uid,
+        this.userId,
         this.datePipe.transform(date, 'yy.MM.dd(E)')
       )
       .subscribe(
@@ -354,9 +355,9 @@ export class GraphComponent implements OnInit, OnDestroy {
     if (event) {
       date = event.value;
     }
-    this.averageService
+    this.subscription = this.averageService
       .getAveragesOfMonth(
-        this.authService.uid,
+        this.userId,
         this.datePipe.transform(date, 'yy.MM.dd(E)')
       )
       .subscribe(
@@ -465,8 +466,8 @@ export class GraphComponent implements OnInit, OnDestroy {
     if (event) {
       date = event.value;
     }
-    this.averageService
-      .getAveragesOfYear(this.authService.uid)
+    this.subscription = this.averageService
+      .getAveragesOfYear(this.userId)
       .subscribe(
         (
           datasOfYearList: [AverageOfYear[], AverageOfYear[], AverageOfYear[]]
@@ -574,5 +575,8 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit(): void {}
-  ngOnDestroy(): void {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
