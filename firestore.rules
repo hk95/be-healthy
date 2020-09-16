@@ -28,15 +28,18 @@ service cloud.firestore {
      }
 
       match /averagesWeek/{week=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if signedInWithMyId(userId);
+        allow write: if false;
      }
 
       match /averagesMonth/{month=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if signedInWithMyId(userId);
+        allow write: if false;
      }
 
       match /averagesYear/{year=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if signedInWithMyId(userId);
+        allow write: if false;
      }
    }
 
