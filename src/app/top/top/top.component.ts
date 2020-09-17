@@ -12,6 +12,7 @@ import { TutorialComponent } from 'src/app/dialogs/tutorial/tutorial.component';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-top',
@@ -21,6 +22,7 @@ import { Observable } from 'rxjs';
 export class TopComponent implements OnInit {
   private readonly weekList = ['日', '月', '火', '水', '木', '金', '土'];
   private date: string;
+  today: string = this.getDate();
 
   calendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
@@ -33,6 +35,9 @@ export class TopComponent implements OnInit {
       right: 'next',
     },
     locale: 'ja',
+    validRange: {
+      start: '2018-01-01',
+    },
     businessHours: true,
     dateClick: this.handleDateClick.bind(this),
   };
@@ -44,7 +49,8 @@ export class TopComponent implements OnInit {
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private basicInfoService: BasicInfoService
+    private basicInfoService: BasicInfoService,
+    private datePipe: DatePipe
   ) {
     this.isInitLogin();
     this.mainShellService.setTitle('TOP');
@@ -66,15 +72,22 @@ export class TopComponent implements OnInit {
       .slice(2)
       .replace(/-/g, '.')
       .replace(/$/, '(' + week + ')');
-    this.dailyInfoService.createDailyInfo({
-      authorId: this.authService.uid,
-      date: this.date,
-    });
-    this.router.navigate(['/daily-detail'], {
-      queryParams: {
+    if (this.today >= this.date) {
+      this.dailyInfoService.createDailyInfo({
+        authorId: this.authService.uid,
         date: this.date,
-      },
-    });
+      });
+      this.router.navigate(['/daily-detail'], {
+        queryParams: {
+          date: this.date,
+        },
+      });
+    }
+  }
+
+  getDate(): string {
+    const d = new Date();
+    return this.datePipe.transform(d, 'yy.MM.dd(E)');
   }
 
   ngOnInit(): void {}
