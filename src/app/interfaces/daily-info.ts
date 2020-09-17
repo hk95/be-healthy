@@ -20,3 +20,8 @@ export interface DailyMeal {
   set?: Set;
   amount: number;
 }
+
+export interface DailyInfoList {
+  list: { [n: number]: DailyInfo };
+  dateOfPath: string;
+}
