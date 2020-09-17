@@ -15,7 +15,7 @@
             >
               {{ dailyInfo.currentWeight }} kg
             </p>
-            <ng-template #noWeight>---- kg</ng-template>
+            <ng-template #noWeight>未入力 kg</ng-template>
           </div>
           <div class="vertical-line"></div>
           <div class="card__fat">
@@ -23,7 +23,7 @@
             <p class="card__title" *ngIf="dailyInfo.currentFat; else noFat">
               {{ dailyInfo.currentFat }} %
             </p>
-            <ng-template #noFat>---- %</ng-template>
+            <ng-template #noFat>未入力 %</ng-template>
           </div>
 
           <button
