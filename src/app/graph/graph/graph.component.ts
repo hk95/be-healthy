@@ -44,6 +44,8 @@ export class GraphComponent implements OnInit, OnDestroy {
   fatGraph = false;
   totalCalGraph = false;
   loading: boolean;
+  maxDate = new Date();
+  minDate = new Date(2018, 0, 1);
 
   view = new Array();
   legend = false;
