@@ -23,6 +23,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mealTitle: string;
   more = false;
   viewX: number;
+  maxDate = new Date();
+  minDate = new Date(2018, 0, 1);
 
   constructor(
     private mainShellService: MainShellService,
@@ -90,7 +92,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   changeDate(event: MatDatepickerInputEvent<Date>) {
     this.date = this.datePipe.transform(event.value, 'yy.MM.dd(E)');
-    console.log(this.date);
     this.router.navigate([this.router.url.split('?')[0]], {
       queryParams: {
         date: this.date,

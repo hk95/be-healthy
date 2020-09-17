@@ -21,6 +21,8 @@
         <input
           matInput
           [matDatepicker]="picker"
+          [min]="minDate"
+          [max]="maxDate"
           (dateChange)="changeDate($event)"
         />
 
