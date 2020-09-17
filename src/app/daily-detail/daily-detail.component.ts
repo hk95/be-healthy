@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
-import { take } from 'rxjs/operators';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -16,9 +15,12 @@ import { FormControl, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./daily-detail.component.scss'],
   providers: [NutritionPipe, PfcBalancePipe],
 })
-export class DailyDetailComponent implements OnInit {
-  dailyInfo$: Observable<DailyInfo>;
+export class DailyDetailComponent implements OnInit, OnDestroy {
+  private readonly userId = this.authService.uid;
+  private subscription = new Subscription();
+
   date: string;
+  dailyInfo: DailyInfo;
   editing = false;
   form = this.fb.group({
     memo: ['', [Validators.maxLength(1000)]],
@@ -68,18 +70,41 @@ export class DailyDetailComponent implements OnInit {
     private pfcBalancePipe: PfcBalancePipe,
     private fb: FormBuilder
   ) {
-    this.route.queryParamMap.subscribe((params) => {
+    const routeSub = this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
-      this.dailyInfo$ = this.dailyInfoService.getDailyInfo(
-        this.authService.uid,
-        this.date
-      );
+      this.getDailyInfo();
       this.mainShellService.setTitle(this.date);
     });
+    this.subscription.add(routeSub);
+    this.getDailyInfoOfMeal();
 
-    this.dailyInfoService
-      .getAllSelectedFoodsOrSets(this.authService.uid, this.date)
-      .pipe(take(1))
+    if (innerWidth < 500) {
+      this.font = innerWidth / 28;
+      this.view = [innerWidth / 1.3, innerWidth / 2];
+    } else {
+      this.font = 16;
+      this.view = [378, 246];
+    }
+  }
+
+  getDailyInfo() {
+    const dailyInfoSub = this.dailyInfoService
+      .getDailyInfo(this.userId, this.date)
+      .subscribe((dailyInfo: DailyInfo) => {
+        if (!dailyInfo) {
+          this.dailyInfoService.createDailyInfo({
+            authorId: this.userId,
+            date: this.date,
+          });
+        }
+        this.dailyInfo = dailyInfo;
+      });
+    this.subscription.add(dailyInfoSub);
+  }
+
+  getDailyInfoOfMeal() {
+    const dailyInfoSub = this.dailyInfoService
+      .getAllSelectedFoodsOrSets(this.userId, this.date)
       .subscribe((mealList) => {
         this.MealsOfBreakfast = mealList[0];
         this.MealsOfLunch = mealList[1];
@@ -125,14 +150,7 @@ export class DailyDetailComponent implements OnInit {
           },
         ];
       });
-
-    if (innerWidth < 500) {
-      this.font = innerWidth / 28;
-      this.view = [innerWidth / 1.3, innerWidth / 2];
-    } else {
-      this.font = 16;
-      this.view = [378, 246];
-    }
+    this.subscription.add(dailyInfoSub);
   }
 
   onResize(event) {
@@ -142,19 +160,27 @@ export class DailyDetailComponent implements OnInit {
       this.font = innerWidth / 28;
     }
   }
+
   get memoControl(): FormControl {
     return this.form.get('memo') as FormControl;
   }
+
   editMemo() {
     this.editing = true;
   }
+
   updateMemo() {
     this.editing = false;
     this.dailyInfoService.updateDailyInfoMemo(
-      this.authService.uid,
+      this.userId,
       this.date,
       this.form.value.memo
     );
   }
-  ngOnInit() {}
+
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
