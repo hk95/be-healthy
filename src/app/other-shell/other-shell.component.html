@@ -24,7 +24,7 @@
           class="navs__item"
           routerLink="/graph"
         >
-          <mat-icon>show_chart</mat-icon>
+          <mat-icon>insert_chart</mat-icon>
         </button>
         <button
           [style.opacity]="(title$ | async) === 'マイメニュー' ? 1 : 0.3"
@@ -35,7 +35,7 @@
           class="navs__item"
           routerLink="/menu/set-list"
         >
-          <mat-icon>menu_book</mat-icon>
+          <mat-icon>library_books</mat-icon>
         </button>
       </div>
       <div class="mypage" *ngIf="(title$ | async) === 'その他'">
