@@ -88,6 +88,11 @@
     max-width: 500px;
   }
 
+  .fc-direction-ltr .fc-daygrid-event.fc-event-end,
+  .fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    background: none;
+  }
+
   .fc-col-header {
     width: 100%;
   }
