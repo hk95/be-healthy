@@ -24,6 +24,7 @@
 .calendar-wrap {
   max-width: 500px;
   width: 100%;
+  margin-bottom: 16px;
 
   @media screen and (min-width: 750px) {
     position: sticky;
@@ -34,12 +35,40 @@
   }
 }
 
+.dot {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  &__list-weight {
+    color: #1976d2;
+  }
+
+  &__list-meal {
+    color: #d32f2f;
+  }
+
+  &__list-text {
+    margin: 0;
+    color: #000;
+    font-size: 14px;
+    opacity: 0.87;
+  }
+
+  &__text {
+    padding: 0 8px;
+    margin: 0;
+    color: #000;
+    font-size: 11px;
+    opacity: 0.87;
+  }
+}
+
 .calendar {
   max-width: 500px;
   width: 100%;
   padding: 8px;
   height: 400px;
-  margin-bottom: 16px;
 }
 
 :host ::ng-deep {

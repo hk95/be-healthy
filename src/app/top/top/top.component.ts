@@ -83,7 +83,6 @@ export class TopComponent implements OnInit, OnDestroy {
                 .replace(/\./g, '-')
                 .substr(0, 8)
                 .replace(/^/, '20');
-              console.log(correctedDate);
               if (monthData.list[i].currentWeight) {
                 this.isDataList.push({
                   date: correctedDate,
