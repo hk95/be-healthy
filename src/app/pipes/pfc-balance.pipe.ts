@@ -12,9 +12,6 @@ export class PfcBalancePipe implements PipeTransform {
     totalCal: number,
     nutrition: string
   ) {
-    console.log(breakfast, lunch, dinner);
-
-    console.log(totalCal);
     let totalValue = 0;
 
     const calculation = (amount: number, value: number, factor: number) => {
