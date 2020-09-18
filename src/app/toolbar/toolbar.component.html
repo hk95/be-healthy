@@ -1,54 +1,60 @@
 <mat-toolbar color="primary" *ngIf="toolbar">
   <mat-toolbar-row class="toolbar">
-    <button
-      [style.opacity]="
-        (pageTitle$ | async) !== 'グラフ' &&
-        (pageTitle$ | async) !== 'マイメニュー' &&
-        morePage !== 'more'
-          ? 1
-          : 0.3
-      "
-      mat-button
-      class="nav"
-      routerLink=""
-    >
-      <mat-icon class="nav__icon">home</mat-icon>
+    <a mat-button class="nav" routerLink="">
+      <mat-icon
+        [fontSet]="
+          (pageTitle$ | async) !== 'グラフ' &&
+          (pageTitle$ | async) !== 'マイメニュー' &&
+          morePage !== 'more'
+            ? 'material-icons'
+            : 'material-icons-outlined'
+        "
+        class="nav__icon"
+        >home</mat-icon
+      >
       <div class="nav__text">
         <span>TOP</span>
       </div>
-    </button>
-    <button
-      [style.opacity]="
-        (pageTitle$ | async) === 'グラフ' && morePage !== 'more' ? 1 : 0.3
-      "
-      mat-button
-      class="nav"
-      routerLink="/graph"
-    >
-      <mat-icon class="nav__icon">show_chart</mat-icon>
+    </a>
+    <a mat-button class="nav" routerLink="/graph">
+      <mat-icon
+        [fontSet]="
+          (pageTitle$ | async) === 'グラフ' && morePage !== 'more'
+            ? 'material-icons'
+            : 'material-icons-outlined'
+        "
+        class="nav__icon"
+        >insert_chart</mat-icon
+      >
       <div class="nav__text"><span>グラフ</span></div>
-    </button>
+    </a>
 
-    <button
-      [style.opacity]="
-        (pageTitle$ | async) === 'マイメニュー' && morePage !== 'more' ? 1 : 0.3
-      "
+    <a
       mat-button
       class="nav"
       routerLink="/menu/set-list"
       (click)="changeQuery()"
     >
-      <mat-icon class="nav__icon">menu_book</mat-icon>
+      <mat-icon
+        [fontSet]="
+          (pageTitle$ | async) === 'マイメニュー' && morePage !== 'more'
+            ? 'material-icons'
+            : 'material-icons-outlined'
+        "
+        class="nav__icon"
+        >library_books</mat-icon
+      >
       <div class="nav__text"><span>マイメニュー</span></div>
-    </button>
-    <button
-      [style.opacity]="morePage === 'more' ? 1 : 0.3"
-      mat-button
-      class="nav"
-      routerLink="/more"
-    >
-      <mat-icon class="nav__icon">person</mat-icon>
+    </a>
+    <a mat-button class="nav" routerLink="/more">
+      <mat-icon
+        [fontSet]="
+          morePage === 'more' ? 'material-icons' : 'material-icons-outlined'
+        "
+        class="nav__icon"
+        >person</mat-icon
+      >
       <div class="nav__text"><span>その他</span></div>
-    </button>
+    </a>
   </mat-toolbar-row></mat-toolbar
 >
