@@ -95,7 +95,7 @@ export class TopComponent implements OnInit, OnDestroy {
                 this.isDataList.push({
                   date: correctedDate,
                   display: 'list-item',
-                  color: '#dbdbdb',
+                  color: '#d32f2f',
                 });
               }
             }
