@@ -288,7 +288,7 @@
         >
       </mat-card>
 
-      <mat-card class="card"
+      <mat-card class="card" id="memo"
         ><div class="card__memo">
           <div class="card__head">
             <p class="card__memo-title">
@@ -302,7 +302,7 @@
               </span>
             </p>
             <button
-              *ngIf="!editing"
+              *ngIf="!editingMemo"
               mat-icon-button
               color="primary"
               (click)="editMemo()"
@@ -310,7 +310,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button
-              *ngIf="editing"
+              *ngIf="editingMemo"
               mat-flat-button
               color="primary"
               (click)="updateMemo()"
@@ -319,12 +319,15 @@
             </button>
           </div>
         </div>
-        <p class="card__memo-textarea" *ngIf="dailyInfo.dailyMemo && !editing">
+        <p
+          class="card__memo-textarea"
+          *ngIf="dailyInfo.dailyMemo && !editingMemo"
+        >
           {{ dailyInfo.dailyMemo }}
         </p>
         <form
           [formGroup]="form"
-          *ngIf="editing"
+          *ngIf="editingMemo"
           class="card__memo-textarea-editor"
         >
           <mat-form-field
@@ -339,7 +342,7 @@
           </mat-form-field>
         </form>
 
-        <div *ngIf="!dailyInfo.dailyMemo && !editing">
+        <div *ngIf="!dailyInfo.dailyMemo && !editingMemo">
           <div class="border"></div>
           <span>まだメモはありません</span>
         </div>

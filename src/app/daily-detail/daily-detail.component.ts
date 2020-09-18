@@ -21,7 +21,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
 
   date: string;
   dailyInfo: DailyInfo;
-  editing = false;
+  editingMemo = false;
   form = this.fb.group({
     memo: ['', [Validators.maxLength(1000)]],
   });
@@ -61,6 +61,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   legendPosition = 'below';
   legendTitle = '';
   font: number;
+
   constructor(
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
@@ -72,10 +73,15 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   ) {
     const routeSub = this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
+
       this.getDailyInfo();
       this.mainShellService.setTitle(this.date);
     });
+    const fragmentSub = this.getFragmentMemo();
+
     this.subscription.add(routeSub);
+    this.subscription.add(fragmentSub);
+
     this.getDailyInfoOfMeal();
 
     if (innerWidth < 500) {
@@ -85,6 +91,14 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       this.font = 16;
       this.view = [378, 246];
     }
+  }
+
+  getFragmentMemo() {
+    this.route.fragment.subscribe((v) => {
+      if (v === 'memo') {
+        this.editingMemo = true;
+      }
+    });
   }
 
   getDailyInfo() {
@@ -166,11 +180,11 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   }
 
   editMemo() {
-    this.editing = true;
+    this.editingMemo = true;
   }
 
   updateMemo() {
-    this.editing = false;
+    this.editingMemo = false;
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
       this.date,
