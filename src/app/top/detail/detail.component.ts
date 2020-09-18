@@ -35,12 +35,15 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   getDailyInfo() {
+    this.dailyInfos = [];
     this.subscription = this.dailyInfoService
       .getDailyInfosOfMonth(this.authService.uid, this.today)
       .subscribe((monthData: DailyInfoList) => {
-        for (let i = 1; i <= 31; i++) {
-          if (monthData.list[i]) {
-            this.dailyInfos.unshift(monthData.list[i]);
+        if (monthData) {
+          for (let i = 1; i <= 31; i++) {
+            if (monthData.list[i]) {
+              this.dailyInfos.unshift(monthData.list[i]);
+            }
           }
         }
       });
