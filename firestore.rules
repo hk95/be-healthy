@@ -16,7 +16,8 @@ service cloud.firestore {
       }
 
       match /dailyInfos/{dailyId=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if true;
+        allow write: if signedInWithMyId(userId);
      }
 
       match /sets/{setId=**} {
