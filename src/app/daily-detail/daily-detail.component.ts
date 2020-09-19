@@ -22,8 +22,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   date: string;
   dailyInfo: DailyInfo;
   editingMemo = false;
+  maxMemoLength = 1000;
   form = this.fb.group({
-    memo: ['', [Validators.maxLength(1000)]],
+    dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
 
   MealsOfBreakfast: DailyMeal[] = [];
@@ -77,7 +78,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       this.getDailyInfo();
       this.mainShellService.setTitle(this.date);
     });
-    const fragmentSub = this.getFragmentMemo();
+    const fragmentSub = this.getFragment();
 
     this.subscription.add(routeSub);
     this.subscription.add(fragmentSub);
@@ -93,7 +94,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  getFragmentMemo() {
+  getFragment() {
     this.route.fragment.subscribe((v) => {
       if (v === 'memo') {
         this.editingMemo = true;
@@ -112,6 +113,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
           });
         }
         this.dailyInfo = dailyInfo;
+        this.form.patchValue(dailyInfo);
       });
     this.subscription.add(dailyInfoSub);
   }
@@ -176,7 +178,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   }
 
   get memoControl(): FormControl {
-    return this.form.get('memo') as FormControl;
+    return this.form.get('dailyMemo') as FormControl;
   }
 
   editMemo() {
@@ -188,7 +190,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
       this.date,
-      this.form.value.memo
+      this.form.value.dailyMemo
     );
   }
 
