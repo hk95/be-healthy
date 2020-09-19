@@ -27,9 +27,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
 
-  MealsOfBreakfast: DailyMeal[] = [];
-  MealsOfLunch: DailyMeal[] = [];
-  MealsOfDinner: DailyMeal[] = [];
+  mealsOfBreakfast: DailyMeal[] = [];
+  mealsOfLunch: DailyMeal[] = [];
+  mealsOfDinner: DailyMeal[] = [];
 
   totalCal = 0;
 
@@ -123,24 +123,24 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     const dailyInfoSub = this.dailyInfoService
       .getAllSelectedFoodsOrSets(this.userId, this.date)
       .subscribe((mealList) => {
-        this.MealsOfBreakfast = mealList[0];
-        this.MealsOfLunch = mealList[1];
-        this.MealsOfDinner = mealList[2];
+        this.mealsOfBreakfast = mealList[0];
+        this.mealsOfLunch = mealList[1];
+        this.mealsOfDinner = mealList[2];
 
         this.totalCal = this.nutritionPipe.transform(
-          this.MealsOfBreakfast,
+          this.mealsOfBreakfast,
           'all',
           'cal',
-          this.MealsOfLunch,
-          this.MealsOfDinner
+          this.mealsOfLunch,
+          this.mealsOfDinner
         );
         this.data = [
           {
             name: '炭水化物 (%)',
             value: this.pfcBalancePipe.transform(
-              this.MealsOfBreakfast,
-              this.MealsOfLunch,
-              this.MealsOfDinner,
+              this.mealsOfBreakfast,
+              this.mealsOfLunch,
+              this.mealsOfDinner,
               this.totalCal,
               'carbohydrate'
             ),
@@ -148,9 +148,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
           {
             name: 'タンパク質 (%)',
             value: this.pfcBalancePipe.transform(
-              this.MealsOfBreakfast,
-              this.MealsOfLunch,
-              this.MealsOfDinner,
+              this.mealsOfBreakfast,
+              this.mealsOfLunch,
+              this.mealsOfDinner,
               this.totalCal,
               'protein'
             ),
@@ -158,9 +158,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
           {
             name: '脂質 (%)',
             value: this.pfcBalancePipe.transform(
-              this.MealsOfBreakfast,
-              this.MealsOfLunch,
-              this.MealsOfDinner,
+              this.mealsOfBreakfast,
+              this.mealsOfLunch,
+              this.mealsOfDinner,
               this.totalCal,
               'fat'
             ),

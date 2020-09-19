@@ -59,8 +59,12 @@
             *matCellDef="let element"
           >
             {{
-              MealsOfBreakfast
-                | nutrition: 'all':element.key:MealsOfLunch:MealsOfDinner
+              mealsOfBreakfast
+                | nutrition
+                  : 'all'
+                  : element.key
+                  : mealsOfBreakfast
+                  : mealsOfBreakfast
             }}{{ element.unit }}
           </mat-cell>
         </ng-container>
@@ -106,7 +110,7 @@
               朝食
               <span
                 ><img
-                  *ngIf="MealsOfBreakfast.length > 0; else noBreakfast"
+                  *ngIf="mealsOfBreakfast.length > 0; else noBreakfast"
                   class="card__icon-breakfast"
                   src="/assets/images/breakfast.svg"
                   alt=""
@@ -121,7 +125,7 @@
             </p>
             <p>
               摂取カロリー：{{
-                MealsOfBreakfast | nutrition: 'breakfast':'cal'
+                mealsOfBreakfast | nutrition: 'breakfast':'cal'
               }}kcal
             </p>
           </div>
@@ -140,9 +144,9 @@
 
         <div
           class="card__content"
-          *ngIf="MealsOfBreakfast.length > 0; else noMeal"
+          *ngIf="mealsOfBreakfast.length > 0; else noMeal"
         >
-          <div class="card__meal" *ngFor="let food of MealsOfBreakfast">
+          <div class="card__meal" *ngFor="let food of mealsOfBreakfast">
             <p class="card__food-name">
               {{ food.food ? food.food.foodName : food.set.setTitle }}
             </p>
@@ -172,7 +176,7 @@
             <p>
               昼食<span
                 ><img
-                  *ngIf="MealsOfLunch.length > 0; else noLunch"
+                  *ngIf="mealsOfLunch.length > 0; else noLunch"
                   class="card__icon"
                   src="/assets/images/lunch.svg"
                   alt=""
@@ -186,7 +190,7 @@
               </span>
             </p>
             <p>
-              摂取カロリー：{{ MealsOfLunch | nutrition: 'lunch':'cal' }}kcal
+              摂取カロリー：{{ mealsOfLunch | nutrition: 'lunch':'cal' }}kcal
             </p>
           </div>
           <div class="card__head-right">
@@ -202,8 +206,8 @@
         </div>
         <p class="border"></p>
 
-        <div class="card__content" *ngIf="MealsOfLunch.length > 0; else noMeal">
-          <div class="card__meal" *ngFor="let food of MealsOfLunch">
+        <div class="card__content" *ngIf="mealsOfLunch.length > 0; else noMeal">
+          <div class="card__meal" *ngFor="let food of mealsOfLunch">
             <p class="card__food-name">
               {{ food.food ? food.food.foodName : food.set.setTitle }}
             </p>
@@ -232,7 +236,7 @@
             <p>
               夕食<span
                 ><img
-                  *ngIf="MealsOfDinner.length > 0; else noDinner"
+                  *ngIf="mealsOfDinner.length > 0; else noDinner"
                   class="card__icon"
                   src="/assets/images/dinner.svg"
                   alt=""
@@ -246,7 +250,7 @@
               </span>
             </p>
             <p>
-              摂取カロリー：{{ MealsOfDinner | nutrition: 'dinner':'cal' }}kcal
+              摂取カロリー：{{ mealsOfDinner | nutrition: 'dinner':'cal' }}kcal
             </p>
           </div>
           <div class="card__head-right">
@@ -264,9 +268,9 @@
 
         <div
           class="card__content"
-          *ngIf="MealsOfDinner.length > 0; else noMeal"
+          *ngIf="mealsOfDinner.length > 0; else noMeal"
         >
-          <div class="card__meal" *ngFor="let food of MealsOfDinner">
+          <div class="card__meal" *ngFor="let food of mealsOfDinner">
             <p class="card__food-name">
               {{ food.food ? food.food.foodName : food.set.setTitle }}
             </p>
