@@ -67,7 +67,9 @@
             >
               <img
                 class="icon"
-                [class.no-registration]="!dailyInfo.dailyMemo"
+                [class.no-registration]="
+                  !dailyInfo.dailyMemo || dailyInfo.dailyMemo === '0'
+                "
                 src="/assets/images/memo.svg
             "
                 alt=""
