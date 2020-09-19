@@ -23,33 +23,25 @@ export class AppComponent implements OnInit, OnDestroy {
         .querySelector('[rel=icon]')
         .setAttribute('href', 'favicon-dev.svg');
     }
+    this.scrollPage();
+  }
 
+  scrollPage() {
     this.subscription = this.router.events
       .pipe(filter((e: Event): e is Scroll => e instanceof Scroll))
       .subscribe((e) => {
-        console.log('run', e);
-        if (e.position) {
-          console.log('position');
-          console.log(e.position);
-
-          // backward navigation
-          this.viewportScroller.scrollToPosition(e.position);
-        } else if (e.anchor) {
-          console.log('anchor');
-
-          // anchor navigation
-          console.log(e.anchor);
-
-          this.viewportScroller.scrollToAnchor(e.anchor);
-        } else {
-          console.log('other');
-          console.log(e.position);
-
-          // forward navigation
-          this.viewportScroller.scrollToPosition([0, 100]);
-        }
+        setTimeout(() => {
+          if (e.position) {
+            this.viewportScroller.scrollToPosition(e.position);
+          } else if (e.anchor) {
+            this.viewportScroller.scrollToAnchor(e.anchor);
+          } else {
+            this.viewportScroller.scrollToPosition([0, 0]);
+          }
+        }, 200);
       });
   }
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
