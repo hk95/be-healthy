@@ -190,14 +190,21 @@ export class DailyInfoService {
   updateDailyInfoMemo(userId: string, date: string, dailyMemo: string) {
     const dateOfPath = this.getDateOfPath(date);
     const dayOfMonth = this.getDayOfMonth(date);
-    return this.db
+    const memoLength = dailyMemo.length.toString();
+    this.db
       .doc(`users/${userId}/dailyInfos/${dateOfPath}`)
-      .set({ list: { [dayOfMonth]: dailyMemo }, dateOfPath }, { merge: true })
+      .set(
+        { list: { [dayOfMonth]: { dailyMemo: memoLength } }, dateOfPath },
+        { merge: true }
+      )
       .then(() => {
         this.snackBar.open('保存しました', null, {
           duration: 2000,
         });
       });
+    return this.db
+      .doc(`users/${userId}/dailyInfos/${date}`)
+      .set({ dailyMemo }, { merge: true });
   }
 
   getSelectedFoodsOrSets(
