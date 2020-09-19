@@ -46,6 +46,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   loading: boolean;
   maxDate = new Date();
   minDate = new Date(2018, 0, 1);
+  noCalData: boolean;
 
   view = new Array();
   legend = false;
@@ -265,6 +266,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
     this.dataWeight = new Array();
+    this.noCalData = false;
 
     if (event) {
       date = event.value;
@@ -278,8 +280,12 @@ export class GraphComponent implements OnInit, OnDestroy {
         (datasOfWeeks: [AverageOfWeek[], AverageOfWeek[], AverageOfWeek[]]) => {
           if (datasOfWeeks !== undefined) {
             datasOfWeeks.forEach((dataOfWeeks: AverageOfWeek[], i) => {
+              if (!dataOfWeeks[2]) {
+                this.noCalData = true;
+              }
+
               dataOfWeeks.forEach((dataOfWeek: AverageOfWeek, j) => {
-                if (dataOfWeek !== undefined) {
+                if (dataOfWeek !== undefined && dataOfWeeks.length !== 0) {
                   switch (dataOfWeek.category) {
                     case 'weight':
                       this.preWeight.unshift({
@@ -315,8 +321,9 @@ export class GraphComponent implements OnInit, OnDestroy {
                 }
 
                 if (
-                  i === datasOfWeeks.length - 1 &&
-                  j === dataOfWeeks.length - 1
+                  (i === datasOfWeeks.length - 1 &&
+                    j === dataOfWeeks.length - 1) ||
+                  this.noCalData
                 ) {
                   this.dataWeight = [
                     {
@@ -367,6 +374,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalWeightList = new Array();
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
+    this.noCalData = false;
     if (event) {
       date = event.value;
     }
@@ -385,6 +393,9 @@ export class GraphComponent implements OnInit, OnDestroy {
         ) => {
           if (datasOfMonthList !== undefined) {
             datasOfMonthList.forEach((dataOfMonthList: AverageOfMonth[], i) => {
+              if (!dataOfMonthList[2]) {
+                this.noCalData = true;
+              }
               dataOfMonthList.forEach((dataOfMonth: AverageOfMonth, j) => {
                 if (dataOfMonth !== undefined) {
                   switch (dataOfMonth.category) {
@@ -421,8 +432,9 @@ export class GraphComponent implements OnInit, OnDestroy {
                   }
                 }
                 if (
-                  i === datasOfMonthList.length - 1 &&
-                  j === dataOfMonthList.length - 1
+                  (i === datasOfMonthList.length - 1 &&
+                    j === dataOfMonthList.length - 1) ||
+                  this.noCalData
                 ) {
                   this.dataWeight = [
                     {
@@ -473,6 +485,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalWeightList = new Array();
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
+    this.noCalData = false;
     if (event) {
       date = event.value;
     }
@@ -484,6 +497,9 @@ export class GraphComponent implements OnInit, OnDestroy {
         ) => {
           if (datasOfYearList !== undefined) {
             datasOfYearList.forEach((dataOfYearList: AverageOfYear[], i) => {
+              if (!datasOfYearList[2]) {
+                this.noCalData = true;
+              }
               dataOfYearList.forEach((dataOfYear: AverageOfYear, j) => {
                 if (dataOfYear !== undefined) {
                   switch (dataOfYear.category) {
@@ -523,8 +539,9 @@ export class GraphComponent implements OnInit, OnDestroy {
                 }
 
                 if (
-                  i === datasOfYearList.length - 1 &&
-                  j === dataOfYearList.length - 1
+                  (i === datasOfYearList.length - 1 &&
+                    j === dataOfYearList.length - 1) ||
+                  this.noCalData
                 ) {
                   this.dataWeight = [
                     {
