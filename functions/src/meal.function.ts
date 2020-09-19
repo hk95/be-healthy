@@ -49,14 +49,17 @@ export const removeMeal = functions
     );
     const dateOfPath = getDateOfPath(data.date);
     db.doc(`users/${data.userId}/dailyInfos/${dateOfPath}`)
-      .update({
-        list: {
-          [data.dayOfMonth]: {
-            totalCal: decline,
+      .set(
+        {
+          list: {
+            [data.dayOfMonth]: {
+              totalCal: decline,
+              [`${data.meal}Cal`]: decline,
+            },
           },
-          [`${data.meal}Cal`]: decline,
         },
-      })
+        { merge: true }
+      )
       .then(() => console.log('success'))
       .catch((err) => console.log(err));
     return db
