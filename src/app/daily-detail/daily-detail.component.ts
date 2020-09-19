@@ -111,9 +111,10 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
             authorId: this.userId,
             date: this.date,
           });
+        } else {
+          this.form.patchValue(dailyInfo);
         }
         this.dailyInfo = dailyInfo;
-        this.form.patchValue(dailyInfo);
       });
     this.subscription.add(dailyInfoSub);
   }
