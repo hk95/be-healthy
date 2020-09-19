@@ -69,8 +69,13 @@
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
 
-      <h2>1日のPFCバランス</h2>
-      <div class="pie-chart">
+      <h2>
+        1日のPFCバランス
+      </h2>
+      <p class="pie-chart__text" *ngIf="totalCal === 0">
+        まだ登録されている食べ物はありません
+      </p>
+      <div class="pie-chart" *ngIf="totalCal !== 0">
         <p class="pie-chart__cal" [ngStyle]="{ 'font-size.px': font }">
           {{ totalCal }}kcal
         </p>
@@ -89,7 +94,7 @@
         >
         </ngx-charts-pie-chart>
       </div>
-      <p class="pie-chart__text">
+      <p class="pie-chart__text" *ngIf="totalCal !== 0">
         ＊タンパク質1g当たり4kcal、脂質1g当たり9kcal、炭水化物1g当たり4kcalに基づいて計算しており、計算結果はおおよその値となります。
       </p>
 
@@ -139,20 +144,19 @@
         >
           <div class="card__meal" *ngFor="let food of MealsOfBreakfast">
             <p class="card__food-name">
-              {{ food.food.foodName || food.set.setTitle }}
+              {{ food.food ? food.food.foodName : food.set.setTitle }}
             </p>
 
             <p class="amount">
               {{ food.amount
-              }}<span *ngIf="food.food.unit; else set">{{
-                food.food.unit
-              }}</span
+              }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
               ><ng-template #set>セット</ng-template>
             </p>
             <p class="card__cal">
               {{
-                food.food.foodCalPerAmount * food.amount ||
-                  food.set.setCal * food.amount
+                food.food
+                  ? (food.food.foodCalPerAmount * food.amount | number: '1.1-1')
+                  : (food.set.setCal * food.amount | number: '1.1-1')
               }}kcal
             </p>
           </div>
@@ -201,20 +205,19 @@
         <div class="card__content" *ngIf="MealsOfLunch.length > 0; else noMeal">
           <div class="card__meal" *ngFor="let food of MealsOfLunch">
             <p class="card__food-name">
-              {{ food.food.foodName || food.set.setTitle }}
+              {{ food.food ? food.food.foodName : food.set.setTitle }}
             </p>
 
             <p class="amount">
               {{ food.amount
-              }}<span *ngIf="food.food.unit; else set">{{
-                food.food.unit
-              }}</span
+              }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
               ><ng-template #set>セット</ng-template>
             </p>
             <p class="card__cal">
               {{
-                food.food.foodCalPerAmount * food.amount ||
-                  food.set.setCal * food.amount
+                food.food
+                  ? (food.food.foodCalPerAmount * food.amount | number: '1.1-1')
+                  : (food.set.setCal * food.amount | number: '1.1-1')
               }}kcal
             </p>
           </div>
@@ -265,20 +268,19 @@
         >
           <div class="card__meal" *ngFor="let food of MealsOfDinner">
             <p class="card__food-name">
-              {{ food.food.foodName || food.set.setTitle }}
+              {{ food.food ? food.food.foodName : food.set.setTitle }}
             </p>
 
             <p class="amount">
               {{ food.amount
-              }}<span *ngIf="food.food.unit; else set">{{
-                food.food.unit
-              }}</span
+              }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
               ><ng-template #set>セット</ng-template>
             </p>
             <p class="card__cal">
               {{
-                food.food.foodCalPerAmount * food.amount ||
-                  food.set.setCal * food.amount
+                food.food
+                  ? (food.food.foodCalPerAmount * food.amount | number: '1.1-1')
+                  : (food.set.setCal * food.amount | number: '1.1-1')
               }}kcal
             </p>
           </div>
@@ -335,9 +337,9 @@
             appearance="outline"
           >
             <mat-label>体調など記入しましょう</mat-label>
-            <textarea matInput rows="16" formControlName="memo"></textarea>
+            <textarea matInput rows="16" formControlName="dailyMemo"></textarea>
             <mat-error *ngIf="memoControl.hasError('maxlength')"
-              >入力文字数が多すぎます</mat-error
+              >{{ maxMemoLength }}文字以内で入力してください</mat-error
             >
           </mat-form-field>
         </form>
