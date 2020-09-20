@@ -46,13 +46,14 @@
             <div class="card__row">
               <ul class="card__foods">
                 <li
+                  class="card__list"
                   *ngFor="let food of set.foodsArray | slice: 0:5; index as j"
                 >
-                  <p>
+                  <span class="card__food-name">
                     {{
                       food.food ? food.food.foodName : food.recipe.recipeTitle
                     }}
-                  </p>
+                  </span>
                   <span *ngIf="j === 4 ? true : false"
                     ><mat-icon>more_horiz</mat-icon></span
                   >
