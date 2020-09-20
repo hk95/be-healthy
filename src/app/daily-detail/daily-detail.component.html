@@ -13,7 +13,7 @@
               class="card__title"
               *ngIf="dailyInfo.currentWeight; else noWeight"
             >
-              {{ dailyInfo.currentWeight }} kg
+              {{ dailyInfo.currentWeight | number: '1.1-1' }} kg
             </p>
             <ng-template #noWeight>未入力 kg</ng-template>
           </div>
@@ -21,7 +21,7 @@
           <div class="card__fat">
             <p>体脂肪率</p>
             <p class="card__title" *ngIf="dailyInfo.currentFat; else noFat">
-              {{ dailyInfo.currentFat }} %
+              {{ dailyInfo.currentFat | number: '1.1-1' }} %
             </p>
             <ng-template #noFat>未入力 %</ng-template>
           </div>
