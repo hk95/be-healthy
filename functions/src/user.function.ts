@@ -6,7 +6,7 @@ import { deleteCollection } from './utils/firebase.function';
 const firebase_tools = require('firebase-tools');
 const storage = admin.storage().bucket();
 
-export const createUser = functions
+export const createUserAccount = functions
   .region('asia-northeast1')
   .auth.user()
   .onCreate(async (user) => {
@@ -23,7 +23,7 @@ export const createUser = functions
           .set({
             name: user.displayName,
             avatarURL: user.photoURL,
-            usreId: user.uid,
+            userId: user.uid,
           })
           .then(() => {
             console.log('created');

@@ -57,6 +57,20 @@
       ]
     },
     {
+      "collectionGroup": "dailyInfos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "list",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "dateOfPath",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "recipes",
       "queryScope": "COLLECTION",
       "fields": [

@@ -10,10 +10,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
 
   &__back {
-    position: fixed;
+    position: absolute;
     left: 4px;
     padding: 0 4px;
 
@@ -45,7 +46,7 @@
 
 .navs {
   position: fixed;
-  right: 64px;
+  right: 72px;
 
   @media screen and (max-width: 750px) {
     display: none;

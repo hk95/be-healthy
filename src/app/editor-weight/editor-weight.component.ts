@@ -20,15 +20,26 @@ export class EditorWeightComponent implements OnInit {
   today: string = this.getDate();
   dailyInfo$: Observable<DailyInfo>;
   previousDailyInfo$: Observable<DailyInfo[]>;
+  maxWeight = 200;
+  maxFat = 100;
+  minWeightAndFat = 0;
 
   form = this.fb.group({
     currentWeight: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(200)],
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxWeight),
+      ],
     ],
     currentFat: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(100)],
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxFat),
+      ],
     ],
   });
   initialRecord: boolean;
@@ -87,7 +98,9 @@ export class EditorWeightComponent implements OnInit {
     this.dailyInfoService
       .getPreviousDailyInfo(this.authService.uid, this.today)
       .subscribe((dailyInfos?: DailyInfo[]) => {
-        this.form.patchValue(dailyInfos[0]);
+        if (dailyInfos[0]?.currentWeight !== undefined) {
+          this.form.patchValue(dailyInfos[0]);
+        }
       });
   }
   getDate() {

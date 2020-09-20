@@ -32,7 +32,6 @@ export class PaymentService {
     paymentMethodId?: string
   ): Promise<void> {
     const intent = await this.createStripeSetupIntent();
-    console.log('run');
     if (paymentMethodId) {
       await this.deleteStripePaymentMethod(paymentMethodId);
     }
@@ -52,7 +51,6 @@ export class PaymentService {
       throw new Error(error.code);
     } else {
       if (setupIntent.status === 'succeeded') {
-        console.log('servicesetUpOk');
         const callable = this.fns.httpsCallable('setStripePaymentMethod');
         return callable({
           paymentMethod: setupIntent.payment_method,
@@ -67,17 +65,8 @@ export class PaymentService {
   }
 
   deleteStripePaymentMethod(id: string): Promise<void> {
-    console.log('deleting');
-
     const callable = this.fns.httpsCallable('deleteStripePaymentMethod');
-    return callable({ id })
-      .toPromise()
-      .then(() => {
-        console.log('deleted');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return callable({ id }).toPromise();
   }
 
   getPaymentMethods(): Promise<Stripe.ApiList<Stripe.PaymentMethod>> {

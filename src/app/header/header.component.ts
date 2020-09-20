@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainShellService } from '../services/main-shell.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
+import { BasicInfoService } from '../services/basic-info.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  private subscription: Subscription = new Subscription();
+
   title$: Observable<string> = this.mainShellService.title$;
   titleMeal$: Observable<string> = this.mainShellService.titleMeal$;
   date: string;
@@ -21,18 +23,36 @@ export class HeaderComponent implements OnInit {
   mealTitle: string;
   more = false;
   viewX: number;
+  maxDate = new Date();
+  minDate = new Date(2018, 0, 1);
+
   constructor(
     private mainShellService: MainShellService,
-    private userService: UserService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private basicInfoService: BasicInfoService
   ) {
-    this.userService.getUser(this.authService.uid).subscribe((result) => {
-      this.avatarURL = result?.avatarURL;
-    });
+    const basicInfoSub = this.basicInfoService
+      .getBasicInfo(this.authService.uid)
+      .subscribe((result) => {
+        this.avatarURL = result?.avatarURL;
+      });
+
+    const routeSub = this.getParam();
+
+    if (innerWidth > 750) {
+      this.more = true;
+      this.viewX = innerWidth / 2;
+    }
+
+    this.subscription.add(basicInfoSub);
+    this.subscription.add(routeSub);
+  }
+
+  getParam() {
     this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
       this.selectedValue = params.get('meal');
@@ -46,10 +66,6 @@ export class HeaderComponent implements OnInit {
           break;
       }
     });
-    if (innerWidth > 750) {
-      this.more = true;
-      this.viewX = innerWidth / 2;
-    }
   }
 
   chanageMeal(meal: string) {
@@ -73,9 +89,9 @@ export class HeaderComponent implements OnInit {
       },
     });
   }
+
   changeDate(event: MatDatepickerInputEvent<Date>) {
     this.date = this.datePipe.transform(event.value, 'yy.MM.dd(E)');
-    console.log(this.date);
     this.router.navigate([this.router.url.split('?')[0]], {
       queryParams: {
         date: this.date,
@@ -89,4 +105,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

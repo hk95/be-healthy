@@ -9,7 +9,7 @@
 
   <ng-template #noMyRecipe>
     <div class="no-recipe">
-      <img class="no-recipe__image" src="assets/images/recipe.svg" alt="" />
+      <img class="no-recipe__image" src="/assets/images/recipe.svg" alt="" />
       <p class="no-recipe__text">マイレシピはまだ登録されていません。</p>
       <p class="no-recipe__text">オリジナルの１品を登録しましょう。</p>
       <button
@@ -75,7 +75,9 @@
       routerLink="/recipe-detail"
       [queryParams]="{ id: recipe.recipeId }"
     >
-      <img class="recipe__thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+      <figure class="recipe__thumbnail">
+        <img class="recipe__image" [src]="recipe.recipeThumbnailURL" alt="" />
+      </figure>
       <div class="recipe__content">
         <div class="recipe__row">
           <img

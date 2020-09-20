@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 h2 {
   margin: 0;
   width: 100%;
@@ -9,8 +10,13 @@ h2 {
   font-size: 17px;
   font-weight: normal;
 }
+
 p {
   margin: 0;
+}
+
+.wrap {
+  max-height: 1500px;
 }
 .vertical-line {
   margin: 0 32px;
@@ -18,6 +24,7 @@ p {
   height: 54px;
   background-color: rgba(#000, 0.2);
 }
+
 .back {
   height: 40px;
   width: 100%;
@@ -31,6 +38,7 @@ p {
   position: sticky;
   top: 0;
 }
+
 .dailyInfo {
   margin-top: 16px;
   display: flex;
@@ -38,31 +46,37 @@ p {
   align-items: center;
   flex-direction: column;
 }
+
 .table {
   width: 100%;
   border-radius: 4px;
   max-width: 500px;
   margin-bottom: 32px;
+
   &__header {
     display: flex;
     justify-content: center;
   }
+
   &__cell {
     display: flex;
     justify-content: center;
     text-align: right;
   }
 }
+
 .card {
   width: 100%;
   max-width: 500px;
   margin-bottom: 32px;
+
   &__wrap {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
   }
+
   &__title {
     font-size: 20px;
   }
@@ -71,16 +85,20 @@ p {
     position: absolute;
     right: 0;
   }
+
   &__icon-breakfast {
     margin-left: 8px;
     width: 30px;
+
     &--no-meal {
       opacity: 0.3;
     }
   }
+
   &__icon {
     margin-left: 8px;
     width: 20px;
+
     &--no-meal {
       opacity: 0.3;
     }
@@ -89,32 +107,40 @@ p {
   &__memo-title {
     margin-bottom: 0;
   }
+
   &__head {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
+
   &__content {
     height: 200px;
     overflow: scroll;
   }
+
   &__meal {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
   }
+
   &__food-name {
     width: 40%;
     hyphens: auto;
+    overflow-wrap: anywhere;
   }
+
   &__memo {
     margin-top: 0;
     width: 100%;
+
     &--noMemo {
       margin: 0;
     }
   }
+
   &__memo-textarea {
     margin: 0;
     padding: 8px;
@@ -126,9 +152,11 @@ p {
     word-break: break-all;
     height: 100px;
   }
+
   &__memo-textarea-editor {
     width: 100%;
   }
+
   &__memo-textarea-field {
     width: 100%;
   }
@@ -137,11 +165,13 @@ p {
 .border {
   margin: 8px 0;
 }
+
 .pie-chart {
   width: 100%;
   max-width: 500px;
-  margin-bottom: 32px;
   position: relative;
+  margin-bottom: 8px;
+
   &__cal {
     width: 22%;
     position: absolute;
@@ -152,7 +182,15 @@ p {
     top: 42%;
     left: 40%;
   }
+
+  &__text {
+    margin-bottom: 32px;
+    font-size: 13.5px;
+    opacity: 0.87;
+    max-width: 500px;
+  }
 }
+
 ngx-charts-pie-chart {
   width: 100%;
   max-height: 500px;
@@ -160,6 +198,7 @@ ngx-charts-pie-chart {
   justify-content: center;
   align-items: center;
 }
+
 :host ::ng-deep .chart-legend .legend-labels {
   width: 100%;
   position: absolute;

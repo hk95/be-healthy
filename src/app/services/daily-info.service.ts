@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
+import { DailyInfo, DailyInfoList, DailyMeal } from '../interfaces/daily-info';
 
 import { AngularFireFunctions } from '@angular/fire/functions';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -25,14 +26,32 @@ export class DailyInfoService {
     private router: Router,
     private fns: AngularFireFunctions
   ) {}
+
+  private getDateOfPath(date: string): string {
+    return date.substr(0, 5).replace(/\./g, '-');
+  }
+
+  private getDayOfMonth(date: string): number {
+    return moment(
+      date
+        .replace(/^/, '20')
+        .replace(/\./g, '-')
+        .replace(/\(/, '')
+        .replace(/\)/, '')
+        .replace(/日|月|火|水|木|金|土/, '')
+    ).date();
+  }
+
   goToSetPage(date: string, meal: string) {
     this.queryParams = [date, meal];
     this.router.navigateByUrl('/menu/set-list');
   }
+
   changeMeal(meal: string) {
     this.whichMeal = meal;
     this.mealSource.next(meal);
   }
+
   getPreviousDailyInfo(userId: string, date: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${userId}/dailyInfos`, (ref) =>
@@ -44,6 +63,7 @@ export class DailyInfoService {
       )
       .valueChanges();
   }
+
   getDailyInfos(authorId: string, date: string): Observable<DailyInfo[]> {
     return this.db
       .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
@@ -51,11 +71,35 @@ export class DailyInfoService {
       )
       .valueChanges();
   }
+
+  getDailyInfosOfMonth(
+    authorId: string,
+    date: string
+  ): Observable<DailyInfoList> {
+    const dateOfPath = this.getDateOfPath(date);
+    return this.db
+      .doc<DailyInfoList>(`users/${authorId}/dailyInfos/${dateOfPath}`)
+      .valueChanges();
+  }
+
+  getDailyInfosOfMonths(
+    authorId: string,
+    today: string
+  ): Observable<DailyInfoList[]> {
+    const dateOfPath = this.getDateOfPath(today);
+    return this.db
+      .collection<DailyInfoList>(`users/${authorId}/dailyInfos`, (ref) =>
+        ref.where('dateOfPath', '<=', dateOfPath).limit(60)
+      )
+      .valueChanges();
+  }
+
   getDailyInfo(authorId: string, date: string): Observable<DailyInfo> {
     return this.db
       .doc<DailyInfo>(`users/${authorId}/dailyInfos/${date}`)
       .valueChanges();
   }
+
   getDailyInfosEveryWeek(
     authorId: string,
     dates: string[]
@@ -97,14 +141,20 @@ export class DailyInfoService {
     >
   ) {
     this.getDailyInfo(dailyInfo.authorId, dailyInfo.date).subscribe((isdoc) => {
+      const dateOfPath = this.getDateOfPath(dailyInfo.date);
+      const dayOfMonth = this.getDayOfMonth(dailyInfo.date);
       if (!isdoc) {
         const dailyId = this.db.createId();
+        this.db.doc(`users/${dailyInfo.authorId}/dailyInfos/${dateOfPath}`).set(
+          {
+            list: { [dayOfMonth]: { dailyId, ...dailyInfo } },
+            dateOfPath,
+          },
+          { merge: true }
+        );
         return this.db
           .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
-          .set({
-            dailyId,
-            ...dailyInfo,
-          });
+          .set({ dailyId, ...dailyInfo });
       }
     });
   }
@@ -115,24 +165,36 @@ export class DailyInfoService {
       'dailyId' | 'breakfast' | 'lunch' | 'dinner' | 'dailyMemo'
     >
   ): Promise<void> {
-    return this.db
+    const dateOfPath = this.getDateOfPath(dailyInfo.date);
+    const dayOfMonth = this.getDayOfMonth(dailyInfo.date);
+    this.db
       .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
       .set(dailyInfo, {
         merge: true,
-      })
+      });
+    return this.db
+      .doc(`users/${dailyInfo.authorId}/dailyInfos/${dateOfPath}`)
+      .set(
+        { list: { [dayOfMonth]: dailyInfo }, dateOfPath },
+        {
+          merge: true,
+        }
+      )
       .then(() => {
         this.snackBar.open('更新しました', null, {
           duration: 2000,
         });
       });
   }
+
   updateDailyInfoMemo(userId: string, date: string, dailyMemo: string) {
-    return this.db
-      .doc(`users/${userId}/dailyInfos/${date}`)
+    const dateOfPath = this.getDateOfPath(date);
+    const dayOfMonth = this.getDayOfMonth(date);
+    const memoLength = dailyMemo.length.toString();
+    this.db
+      .doc(`users/${userId}/dailyInfos/${dateOfPath}`)
       .set(
-        {
-          dailyMemo,
-        },
+        { list: { [dayOfMonth]: { dailyMemo: memoLength } }, dateOfPath },
         { merge: true }
       )
       .then(() => {
@@ -140,6 +202,9 @@ export class DailyInfoService {
           duration: 2000,
         });
       });
+    return this.db
+      .doc(`users/${userId}/dailyInfos/${date}`)
+      .set({ dailyMemo }, { merge: true });
   }
 
   getSelectedFoodsOrSets(
@@ -151,6 +216,7 @@ export class DailyInfoService {
       .collection<DailyMeal>(`users/${userId}/dailyInfos/${date}/${whichMeal}`)
       .valueChanges();
   }
+
   getAllSelectedFoodsOrSets(userId: string, date: string) {
     return combineLatest([
       this.getSelectedFoodsOrSets(userId, date, 'breakfast'),
@@ -160,15 +226,16 @@ export class DailyInfoService {
   }
 
   async addMeal(
-    mealContet: Omit<DailyMeal, 'mealId'>,
+    mealContent: Omit<DailyMeal, 'mealId'>,
     userId: string,
     date: string,
     foodOrSet: string
   ): Promise<void> {
     const mealId = this.db.createId();
+    const dayOfMonth = this.getDayOfMonth(date);
     this.db
       .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
-      .set({ ...mealContet, mealId })
+      .set({ ...mealContent, mealId })
       .then(() => {
         this.snackBar.open('追加しました', null, {
           duration: 2000,
@@ -177,14 +244,15 @@ export class DailyInfoService {
     const callable = this.fns.httpsCallable('addMeal');
     let cal = 0;
     if (foodOrSet === 'food') {
-      cal = mealContet.food.foodCalPerAmount;
+      cal = mealContent.food.foodCalPerAmount;
     } else if (foodOrSet === 'set') {
-      cal = mealContet.set.setCal;
+      cal = mealContent.set.setCal;
     }
-    const amount = mealContet.amount;
+    const amount = mealContent.amount;
     return callable({
       userId,
       date,
+      dayOfMonth,
       meal: this.whichMeal,
       amount,
       cal,
@@ -195,10 +263,10 @@ export class DailyInfoService {
     userId: string,
     date: string,
     mealId: string,
-
     amount: number,
     cal: number
   ): Promise<void> {
+    const dayOfMonth = this.getDayOfMonth(date);
     this.db
       .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
       .delete();
@@ -206,6 +274,7 @@ export class DailyInfoService {
     return callable({
       userId,
       date,
+      dayOfMonth,
       meal: this.whichMeal,
       amount,
       cal,

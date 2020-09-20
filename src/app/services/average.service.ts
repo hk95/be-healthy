@@ -20,6 +20,7 @@ export class AverageService {
     private db: AngularFirestore,
     private fns: AngularFireFunctions
   ) {}
+
   getAllDataOfDate(date: string): string {
     return date
       .replace(/^/, '20')
@@ -44,6 +45,7 @@ export class AverageService {
     const calAverages: Observable<AverageOfYear[]> = getAverages('cal');
     return combineLatest([weightAverages, fatAverages, calAverages]);
   }
+
   getAveragesOfMonth(
     userId: string,
     date: string
@@ -65,6 +67,7 @@ export class AverageService {
 
     return combineLatest([weightAverages, fatAverages, calAverages]);
   }
+
   getAveragesOfWeek(
     userId: string,
     date: string
@@ -108,109 +111,65 @@ export class AverageService {
     const dayOfMonth = await moment(allDataOfDate).date();
     const dayOfWeek = await moment(allDataOfDate).weekday();
 
-    await this.db.doc(`users/${userId}/averagesYear/${year}年体重`).set(
-      {
-        [dayOfYear]: currentWeight,
-        category: 'weight',
-        date,
-        year,
-      },
-      { merge: true }
-    );
-    this.db.doc(`users/${userId}/averagesMonth/${year}年${month}月体重`).set(
-      {
-        [dayOfMonth]: currentWeight,
-        category: 'weight',
-        date,
-        year,
-        month,
-      },
-      { merge: true }
-    );
-    await this.db
-      .doc(`users/${userId}/averagesWeek/${year}年${week}週目体重`)
-      .set(
-        {
-          [dayOfWeek]: currentWeight,
-          category: 'weight',
-          date,
-          year,
-          week,
-        },
-        { merge: true }
-      );
-    await this.db.doc(`users/${userId}/averagesYear/${year}年体脂肪`).set(
-      {
-        [dayOfYear]: currentFat,
-        category: 'fat',
-        date,
-        year,
-      },
-      { merge: true }
-    );
-    this.db.doc(`users/${userId}/averagesMonth/${year}年${month}月体脂肪`).set(
-      {
-        [dayOfMonth]: currentFat,
-        category: 'fat',
-        date,
-        year,
-        month,
-      },
-      { merge: true }
-    );
-    await this.db
-      .doc(`users/${userId}/averagesWeek/${year}年${week}週目体脂肪`)
-      .set(
-        {
-          [dayOfWeek]: currentFat,
-          category: 'fat',
-          date,
-          year,
-          week,
-        },
-        { merge: true }
-      );
-    weightOfYear({
+    weightOfWeek({
+      category: 'weight',
       userId,
+      amount: currentWeight,
       year,
       month,
       week,
       date,
+      dayOfWeek,
     }).toPromise();
     weightOfMonth({
+      category: 'weight',
       userId,
+      amount: currentWeight,
       year,
       month,
       week,
       date,
+      dayOfMonth,
     }).toPromise();
-    weightOfWeek({
+    weightOfYear({
+      category: 'weight',
       userId,
+      amount: currentWeight,
       year,
       month,
       week,
       date,
-    }).toPromise();
-    fatOfYear({
-      userId,
-      year,
-      month,
-      week,
-      date,
+      dayOfYear,
     }).toPromise();
     fatOfWeek({
+      category: 'fat',
       userId,
+      amount: currentFat,
       year,
       month,
       week,
       date,
+      dayOfWeek,
     }).toPromise();
-    return fatOfMonth({
+    fatOfMonth({
+      category: 'fat',
       userId,
+      amount: currentFat,
       year,
       month,
       week,
       date,
+      dayOfMonth,
+    }).toPromise();
+    return fatOfYear({
+      category: 'fat',
+      userId,
+      amount: currentFat,
+      year,
+      month,
+      week,
+      date,
+      dayOfYear,
     }).toPromise();
   }
 
@@ -238,60 +197,35 @@ export class AverageService {
     const dayOfMonth = await moment(allDataOfDate).date();
     const dayOfWeek = await moment(allDataOfDate).weekday();
 
-    await this.db.doc(`users/${userId}/averagesYear/${year}年カロリー`).set(
-      {
-        [dayOfYear]: this.totalCal,
-        category: 'cal',
-        date,
-        year,
-      },
-      { merge: true }
-    );
-    this.db
-      .doc(`users/${userId}/averagesMonth/${year}年${month}月カロリー`)
-      .set(
-        {
-          [dayOfMonth]: this.totalCal,
-          category: 'cal',
-          date,
-          year,
-          month,
-        },
-        { merge: true }
-      );
-    await this.db
-      .doc(`users/${userId}/averagesWeek/${year}年${week}週目カロリー`)
-      .set(
-        {
-          [dayOfWeek]: this.totalCal,
-          category: 'cal',
-          date,
-          year,
-          week,
-        },
-        { merge: true }
-      );
-
     callableOfWeek({
+      category: 'cal',
       userId,
+      amount: this.totalCal,
       year,
       month,
       week,
       date,
+      dayOfWeek,
     }).toPromise();
     callableOfMonth({
+      category: 'cal',
       userId,
+      amount: this.totalCal,
       year,
       month,
       week,
       date,
+      dayOfMonth,
     }).toPromise();
     return callableOfYear({
+      category: 'cal',
       userId,
+      amount: this.totalCal,
       year,
       month,
       week,
       date,
+      dayOfYear,
     }).toPromise();
   }
 }

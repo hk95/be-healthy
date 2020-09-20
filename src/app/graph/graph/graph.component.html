@@ -1,10 +1,13 @@
-<div class="container">
+<mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
+<div class="content" *ngIf="!loading">
   <div class="calendar">
     <mat-form-field>
       <mat-label>日付を選択してください</mat-label>
       <input
         matInput
         [matDatepicker]="picker"
+        [min]="minDate"
+        [max]="maxDate"
         (dateChange)="createGraphByChangingDate($event)"
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -49,7 +52,7 @@
   </div>
   <div class="graph">
     <ngx-charts-line-chart
-      *ngIf="weightGraph"
+      *ngIf="weightGraph && preWeight.length > 0"
       (window:resize)="onResize($event)"
       [view]="view"
       [legendPosition]="legendPosition"
@@ -66,8 +69,11 @@
       [results]="dataWeight"
     >
     </ngx-charts-line-chart>
+    <p class="graph__text" *ngIf="preWeight.length === 0">
+      体重の平均データまだはありません
+    </p>
     <ngx-charts-line-chart
-      *ngIf="fatGraph"
+      *ngIf="fatGraph && preFat.length > 0"
       (window:resize)="onResize($event)"
       [view]="view"
       [legendPosition]="legendPosition"
@@ -84,8 +90,11 @@
       [results]="dataFat"
     >
     </ngx-charts-line-chart>
+    <p class="graph__text" *ngIf="preFat.length === 0">
+      体脂肪の平均データまだはありません
+    </p>
     <ngx-charts-line-chart
-      *ngIf="totalCalGraph"
+      *ngIf="totalCalGraph && preTotalCal.length > 0"
       (window:resize)="onResize($event)"
       [view]="view"
       [legendPosition]="legendPosition"
@@ -102,6 +111,9 @@
       [results]="dataTotalCal"
     >
     </ngx-charts-line-chart>
+    <p class="graph__text" *ngIf="preTotalCal.length === 0">
+      摂取カロリーの平均データまだはありません
+    </p>
   </div>
   <div class="nav nav--category" *ngIf="!legend">
     <button

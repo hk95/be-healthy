@@ -1,7 +1,9 @@
 @import '~@angular/material/theming';
+
 :host {
   display: block;
 }
+
 .meal-nav {
   height: 40px;
   width: 100%;
@@ -14,7 +16,9 @@
   position: sticky;
   top: 0;
 }
+
 .tab {
   max-width: 700px;
   margin: 0 auto;
+  padding: 0;
 }

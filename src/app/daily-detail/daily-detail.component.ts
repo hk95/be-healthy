@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
-import { take } from 'rxjs/operators';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -16,17 +15,21 @@ import { FormControl, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./daily-detail.component.scss'],
   providers: [NutritionPipe, PfcBalancePipe],
 })
-export class DailyDetailComponent implements OnInit {
-  dailyInfo$: Observable<DailyInfo>;
+export class DailyDetailComponent implements OnInit, OnDestroy {
+  private readonly userId = this.authService.uid;
+  private subscription = new Subscription();
+
   date: string;
-  editing = false;
+  dailyInfo: DailyInfo;
+  editingMemo = false;
+  maxMemoLength = 1000;
   form = this.fb.group({
-    memo: ['', [Validators.maxLength(1000)]],
+    dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
 
-  MealsOfBreakfast: DailyMeal[] = [];
-  MealsOfLunch: DailyMeal[] = [];
-  MealsOfDinner: DailyMeal[] = [];
+  mealsOfBreakfast: DailyMeal[] = [];
+  mealsOfLunch: DailyMeal[] = [];
+  mealsOfDinner: DailyMeal[] = [];
 
   totalCal = 0;
 
@@ -59,6 +62,7 @@ export class DailyDetailComponent implements OnInit {
   legendPosition = 'below';
   legendTitle = '';
   font: number;
+
   constructor(
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
@@ -68,63 +72,18 @@ export class DailyDetailComponent implements OnInit {
     private pfcBalancePipe: PfcBalancePipe,
     private fb: FormBuilder
   ) {
-    this.route.queryParamMap.subscribe((params) => {
+    const routeSub = this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
-      this.dailyInfo$ = this.dailyInfoService.getDailyInfo(
-        this.authService.uid,
-        this.date
-      );
+
+      this.getDailyInfo();
       this.mainShellService.setTitle(this.date);
     });
+    const fragmentSub = this.getFragment();
 
-    this.dailyInfoService
-      .getAllSelectedFoodsOrSets(this.authService.uid, this.date)
-      .pipe(take(1))
-      .subscribe((mealList) => {
-        this.MealsOfBreakfast = mealList[0];
-        this.MealsOfLunch = mealList[1];
-        this.MealsOfDinner = mealList[2];
+    this.subscription.add(routeSub);
+    this.subscription.add(fragmentSub);
 
-        this.totalCal = this.nutritionPipe.transform(
-          this.MealsOfBreakfast,
-          'all',
-          'cal',
-          this.MealsOfLunch,
-          this.MealsOfDinner
-        );
-        this.data = [
-          {
-            name: '炭水化物 (%)',
-            value: this.pfcBalancePipe.transform(
-              this.MealsOfBreakfast,
-              this.MealsOfLunch,
-              this.MealsOfDinner,
-              this.totalCal,
-              'carbohydrate'
-            ),
-          },
-          {
-            name: 'タンパク質 (%)',
-            value: this.pfcBalancePipe.transform(
-              this.MealsOfBreakfast,
-              this.MealsOfLunch,
-              this.MealsOfDinner,
-              this.totalCal,
-              'protein'
-            ),
-          },
-          {
-            name: '脂質 (%)',
-            value: this.pfcBalancePipe.transform(
-              this.MealsOfBreakfast,
-              this.MealsOfLunch,
-              this.MealsOfDinner,
-              this.totalCal,
-              'fat'
-            ),
-          },
-        ];
-      });
+    this.getDailyInfoOfMeal();
 
     if (innerWidth < 500) {
       this.font = innerWidth / 28;
@@ -135,6 +94,82 @@ export class DailyDetailComponent implements OnInit {
     }
   }
 
+  getFragment() {
+    this.route.fragment.subscribe((v) => {
+      if (v === 'memo') {
+        this.editingMemo = true;
+      }
+    });
+  }
+
+  getDailyInfo() {
+    const dailyInfoSub = this.dailyInfoService
+      .getDailyInfo(this.userId, this.date)
+      .subscribe((dailyInfo: DailyInfo) => {
+        if (!dailyInfo) {
+          this.dailyInfoService.createDailyInfo({
+            authorId: this.userId,
+            date: this.date,
+          });
+        } else {
+          this.form.patchValue(dailyInfo);
+        }
+        this.dailyInfo = dailyInfo;
+      });
+    this.subscription.add(dailyInfoSub);
+  }
+
+  getDailyInfoOfMeal() {
+    const dailyInfoSub = this.dailyInfoService
+      .getAllSelectedFoodsOrSets(this.userId, this.date)
+      .subscribe((mealList) => {
+        this.mealsOfBreakfast = mealList[0];
+        this.mealsOfLunch = mealList[1];
+        this.mealsOfDinner = mealList[2];
+
+        this.totalCal = this.nutritionPipe.transform(
+          this.mealsOfBreakfast,
+          'all',
+          'cal',
+          this.mealsOfLunch,
+          this.mealsOfDinner
+        );
+        this.data = [
+          {
+            name: '炭水化物 (%)',
+            value: this.pfcBalancePipe.transform(
+              this.mealsOfBreakfast,
+              this.mealsOfLunch,
+              this.mealsOfDinner,
+              this.totalCal,
+              'carbohydrate'
+            ),
+          },
+          {
+            name: 'タンパク質 (%)',
+            value: this.pfcBalancePipe.transform(
+              this.mealsOfBreakfast,
+              this.mealsOfLunch,
+              this.mealsOfDinner,
+              this.totalCal,
+              'protein'
+            ),
+          },
+          {
+            name: '脂質 (%)',
+            value: this.pfcBalancePipe.transform(
+              this.mealsOfBreakfast,
+              this.mealsOfLunch,
+              this.mealsOfDinner,
+              this.totalCal,
+              'fat'
+            ),
+          },
+        ];
+      });
+    this.subscription.add(dailyInfoSub);
+  }
+
   onResize(event) {
     if (event.target.innerWidth < 500) {
       this.font = innerWidth / 28;
@@ -142,19 +177,27 @@ export class DailyDetailComponent implements OnInit {
       this.font = innerWidth / 28;
     }
   }
+
   get memoControl(): FormControl {
-    return this.form.get('memo') as FormControl;
+    return this.form.get('dailyMemo') as FormControl;
   }
+
   editMemo() {
-    this.editing = true;
+    this.editingMemo = true;
   }
+
   updateMemo() {
-    this.editing = false;
+    this.editingMemo = false;
     this.dailyInfoService.updateDailyInfoMemo(
-      this.authService.uid,
+      this.userId,
       this.date,
-      this.form.value.memo
+      this.form.value.dailyMemo
     );
   }
-  ngOnInit() {}
+
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

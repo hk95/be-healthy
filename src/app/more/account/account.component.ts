@@ -30,7 +30,7 @@ export class AccountComponent implements OnInit {
 
   openDeleteDialog(): void {
     this.dialog.open(DeleteDialogComponent, {
-      width: '50%',
+      width: '100%',
       data: {
         title: 'アカウント削除',
       },

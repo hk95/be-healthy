@@ -72,12 +72,12 @@ export class CreditCardComponent implements OnInit {
           this.data.paymentMethods[0]?.id
         )
         .then(() => {
+          this.dialogRef.close();
           this.snackBar.open('カードを登録しました', null, {
             duration: 2000,
           });
         })
         .catch((error: Error) => {
-          console.error(error.message);
           switch (error.message) {
             case 'expired_card':
               this.snackBar.open('カードの有効期限が切れています');
@@ -91,7 +91,6 @@ export class CreditCardComponent implements OnInit {
         .finally(() => {
           this.loading = false;
           this.cardElement.clear();
-          this.dialogRef.close();
         });
     }
   }

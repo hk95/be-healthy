@@ -91,7 +91,7 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
           switchMap((meals) => {
             let currentcal = 0;
             meals.forEach((meal) => {
-              if (meal.set.setCal) {
+              if (meal.set) {
                 return (currentcal += meal.set.setCal * meal.amount);
               } else if (meal.food.foodCalPerAmount) {
                 return (currentcal += meal.food.foodCalPerAmount * meal.amount);

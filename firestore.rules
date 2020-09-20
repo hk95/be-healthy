@@ -16,7 +16,8 @@ service cloud.firestore {
       }
 
       match /dailyInfos/{dailyId=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if true;
+        allow write: if signedInWithMyId(userId);
      }
 
       match /sets/{setId=**} {
@@ -28,15 +29,18 @@ service cloud.firestore {
      }
 
       match /averagesWeek/{week=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if signedInWithMyId(userId);
+        allow write: if false;
      }
 
       match /averagesMonth/{month=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if signedInWithMyId(userId);
+        allow write: if false;
      }
 
       match /averagesYear/{year=**} {
-        allow read, write: if signedInWithMyId(userId);
+        allow read: if signedInWithMyId(userId);
+        allow write: if false;
      }
    }
 

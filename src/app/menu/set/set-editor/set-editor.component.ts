@@ -47,34 +47,64 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   breakfast = false;
   lunch = false;
   dinner = false;
+  maxTitleLength = 50;
+  maxNutritionAmount = 5000;
+  minNutritionAmount = 0;
 
   arrayLimit = 30;
   form = this.fb.group({
-    setTitle: ['', [Validators.required, Validators.maxLength(50)]],
+    setTitle: [
+      '',
+      [Validators.required, Validators.maxLength(this.maxTitleLength)],
+    ],
     foodsArray: this.fb.array([]),
     setCal: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(5000)],
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
     ],
     setProtein: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(5000)],
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
     ],
     setFat: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(5000)],
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
     ],
     setTotalCarbohydrate: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(5000)],
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
     ],
     setDietaryFiber: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(5000)],
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
     ],
     setSugar: [
       '',
-      [Validators.required, Validators.min(0), Validators.max(5000)],
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
     ],
   });
   get titleControl(): FormControl {

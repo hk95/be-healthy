@@ -30,6 +30,9 @@ import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
 export class RecipeEditorComponent implements OnInit {
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
+
+  private readonly userId = this.authService.uid;
+
   thumbnailURL: string = null;
   processURLs = [];
   query: string;
@@ -38,21 +41,71 @@ export class RecipeEditorComponent implements OnInit {
   public = false;
   loading: boolean;
   isCreating: boolean;
-  userId = this.authService.uid;
+  maxTitleLength = 50;
+  maxDescriptionLength = 500;
+  maxIngredinetNameLength = 50;
+  maxIngredinetUnitLength = 20;
   limitIngredientArray = 100;
   limitProcessArray = 30;
+  maxNutritionAmount = 5000;
+  minNutritionAmount = 0;
 
   form = this.fb.group({
-    recipeTitle: ['', [Validators.required, Validators.maxLength(50)]],
-    recipeDescription: ['', [Validators.maxLength(500)]],
+    recipeTitle: [
+      '',
+      [Validators.required, Validators.maxLength(this.maxTitleLength)],
+    ],
+    recipeDescription: ['', [Validators.maxLength(this.maxDescriptionLength)]],
     ingredients: this.fb.array([], [Validators.required]),
     processes: this.fb.array([]),
-    recipeCal: [''],
-    recipeProtein: [''],
-    recipeFat: [''],
-    recipeTotalCarbohydrate: [''],
-    recipeDietaryFiber: [''],
-    recipeSugar: [''],
+    recipeCal: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
+    ],
+    recipeProtein: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
+    ],
+    recipeFat: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
+    ],
+    recipeTotalCarbohydrate: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
+    ],
+    recipeDietaryFiber: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
+    ],
+    recipeSugar: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minNutritionAmount),
+        Validators.max(this.maxNutritionAmount),
+      ],
+    ],
   });
   displayedColumns: string[] = ['name', 'amount'];
   displayedColumnsProcess: string[] = ['index', 'image', 'description'];
@@ -68,6 +121,25 @@ export class RecipeEditorComponent implements OnInit {
   get processes(): FormArray {
     return this.form.get('processes') as FormArray;
   }
+  get recipeCalControl(): FormControl {
+    return this.form.get('recipeCal') as FormControl;
+  }
+  get recipeProteinControl(): FormControl {
+    return this.form.get('recipeProtein') as FormControl;
+  }
+  get recipeFatControl(): FormControl {
+    return this.form.get('recipeFat') as FormControl;
+  }
+  get recipeTotalCarbohydrateControl(): FormControl {
+    return this.form.get('recipeTotalCarbohydrate') as FormControl;
+  }
+  get recipeDietaryFiberControl(): FormControl {
+    return this.form.get('recipeDietaryFiber') as FormControl;
+  }
+  get recipeSugarControl(): FormControl {
+    return this.form.get('recipeSugar') as FormControl;
+  }
+
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
   processSource = new BehaviorSubject<AbstractControl[]>([]);
 
@@ -118,8 +190,20 @@ export class RecipeEditorComponent implements OnInit {
 
   addIngredinet() {
     const ingredientFormGroup = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      amountAndUnit: ['', [Validators.required, Validators.maxLength(20)]],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(this.maxIngredinetNameLength),
+        ],
+      ],
+      amountAndUnit: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(this.maxIngredinetUnitLength),
+        ],
+      ],
     });
     this.ingredients.push(ingredientFormGroup);
     this.dataSource.next(this.ingredients.controls);
@@ -144,7 +228,10 @@ export class RecipeEditorComponent implements OnInit {
 
   addProcess() {
     const processFormGroup = this.fb.group({
-      description: ['', [Validators.required, Validators.maxLength(500)]],
+      description: [
+        '',
+        [Validators.required, Validators.maxLength(this.maxDescriptionLength)],
+      ],
     });
     this.processes.push(processFormGroup);
     this.processURLs.push(null);

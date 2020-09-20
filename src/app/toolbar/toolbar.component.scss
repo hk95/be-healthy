@@ -9,8 +9,10 @@
 .nav {
   line-height: 28px;
   padding: 0 8px;
+
   &__text {
     font-size: 11px;
     height: 24px;
+    font-weight: lighter;
   }
 }
