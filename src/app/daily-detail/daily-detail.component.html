@@ -60,11 +60,7 @@
           >
             {{
               mealsOfBreakfast
-                | nutrition
-                  : 'all'
-                  : element.key
-                  : mealsOfBreakfast
-                  : mealsOfBreakfast
+                | nutrition: 'all':element.key:mealsOfLunch:mealsOfDinner
             }}{{ element.unit }}
           </mat-cell>
         </ng-container>
