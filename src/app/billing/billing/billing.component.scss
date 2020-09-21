@@ -1,6 +1,7 @@
 h2 {
   margin: 0;
 }
+
 p {
   margin: 0;
 }
@@ -11,30 +12,33 @@ p {
   display: grid;
   padding-top: 40px;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: 'credit-card ad' 'credit-card donation' 'invoice invoice';
+  grid-template-areas: 'credit-card donation' 'invoice invoice';
   row-gap: 64px;
   column-gap: 96px;
+
   @media screen and(max-width:750px) {
     padding-top: 24px;
     grid-template-columns: 1fr;
-    grid-template-areas: 'credit-card' 'ad' 'donation' ' invoice';
+    grid-template-areas: 'credit-card' 'donation' ' invoice';
     gap: 40px;
   }
+
   &__wrap-card {
     grid-area: credit-card;
   }
+
   &__wrap {
     display: grid;
   }
-  &__wrap--ad {
-    grid-area: ad;
-  }
+
   &__wrap--donation {
     grid-area: donation;
   }
+
   &__wrap-invoice {
     grid-area: invoice;
   }
+
   &__title {
     font-weight: normal;
     font-size: 18px;
@@ -44,12 +48,15 @@ p {
       margin-bottom: 8px;
     }
   }
+
   &__button {
     max-width: 120px;
   }
+
   &__detail {
     margin-bottom: 16px;
   }
+
   &__selected-card {
     height: 40px;
     display: flex;
@@ -61,6 +68,7 @@ p {
     background: rgba(65, 148, 136, 0.2);
     max-width: 160px;
   }
+
   &__text {
     margin-bottom: 8px;
   }
@@ -74,15 +82,18 @@ p {
 .card-logo {
   margin-right: 8px;
 }
+
 .mat-form-field {
   max-width: 240px;
 }
+
 .form {
   display: grid;
 }
 
 .donation-input {
   margin-bottom: 8px;
+
   &__amount {
     font-size: 20px;
   }
