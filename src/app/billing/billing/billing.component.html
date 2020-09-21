@@ -28,21 +28,6 @@
         }}
       </button>
     </div>
-    <div class="billing__wrap billing__wrap--ad" *ngIf="user$ | async as user">
-      <h2 class="billing__title">広告を非表示にする</h2>
-      <p class="billing__text">
-        {{ user.premiumPlan ? '購入済み' : '¥1,000（買切り）' }}
-      </p>
-      <button
-        class="billing__button"
-        mat-flat-button
-        color="primary"
-        (click)="openConfirmDialog('premiumPlan')"
-        [disabled]="user.premiumPlan"
-      >
-        広告を削除
-      </button>
-    </div>
 
     <div class="billing__wrap billing__wrap--donation">
       <h2 class="billing__title">開発者に寄付</h2>
