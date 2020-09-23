@@ -1,14 +1,6 @@
 {
   "projects": {
-    "default": "my-app-7e83d"
-  },
-  "targets": {
-    "my-app-7e83d": {
-      "hosting": {
-        "my-app": [
-          "my-app-7e83d"
-        ]
-      }
-    }
+    "dev": "my-app-7e83d",
+    "prod": "be-healthy-prod"
   }
 }
