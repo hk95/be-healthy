@@ -34,9 +34,9 @@ export class TopComponent implements OnInit, OnDestroy {
     weekends: true,
     theme: 'standart',
     headerToolbar: {
-      left: 'prev',
+      left: 'prevYear prev',
       center: 'title',
-      right: 'next',
+      right: 'next nextYear',
     },
     events: [],
     locale: 'ja',
