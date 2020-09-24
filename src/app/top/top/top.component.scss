@@ -55,7 +55,8 @@
 
 :host ::ng-deep {
   .fc .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 8px;
+    padding: 8px;
+    margin-bottom: 0px;
   }
 
   .fc-toolbar-chunk {
