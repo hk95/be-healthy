@@ -43,7 +43,12 @@ export class TopComponent implements OnInit, OnDestroy {
     dayCellContent(event) {
       event.dayNumberText = event.dayNumberText.replace('日', '');
     },
-    businessHours: true,
+    dayCellClassNames(event) {
+      if (event.date < new Date(2018, 0, 1)) {
+        event.isFuture = true;
+      }
+    },
+    businessHours: false,
     dateClick: this.handleDateClick.bind(this),
   };
   basicInfo$: Observable<BasicInfo>;
