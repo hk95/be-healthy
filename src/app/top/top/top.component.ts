@@ -86,15 +86,13 @@ export class TopComponent implements OnInit, OnDestroy {
               if (monthData.list[i].currentWeight) {
                 this.isDataList.push({
                   date: correctedDate,
-                  display: 'list-item',
-                  color: '#1976D2',
+                  className: 'fc-weight',
                 });
               }
               if (monthData.list[i].totalCal) {
                 this.isDataList.push({
                   date: correctedDate,
-                  display: 'list-item',
-                  color: '#d32f2f',
+                  className: 'fc-meal',
                 });
               }
             }
