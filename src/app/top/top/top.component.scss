@@ -147,6 +147,10 @@
     background-size: 14px 14px;
   }
 
+  .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    z-index: -10;
+  }
+
   .fc-day-future div {
     background: rgb(224, 224, 224);
     cursor: default;
