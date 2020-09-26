@@ -1,86 +1,60 @@
-<div *ngIf="dailyInfos">
+<div>
   <div class="grid">
-    <div *ngFor="let dailyInfo of dailyInfos; index as i">
+    <div *ngFor="let dailyInfo of dailyInfos | slice: 0:1; index as i">
       <h4 *ngIf="i === 0" class="wrap-title">今日の記録</h4>
       <h4 *ngIf="i === 1" class="wrap-title">今月の記録</h4>
-      <mat-card
-        class="card"
-        [ngClass]="i === 0 ? 'card--today' : ''"
-        routerLink="/daily-detail"
-        [queryParams]="{ date: dailyInfo.date }"
-      >
-        <div class="wrap wrap--column">
-          <mat-card-title class="card__title">{{
-            dailyInfo.date
-          }}</mat-card-title>
-          <mat-card-content>
-            <p class="card__weight">
-              体重：{{
-                dailyInfo.currentWeight
-                  ? (dailyInfo.currentWeight | number: '1.1-1')
-                  : '未入力'
-              }}
-              kg
-            </p>
-            <p class="card__fat">
-              体脂肪率：{{
-                dailyInfo.currentFat
-                  ? (dailyInfo.currentFat | number: '1.1-1')
-                  : '未入力'
-              }}
-              %
-            </p>
-            <p class="card__cal">
-              カロリー：{{
-                dailyInfo.totalCal ? (dailyInfo.totalCal | number: '1.1-1') : 0
-              }}kcal
-            </p>
-          </mat-card-content>
-        </div>
-        <div class="spacer"></div>
-        <mat-card-actions class="card__icons">
-          <div class="wrap">
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="体重・体脂肪"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/editor-weight"
-              [queryParams]="{ date: dailyInfo.date }"
-            >
-              <img
-                class="icon"
-                [class.no-registration]="!dailyInfo.currentWeight"
-                src="/assets/images/scale.svg"
-                alt=""
-              />
-            </a>
-
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="メモ"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/daily-detail"
-              fragment="memo"
-              [queryParams]="{ date: dailyInfo.date }"
-            >
-              <img
-                class="icon"
-                [class.no-registration]="
-                  !dailyInfo.dailyMemo || dailyInfo.dailyMemo === '0'
-                "
-                src="/assets/images/memo.svg
-            "
-                alt=""
-              />
-            </a>
+      <mat-card class="today">
+        <div class="today__wrap">
+          <div class="today__row">
+            <dl class="today__body">
+              <dt class="today__body-title">体重</dt>
+              <dt *ngIf="dailyInfo.currentWeight">
+                <span class="today__body-amount">
+                  {{ dailyInfo.currentWeight }}</span
+                >
+                kg
+              </dt>
+              <dt class="today__body-amount" *ngIf="!dailyInfo.currentWeight">
+                未入力
+              </dt>
+            </dl>
+            <dl class="today__body">
+              <dt class="today__body-title">体脂肪</dt>
+              <dt *ngIf="dailyInfo.currentFat">
+                <span class="today__body-amount">{{
+                  dailyInfo.currentFat
+                }}</span>
+                %
+              </dt>
+              <dt class="today__body-amount" *ngIf="!dailyInfo.currentFat">
+                未入力
+              </dt>
+            </dl>
+            <button class="today__button" mat-icon-button color="primary">
+              <mat-icon>edit</mat-icon>
+            </button>
           </div>
-          <div class="wrap">
+          <p class="today__text" *ngIf="prevWeight && prevFat">
+            前回の記録は{{ prevWeight }}kg、{{ prevFat }}%です。
+          </p>
+        </div>
+        <div class="border"></div>
+        <div class="today__wrap">
+          <div class="today__row">
+            <dl class="today__body">
+              <dt class="today__body-title">摂取カロリー</dt>
+              <dt>
+                <span class="today__body-amount">{{
+                  dailyInfo.totalCal || 0
+                }}</span>
+                kcal
+              </dt>
+              <dt class="today__body-amount" *ngIf="!dailyInfo.currentFat">
+                未入力
+              </dt>
+            </dl>
+          </div>
+          <div class="today__row">
             <a
               mat-icon-button
               color="primar"
@@ -93,9 +67,11 @@
             >
               <img
                 class="icon icon--breakfast"
-                [class.no-registration]="!dailyInfo.breakfastCal"
-                src="/assets/images/breakfast.svg
-            "
+                [src]="
+                  dailyInfo.breakfastCal
+                    ? '/assets/images/breakfast.svg'
+                    : '/assets/images/breakfast_outline.svg'
+                "
                 alt=""
               />
             </a>
@@ -111,9 +87,11 @@
             >
               <img
                 class="icon"
-                [class.no-registration]="!dailyInfo.lunchCal"
-                src="/assets/images/lunch.svg
-            "
+                [src]="
+                  dailyInfo.lunchCal
+                    ? '/assets/images/lunch.svg'
+                    : '/assets/images/lunch_outline.svg'
+                "
                 alt=""
               />
             </a>
@@ -129,15 +107,76 @@
             >
               <img
                 class="icon"
-                [class.no-registration]="!dailyInfo.dinnerCal"
-                src="/assets/images/dinner.svg
-            "
+                [src]="
+                  dailyInfo.dinnerCal
+                    ? '/assets/images/dinner.svg'
+                    : '/assets/images/dinner_outline.svg'
+                "
                 alt=""
               />
             </a>
           </div>
-        </mat-card-actions>
-      </mat-card>
+        </div>
+        <div class="border"></div>
+
+        <div class="today__wrap">
+          <div class="card__memo">
+            <div class="today__row today__row--memo">
+              <p class="card__memo-title">
+                1日のメモ
+              </p>
+              <div class="spacer"></div>
+              <button
+                *ngIf="!editingMemo"
+                mat-icon-button
+                color="primary"
+                (click)="editMemo()"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                *ngIf="editingMemo"
+                mat-flat-button
+                color="primary"
+                (click)="updateMemo()"
+              >
+                保存
+              </button>
+            </div>
+          </div>
+          <p
+            class="today__memo-textarea"
+            *ngIf="dailyInfo.dailyMemo && !editingMemo"
+          >
+            {{ dailyInfo.dailyMemo }}
+          </p>
+          <form
+            [formGroup]="form"
+            *ngIf="editingMemo"
+            class="today__memo-textarea-editor"
+          >
+            <mat-form-field
+              class="today__memo-textarea-field"
+              appearance="outline"
+            >
+              <mat-label>体調など記入しましょう</mat-label>
+              <textarea
+                class="today__memo-textarea-editor"
+                matInput
+                rows="16"
+                formControlName="dailyMemo"
+              ></textarea>
+              <mat-error *ngIf="memoControl.hasError('maxlength')"
+                >{{ maxMemoLength }}文字以内で入力してください</mat-error
+              >
+            </mat-form-field>
+          </form>
+
+          <p class="today__text" *ngIf="!dailyInfo.dailyMemo && !editingMemo">
+            まだメモはありません
+          </p>
+        </div></mat-card
+      >
     </div>
   </div>
 </div>
