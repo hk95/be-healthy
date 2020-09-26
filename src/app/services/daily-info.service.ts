@@ -64,14 +64,6 @@ export class DailyInfoService {
       .valueChanges();
   }
 
-  getDailyInfos(authorId: string, date: string): Observable<DailyInfo[]> {
-    return this.db
-      .collection<DailyInfo>(`users/${authorId}/dailyInfos`, (ref) =>
-        ref.where('date', '<=', date).orderBy('date', 'desc').limit(7)
-      )
-      .valueChanges();
-  }
-
   getDailyInfosOfMonth(
     authorId: string,
     date: string
@@ -190,11 +182,10 @@ export class DailyInfoService {
   updateDailyInfoMemo(userId: string, date: string, dailyMemo: string) {
     const dateOfPath = this.getDateOfPath(date);
     const dayOfMonth = this.getDayOfMonth(date);
-    const memoLength = dailyMemo.length.toString();
     this.db
       .doc(`users/${userId}/dailyInfos/${dateOfPath}`)
       .set(
-        { list: { [dayOfMonth]: { dailyMemo: memoLength } }, dateOfPath },
+        { list: { [dayOfMonth]: { dailyMemo } }, dateOfPath },
         { merge: true }
       )
       .then(() => {
