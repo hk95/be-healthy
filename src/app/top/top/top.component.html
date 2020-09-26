@@ -1,11 +1,10 @@
 <div *ngIf="basicInfo$ | async; else loading" class="top">
+  <div class="top__wrap"><app-detail></app-detail></div>
   <div class="calendar-wrap">
     <full-calendar class="calendar" [options]="calendarOptions"></full-calendar>
 
     <p class="icon-text">*アイコンは登録した日付に表示されます</p>
   </div>
-
-  <div class="top__wrap"><app-detail></app-detail></div>
 </div>
 
 <ng-template #loading>
