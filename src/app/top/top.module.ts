@@ -13,6 +13,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetailComponent } from './detail/detail.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [TopComponent, DetailComponent],
@@ -27,6 +30,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTooltipModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule,
   ],
   providers: [DatePipe],
 })
