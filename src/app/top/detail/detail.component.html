@@ -36,10 +36,10 @@
   <div class="today__wrap">
     <div class="today__row">
       <div class="spacer"></div>
-      <dl class="today__body">
-        <dt class="today__body-title">体重</dt>
+      <dl class="today__content today__content--body">
+        <dt class="today__title">体重</dt>
         <dt *ngIf="dailyInfos[listIndex - 1]?.currentWeight">
-          <span class="today__body-amount">
+          <span class="today__amount">
             {{
               dailyInfos[listIndex - 1]?.currentWeight | number: '1.1-1'
             }}</span
@@ -47,22 +47,22 @@
           kg
         </dt>
         <dt
-          class="today__body-amount"
+          class="today__amount"
           *ngIf="!dailyInfos[listIndex - 1]?.currentWeight"
         >
           未入力
         </dt>
       </dl>
-      <dl class="today__body">
-        <dt class="today__body-title">体脂肪</dt>
+      <dl class="today__content today__content--body">
+        <dt class="today__title">体脂肪</dt>
         <dt *ngIf="dailyInfos[listIndex - 1]?.currentFat">
-          <span class="today__body-amount">{{
+          <span class="today__amount">{{
             dailyInfos[listIndex - 1]?.currentFat | number: '1.1-1'
           }}</span>
           %
         </dt>
         <dt
-          class="today__body-amount"
+          class="today__amount"
           *ngIf="!dailyInfos[listIndex - 1]?.currentFat"
         >
           未入力
@@ -81,10 +81,10 @@
   <div class="border"></div>
   <div class="today__wrap">
     <div class="today__row">
-      <dl class="today__body">
-        <dt class="today__body-title">摂取カロリー</dt>
+      <dl class="today__content">
+        <dt class="today__title">摂取カロリー</dt>
         <dt>
-          <span class="today__body-amount">{{
+          <span class="today__amount">{{
             (dailyInfos[listIndex - 1]?.totalCal | number: '1.1-1') || 0
           }}</span>
           kcal
