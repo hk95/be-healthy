@@ -8,22 +8,40 @@ p {
   margin: 0;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+.nav {
+  width: 100%;
+  margin: 0 auto;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.wrap-title {
-  font-weight: normal;
-  margin: 0;
+.detail-anchor {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  text-align: right;
+  font-size: 14px;
+  color: #337ab7;
+  text-decoration: none;
+
+  @media screen and (min-width: 750px) {
+    padding: 0;
+  }
 }
 
 .today {
   width: 100%;
-  max-width: 375px;
+  margin: 0 auto;
+  cursor: pointer;
+
+  &:hover {
+    @include mat-elevation(4);
+  }
 
   &__wrap {
+    padding: 32px 0;
   }
 
   &__row {
@@ -35,6 +53,8 @@ p {
 
     &--memo {
       margin-bottom: 0;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 
@@ -53,11 +73,7 @@ p {
 
   &__body-amount {
     opacity: 0.87;
-    font-size: 24px;
-  }
-
-  &__button {
-    display: block;
+    font-size: 22px;
   }
 
   &__text {
@@ -76,7 +92,7 @@ p {
     overflow: hidden;
     white-space: initial;
     word-break: break-all;
-    height: 100px;
+    min-height: 100px;
   }
 
   &__memo-textarea-editor {
@@ -88,78 +104,29 @@ p {
   }
 }
 
-.border {
-  margin: 32px 0;
-}
-
-.card {
-  display: flex;
-  outline: none;
-  max-width: 480px;
-  width: 100%;
-  margin: 0 auto;
-  cursor: pointer;
-
-  &--today {
-    border: 2px solid #009688;
-    margin-bottom: 32px;
-  }
-
-  @media screen and (min-width: 750px) {
-    max-width: 420px;
-    min-width: 380px;
-  }
-
-  &:hover {
-    @include mat-elevation(3);
-  }
-
-  &__title {
-    font-weight: normal;
-    margin-bottom: 16px;
-  }
-
-  &__weight {
-    margin-bottom: 8px;
-  }
-
-  &__fat {
-    margin-bottom: 8px;
-  }
-
-  &__icons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-}
-
-.wrap {
-  display: flex;
-  margin-bottom: 8px;
-
-  &--column {
-    flex-direction: column;
-  }
-}
-
 .box {
   cursor: pointer;
   outline: none;
-  height: 40px;
+  height: 56px;
   width: 40px;
-  padding: 0;
-  display: flex;
+  padding: 8px 0;
   align-items: center;
   justify-content: center;
   border: none;
   background: #ffffff;
-  margin: 0 4px;
   z-index: 10;
+
+  &__title {
+    font-size: 12px;
+  }
 }
 
-.icon {
+:host ::ng-deep.mat-button-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.meal-icon {
   width: 22px;
 
   &--breakfast {
@@ -167,6 +134,8 @@ p {
   }
 }
 
-.no-registration {
-  opacity: 0.3;
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
