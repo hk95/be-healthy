@@ -1,143 +1,228 @@
-<div *ngIf="dailyInfos">
-  <div class="grid">
-    <div *ngFor="let dailyInfo of dailyInfos; index as i">
-      <h4 *ngIf="i === 0" class="wrap-title">今日の記録</h4>
-      <h4 *ngIf="i === 1" class="wrap-title">今月の記録</h4>
-      <mat-card
-        class="card"
-        [ngClass]="i === 0 ? 'card--today' : ''"
-        routerLink="/daily-detail"
-        [queryParams]="{ date: dailyInfo.date }"
-      >
-        <div class="wrap wrap--column">
-          <mat-card-title class="card__title">{{
-            dailyInfo.date
-          }}</mat-card-title>
-          <mat-card-content>
-            <p class="card__weight">
-              体重：{{
-                dailyInfo.currentWeight
-                  ? (dailyInfo.currentWeight | number: '1.1-1')
-                  : '未入力'
-              }}
-              kg
-            </p>
-            <p class="card__fat">
-              体脂肪率：{{
-                dailyInfo.currentFat
-                  ? (dailyInfo.currentFat | number: '1.1-1')
-                  : '未入力'
-              }}
-              %
-            </p>
-            <p class="card__cal">
-              カロリー：{{
-                dailyInfo.totalCal ? (dailyInfo.totalCal | number: '1.1-1') : 0
-              }}kcal
-            </p>
-          </mat-card-content>
-        </div>
-        <div class="spacer"></div>
-        <mat-card-actions class="card__icons">
-          <div class="wrap">
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="体重・体脂肪"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/editor-weight"
-              [queryParams]="{ date: dailyInfo.date }"
-            >
-              <img
-                class="icon"
-                [class.no-registration]="!dailyInfo.currentWeight"
-                src="/assets/images/scale.svg"
-                alt=""
-              />
-            </a>
+<div class="nav">
+  <button
+    class="nav-icon"
+    [disabled]="minDate === date"
+    mat-icon-button
+    (click)="backDate()"
+  >
+    <mat-icon>navigate_before</mat-icon>
+  </button>
+  <div class="nav__date">{{ date }}</div>
+  <button
+    class="nav-icon"
+    [disabled]="today === date"
+    mat-icon-button
+    (click)="nextDate()"
+  >
+    <mat-icon>navigate_next</mat-icon>
+  </button>
+</div>
 
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="メモ"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/daily-detail"
-              fragment="memo"
-              [queryParams]="{ date: dailyInfo.date }"
-            >
-              <img
-                class="icon"
-                [class.no-registration]="
-                  !dailyInfo.dailyMemo || dailyInfo.dailyMemo === '0'
-                "
-                src="/assets/images/memo.svg
-            "
-                alt=""
-              />
-            </a>
-          </div>
-          <div class="wrap">
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="朝食"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/editor-meal/search"
-              [queryParams]="{ date: dailyInfo.date, meal: 'breakfast' }"
-            >
-              <img
-                class="icon icon--breakfast"
-                [class.no-registration]="!dailyInfo.breakfastCal"
-                src="/assets/images/breakfast.svg
-            "
-                alt=""
-              />
-            </a>
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="昼食"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/editor-meal/search"
-              [queryParams]="{ date: dailyInfo.date, meal: 'lunch' }"
-            >
-              <img
-                class="icon"
-                [class.no-registration]="!dailyInfo.lunchCal"
-                src="/assets/images/lunch.svg
-            "
-                alt=""
-              />
-            </a>
-            <a
-              mat-icon-button
-              color="primar"
-              matTooltip="夕食"
-              aria-label="Button that displays a tooltip when focused or hovered over"
-              class="box"
-              (click)="$event.stopPropagation()"
-              routerLink="/editor-meal/search"
-              [queryParams]="{ date: dailyInfo.date, meal: 'dinner' }"
-            >
-              <img
-                class="icon"
-                [class.no-registration]="!dailyInfo.dinnerCal"
-                src="/assets/images/dinner.svg
-            "
-                alt=""
-              />
-            </a>
-          </div>
-        </mat-card-actions>
-      </mat-card>
+<a
+  class="detail-anchor"
+  routerLink="/daily-detail"
+  [queryParams]="{
+    date: date
+  }"
+  >詳細へ</a
+>
+<mat-card
+  class="today"
+  [routerLink]="!editingMemo ? '/daily-detail' : null"
+  [queryParams]="{
+    date: date
+  }"
+>
+  <div class="today__wrap">
+    <div class="today__row">
+      <div class="spacer"></div>
+      <dl class="today__content today__content--body">
+        <dt class="today__title">体重</dt>
+        <dt *ngIf="dailyInfos[listIndex - 1]?.currentWeight">
+          <span class="today__amount">
+            {{
+              dailyInfos[listIndex - 1]?.currentWeight | number: '1.1-1'
+            }}</span
+          >
+          kg
+        </dt>
+        <dt
+          class="today__amount"
+          *ngIf="!dailyInfos[listIndex - 1]?.currentWeight"
+        >
+          未入力
+        </dt>
+      </dl>
+      <dl class="today__content today__content--body">
+        <dt class="today__title">体脂肪</dt>
+        <dt *ngIf="dailyInfos[listIndex - 1]?.currentFat">
+          <span class="today__amount">{{
+            dailyInfos[listIndex - 1]?.currentFat | number: '1.1-1'
+          }}</span>
+          %
+        </dt>
+        <dt
+          class="today__amount"
+          *ngIf="!dailyInfos[listIndex - 1]?.currentFat"
+        >
+          未入力
+        </dt>
+      </dl>
+      <button class="nav-icon" mat-icon-button color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <p class="today__text" *ngIf="prevWeight && prevFat && date === today">
+      前回の記録は{{ prevWeight | number: '1.1-1' }}kg、{{
+        prevFat | number: '1.1-1'
+      }}%です。
+    </p>
+  </div>
+  <div class="border"></div>
+  <div class="today__wrap">
+    <div class="today__row">
+      <dl class="today__content">
+        <dt class="today__title">摂取カロリー</dt>
+        <dt>
+          <span class="today__amount">{{
+            (dailyInfos[listIndex - 1]?.totalCal | number: '1.1-1') || 0
+          }}</span>
+          kcal
+        </dt>
+      </dl>
+    </div>
+    <div class="today__row">
+      <a
+        color="primar"
+        mat-button
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        class="box"
+        (click)="$event.stopPropagation()"
+        routerLink="/editor-meal/search"
+        [queryParams]="{
+          date: date,
+          meal: 'breakfast'
+        }"
+      >
+        <img
+          class="meal-icon meal-icon--breakfast"
+          [src]="
+            dailyInfos[listIndex - 1]?.breakfastCal
+              ? '/assets/images/breakfast.svg'
+              : '/assets/images/breakfast_outline.svg'
+          "
+          alt=""
+        />
+        <span class="box__title">朝食</span>
+      </a>
+      <a
+        mat-button
+        color="primar"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        class="box"
+        (click)="$event.stopPropagation()"
+        routerLink="/editor-meal/search"
+        [queryParams]="{
+          date: date,
+          meal: 'lunch'
+        }"
+      >
+        <img
+          class="meal-icon"
+          [src]="
+            dailyInfos[listIndex - 1]?.lunchCal
+              ? '/assets/images/lunch.svg'
+              : '/assets/images/lunch_outline.svg'
+          "
+          alt=""
+        />
+        <span class="box__title">昼食</span>
+      </a>
+      <a
+        mat-button
+        color="primar"
+        aria-label="Button that displays a tooltip when focused or hovered over"
+        class="box"
+        (click)="$event.stopPropagation()"
+        routerLink="/editor-meal/search"
+        [queryParams]="{
+          date: date,
+          meal: 'dinner'
+        }"
+      >
+        <img
+          class="meal-icon"
+          [src]="
+            dailyInfos[listIndex - 1]?.dinnerCal
+              ? '/assets/images/dinner.svg'
+              : '/assets/images/dinner_outline.svg'
+          "
+          alt=""
+        />
+        <span class="box__title">夕食</span>
+      </a>
     </div>
   </div>
-</div>
+  <div class="border"></div>
+
+  <div class="today__wrap">
+    <div class="card__memo">
+      <div class="today__row today__row--memo">
+        <p class="card__memo-title">
+          1日のメモ
+        </p>
+        <div class="spacer"></div>
+        <button
+          *ngIf="!editingMemo"
+          mat-icon-button
+          class="nav-icon"
+          color="primary"
+          (click)="$event.stopPropagation()"
+          (click)="editMemo()"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          *ngIf="editingMemo"
+          mat-flat-button
+          color="primary"
+          (click)="$event.stopPropagation()"
+          (click)="updateMemo()"
+        >
+          保存
+        </button>
+      </div>
+    </div>
+    <p
+      class="today__memo-textarea"
+      *ngIf="dailyInfos[listIndex - 1]?.dailyMemo && !editingMemo"
+    >
+      {{ dailyInfos[listIndex - 1]?.dailyMemo }}
+    </p>
+    <form
+      [formGroup]="form"
+      *ngIf="editingMemo"
+      class="today__memo-textarea-editor"
+    >
+      <mat-form-field class="today__memo-textarea-field" appearance="outline">
+        <mat-label>体調など記入しましょう</mat-label>
+        <textarea
+          class="today__memo-textarea-editor"
+          matInput
+          rows="16"
+          formControlName="dailyMemo"
+        ></textarea>
+        <mat-error *ngIf="memoControl.hasError('maxlength')"
+          >{{ maxMemoLength }}文字以内で入力してください</mat-error
+        >
+      </mat-form-field>
+    </form>
+
+    <p
+      class="today__text"
+      *ngIf="!dailyInfos[listIndex - 1]?.dailyMemo && !editingMemo"
+    >
+      まだメモはありません
+    </p>
+  </div></mat-card
+>

@@ -1,16 +1,12 @@
 <div *ngIf="basicInfo$ | async; else loading" class="top">
+  <div class="top__detail">
+    <app-detail [minDate]="minDate"></app-detail>
+  </div>
   <div class="calendar-wrap">
     <full-calendar class="calendar" [options]="calendarOptions"></full-calendar>
-    <ul class="dot">
-      <li class="dot__list-weight">
-        <span class="dot__list-text">体重・体脂肪</span>
-      </li>
-      <li class="dot__list-meal"><span class="dot__list-text">食事</span></li>
-    </ul>
-    <p class="dot__text">*登録した日付に表示されます</p>
-  </div>
 
-  <div class="top__wrap"><app-detail></app-detail></div>
+    <p class="icon-text">*アイコンは登録した日付に表示されます</p>
+  </div>
 </div>
 
 <ng-template #loading>

@@ -23,13 +23,13 @@
 }
 
 .actions {
-  padding-top: 24px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  padding: 24px 0;
+  display: flex;
   gap: 16px;
+  justify-content: center;
 
   @media screen and(max-width:750px) {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   &__button {

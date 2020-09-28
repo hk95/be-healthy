@@ -34,16 +34,21 @@ export class TopComponent implements OnInit, OnDestroy {
     weekends: true,
     theme: 'standart',
     headerToolbar: {
-      left: 'prev',
+      left: 'prevYear prev',
       center: 'title',
-      right: 'next',
+      right: 'next nextYear',
     },
     events: [],
     locale: 'ja',
     dayCellContent(event) {
       event.dayNumberText = event.dayNumberText.replace('日', '');
     },
-    businessHours: true,
+    dayCellClassNames(event) {
+      if (event.date < new Date(2018, 0, 1)) {
+        event.isFuture = true;
+      }
+    },
+    businessHours: false,
     dateClick: this.handleDateClick.bind(this),
   };
   basicInfo$: Observable<BasicInfo>;
@@ -66,7 +71,8 @@ export class TopComponent implements OnInit, OnDestroy {
     this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
     if (this.authService.isInitialLogin) {
       this.dialog.open(TutorialComponent, {
-        width: '100%',
+        width: '80%',
+        maxWidth: '500px',
       });
       this.authService.isInitialLogin = false;
     }
@@ -86,15 +92,13 @@ export class TopComponent implements OnInit, OnDestroy {
               if (monthData.list[i].currentWeight) {
                 this.isDataList.push({
                   date: correctedDate,
-                  display: 'list-item',
-                  color: '#1976D2',
+                  className: 'fc-weight',
                 });
               }
               if (monthData.list[i].totalCal) {
                 this.isDataList.push({
                   date: correctedDate,
-                  display: 'list-item',
-                  color: '#d32f2f',
+                  className: 'fc-meal',
                 });
               }
             }

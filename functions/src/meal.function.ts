@@ -18,6 +18,8 @@ export const addMeal = functions
         {
           list: {
             [data.dayOfMonth]: {
+              authorId: data.userId,
+              date: data.date,
               totalCal: increment,
               [`${data.meal}Cal`]: increment,
             },
@@ -32,6 +34,8 @@ export const addMeal = functions
       .doc(`users/${data.userId}/dailyInfos/${data.date}`)
       .set(
         {
+          authorId: data.userId,
+          date: data.date,
           totalCal: increment,
           [`${data.meal}Cal`]: increment,
         },
