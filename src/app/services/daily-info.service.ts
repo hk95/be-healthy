@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { DailyInfo, DailyInfoList, DailyMeal } from '../interfaces/daily-info';
 
 import { AngularFireFunctions } from '@angular/fire/functions';
@@ -132,23 +132,39 @@ export class DailyInfoService {
       | 'dailyMemo'
     >
   ) {
-    this.getDailyInfo(dailyInfo.authorId, dailyInfo.date).subscribe((isdoc) => {
-      const dateOfPath = this.getDateOfPath(dailyInfo.date);
-      const dayOfMonth = this.getDayOfMonth(dailyInfo.date);
-      if (!isdoc) {
-        const dailyId = this.db.createId();
-        this.db.doc(`users/${dailyInfo.authorId}/dailyInfos/${dateOfPath}`).set(
-          {
-            list: { [dayOfMonth]: { dailyId, ...dailyInfo } },
-            dateOfPath,
-          },
-          { merge: true }
-        );
-        return this.db
-          .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
-          .set({ dailyId, ...dailyInfo });
+    this.getDailyInfo(dailyInfo.authorId, dailyInfo.date)
+      .pipe(take(1))
+      .subscribe((isdoc) => {
+        const dateOfPath = this.getDateOfPath(dailyInfo.date);
+        const dayOfMonth = this.getDayOfMonth(dailyInfo.date);
+        if (!isdoc) {
+          const dailyId = this.db.createId();
+          this.db
+            .doc(`users/${dailyInfo.authorId}/dailyInfos/${dateOfPath}`)
+            .set(
+              {
+                list: { [dayOfMonth]: { dailyId, ...dailyInfo } },
+                dateOfPath,
+              },
+              { merge: true }
+            );
+          return this.db
+            .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
+            .set({ dailyId, ...dailyInfo });
+        }
+      });
+  }
+
+  createDailyInfosMonth(authorId: string, date: string) {
+    const dateOfPath = this.getDateOfPath(date);
+    const dayOfMonth = this.getDayOfMonth(date);
+
+    return this.db.doc(`users/${authorId}/dailyInfos/${dateOfPath}`).set(
+      { list: { [dayOfMonth]: { authorId, date } }, dateOfPath },
+      {
+        merge: true,
       }
-    });
+    );
   }
 
   updateDailyInfoBody(
@@ -185,7 +201,7 @@ export class DailyInfoService {
     this.db
       .doc(`users/${userId}/dailyInfos/${dateOfPath}`)
       .set(
-        { list: { [dayOfMonth]: { dailyMemo } }, dateOfPath },
+        { list: { [dayOfMonth]: { userId, date, dailyMemo } }, dateOfPath },
         { merge: true }
       )
       .then(() => {
@@ -195,7 +211,7 @@ export class DailyInfoService {
       });
     return this.db
       .doc(`users/${userId}/dailyInfos/${date}`)
-      .set({ dailyMemo }, { merge: true });
+      .set({ userId, date, dailyMemo }, { merge: true });
   }
 
   getSelectedFoodsOrSets(
