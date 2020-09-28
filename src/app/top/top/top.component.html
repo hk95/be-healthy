@@ -1,5 +1,7 @@
 <div *ngIf="basicInfo$ | async; else loading" class="top">
-  <div class="top__wrap"><app-detail></app-detail></div>
+  <div class="top__wrap">
+    <app-detail [minDate]="minDate"></app-detail>
+  </div>
   <div class="calendar-wrap">
     <full-calendar class="calendar" [options]="calendarOptions"></full-calendar>
 
