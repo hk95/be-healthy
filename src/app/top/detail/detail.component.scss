@@ -59,6 +59,8 @@ p {
   }
 
   &__body {
+    width: 30%;
+    min-width: 65px;
     display: flex;
     justify-content: center;
     align-items: center;
