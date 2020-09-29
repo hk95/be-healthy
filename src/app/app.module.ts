@@ -45,6 +45,7 @@ import { CreditCardComponent } from './dialogs/credit-card/credit-card.component
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { AvatarComponent } from './dialogs/avatar/avatar.component';
 import { TutorialComponent } from './dialogs/tutorial/tutorial.component';
+import { MealInputComponent } from './bottom-sheet/meal-input/meal-input.component';
 
 registerLocaleData(localeJa);
 FullCalendarModule.registerPlugins([dayGridPlugin]);
@@ -65,6 +66,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     ConfirmDialogComponent,
     AvatarComponent,
     TutorialComponent,
+    MealInputComponent,
   ],
   imports: [
     BrowserModule,
