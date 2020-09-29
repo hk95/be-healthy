@@ -78,14 +78,14 @@
         <mat-icon>edit</mat-icon>
       </button>
     </div>
-    <p class="today__text" *ngIf="prevWeight && prevFat && date === today">
+    <p class="today__text" *ngIf="prevWeight && prevFat">
       前回の記録は{{ prevWeight | number: '1.1-1' }}kg、{{
         prevFat | number: '1.1-1'
       }}%です。
     </p>
   </div>
   <div class="today__wrap" *ngIf="editingWeight">
-    <form [formGroup]="form">
+    <form [formGroup]="formBody">
       <div class="form-body">
         <mat-form-field appearance="outline" class="form-body__weight">
           <mat-label>体重</mat-label>
@@ -140,14 +140,7 @@
           (click)="$event.stopPropagation()"
           mat-stroked-button
           color="primary"
-          [disabled]="
-            currentWeightControl.hasError('required') ||
-            currentWeightControl.hasError('max') ||
-            currentWeightControl.hasError('mmin') ||
-            currentFatControl.hasError('required') ||
-            currentFatControl.hasError('max') ||
-            currentFatControl.hasError('mmin')
-          "
+          [disabled]="formBody.invalid"
         >
           更新
         </button>
@@ -264,7 +257,7 @@
           color="primary"
           (click)="$event.stopPropagation()"
           (click)="updateMemo()"
-          [disabled]="memoControl.hasError('maxlength')"
+          [disabled]="formMemo.invalid"
         >
           保存
         </button>
@@ -277,7 +270,7 @@
       {{ dailyInfos[listIndex - 1]?.dailyMemo }}
     </p>
     <form
-      [formGroup]="form"
+      [formGroup]="formMemo"
       *ngIf="editingMemo"
       class="today__memo-textarea-editor"
     >
