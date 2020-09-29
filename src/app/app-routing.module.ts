@@ -80,15 +80,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'editor-weight',
-        loadChildren: () =>
-          import('./editor-weight/editor-weight.module').then(
-            (m) => m.EditorWeightModule
-          ),
-        canLoad: [AuthGuard],
-        canActivate: [AuthGuard],
-      },
-      {
         path: 'daily-detail',
         loadChildren: () =>
           import('./daily-detail/daily-detail.module').then(
