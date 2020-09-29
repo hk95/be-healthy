@@ -21,11 +21,44 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
 
   date: string;
   dailyInfo: DailyInfo;
+  editingWeight = false;
   editingMemo = false;
-  maxMemoLength = 1000;
-  form = this.fb.group({
+  maxWeight = 200;
+  maxFat = 100;
+  minWeightAndFat = 0;
+  maxMemoLength = 500;
+  formBody = this.fb.group({
+    currentWeight: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxWeight),
+      ],
+    ],
+    currentFat: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxFat),
+      ],
+    ],
+  });
+  formMemo = this.fb.group({
     dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
+
+  get currentWeightControl(): FormControl {
+    return this.formBody.get('currentWeight') as FormControl;
+  }
+  get currentFatControl(): FormControl {
+    return this.formBody.get('currentFat') as FormControl;
+  }
+
+  get memoControl(): FormControl {
+    return this.formMemo.get('dailyMemo') as FormControl;
+  }
 
   mealsOfBreakfast: DailyMeal[] = [];
   mealsOfLunch: DailyMeal[] = [];
@@ -74,14 +107,11 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   ) {
     const routeSub = this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
-
       this.getDailyInfo();
       this.mainShellService.setTitle(this.date);
     });
-    const fragmentSub = this.getFragment();
 
     this.subscription.add(routeSub);
-    this.subscription.add(fragmentSub);
 
     this.getDailyInfoOfMeal();
 
@@ -112,7 +142,8 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
             date: this.date,
           });
         } else {
-          this.form.patchValue(dailyInfo);
+          this.formBody.patchValue(dailyInfo);
+          this.formMemo.patchValue(dailyInfo);
         }
         this.dailyInfo = dailyInfo;
       });
@@ -178,12 +209,22 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  get memoControl(): FormControl {
-    return this.form.get('dailyMemo') as FormControl;
-  }
-
   editMemo() {
     this.editingMemo = true;
+  }
+
+  updateWeight() {
+    if (this.editingWeight === true) {
+      this.dailyInfoService.updateDailyInfoBody({
+        authorId: this.userId,
+        date: this.date,
+        currentWeight: this.formBody.value.currentWeight,
+        currentFat: this.formBody.value.currentFat,
+      });
+      this.editingWeight = false;
+    } else {
+      this.editingWeight = true;
+    }
   }
 
   updateMemo() {
@@ -191,7 +232,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
       this.date,
-      this.form.value.dailyMemo
+      this.formMemo.value.dailyMemo
     );
   }
 

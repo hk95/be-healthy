@@ -162,6 +162,28 @@ p {
   }
 }
 
+.form-body {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  &__weight {
+    width: 45%;
+  }
+
+  &__fat {
+    width: 45%;
+  }
+
+  &__suffix {
+    margin-left: 8px;
+  }
+
+  &__button {
+    text-align: center;
+  }
+}
+
 .border {
   margin: 8px 0;
 }
