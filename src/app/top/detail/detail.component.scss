@@ -78,7 +78,7 @@ p {
 
   &__amount {
     opacity: 0.87;
-    font-size: 22px;
+    font-size: 21px;
   }
 
   &__text {
@@ -106,6 +106,28 @@ p {
 
   &__memo-textarea-field {
     width: 100%;
+  }
+}
+
+.form-body {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  &__weight {
+    width: 45%;
+  }
+
+  &__fat {
+    width: 45%;
+  }
+
+  &__suffix {
+    margin-left: 8px;
+  }
+
+  &__button {
+    text-align: center;
   }
 }
 

@@ -31,12 +31,38 @@ export class DetailComponent implements OnInit, OnDestroy {
   listIndex = new Date().getDate();
   prevWeight: number;
   prevFat: number;
+  editingWeight = false;
   editingMemo = false;
+  maxWeight = 200;
+  maxFat = 100;
+  minWeightAndFat = 0;
   maxMemoLength = 500;
   form = this.fb.group({
+    currentWeight: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxWeight),
+      ],
+    ],
+    currentFat: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxFat),
+      ],
+    ],
     dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
 
+  get currentWeightControl(): FormControl {
+    return this.form.get('currentWeight') as FormControl;
+  }
+  get currentFatControl(): FormControl {
+    return this.form.get('currentFat') as FormControl;
+  }
   get memoControl(): FormControl {
     return this.form.get('dailyMemo') as FormControl;
   }
@@ -117,6 +143,21 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.editingMemo = true;
   }
 
+  updateWeight() {
+    if (this.editingWeight === true) {
+      this.dailyInfoService.updateDailyInfoBody({
+        authorId: this.userId,
+        date: this.date,
+        currentWeight: this.form.value.currentWeight,
+        currentFat: this.form.value.currentFat,
+      });
+      this.editingWeight = false;
+    } else {
+      this.editingWeight = true;
+    }
+    console.log(this.editingWeight);
+  }
+
   updateMemo() {
     this.editingMemo = false;
     this.dailyInfoService.updateDailyInfoMemo(
@@ -127,6 +168,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   backDate() {
+    this.editingWeight = false;
     this.editingMemo = false;
     this.listIndex--;
     this.dateDiff--;
@@ -140,12 +182,29 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.form.patchValue(this.dailyInfos[this.listIndex - 1]);
     } else {
       this.form = this.fb.group({
+        currentWeight: [
+          '',
+          [
+            Validators.required,
+            Validators.min(this.minWeightAndFat),
+            Validators.max(this.maxWeight),
+          ],
+        ],
+        currentFat: [
+          '',
+          [
+            Validators.required,
+            Validators.min(this.minWeightAndFat),
+            Validators.max(this.maxFat),
+          ],
+        ],
         dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
       });
     }
   }
 
   nextDate() {
+    this.editingWeight = false;
     this.editingMemo = false;
     this.listIndex++;
     this.dateDiff++;
@@ -159,6 +218,22 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.form.patchValue(this.dailyInfos[this.listIndex - 1]);
     } else {
       this.form = this.fb.group({
+        currentWeight: [
+          '',
+          [
+            Validators.required,
+            Validators.min(this.minWeightAndFat),
+            Validators.max(this.maxWeight),
+          ],
+        ],
+        currentFat: [
+          '',
+          [
+            Validators.required,
+            Validators.min(this.minWeightAndFat),
+            Validators.max(this.maxFat),
+          ],
+        ],
         dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
       });
     }
