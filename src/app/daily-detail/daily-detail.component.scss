@@ -4,6 +4,7 @@
 
 h2 {
   margin: 0;
+  margin-bottom: 8px;
   width: 100%;
   max-width: 500px;
   text-align: left;
@@ -16,10 +17,12 @@ p {
 }
 
 .wrap {
-  max-height: 1500px;
+  width: 100%;
+  max-height: 2000px;
 }
+
 .vertical-line {
-  margin: 0 32px;
+  margin: 0 16px;
   width: 1px;
   height: 54px;
   background-color: rgba(#000, 0.2);
@@ -37,6 +40,7 @@ p {
   border-radius: 0;
   position: sticky;
   top: 0;
+  left: 0;
 }
 
 .dailyInfo {
@@ -70,6 +74,10 @@ p {
   max-width: 500px;
   margin-bottom: 32px;
 
+  &--meal {
+    margin-bottom: 16px;
+  }
+
   &__wrap {
     display: flex;
     justify-content: center;
@@ -89,19 +97,11 @@ p {
   &__icon-breakfast {
     margin-left: 8px;
     width: 30px;
-
-    &--no-meal {
-      opacity: 0.3;
-    }
   }
 
   &__icon {
     margin-left: 8px;
     width: 20px;
-
-    &--no-meal {
-      opacity: 0.3;
-    }
   }
 
   &__memo-title {
@@ -115,7 +115,7 @@ p {
   }
 
   &__content {
-    height: 200px;
+    height: 180px;
     overflow: scroll;
   }
 
@@ -162,10 +162,15 @@ p {
   }
 }
 
+.form {
+  width: 100%;
+}
+
 .form-body {
   display: flex;
   justify-content: center;
   gap: 16px;
+  width: 100%;
 
   &__weight {
     width: 45%;
@@ -229,4 +234,6 @@ ngx-charts-pie-chart {
   left: 0;
   text-align: center;
   background: #fafafa;
+  display: flex;
+  justify-content: center;
 }
