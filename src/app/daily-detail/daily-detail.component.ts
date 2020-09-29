@@ -8,6 +8,7 @@ import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-daily-detail',
@@ -124,14 +125,6 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  getFragment() {
-    this.route.fragment.subscribe((v) => {
-      if (v === 'memo') {
-        this.editingMemo = true;
-      }
-    });
-  }
-
   getDailyInfo() {
     const dailyInfoSub = this.dailyInfoService
       .getDailyInfo(this.userId, this.date)
@@ -144,6 +137,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
         } else {
           this.formBody.patchValue(dailyInfo);
           this.formMemo.patchValue(dailyInfo);
+          if (!dailyInfo.currentWeight) {
+            this.getPreviuosWeightAndFat();
+          }
         }
         this.dailyInfo = dailyInfo;
       });
@@ -207,6 +203,17 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       this.view = [event.target.innerWidth / 1.3, event.target.innerWidth / 2];
       this.font = innerWidth / 28;
     }
+  }
+
+  private getPreviuosWeightAndFat() {
+    this.dailyInfoService
+      .getPreviousDailyInfo(this.userId, this.date)
+      .pipe(take(1))
+      .subscribe((dailyInfos?: DailyInfo[]) => {
+        if (dailyInfos[0]?.currentWeight !== undefined) {
+          this.formBody.patchValue(dailyInfos[0]);
+        }
+      });
   }
 
   editMemo() {
