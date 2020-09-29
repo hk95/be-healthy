@@ -1,0 +1,37 @@
+.bottom-sheet {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.choice-input {
+  text-align: right;
+}
+
+.suffix {
+  margin-left: 8px;
+}
+
+.amountper {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 0;
+  color: #009688;
+  margin-bottom: 24px;
+}
+
+.food-cal {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 24px;
+
+  &__amount {
+    margin: 0;
+  }
+}
