@@ -60,6 +60,7 @@ export class MySetComponent implements OnInit, OnDestroy {
     });
     this.subscription.add(routerSub);
   }
+
   getSets() {
     this.loading = true;
     this.setService
@@ -82,6 +83,7 @@ export class MySetComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
   }
+
   addSet(amount: number, set: Set) {
     const meal: DailyMeal = { mealId: '', set, amount };
     this.dailyInfoService.addMeal(meal, this.authService.uid, this.date, 'set');
@@ -94,6 +96,7 @@ export class MySetComponent implements OnInit, OnDestroy {
 
   goToSetPage() {
     this.dailyInfoService.goToSetPage(this.date, this.meal);
+    this.setService.addingDailyInfo();
   }
 
   ngOnInit(): void {
