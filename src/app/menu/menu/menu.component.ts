@@ -17,6 +17,7 @@ export class MenuComponent implements OnInit {
   ) {
     this.mainShellService.setTitle('マイメニュー');
   }
+
   backToMeal() {
     this.router.navigate(['/editor-meal/my-set'], {
       queryParams: {
@@ -25,5 +26,6 @@ export class MenuComponent implements OnInit {
       },
     });
   }
+
   ngOnInit(): void {}
 }
