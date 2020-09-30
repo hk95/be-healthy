@@ -61,6 +61,10 @@
 
   @media screen and (max-width: 750px) {
     left: 10vw;
+
+    @media screen and (max-width: 330px) {
+      left: 4vw;
+    }
   }
 }
 
