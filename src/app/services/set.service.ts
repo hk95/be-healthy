@@ -17,12 +17,17 @@ import { Location } from '@angular/common';
 })
 export class SetService {
   submitted: boolean;
+  querySetParam: boolean;
   constructor(
     private db: AngularFirestore,
     private router: Router,
     private snackBar: MatSnackBar,
     private location: Location
   ) {}
+
+  addingDailyInfo() {
+    this.querySetParam = this.querySetParam ? false : true;
+  }
 
   getSets(
     userId: string,
