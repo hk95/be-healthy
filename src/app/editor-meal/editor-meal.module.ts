@@ -17,6 +17,8 @@ import { MatCardModule } from '@angular/material/card';
 import { FavFoodsComponent } from './fav-foods/fav-foods.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatBottomSheetModule,
   ],
 })
 export class EditorMealModule {}
