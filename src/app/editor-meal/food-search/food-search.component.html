@@ -61,7 +61,7 @@
                 <span matSuffix>{{ food.unit }}</span>
                 <mat-error
                   *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
-                  >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+                  >{{ maxAmount }}以内で入力してください</mat-error
                 >
               </mat-form-field>
               <p class="food__cal">
@@ -71,6 +71,16 @@
             </form>
 
             <button
+              class="open-sheet"
+              mat-icon-button
+              color="primary"
+              (click)="openBottomSheet(food)"
+            >
+              <mat-icon>add_box</mat-icon>
+            </button>
+
+            <button
+              class="add-meal"
               mat-icon-button
               color="primary"
               (click)="addFood(amount[i], food)"
