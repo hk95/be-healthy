@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+
 .back {
   height: 40px;
   width: 100%;
@@ -10,10 +11,12 @@
   border-right: none;
   border-radius: 0;
 }
+
 .no-select {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+
   &__title {
     font-size: 18px;
     display: flex;
@@ -21,6 +24,7 @@
       justify-content: center;
     }
   }
+
   &__text {
     @media screen and (min-width: 750px) {
       display: flex;
@@ -28,32 +32,38 @@
       align-items: center;
     }
   }
+
   &__figure {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
+
   &__example {
     font-size: 15px;
     margin: 0;
     color: rgba(#000000, 0.6);
   }
+
   &__image {
     background: center/cover;
     width: 100%;
     max-width: 300px;
   }
+
   &__create {
     margin: 0 auto 16px auto;
     max-width: 200px;
   }
 }
+
 .tabs {
   background: #fafafa;
   z-index: 5;
   position: sticky;
   top: 0;
 }
+
 .mat-tab-label-meal {
   width: 25%;
   margin: 0 4px;
@@ -64,8 +74,20 @@
   max-width: 700px;
   margin: 0 auto;
   padding: 32px 8px;
+
   &--content {
-    @include mat-elevation(2);
     background: #fff;
+  }
+}
+
+.open-sheet {
+  @media screen and(min-width:750px) {
+    display: none;
+  }
+}
+
+.add-meal {
+  @media screen and(max-width:750px) {
+    display: none;
   }
 }
