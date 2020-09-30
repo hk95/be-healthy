@@ -76,6 +76,15 @@
         </form>
 
         <button
+          class="open-sheet"
+          mat-icon-button
+          color="primary"
+          (click)="openBottomSheet(set)"
+        >
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button
+          class="add-meal"
           mat-icon-button
           color="primary"
           (click)="addSet(amount[i], set)"
