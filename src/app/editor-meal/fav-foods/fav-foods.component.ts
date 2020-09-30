@@ -10,6 +10,9 @@ import { AverageService } from 'src/app/services/average.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
 
 @Component({
   selector: 'app-fav-foods',
@@ -46,7 +49,9 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private averageService: AverageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private bottomSheet: MatBottomSheet
   ) {
     const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
@@ -61,15 +66,23 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     this.subscription.add(routeSub);
     this.subscription.add(routerSub);
   }
+
   addFood(amount: number, food: Food) {
-    const meal: DailyMeal = { mealId: '', food, amount };
-    this.dailyInfoService.addMeal(
-      meal,
-      this.authService.uid,
-      this.date,
-      'food'
-    );
+    if (amount >= 0) {
+      const meal: DailyMeal = { mealId: '', food, amount };
+      this.dailyInfoService.addMeal(
+        meal,
+        this.authService.uid,
+        this.date,
+        'food'
+      );
+    } else {
+      this.snackBar.open('数値を入力してください', null, {
+        duration: 2000,
+      });
+    }
   }
+
   getFoods() {
     this.loading = true;
     this.foodService
@@ -100,7 +113,21 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     this.foodService.unLikeFavFood(this.authService.uid, foodId);
     this.favFoods.splice(index, 1);
   }
+
+  openBottomSheet(food: Food): void {
+    this.bottomSheet.open(MealInputComponent, {
+      data: {
+        userId: this.authService.uid,
+        date: this.date,
+        maxAmount: this.maxAmount,
+        minAmount: this.minAmount,
+        food,
+      },
+    });
+  }
+
   ngOnInit(): void {}
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
