@@ -69,8 +69,7 @@
         </dt>
       </dl>
       <button
-        (click)="updateWeight()"
-        (click)="$event.stopPropagation()"
+        (click)="updateWeight(); $event.stopPropagation()"
         class="nav-icon"
         mat-icon-button
         color="primary"
@@ -136,8 +135,7 @@
 
       <div class="form-body__button">
         <button
-          (click)="updateWeight()"
-          (click)="$event.stopPropagation()"
+          (click)="updateWeight(); $event.stopPropagation()"
           mat-stroked-button
           color="primary"
           [disabled]="formBody.invalid"
@@ -246,8 +244,7 @@
           mat-icon-button
           class="nav-icon"
           color="primary"
-          (click)="$event.stopPropagation()"
-          (click)="editMemo()"
+          (click)="editMemo(); $event.stopPropagation()"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -255,8 +252,7 @@
           *ngIf="editingMemo"
           mat-flat-button
           color="primary"
-          (click)="$event.stopPropagation()"
-          (click)="updateMemo()"
+          (click)="updateMemo(); $event.stopPropagation()"
           [disabled]="formMemo.invalid"
         >
           保存
