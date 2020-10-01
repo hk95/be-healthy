@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
+import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
   selector: 'app-my-set',
@@ -21,12 +22,14 @@ import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.c
 })
 export class MySetComponent implements OnInit, OnDestroy {
   private lastDoc: QueryDocumentSnapshot<Set>;
+  private subscription = new Subscription();
 
+  selectedMealsNum: number;
+  maxSelectNum = 50;
   amount = [].fill(0);
   date: string;
   meal: string;
   sets: Set[] = new Array();
-  subscription = new Subscription();
   minAmount = 0;
   maxAmount = 100;
   getNumber = 10;
@@ -51,18 +54,22 @@ export class MySetComponent implements OnInit, OnDestroy {
     private averageService: AverageService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private mainShellService: MainShellService
   ) {
-    this.route.queryParamMap.subscribe((paramMaps) => {
+    const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
+      this.getSets();
     });
-    this.getSets();
+    const selectedSub = this.getSelectedMeals();
     const routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
       }
     });
+    this.subscription.add(routeSub);
+    this.subscription.add(selectedSub);
     this.subscription.add(routerSub);
   }
 
@@ -124,6 +131,12 @@ export class MySetComponent implements OnInit, OnDestroy {
         minAmount: this.minAmount,
         set,
       },
+    });
+  }
+
+  getSelectedMeals() {
+    this.mainShellService.selectedMeals.subscribe((v) => {
+      this.selectedMealsNum = v?.length;
     });
   }
 
