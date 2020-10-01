@@ -14,6 +14,7 @@ import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
+import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
   selector: 'app-food-search',
@@ -21,13 +22,16 @@ import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.c
   styleUrls: ['./food-search.component.scss'],
 })
 export class FoodSearchComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
+  selectedMealsNum: number;
+  maxSelectNum = 50;
   getNumber = 500;
   amount = [].fill(0);
   date: string;
   meal: string;
   isLikedlist: string[] = new Array();
   config = this.searchService.config;
-  subscription = new Subscription();
   minAmount = 0;
   maxAmount = 10000;
   amountForm = this.fb.group({
@@ -50,7 +54,8 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     private averageService: AverageService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private mainShellService: MainShellService
   ) {
     const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
@@ -58,12 +63,15 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
       this.getFavFoods();
     });
 
+    const selectedSub = this.getSelectedMeals();
+
     const routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
       }
     });
     this.subscription.add(routeSub);
+    this.subscription.add(selectedSub);
     this.subscription.add(routerSub);
   }
 
@@ -123,6 +131,12 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
         minAmount: this.minAmount,
         food,
       },
+    });
+  }
+
+  getSelectedMeals() {
+    this.mainShellService.selectedMeals.subscribe((v) => {
+      this.selectedMealsNum = v?.length;
     });
   }
 

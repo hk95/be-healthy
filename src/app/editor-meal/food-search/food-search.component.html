@@ -1,4 +1,19 @@
 <div class="tab tab--content">
+  <p
+    [ngClass]="
+      selectedMealsNum < maxSelectNum
+        ? 'selected-number'
+        : 'selected-number selected-number--max'
+    "
+    *ngIf="selectedMealsNum !== 0"
+  >
+    <span
+      class="selected-number__max-text"
+      *ngIf="selectedMealsNum >= maxSelectNum"
+      >これ以上追加できません</span
+    >{{ selectedMealsNum }}品選択中
+  </p>
+
   <ais-instantsearch [config]="config">
     <div class="search-box">
       <ais-search-box
@@ -75,6 +90,7 @@
               mat-icon-button
               color="primary"
               (click)="openBottomSheet(food)"
+              [disabled]="selectedMealsNum >= maxSelectNum"
             >
               <mat-icon>add_box</mat-icon>
             </button>
@@ -84,7 +100,11 @@
               mat-icon-button
               color="primary"
               (click)="addFood(amount[i], food)"
-              [disabled]="amount[i] > maxAmount || amount[i] < minAmount"
+              [disabled]="
+                amount[i] > maxAmount ||
+                amount[i] < minAmount ||
+                selectedMealsNum >= maxSelectNum
+              "
             >
               <mat-icon>add_box</mat-icon>
             </button>
