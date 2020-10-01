@@ -91,3 +91,17 @@
     display: none;
   }
 }
+
+.selected-number {
+  margin: 0;
+  margin-bottom: 16px;
+  text-align: right;
+
+  &--max {
+    color: #e25241;
+  }
+
+  &__max-text {
+    margin-right: 32px;
+  }
+}
