@@ -1,6 +1,6 @@
 <mat-spinner class="spinner" diameter="40" *ngIf="loading"></mat-spinner>
-<ng-template #noSelected>
-  <div *ngIf="!loading">
+<div *ngIf="!loading">
+  <ng-template #noSelected>
     <div class="tab">
       <div class="no-select">
         <h3 class="no-select__title">
@@ -35,62 +35,62 @@
         </mat-card>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
 
-<div
-  class="tab tab--content"
-  *ngIf="totalCal$ | async as totalCal; else noSelected"
->
-  <div class="total">
-    <dt class="total__title">
-      合計摂取カロリー
-    </dt>
-    <dd class="total__cal">{{ totalCal | number: '1.1-1' }} kcal</dd>
-  </div>
+  <div
+    class="tab tab--content"
+    *ngIf="selectedFoodsOrSets?.length > 0; else noSelected"
+  >
+    <div class="total">
+      <dt class="total__title">
+        合計摂取カロリー
+      </dt>
+      <dd class="total__cal">{{ totalCal | number: '1.1-1' }} kcal</dd>
+    </div>
 
-  <div *ngFor="let foodOrSet of selectedFoodsOrSets$ | async">
-    <p class="border"></p>
-    <div class="food">
-      <div class="food__wrap">
-        <p class="food__name">
-          {{
-            foodOrSet.food ? foodOrSet.food.foodName : foodOrSet.set.setTitle
-          }}
-        </p>
-        <p class="food__selected-amount">
-          {{ foodOrSet.amount
-          }}{{ foodOrSet.food ? foodOrSet.food.unit : 'セット' }}
-        </p>
-      </div>
-      <div class="spacer"></div>
-      <div>
-        <p class="food__cal">
-          {{
-            foodOrSet.amount *
-              (foodOrSet.food
+    <div *ngFor="let foodOrSet of selectedFoodsOrSets">
+      <p class="border"></p>
+      <div class="food">
+        <div class="food__wrap">
+          <p class="food__name">
+            {{
+              foodOrSet.food ? foodOrSet.food.foodName : foodOrSet.set.setTitle
+            }}
+          </p>
+          <p class="food__selected-amount">
+            {{ foodOrSet.amount
+            }}{{ foodOrSet.food ? foodOrSet.food.unit : 'セット' }}
+          </p>
+        </div>
+        <div class="spacer"></div>
+        <div>
+          <p class="food__cal">
+            {{
+              foodOrSet.amount *
+                (foodOrSet.food
+                  ? foodOrSet.food.foodCalPerAmount
+                  : foodOrSet.set.setCal) | number: '1.1-1'
+            }}
+            kcal
+          </p>
+        </div>
+
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="
+            deleteMeal(
+              foodOrSet.mealId,
+              foodOrSet.amount,
+              foodOrSet.food
                 ? foodOrSet.food.foodCalPerAmount
-                : foodOrSet.set.setCal) | number: '1.1-1'
-          }}
-          kcal
-        </p>
+                : foodOrSet.set.setCal
+            )
+          "
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
       </div>
-
-      <button
-        mat-icon-button
-        color="warn"
-        (click)="
-          deleteMeal(
-            foodOrSet.mealId,
-            foodOrSet.amount,
-            foodOrSet.food
-              ? foodOrSet.food.foodCalPerAmount
-              : foodOrSet.set.setCal
-          )
-        "
-      >
-        <mat-icon>clear</mat-icon>
-      </button>
     </div>
   </div>
 </div>
