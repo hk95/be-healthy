@@ -27,6 +27,20 @@
   </ng-template>
 
   <div class="tab tab--content" *ngIf="favFoods.length > 0; else noFav">
+    <p
+      [ngClass]="
+        selectedMealsNum < maxSelectNum
+          ? 'selected-number'
+          : 'selected-number selected-number--max'
+      "
+      *ngIf="selectedMealsNum !== 0"
+    >
+      <span
+        class="selected-number__max-text"
+        *ngIf="selectedMealsNum >= maxSelectNum"
+        >これ以上追加できません</span
+      >{{ selectedMealsNum }}品選択中
+    </p>
     <div *ngFor="let food of favFoods; index as i">
       <div class="food">
         <button
@@ -76,7 +90,9 @@
           mat-icon-button
           color="primary"
           (click)="openBottomSheet(food)"
+          [disabled]="selectedMealsNum >= maxSelectNum"
         >
+          = maxSelectNum >
           <mat-icon>add_box</mat-icon>
         </button>
         <button
@@ -84,7 +100,11 @@
           mat-icon-button
           color="primary"
           (click)="addFood(amount[i], food)"
-          [disabled]="amount[i] > maxAmount || amount[i] < minAmount"
+          [disabled]="
+            amount[i] > maxAmount ||
+            amount[i] < minAmount ||
+            selectedMealsNum >= maxSelectNum
+          "
         >
           <mat-icon>add_box</mat-icon>
         </button>
