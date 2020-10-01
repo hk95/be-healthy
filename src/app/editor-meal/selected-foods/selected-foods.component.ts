@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { switchMap } from 'rxjs/operators';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AverageService } from 'src/app/services/average.service';
 import { DailyMeal } from 'src/app/interfaces/daily-info';
+import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
   selector: 'app-selected-foods',
@@ -14,11 +14,12 @@ import { DailyMeal } from 'src/app/interfaces/daily-info';
   styleUrls: ['./selected-foods.component.scss'],
 })
 export class SelectedFoodsComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   date: string;
   meal: string;
-  selectedFoodsOrSets$: Observable<DailyMeal[]>;
-  totalCal$: Observable<number>;
-  subscription = new Subscription();
+  selectedFoodsOrSets: DailyMeal[];
+  totalCal = 0;
   loading: boolean;
 
   constructor(
@@ -26,37 +27,13 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private averageService: AverageService
+    private averageService: AverageService,
+    private mainShellService: MainShellService
   ) {
     this.loading = true;
     const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
-      this.selectedFoodsOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
-        this.authService.uid,
-        this.date,
-        this.meal
-      );
-
-      this.totalCal$ = this.selectedFoodsOrSets$.pipe(
-        switchMap((meals) => {
-          if (meals) {
-            let currentcal = 0;
-            meals.forEach((meal) => {
-              if (meal.set) {
-                return (currentcal += meal.set.setCal * meal.amount);
-              } else if (meal.food) {
-                return (currentcal += meal.food.foodCalPerAmount * meal.amount);
-              }
-            });
-            this.loading = false;
-            return of(currentcal);
-          } else {
-            this.loading = false;
-            return;
-          }
-        })
-      );
     });
 
     const routerSub = this.router.events.subscribe((event) => {
@@ -65,9 +42,37 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
       }
     });
 
+    const mealSub = this.getSelectedMeals();
+
     this.subscription.add(routeSub);
     this.subscription.add(routerSub);
+    this.subscription.add(mealSub);
   }
+
+  getSelectedMeals() {
+    this.mainShellService.selectedMeals.subscribe((v) => {
+      if (v) {
+        this.selectedFoodsOrSets = v;
+        v.forEach((meal: DailyMeal) => {
+          if (meal) {
+            if (meal.set) {
+              return (this.totalCal += meal.set.setCal * meal.amount);
+            } else if (meal.food) {
+              return (this.totalCal +=
+                meal.food.foodCalPerAmount * meal.amount);
+            }
+          } else {
+            this.totalCal = 0;
+          }
+        });
+        this.loading = false;
+      } else {
+        this.totalCal = 0;
+        this.loading = false;
+      }
+    });
+  }
+
   deleteMeal(mealId: string, amount: number, cal: number) {
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
@@ -78,31 +83,8 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(): void {
-    this.dailyInfoService.whichMeal$.subscribe((whichMeal) => {
-      if (whichMeal !== 'notChange') {
-        this.meal = whichMeal;
-        this.selectedFoodsOrSets$ = this.dailyInfoService.getSelectedFoodsOrSets(
-          this.authService.uid,
-          this.date,
-          this.meal
-        );
-        this.totalCal$ = this.selectedFoodsOrSets$.pipe(
-          switchMap((meals) => {
-            let currentcal = 0;
-            meals.forEach((meal) => {
-              if (meal.set) {
-                return (currentcal += meal.set.setCal * meal.amount);
-              } else if (meal.food.foodCalPerAmount) {
-                return (currentcal += meal.food.foodCalPerAmount * meal.amount);
-              }
-            });
-            return of(currentcal);
-          })
-        );
-      }
-    });
-  }
+  ngOnInit(): void {}
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
