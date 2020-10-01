@@ -147,7 +147,6 @@ export class MySetComponent implements OnInit, OnDestroy {
           this.lastDoc = null;
           this.meal = whichMeal;
           this.sets = new Array();
-          this.getSets();
         }
       }
     );
