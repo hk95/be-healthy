@@ -87,8 +87,7 @@
 
             <div class="form-body__button">
               <button
-                (click)="updateWeight()"
-                (click)="$event.stopPropagation()"
+                (click)="updateWeight(); $event.stopPropagation()"
                 mat-stroked-button
                 color="primary"
                 [disabled]="formBody.invalid"
