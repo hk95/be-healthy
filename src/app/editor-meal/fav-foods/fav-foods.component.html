@@ -27,19 +27,8 @@
   </ng-template>
 
   <div class="tab tab--content" *ngIf="favFoods.length > 0; else noFav">
-    <p
-      [ngClass]="
-        selectedMealsNum < maxSelectNum
-          ? 'selected-number'
-          : 'selected-number selected-number--max'
-      "
-      *ngIf="selectedMealsNum !== 0"
-    >
-      <span
-        class="selected-number__max-text"
-        *ngIf="selectedMealsNum >= maxSelectNum"
-        >これ以上追加できません</span
-      >{{ selectedMealsNum }}品選択中
+    <p class="selected-max" *ngIf="selectedMealsNum >= maxSelectNum">
+      これ以上追加できません
     </p>
     <div *ngFor="let food of favFoods; index as i">
       <div class="food">
