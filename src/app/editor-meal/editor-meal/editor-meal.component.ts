@@ -31,14 +31,18 @@ export class EditorMealComponent implements OnInit, OnDestroy {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
       this.mainShellService.setTitle(this.date);
-      this.dailyInfoService
-        .getSelectedFoodsOrSets(this.authService.uid, this.date, this.meal)
-        .subscribe((v) => {
-          this.selectedFoodsOrSets = v;
-          this.mainShellService.setSelectedMeals(this.selectedFoodsOrSets);
-        });
+      this.getMeals();
       this.mainShellService.setTitleMeal(this.meal);
     });
+  }
+
+  getMeals() {
+    this.dailyInfoService
+      .getSelectedFoodsOrSets(this.authService.uid, this.date, this.meal)
+      .subscribe((v) => {
+        this.selectedFoodsOrSets = v;
+        this.mainShellService.setSelectedMeals(this.selectedFoodsOrSets);
+      });
   }
 
   ngOnInit(): void {}
