@@ -43,7 +43,7 @@
         マイセット
       </a>
       <a
-        class="mat-tab-label-meal"
+        class="mat-tab-label-meal mat-tab-label-meal--selected"
         mat-tab-link
         routerLink="selected-foods"
         [queryParams]="{ date: date, meal: meal }"
@@ -51,7 +51,16 @@
         #rla3="routerLinkActive"
         [active]="rla3.isActive"
       >
-        選択項目
+        <span
+          [matBadge]="
+            selectedFoodsOrSets?.length !== 0 ? selectedFoodsOrSets?.length : ''
+          "
+          [matBadgeColor]="
+            selectedFoodsOrSets?.length < maxSelectNum ? 'primary' : 'warn'
+          "
+          matBadgeOverlap="true"
+          >選択項目</span
+        >
       </a>
     </nav>
   </div>

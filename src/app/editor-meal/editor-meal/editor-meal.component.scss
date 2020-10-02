@@ -68,6 +68,17 @@
   width: 25%;
   margin: 0 4px;
   padding: 0 !important;
+  min-width: 70px !important;
+
+  &--selected {
+    width: 30%;
+  }
+}
+
+.mat-badge-content {
+  @media screen and(min-width:340px) {
+    right: -16px !important;
+  }
 }
 
 .tab {
@@ -92,16 +103,9 @@
   }
 }
 
-.selected-number {
+.selected-max {
   margin: 0;
   margin-bottom: 16px;
-  text-align: right;
-
-  &--max {
-    color: #e25241;
-  }
-
-  &__max-text {
-    margin-right: 32px;
-  }
+  text-align: center;
+  color: #e25241;
 }

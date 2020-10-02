@@ -17,6 +17,7 @@ export class EditorMealComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   selectedFoodsOrSets: DailyMeal[];
+  maxSelectNum = 50;
   date: string;
   meal: string;
 
