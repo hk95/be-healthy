@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatBottomSheetModule,
+    MatBadgeModule,
   ],
 })
 export class EditorMealModule {}
