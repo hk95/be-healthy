@@ -28,12 +28,12 @@
 >
 <mat-card
   class="today"
-  [routerLink]="!editingMemo ? '/daily-detail' : null"
+  [routerLink]="!editingMemo && !editingWeight ? '/daily-detail' : null"
   [queryParams]="{
     date: date
   }"
 >
-  <div class="today__wrap">
+  <div class="today__wrap" *ngIf="!editingWeight">
     <div class="today__row">
       <div class="spacer"></div>
       <dl class="today__content today__content--body">
@@ -68,15 +68,82 @@
           未入力
         </dt>
       </dl>
-      <button class="nav-icon" mat-icon-button color="primary">
+      <button
+        (click)="updateWeight(); $event.stopPropagation()"
+        class="nav-icon"
+        mat-icon-button
+        color="primary"
+      >
         <mat-icon>edit</mat-icon>
       </button>
     </div>
-    <p class="today__text" *ngIf="prevWeight && prevFat && date === today">
+    <p class="today__text" *ngIf="prevWeight && prevFat">
       前回の記録は{{ prevWeight | number: '1.1-1' }}kg、{{
         prevFat | number: '1.1-1'
       }}%です。
     </p>
+  </div>
+  <div class="today__wrap" *ngIf="editingWeight">
+    <form [formGroup]="formBody">
+      <div class="form-body">
+        <mat-form-field appearance="outline" class="form-body__weight">
+          <mat-label>体重</mat-label>
+          <input
+            formControlName="currentWeight"
+            type="number"
+            matInput
+            autocomplete="off"
+            [min]="minWeightAndFat"
+            [max]="maxWeight"
+            step=".1"
+          />
+          <span matSuffix class="form-body__suffix">kg</span>
+          <mat-error *ngIf="currentWeightControl.hasError('required')"
+            >必須入力です</mat-error
+          >
+          <mat-error
+            *ngIf="
+              currentWeightControl.hasError('min') ||
+              currentWeightControl.hasError('max')
+            "
+            >不正な値です</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-body__fat">
+          <mat-label>体脂肪</mat-label>
+          <input
+            formControlName="currentFat"
+            type="number"
+            matInput
+            autocomplete="off"
+            [min]="minWeightAndFat"
+            [max]="maxFat"
+            step=".1"
+          /><span matSuffix class="form-body__suffix">%</span>
+          <mat-error *ngIf="currentFatControl.hasError('required')"
+            >必須入力です</mat-error
+          >
+          <mat-error
+            *ngIf="
+              currentFatControl.hasError('min') ||
+              currentFatControl.hasError('max')
+            "
+            >不正な値です</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="form-body__button">
+        <button
+          (click)="updateWeight(); $event.stopPropagation()"
+          mat-stroked-button
+          color="primary"
+          [disabled]="formBody.invalid"
+        >
+          更新
+        </button>
+      </div>
+    </form>
   </div>
   <div class="border"></div>
   <div class="today__wrap">
@@ -177,8 +244,7 @@
           mat-icon-button
           class="nav-icon"
           color="primary"
-          (click)="$event.stopPropagation()"
-          (click)="editMemo()"
+          (click)="editMemo(); $event.stopPropagation()"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -186,8 +252,8 @@
           *ngIf="editingMemo"
           mat-flat-button
           color="primary"
-          (click)="$event.stopPropagation()"
-          (click)="updateMemo()"
+          (click)="updateMemo(); $event.stopPropagation()"
+          [disabled]="formMemo.invalid"
         >
           保存
         </button>
@@ -200,7 +266,7 @@
       {{ dailyInfos[listIndex - 1]?.dailyMemo }}
     </p>
     <form
-      [formGroup]="form"
+      [formGroup]="formMemo"
       *ngIf="editingMemo"
       class="today__memo-textarea-editor"
     >

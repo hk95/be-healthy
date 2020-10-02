@@ -6,7 +6,7 @@
     <div class="dailyInfo" *ngIf="dailyInfo">
       <h2>体型記録</h2>
       <mat-card class="card">
-        <div class="card__wrap">
+        <div class="card__wrap" *ngIf="!editingWeight">
           <div class="card__weight">
             <p>体重</p>
             <p
@@ -28,13 +28,74 @@
 
           <button
             class="card__button"
-            routerLink="/editor-weight"
-            [queryParams]="{ date: date }"
+            (click)="updateWeight()"
             mat-icon-button
             color="primary"
           >
             <mat-icon>edit</mat-icon>
           </button>
+        </div>
+        <div class="card__wrap" *ngIf="editingWeight">
+          <form class="form" [formGroup]="formBody">
+            <div class="form-body">
+              <mat-form-field appearance="outline" class="form-body__weight">
+                <mat-label>体重</mat-label>
+                <input
+                  formControlName="currentWeight"
+                  type="number"
+                  matInput
+                  autocomplete="off"
+                  [min]="minWeightAndFat"
+                  [max]="maxWeight"
+                  step=".1"
+                />
+                <span matSuffix class="form-body__suffix">kg</span>
+                <mat-error *ngIf="currentWeightControl.hasError('required')"
+                  >必須入力です</mat-error
+                >
+                <mat-error
+                  *ngIf="
+                    currentWeightControl.hasError('min') ||
+                    currentWeightControl.hasError('max')
+                  "
+                  >不正な値です</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form-body__fat">
+                <mat-label>体脂肪</mat-label>
+                <input
+                  formControlName="currentFat"
+                  type="number"
+                  matInput
+                  autocomplete="off"
+                  [min]="minWeightAndFat"
+                  [max]="maxFat"
+                  step=".1"
+                /><span matSuffix class="form-body__suffix">%</span>
+                <mat-error *ngIf="currentFatControl.hasError('required')"
+                  >必須入力です</mat-error
+                >
+                <mat-error
+                  *ngIf="
+                    currentFatControl.hasError('min') ||
+                    currentFatControl.hasError('max')
+                  "
+                  >不正な値です</mat-error
+                >
+              </mat-form-field>
+            </div>
+
+            <div class="form-body__button">
+              <button
+                (click)="updateWeight(); $event.stopPropagation()"
+                mat-stroked-button
+                color="primary"
+                [disabled]="formBody.invalid"
+              >
+                更新
+              </button>
+            </div>
+          </form>
         </div>
       </mat-card>
 
@@ -99,24 +160,21 @@
       </p>
 
       <h2>食事記録</h2>
-      <mat-card class="card">
+      <mat-card class="card card--meal">
         <div class="card__head">
           <div class="card__head-left">
             <p>
               朝食
               <span
                 ><img
-                  *ngIf="mealsOfBreakfast.length > 0; else noBreakfast"
                   class="card__icon-breakfast"
-                  src="/assets/images/breakfast.svg"
+                  [src]="
+                    dailyInfo.breakfastCal
+                      ? '/assets/images/breakfast.svg'
+                      : '/assets/images/breakfast_outline.svg'
+                  "
                   alt=""
                 />
-                <ng-template #noBreakfast
-                  ><img
-                    class="card__icon-breakfast card__icon-breakfast--no-meal"
-                    src="/assets/images/breakfast.svg"
-                    alt=""
-                /></ng-template>
               </span>
             </p>
             <p>
@@ -166,23 +224,20 @@
         >
       </mat-card>
 
-      <mat-card class="card">
+      <mat-card class="card card--meal">
         <div class="card__head">
           <div class="card__head-left">
             <p>
               昼食<span
                 ><img
-                  *ngIf="mealsOfLunch.length > 0; else noLunch"
                   class="card__icon"
-                  src="/assets/images/lunch.svg"
+                  [src]="
+                    dailyInfo.lunchCal
+                      ? '/assets/images/lunch.svg'
+                      : '/assets/images/lunch_outline.svg'
+                  "
                   alt=""
                 />
-                <ng-template #noLunch
-                  ><img
-                    class="card__icon card__icon--no-meal"
-                    src="/assets/images/lunch.svg"
-                    alt=""
-                /></ng-template>
               </span>
             </p>
             <p>
@@ -232,17 +287,14 @@
             <p>
               夕食<span
                 ><img
-                  *ngIf="mealsOfDinner.length > 0; else noDinner"
                   class="card__icon"
-                  src="/assets/images/dinner.svg"
+                  [src]="
+                    dailyInfo.dinnerCal
+                      ? '/assets/images/dinner.svg'
+                      : '/assets/images/dinner_outline.svg'
+                  "
                   alt=""
                 />
-                <ng-template #noDinner
-                  ><img
-                    class="card__icon card__icon--no-meal"
-                    src="/assets/images/dinner.svg"
-                    alt=""
-                /></ng-template>
               </span>
             </p>
             <p>
@@ -290,15 +342,18 @@
         >
       </mat-card>
 
-      <mat-card class="card" id="memo"
+      <mat-card class="card"
         ><div class="card__memo">
           <div class="card__head">
             <p class="card__memo-title">
               1日のメモ<span
                 ><img
-                  [style.opacity]="dailyInfo.dailyMemo ? 1 : 0.3"
                   class="card__icon"
-                  src="/assets/images/memo.svg"
+                  [src]="
+                    dailyInfo.dailyMemo
+                      ? '/assets/images/memo.svg'
+                      : '/assets/images/memo_outline.svg'
+                  "
                   alt=""
                 />
               </span>
@@ -316,6 +371,7 @@
               mat-flat-button
               color="primary"
               (click)="updateMemo()"
+              [disabled]="formMemo.invalid"
             >
               保存
             </button>
@@ -328,7 +384,7 @@
           {{ dailyInfo.dailyMemo }}
         </p>
         <form
-          [formGroup]="form"
+          [formGroup]="formMemo"
           *ngIf="editingMemo"
           class="card__memo-textarea-editor"
         >

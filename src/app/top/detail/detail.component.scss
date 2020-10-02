@@ -78,7 +78,7 @@ p {
 
   &__amount {
     opacity: 0.87;
-    font-size: 22px;
+    font-size: 21px;
   }
 
   &__text {
@@ -109,10 +109,32 @@ p {
   }
 }
 
+.form-body {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  &__weight {
+    width: 45%;
+  }
+
+  &__fat {
+    width: 45%;
+  }
+
+  &__suffix {
+    margin-left: 8px;
+  }
+
+  &__button {
+    text-align: center;
+  }
+}
+
 .box {
   cursor: pointer;
   outline: none;
-  height: 56px;
+  height: 64px;
   width: 40px;
   padding: 8px 0;
   align-items: center;

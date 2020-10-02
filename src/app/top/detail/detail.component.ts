@@ -31,14 +31,43 @@ export class DetailComponent implements OnInit, OnDestroy {
   listIndex = new Date().getDate();
   prevWeight: number;
   prevFat: number;
+  editingWeight = false;
   editingMemo = false;
+  maxWeight = 200;
+  maxFat = 100;
+  minWeightAndFat = 0;
   maxMemoLength = 500;
-  form = this.fb.group({
+  formBody = this.fb.group({
+    currentWeight: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxWeight),
+      ],
+    ],
+    currentFat: [
+      '',
+      [
+        Validators.required,
+        Validators.min(this.minWeightAndFat),
+        Validators.max(this.maxFat),
+      ],
+    ],
+  });
+
+  formMemo = this.fb.group({
     dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
 
+  get currentWeightControl(): FormControl {
+    return this.formBody.get('currentWeight') as FormControl;
+  }
+  get currentFatControl(): FormControl {
+    return this.formBody.get('currentFat') as FormControl;
+  }
   get memoControl(): FormControl {
-    return this.form.get('dailyMemo') as FormControl;
+    return this.formMemo.get('dailyMemo') as FormControl;
   }
 
   constructor(
@@ -52,7 +81,6 @@ export class DetailComponent implements OnInit, OnDestroy {
       date: this.today,
     });
     this.getDailyInfo();
-    this.getPreviuosWeightAndFat();
   }
 
   getDate() {
@@ -77,15 +105,33 @@ export class DetailComponent implements OnInit, OnDestroy {
         if (monthData) {
           if (monthData) {
             for (let i = 1; i <= this.lastDay; i++) {
+              const prevInfo = monthData.list[i - 2];
+              if (this.date === this.today) {
+                this.prevWeight = prevInfo?.currentWeight;
+                this.prevFat = prevInfo?.currentFat;
+                if (!this.prevWeight) {
+                  this.getPreviuosWeightAndFat(true);
+                }
+              } else {
+                this.prevWeight =
+                  monthData.list[this.listIndex - 2]?.currentWeight;
+                this.prevFat = monthData.list[this.listIndex - 2]?.currentFat;
+                if (!this.prevWeight) {
+                  this.getPreviuosWeightAndFat(true);
+                }
+              }
               if (monthData.list[i]) {
                 if (this.listIndex === 1 && monthData.list[1]) {
-                  this.form.patchValue(monthData.list[1]);
+                  this.formBody.patchValue(monthData.list[1]);
+                  this.formMemo.patchValue(monthData.list[1]);
                 } else if (this.listIndex === 1 && !monthData.list[1]) {
-                  this.form = this.fb.group({
+                  this.formMemo = this.fb.group({
                     dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
                   });
+                  this.getPreviuosWeightAndFat();
                 } else {
-                  this.form.patchValue(monthData.list[i]);
+                  this.formMemo.patchValue(monthData.list[i]);
+                  this.formBody.patchValue(monthData.list[i]);
                 }
                 this.dailyInfos.push(monthData.list[i]);
               } else {
@@ -102,19 +148,37 @@ export class DetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getPreviuosWeightAndFat() {
-    this.dailyInfoService
-      .getPreviousDailyInfo(this.userId, this.today)
+  private getPreviuosWeightAndFat(disPatch?: boolean) {
+    const prevSub = this.dailyInfoService
+      .getPreviousDailyInfo(this.userId, this.date)
       .subscribe((dailyInfos?: DailyInfo[]) => {
         if (dailyInfos[0]?.currentWeight !== undefined) {
           this.prevWeight = dailyInfos[0].currentWeight;
           this.prevFat = dailyInfos[0].currentFat;
+          if (!disPatch) {
+            this.formBody.patchValue(dailyInfos[0]);
+          }
         }
       });
+    this.subscription.add(prevSub);
   }
 
   editMemo() {
     this.editingMemo = true;
+  }
+
+  updateWeight() {
+    if (this.editingWeight === true) {
+      this.dailyInfoService.updateDailyInfoBody({
+        authorId: this.userId,
+        date: this.date,
+        currentWeight: this.formBody.value.currentWeight,
+        currentFat: this.formBody.value.currentFat,
+      });
+      this.editingWeight = false;
+    } else {
+      this.editingWeight = true;
+    }
   }
 
   updateMemo() {
@@ -122,43 +186,85 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
       this.date,
-      this.form.value.dailyMemo
+      this.formMemo.value.dailyMemo
     );
   }
 
   backDate() {
+    this.editingWeight = false;
     this.editingMemo = false;
     this.listIndex--;
     this.dateDiff--;
     this.date = this.getDate();
-
     if (this.listIndex === 0) {
       this.getDailyInfo();
       this.listIndex = this.lastDay;
     }
-    if (this.dailyInfos[this.listIndex - 1]?.dailyMemo) {
-      this.form.patchValue(this.dailyInfos[this.listIndex - 1]);
+
+    const dailyInfo = this.dailyInfos[this.listIndex - 1];
+    const prevInfo = this.dailyInfos[this.listIndex - 2];
+    if (prevInfo?.currentWeight) {
+      this.prevWeight = prevInfo.currentWeight;
+      this.prevFat = prevInfo.currentFat;
     } else {
-      this.form = this.fb.group({
+      this.getPreviuosWeightAndFat(true);
+    }
+    if (dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+      this.formBody.patchValue(dailyInfo);
+      this.formMemo.patchValue(dailyInfo);
+    } else if (!dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+      this.getPreviuosWeightAndFat();
+      this.formMemo.patchValue(dailyInfo);
+    } else if (dailyInfo?.currentWeight && !dailyInfo?.dailyMemo) {
+      this.formBody.patchValue(dailyInfo);
+      this.formMemo = this.fb.group({
+        dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
+      });
+    } else {
+      this.getPreviuosWeightAndFat();
+      this.formMemo = this.fb.group({
         dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
       });
     }
   }
 
   nextDate() {
+    this.editingWeight = false;
     this.editingMemo = false;
     this.listIndex++;
     this.dateDiff++;
     this.date = this.getDate();
+    this.getPreviuosWeightAndFat();
 
     if (this.listIndex === this.lastDay + 1) {
       this.listIndex = 1;
       this.getDailyInfo();
     }
-    if (this.dailyInfos[this.listIndex - 1]?.dailyMemo) {
-      this.form.patchValue(this.dailyInfos[this.listIndex - 1]);
+    const dailyInfo = this.dailyInfos[this.listIndex - 1];
+    const prevInfo = this.dailyInfos[this.listIndex - 2];
+    if (prevInfo?.currentWeight) {
+      this.prevWeight = prevInfo.currentWeight;
+      this.prevFat = prevInfo.currentFat;
     } else {
-      this.form = this.fb.group({
+      this.getPreviuosWeightAndFat(true);
+    }
+    if (dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+      this.formBody.patchValue(dailyInfo);
+      this.formMemo.patchValue(dailyInfo);
+      this.prevWeight = this.dailyInfos[this.listIndex - 2]?.currentWeight;
+      this.prevFat = this.dailyInfos[this.listIndex - 2]?.currentFat;
+    } else if (dailyInfo?.currentWeight && !dailyInfo?.dailyMemo) {
+      this.formBody.patchValue(dailyInfo);
+      this.formMemo.patchValue(dailyInfo);
+      this.formMemo = this.fb.group({
+        dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
+      });
+    } else if (!dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+      this.getPreviuosWeightAndFat();
+      this.formMemo.patchValue(dailyInfo);
+    } else {
+      this.getPreviuosWeightAndFat();
+      this.formMemo = this.fb.group({
         dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
       });
     }

@@ -56,7 +56,7 @@ export class DailyInfoService {
     return this.db
       .collection<DailyInfo>(`users/${userId}/dailyInfos`, (ref) =>
         ref
-          .where('date', '<=', date)
+          .where('date', '<', date)
           .orderBy('date', 'desc')
           .orderBy('currentWeight', 'desc')
           .limit(1)
