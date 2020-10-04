@@ -32,6 +32,9 @@
 
 <div *ngIf="!loading">
   <div class="tab tab--content" *ngIf="sets && sets.length > 0; else noSet">
+    <p class="selected-max" *ngIf="selectedMealsNum >= maxSelectNum">
+      これ以上追加できません
+    </p>
     <div *ngFor="let set of sets; index as i">
       <div class="food">
         <button
@@ -76,10 +79,24 @@
         </form>
 
         <button
+          class="open-sheet"
+          mat-icon-button
+          color="primary"
+          (click)="openBottomSheet(set)"
+          [disabled]="selectedMealsNum >= maxSelectNum"
+        >
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button
+          class="add-meal"
           mat-icon-button
           color="primary"
           (click)="addSet(amount[i], set)"
-          [disabled]="amount[i] > maxAmount || amount[i] < minAmount"
+          [disabled]="
+            amount[i] > maxAmount ||
+            amount[i] < minAmount ||
+            selectedMealsNum >= maxSelectNum
+          "
         >
           <mat-icon>add_box</mat-icon>
         </button>

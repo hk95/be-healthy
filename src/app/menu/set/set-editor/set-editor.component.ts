@@ -11,7 +11,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { take } from 'rxjs/operators';
 import { SetService } from 'src/app/services/set.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
 import { FoodInArray } from 'src/app/interfaces/set';
@@ -135,6 +135,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private location: Location,
+    private router: Router,
     private searchService: SearchService,
     private recipeService: RecipeService,
     private authService: AuthService,
@@ -194,6 +195,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
         }
       );
   }
+
   createArray(preAmount: number, food?: Food, recipe?: Recipe) {
     const amount = Number(preAmount ? preAmount : 0);
     if (food) {
@@ -237,6 +239,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
       this.foodsArray.push(foodFormGroup);
     }
   }
+
   addFood(preAmount: number, food?: Food, recipe?: Recipe) {
     const amount = Number(preAmount ? preAmount : 0);
     if (food) {
@@ -280,6 +283,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
         ) / 10;
     }
   }
+
   removeFood(index: number, food: FoodInArray) {
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
@@ -377,16 +381,20 @@ export class SetEditorComponent implements OnInit, OnDestroy {
       setDietaryFiber: formData.setDietaryFiber,
       setSugar: formData.setSugar,
     });
+    this.setService.addingDailyInfo();
   }
+
   openRecipe(recipeId: string): void {
     this.dialog.open(ConfirmRecipeComponent, {
       width: '100%',
       data: recipeId,
     });
   }
+
   forwardbackToForm() {
     this.recipeService.tentativeCreateRecipe();
   }
+
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.form.dirty) {
@@ -394,10 +402,14 @@ export class SetEditorComponent implements OnInit, OnDestroy {
       $event.returnValue = '作業中の内容がありますが、再読み込みしますか？';
     }
   }
+
   backToMenu() {
+    this.setService.addingDailyInfo();
     this.location.back();
   }
+
   ngOnInit(): void {}
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

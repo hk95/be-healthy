@@ -39,6 +39,8 @@
           <input
             matInput
             [matDatepicker]="picker"
+            [min]="minDate"
+            [max]="maxDate"
             (dateChange)="changeDate($event)"
           />
           <mat-datepicker #picker panelClass="datepicker"></mat-datepicker>

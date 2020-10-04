@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Set } from 'src/app/interfaces/set';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
+import { DailyInfoService } from 'src/app/services/daily-info.service';
 
 @Component({
   selector: 'app-set',
@@ -12,6 +13,9 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./set.component.scss'],
 })
 export class SetComponent implements OnInit {
+  private readonly queryParams = this.dailyInfoService.queryParams;
+  private readonly querySetParam = this.setService.querySetParam;
+
   private setId: string;
   private getNumber = 10;
   private userId = this.authService.uid;
@@ -24,10 +28,12 @@ export class SetComponent implements OnInit {
   constructor(
     private setService: SetService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dailyInfoService: DailyInfoService
   ) {
     this.getSets();
   }
+
   forwardbackToForm() {
     this.setId = this.setService.getTentativeRecipeId();
     this.router.navigate(['/set-editor'], {
@@ -36,6 +42,7 @@ export class SetComponent implements OnInit {
       },
     });
   }
+
   getSets() {
     this.loading = true;
     this.setService
@@ -53,10 +60,14 @@ export class SetComponent implements OnInit {
             this.isNext = true;
           }
         } else {
+          if (this.queryParams && this.querySetParam) {
+            this.forwardbackToForm();
+          }
           this.isNext = false;
         }
         this.loading = false;
       });
   }
+
   ngOnInit(): void {}
 }

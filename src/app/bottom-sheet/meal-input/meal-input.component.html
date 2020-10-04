@@ -1,0 +1,55 @@
+<div class="bottom-sheet">
+  <p class="text">{{ data.food ? data.food.foodName : data.set.setTitle }}</p>
+  <p class="amountper">
+    {{ data.food ? data.food.foodCalPerAmount : data.set.setCal }}kcal/{{
+      data.food ? data.food.unit : 'セット'
+    }}
+  </p>
+
+  <form class="food__choice">
+    <mat-form-field
+      class="food__choice-form-field"
+      [formGroup]="amountForm"
+      appearance="outline"
+    >
+      <mat-label>数量を入力してください</mat-label>
+      <input
+        matInput
+        class="choice-input"
+        autocomplete="off"
+        formControlName="amount"
+        [max]="data.maxAmount"
+        [min]="data.minAmount"
+        step="0.1"
+        [(ngModel)]="amount"
+        type="number"
+      />
+      <span matSuffix class="suffix">{{
+        data.food ? data.food.unit : 'セット'
+      }}</span>
+      <mat-error *ngIf="amount > data.maxAmount || amount < data.minAmount"
+        >{{ data.maxAmount }}以内で入力してください</mat-error
+      >
+    </mat-form-field>
+  </form>
+  <div class="food-cal">
+    <dt class="food-cal__title">暫定カロリー：</dt>
+    <dd class="food-cal__amount">
+      {{
+        data.food
+          ? (data.food.foodCalPerAmount * amount | number: '1.1-1')
+          : (data.set.setCal * amount | number: '1.1-1')
+      }}
+    </dd>
+    kcal
+  </div>
+
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="addFood(amount)"
+    [disabled]="amountForm.invalid"
+  >
+    OK
+  </button>
+</div>

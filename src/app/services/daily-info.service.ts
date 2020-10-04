@@ -220,7 +220,10 @@ export class DailyInfoService {
     whichMeal: string
   ): Observable<DailyMeal[]> {
     return this.db
-      .collection<DailyMeal>(`users/${userId}/dailyInfos/${date}/${whichMeal}`)
+      .collection<DailyMeal>(
+        `users/${userId}/dailyInfos/${date}/${whichMeal}`,
+        (ref) => ref.limit(50)
+      )
       .valueChanges();
   }
 

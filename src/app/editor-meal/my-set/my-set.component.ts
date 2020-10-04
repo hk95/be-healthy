@@ -10,6 +10,10 @@ import { AverageService } from 'src/app/services/average.service';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
+import { MainShellService } from 'src/app/services/main-shell.service';
 
 @Component({
   selector: 'app-my-set',
@@ -18,12 +22,14 @@ import { take } from 'rxjs/operators';
 })
 export class MySetComponent implements OnInit, OnDestroy {
   private lastDoc: QueryDocumentSnapshot<Set>;
+  private subscription = new Subscription();
 
+  selectedMealsNum: number;
+  maxSelectNum = 50;
   amount = [].fill(0);
   date: string;
   meal: string;
   sets: Set[] = new Array();
-  subscription = new Subscription();
   minAmount = 0;
   maxAmount = 100;
   getNumber = 10;
@@ -46,20 +52,27 @@ export class MySetComponent implements OnInit, OnDestroy {
     private setService: SetService,
     private router: Router,
     private averageService: AverageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private bottomSheet: MatBottomSheet,
+    private mainShellService: MainShellService
   ) {
-    this.route.queryParamMap.subscribe((paramMaps) => {
+    const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
+      this.getSets();
     });
-    this.getSets();
+    const selectedSub = this.getSelectedMeals();
     const routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.averageService.averageTotalCal(this.authService.uid, this.date);
       }
     });
+    this.subscription.add(routeSub);
+    this.subscription.add(selectedSub);
     this.subscription.add(routerSub);
   }
+
   getSets() {
     this.loading = true;
     this.setService
@@ -82,9 +95,21 @@ export class MySetComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
   }
+
   addSet(amount: number, set: Set) {
-    const meal: DailyMeal = { mealId: '', set, amount };
-    this.dailyInfoService.addMeal(meal, this.authService.uid, this.date, 'set');
+    if (amount >= 0) {
+      const meal: DailyMeal = { mealId: '', set, amount };
+      this.dailyInfoService.addMeal(
+        meal,
+        this.authService.uid,
+        this.date,
+        'set'
+      );
+    } else {
+      this.snackBar.open('数値を入力してください', null, {
+        duration: 2000,
+      });
+    }
   }
 
   outSet(setId: string, index: number) {
@@ -94,6 +119,25 @@ export class MySetComponent implements OnInit, OnDestroy {
 
   goToSetPage() {
     this.dailyInfoService.goToSetPage(this.date, this.meal);
+    this.setService.addingDailyInfo();
+  }
+
+  openBottomSheet(set: Set): void {
+    this.bottomSheet.open(MealInputComponent, {
+      data: {
+        userId: this.authService.uid,
+        date: this.date,
+        maxAmount: this.maxAmount,
+        minAmount: this.minAmount,
+        set,
+      },
+    });
+  }
+
+  getSelectedMeals() {
+    this.mainShellService.selectedMeals.subscribe((v) => {
+      this.selectedMealsNum = v?.length;
+    });
   }
 
   ngOnInit(): void {
@@ -103,12 +147,12 @@ export class MySetComponent implements OnInit, OnDestroy {
           this.lastDoc = null;
           this.meal = whichMeal;
           this.sets = new Array();
-          this.getSets();
         }
       }
     );
     this.subscription.add(changeMealSub);
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
