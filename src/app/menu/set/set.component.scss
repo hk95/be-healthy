@@ -4,6 +4,7 @@
   display: block;
   padding: 24px 0;
 }
+
 .grid {
   display: grid;
   gap: 24px;
@@ -123,10 +124,12 @@ p {
   display: flex;
   justify-content: flex-end;
 }
+
 .nav {
   position: fixed;
   z-index: 5;
   bottom: 80px;
+
   @media screen and(max-width:750px) {
     right: 24px;
   }
@@ -179,10 +182,7 @@ p {
     max-width: 200px;
   }
 }
-.spinner {
-  margin: 0 auto;
-  margin-top: 32px;
-}
+
 .more-button {
   display: flex;
   justify-content: center;
