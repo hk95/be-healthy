@@ -15,7 +15,8 @@
         class="title title--date"
         (click)="picker.open()"
       >
-        {{ title$ | async }}
+        {{ title$ | async
+        }}<mat-icon class="title__icon">arrow_drop_down</mat-icon>
       </h1>
       <mat-form-field class="example-full-width" style="display: none;">
         <input
