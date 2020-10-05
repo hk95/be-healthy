@@ -10,7 +10,6 @@ import Stripe from 'stripe';
 import { Subscription } from 'rxjs';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { ConfirmDialogComponent } from 'src/app/dialogs/confirm-dialog/confirm-dialog.component';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-billing',
@@ -18,28 +17,38 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./billing.component.scss'],
 })
 export class BillingComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
+  paymentMethods: Stripe.PaymentMethod[];
+  cardBrand: string;
+  maxAmount = 100000;
+  minAmount = 100;
   donationForm = this.fb.group({
     donationAmount: [
       '',
-      [Validators.required, Validators.min(100), Validators.max(100000)],
+      [
+        Validators.required,
+        Validators.min(this.minAmount),
+        Validators.max(this.maxAmount),
+      ],
     ],
   });
-  paymentMethods: Stripe.PaymentMethod[];
-  cardBrand: string;
-  user$ = this.userService.getUser(this.authService.uid);
+  noGetList: number[];
+  get donationAmountControl() {
+    return this.donationForm.get('donationAmount') as FormControl;
+  }
 
-  private sub: Subscription;
   constructor(
     private paymentService: PaymentService,
     private fb: FormBuilder,
     private dialog: MatDialog,
     private authService: AuthService,
-    private mainShellService: MainShellService,
-    private userService: UserService
+    private mainShellService: MainShellService
   ) {
     this.mainShellService.setTitle('開発者を支援');
     this.getCards();
   }
+
   private getCards() {
     this.paymentService.getPaymentMethods().then((methods) => {
       this.paymentMethods = methods.data;
@@ -54,22 +63,21 @@ export class BillingComponent implements OnInit, OnDestroy {
       }
     });
   }
-  get donationAmountControl() {
-    return this.donationForm.get('donationAmount') as FormControl;
-  }
 
   openCreditCardDialog() {
     const dialogRef = this.dialog.open(CreditCardComponent, {
       data: { paymentMethods: this.paymentMethods },
     });
 
-    this.sub = dialogRef.afterClosed().subscribe((result) => {
+    const sub = dialogRef.afterClosed().subscribe((result) => {
       this.getCards();
     });
+    this.subscription.add(sub);
   }
+
   openConfirmDialog(funcitonTitle: string) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent);
-    this.sub = dialogRef.afterClosed().subscribe((result: boolean) => {
+    const sub = dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         switch (funcitonTitle) {
           case 'donation':
@@ -81,7 +89,9 @@ export class BillingComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.subscription.add(sub);
   }
+
   private chargePremiumPlan() {
     this.paymentService
       .chargePremiumPlan('price_1HHq4xEM1ZTRJUunj6AY9MzM', this.authService.uid)
@@ -89,6 +99,7 @@ export class BillingComponent implements OnInit, OnDestroy {
         this.mainShellService.paymentCompleted();
       });
   }
+
   private donate() {
     this.paymentService
       .donate(this.donationForm.value.donationAmount)
@@ -98,9 +109,10 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
   ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }
