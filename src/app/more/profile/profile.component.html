@@ -67,7 +67,7 @@
               type="number"
               [min]="minHeight"
               [max]="maxHeight"
-            /><span matSuffix>cm</span>
+            /><span class="profile__suffix" matSuffix>cm</span>
             <mat-error
               *ngIf="
                 heigtControl.hasError('min') || heigtControl.hasError('max')
@@ -96,7 +96,7 @@
               type="number"
               [min]="minWeight"
               [max]="maxWeight"
-            /><span matSuffix>kg</span>
+            /><span class="profile__suffix" matSuffix>kg</span>
             <mat-error
               *ngIf="
                 weightControl.hasError('min') || weightControl.hasError('max')
@@ -121,7 +121,7 @@
               type="number"
               [min]="minFat"
               [max]="maxFat"
-            /><span matSuffix>%</span>
+            /><span class="profile__suffix" matSuffix>%</span>
             <mat-error
               *ngIf="fatControl.hasError('min') || fatControl.hasError('max')"
               >{{ minFat }}-{{ maxFat }}の範囲で入力してください</mat-error
@@ -142,7 +142,7 @@
               type="number"
               [min]="minCal"
               [max]="maxCal"
-            /><span matSuffix>kcal</span>
+            /><span class="profile__suffix" matSuffix>kcal</span>
             <mat-error
               *ngIf="calControl.hasError('min') || calControl.hasError('max')"
               >{{ minCal }}-{{ maxCal }}の範囲で入力してください</mat-error
