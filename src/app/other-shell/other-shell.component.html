@@ -12,7 +12,15 @@
           <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
         </button>
       </ng-template>
-      <h1 class="toolbar__title">{{ title$ | async }}</h1>
+      <h1
+        [ngClass]="
+          (title$ | async) !== '特定商取引法に基づく表示'
+            ? 'toolbar__title'
+            : 'toolbar__title toolbar__title--legal'
+        "
+      >
+        {{ title$ | async }}
+      </h1>
 
       <div class="navs" *ngIf="(title$ | async) === 'その他'">
         <button
