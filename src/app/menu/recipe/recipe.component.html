@@ -1,8 +1,6 @@
-<mat-spinner
-  *ngIf="myRecipeloading && publicRecipeloading"
-  class="spinner"
-  diameter="50"
-></mat-spinner>
+<div class="loading" *ngIf="myRecipeloading && publicRecipeloading">
+  <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
+</div>
 <div *ngIf="!myRecipeloading && !publicRecipeloading">
   <h1>マイレシピ</h1>
   <div class="border"></div>
