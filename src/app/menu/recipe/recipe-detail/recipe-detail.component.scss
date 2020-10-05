@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+
 .nav {
   background: #fff;
   position: sticky;
@@ -9,9 +10,11 @@
   padding: 8px;
   @include mat-elevation(1);
 }
+
 .update-to-page {
   margin-right: 16px;
 }
+
 .thumbnail {
   display: block;
   margin: 0 auto;
@@ -21,6 +24,7 @@
   background: center/cover;
   margin-bottom: 32px;
 }
+
 .no-thumbnail {
   height: 150px;
   max-width: 300px;
@@ -31,6 +35,7 @@
   margin: 0 auto;
   margin-bottom: 32px;
 }
+
 h1 {
   font-size: 18px;
   font-weight: normal;
@@ -38,19 +43,24 @@ h1 {
   display: flex;
   align-items: center;
 }
+
 h2 {
   font-size: 14px;
   font-weight: normal;
   margin: 0;
+  margin-bottom: 8px;
 }
+
 h3 {
   font-size: 16px;
   font-weight: normal;
   margin: 0;
 }
+
 p {
   margin: 0;
 }
+
 .recipe-wrap {
   max-width: 700px;
   margin: 0 auto;
@@ -58,6 +68,7 @@ p {
   background: #fff;
   @include mat-elevation(1);
 }
+
 .content-head {
   display: flex;
   justify-content: space-between;
@@ -65,6 +76,7 @@ p {
     align-self: flex-end;
     overflow-wrap: anywhere;
   }
+
   h4 {
     padding: 4px;
     font-size: 15px;
@@ -76,6 +88,7 @@ p {
     border: 1px solid #009688;
   }
 }
+
 .content {
   border-top: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
@@ -89,9 +102,11 @@ p {
     height: 120px;
   }
 }
+
 .ingredients {
   margin-bottom: 32px;
 }
+
 .ingredient {
   padding: 8px;
   display: flex;
@@ -103,15 +118,18 @@ p {
     width: 40%;
     overflow-wrap: anywhere;
   }
+
   &__amount {
     width: 40%;
     overflow-wrap: anywhere;
     text-align: right;
   }
 }
+
 .processes {
   margin-bottom: 32px;
 }
+
 .process {
   display: flex;
   justify-content: space-between;
@@ -122,16 +140,19 @@ p {
     margin: 0 8px;
     min-height: 30px;
   }
+
   &__wrapper {
     display: flex;
     margin-right: 16px;
   }
+
   &__image {
     width: 65px;
     height: 65px;
     border-radius: 5px;
     align-self: center;
   }
+
   &__description {
     overflow-wrap: anywhere;
   }
@@ -142,6 +163,7 @@ p {
   background: #fff;
   margin-bottom: 32px;
 }
+
 .nutrition__detail {
   display: flex;
   justify-content: space-between;
