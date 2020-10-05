@@ -68,7 +68,6 @@
     <div class="header__wrap">
       <div class="navs">
         <button
-          [style.opacity]="(title$ | async) === 'グラフ' ? 1 : 0.3"
           mat-icon-button
           color="primary"
           matTooltip="グラフ"
@@ -76,10 +75,16 @@
           class="navs__item"
           routerLink="/graph"
         >
-          <mat-icon>insert_chart</mat-icon>
+          <mat-icon
+            [fontSet]="
+              (title$ | async) === 'グラフ'
+                ? 'material-icons'
+                : 'material-icons-outlined'
+            "
+            >insert_chart</mat-icon
+          >
         </button>
         <button
-          [style.opacity]="(title$ | async) === 'マイメニュー' ? 1 : 0.3"
           mat-icon-button
           color="primary"
           matTooltip="マイメニュー"
@@ -87,7 +92,14 @@
           class="navs__item"
           routerLink="/menu/set-list"
         >
-          <mat-icon>library_books</mat-icon>
+          <mat-icon
+            [fontSet]="
+              (title$ | async) === 'マイメニュー'
+                ? 'material-icons'
+                : 'material-icons-outlined'
+            "
+            >library_books</mat-icon
+          >
         </button>
       </div>
 
