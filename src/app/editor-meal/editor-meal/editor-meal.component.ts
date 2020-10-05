@@ -15,6 +15,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
 })
 export class EditorMealComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
+  private readonly userId = this.authService.uid;
 
   selectedFoodsOrSets: DailyMeal[];
   maxSelectNum = 50;
@@ -27,22 +28,32 @@ export class EditorMealComponent implements OnInit, OnDestroy {
     private dailyInfoService: DailyInfoService,
     private authService: AuthService
   ) {
-    this.subscription = this.route.queryParamMap.subscribe((paramMaps) => {
+    const querySub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
       this.mainShellService.setTitle(this.date);
       this.getMeals();
+      this.createDailyInfo();
       this.mainShellService.setTitleMeal(this.meal);
+    });
+    this.subscription.add(querySub);
+  }
+
+  createDailyInfo() {
+    this.dailyInfoService.createDailyInfo({
+      authorId: this.userId,
+      date: this.date,
     });
   }
 
   getMeals() {
-    this.dailyInfoService
-      .getSelectedFoodsOrSets(this.authService.uid, this.date, this.meal)
+    const mealSub = this.dailyInfoService
+      .getSelectedFoodsOrSets(this.userId, this.date, this.meal)
       .subscribe((v) => {
         this.selectedFoodsOrSets = v;
         this.mainShellService.setSelectedMeals(this.selectedFoodsOrSets);
       });
+    this.subscription.add(mealSub);
   }
 
   ngOnInit(): void {}
