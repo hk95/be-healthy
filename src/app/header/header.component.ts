@@ -64,6 +64,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         case 'lunch':
           this.mealTitle = '昼食';
           break;
+        case 'dinner':
+          this.mealTitle = '夕食';
+          break;
       }
     });
   }
