@@ -1,10 +1,12 @@
 @import '~@angular/material/theming';
+
 .total {
   display: flex;
   justify-content: space-between;
   width: 100%;
   opacity: 0.87;
   margin-bottom: 24px;
+
   &__cal {
     margin: 0;
     overflow-wrap: anywhere;
@@ -12,6 +14,7 @@
     text-align: right;
   }
 }
+
 .card {
   cursor: pointer;
   margin: 0 auto 24px;
@@ -24,32 +27,40 @@
   cursor: pointer;
   @include mat-elevation(2);
   outline: none;
+
   &:hover {
     @include mat-elevation(4);
   }
+
   &__title {
     margin: 16px auto;
+
     &--food {
       margin: 16px auto 48px auto;
     }
   }
+
   &__food {
     max-width: 80px;
   }
+
   &__set {
     max-width: 120px;
     margin: 0 auto;
   }
 }
+
 .food {
   display: flex;
   align-items: center;
   padding: 8px 0;
+
   &__wrap {
     display: flex;
     flex-direction: column;
     width: 40%;
   }
+
   &__name {
     overflow-wrap: anywhere;
     width: 100%;
@@ -57,11 +68,13 @@
     margin: 0;
     opacity: 0.87;
   }
+
   &__selected-amount {
     margin: 0;
     font-size: 12px;
     opacity: 0.87;
   }
+
   &__cal {
     margin: 0;
     text-align: right;
@@ -69,8 +82,4 @@
     opacity: 0.87;
     overflow-wrap: anywhere;
   }
-}
-.spinner {
-  margin: 0 auto;
-  margin-top: 32px;
 }
