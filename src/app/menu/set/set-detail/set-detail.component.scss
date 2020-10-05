@@ -7,6 +7,7 @@
   padding: 32px 4px;
   @include mat-elevation(1);
 }
+
 .nav {
   position: sticky;
   padding: 0 8px;
@@ -19,6 +20,7 @@
   background: #fff;
   @include mat-elevation(1);
 }
+
 .update-to-page {
   margin-right: 16px;
 }
@@ -28,17 +30,21 @@ h1 {
   font-weight: normal;
   margin: 0;
 }
+
 h2 {
   padding-left: 8px;
   font-size: 14px;
   font-weight: normal;
   margin: 0;
+  margin-bottom: 8px;
 }
+
 h3 {
   font-size: 16px;
   font-weight: normal;
   margin: 0;
 }
+
 p {
   margin: 0;
 }
@@ -52,11 +58,13 @@ p {
   display: flex;
   justify-content: space-between;
   overflow-wrap: anywhere;
+
   &__head {
     @media screen and(min-width:750px) {
       margin-top: 32px;
     }
   }
+
   &--meals {
     border: none;
   }
@@ -76,6 +84,7 @@ p {
     margin-top: 4px;
   }
 }
+
 .not-seletected {
   background: #fff;
 }
@@ -84,6 +93,7 @@ p {
   border-top: 1px solid #dbdbdb;
   background: #fff;
   margin-bottom: 32px;
+
   &__detail {
     display: flex;
     justify-content: space-between;
@@ -91,9 +101,11 @@ p {
     padding: 8px;
     border-bottom: 1px solid #dbdbdb;
   }
+
   &__content {
     overflow-wrap: anywhere;
     width: 48%;
+
     &--right {
       text-align: right;
     }
@@ -104,6 +116,7 @@ p {
   border-top: 1px solid #dbdbdb;
   background: #fff;
   margin-bottom: 32px;
+
   &__detail {
     display: flex;
     justify-content: space-between;
@@ -112,6 +125,7 @@ p {
     height: 24px;
   }
 }
+
 .spinner {
   margin-top: 32px;
   display: flex;
