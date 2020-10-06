@@ -174,20 +174,33 @@ export class RecipeService {
     return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
-  tentativeCreateRecipe() {
+  // tentativeCreateRecipe() {
+  //   const recipeId = this.db.createId();
+  //   return this.router.navigate(['/recipe-editor'], {
+  //     queryParams: {
+  //       id: recipeId,
+  //     },
+  //   });
+  // }
+  createRecipe(recipe: Omit<Recipe, 'recipeId'>): Promise<void> {
     const recipeId = this.db.createId();
-    return this.router.navigate(['/recipe-editor'], {
-      queryParams: {
-        id: recipeId,
-      },
-    });
+    const updatedAt = firestore.Timestamp.now();
+    return this.db
+      .doc<Recipe>(`recipes/${recipeId}`)
+      .set({ ...recipe, recipeId, updatedAt })
+      .then(() => {
+        this.snackBar.open('レシピを作成しました', null, {
+          duration: 2000,
+        });
+        this.location.back();
+      });
   }
 
   updateRecipe(recipe: Recipe): Promise<void> {
     const updatedAt = firestore.Timestamp.now();
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
-      .set({ ...recipe, updatedAt }, { merge: true })
+      .update({ ...recipe, updatedAt })
 
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
@@ -196,6 +209,7 @@ export class RecipeService {
         this.location.back();
       });
   }
+
   async deleteRecipe(userId: string, recipeId: string): Promise<void> {
     this.deleteUpdatedImage(userId, recipeId);
     return this.db
