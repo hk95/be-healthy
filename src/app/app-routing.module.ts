@@ -6,6 +6,8 @@ import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
 import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { DateGuard } from './guards/date.guard';
+import { MealGuard } from './guards/meal.guard';
 
 const routes: Routes = [
   {
@@ -86,7 +88,7 @@ const routes: Routes = [
             (m) => m.DailyDetailModule
           ),
         canLoad: [AuthGuard],
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, DateGuard],
       },
       {
         path: 'editor-meal',
@@ -95,7 +97,7 @@ const routes: Routes = [
             (m) => m.EditorMealModule
           ),
         canLoad: [AuthGuard],
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, DateGuard, MealGuard],
       },
       {
         path: 'graph',
