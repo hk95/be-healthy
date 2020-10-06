@@ -391,10 +391,6 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     });
   }
 
-  forwardbackToForm() {
-    this.recipeService.tentativeCreateRecipe();
-  }
-
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.form.dirty) {
