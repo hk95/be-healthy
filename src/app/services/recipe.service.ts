@@ -174,14 +174,6 @@ export class RecipeService {
     return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
-  // tentativeCreateRecipe() {
-  //   const recipeId = this.db.createId();
-  //   return this.router.navigate(['/recipe-editor'], {
-  //     queryParams: {
-  //       id: recipeId,
-  //     },
-  //   });
-  // }
   createRecipe(recipe: Omit<Recipe, 'recipeId'>): Promise<void> {
     const recipeId = this.db.createId();
     const updatedAt = firestore.Timestamp.now();
