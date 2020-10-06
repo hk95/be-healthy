@@ -100,24 +100,24 @@ export class SetService {
     return this.db.doc<Set>(`users/${userId}/sets/${setId}`).valueChanges();
   }
 
-  getTentativeRecipeId(): string {
-    return this.db.createId();
-  }
-  updateSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
+  createSet(set: Omit<Set, 'setId' | 'updatedAt'>): Promise<void> {
+    const setId = this.db.createId();
     const updatedAt = firestore.Timestamp.now();
     return this.db
-      .doc(`users/${set.userId}/sets/${set.setId}`)
+      .doc<Set>(`users/${set.userId}/sets/${setId}`)
       .set({
         ...set,
+        setId,
         updatedAt,
       })
       .then(() => {
-        this.snackBar.open('マイセットを保存しました', null, {
+        this.snackBar.open('マイセットを作成しました', null, {
           duration: 2000,
         });
         this.location.back();
       });
   }
+
   updateMeal(userId: string, setId: string, meal: string, bool: boolean) {
     if (meal === 'breakfast') {
       this.db.doc(`users/${userId}/sets/${setId}`).update({ breakfast: bool });
@@ -126,6 +126,22 @@ export class SetService {
     } else {
       this.db.doc(`users/${userId}/sets/${setId}`).update({ dinner: bool });
     }
+  }
+
+  updateSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
+    const updatedAt = firestore.Timestamp.now();
+    return this.db
+      .doc(`users/${set.userId}/sets/${set.setId}`)
+      .update({
+        ...set,
+        updatedAt,
+      })
+      .then(() => {
+        this.snackBar.open('マイセットを更新しました', null, {
+          duration: 2000,
+        });
+        this.location.back();
+      });
   }
 
   async deleteSet(userId: string, setId: string): Promise<void> {
