@@ -10,14 +10,14 @@
       <img class="no-recipe__image" src="/assets/images/recipe.svg" alt="" />
       <p class="no-recipe__text">マイレシピはまだ登録されていません。</p>
       <p class="no-recipe__text">オリジナルの１品を登録しましょう。</p>
-      <button
+      <a
         mat-stroked-button
         color="primary"
         class="no-recipe__button"
-        (click)="forwardbackToForm()"
+        routerLink="/recipe-editor"
       >
         <mat-icon>add</mat-icon><span>登録する</span>
-      </button>
+      </a>
     </div>
   </ng-template>
   <div class="grid" *ngIf="myRecipes && myRecipes.length > 0; else noMyRecipe">
@@ -108,14 +108,14 @@
   </div>
 
   <div class="create">
-    <button
+    <a
       *ngIf="myRecipes && myRecipes.length > 0"
       mat-fab
       color="primary"
-      (click)="forwardbackToForm()"
+      routerLink="/recipe-editor"
       class="create__button"
     >
       <mat-icon>add</mat-icon>
-    </button>
+    </a>
   </div>
 </div>
