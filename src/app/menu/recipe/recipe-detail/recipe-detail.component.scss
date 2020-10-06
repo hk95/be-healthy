@@ -48,7 +48,6 @@ h2 {
   font-size: 14px;
   font-weight: normal;
   margin: 0;
-  margin-bottom: 8px;
 }
 
 h3 {
@@ -98,6 +97,11 @@ p {
   display: flex;
   justify-content: space-between;
   overflow-wrap: anywhere;
+
+  &__name {
+    margin-bottom: 8px;
+  }
+
   &__point {
     height: 120px;
   }
