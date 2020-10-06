@@ -15,10 +15,8 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 export class SetComponent implements OnInit {
   private readonly queryParams = this.dailyInfoService.queryParams;
   private readonly querySetParam = this.setService.querySetParam;
-
-  private setId: string;
-  private getNumber = 10;
-  private userId = this.authService.uid;
+  private readonly getNumber = 10;
+  private readonly userId = this.authService.uid;
   private lastDoc: QueryDocumentSnapshot<Set>;
 
   sets: Set[] = new Array();
@@ -32,15 +30,6 @@ export class SetComponent implements OnInit {
     private dailyInfoService: DailyInfoService
   ) {
     this.getSets();
-  }
-
-  forwardbackToForm() {
-    this.setId = this.setService.getTentativeRecipeId();
-    this.router.navigate(['/set-editor'], {
-      queryParams: {
-        id: this.setId,
-      },
-    });
   }
 
   getSets() {
@@ -61,7 +50,7 @@ export class SetComponent implements OnInit {
           }
         } else {
           if (this.queryParams && this.querySetParam) {
-            this.forwardbackToForm();
+            this.router.navigateByUrl('/set-editor');
           }
           this.isNext = false;
         }

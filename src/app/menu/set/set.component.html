@@ -19,14 +19,14 @@
       <p class="no-set__text">
         自分だけのマイセットを登録しましょう！
       </p>
-      <button
+      <a
         mat-stroked-button
         color="primary"
-        (click)="forwardbackToForm()"
+        routerLink="/set-editor"
         class="no-set__create"
       >
         <mat-icon>add</mat-icon><span>登録する</span>
-      </button>
+      </a>
     </div>
   </ng-template>
   <div class="set" *ngIf="sets && sets.length > 0; else noSet">
@@ -107,8 +107,8 @@
     </div>
   </div>
   <div class="wrap" *ngIf="sets && sets.length > 0">
-    <button mat-fab color="primary" class="nav" (click)="forwardbackToForm()">
+    <a mat-fab color="primary" class="nav" routerLink="/set-editor">
       <mat-icon>add</mat-icon>
-    </button>
+    </a>
   </div>
 </div>
