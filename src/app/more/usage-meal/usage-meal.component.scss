@@ -19,7 +19,7 @@
     max-width: 400px;
     display: block;
     margin: 0 auto;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
 }
 
@@ -35,8 +35,12 @@
     font-weight: lighter;
     text-align: center;
     margin: 0;
-    width: 40%;
+    width: 30%;
     max-width: 150px;
+
+    @media screen and (max-width: 750px) {
+      width: 30%;
+    }
 
     &--number {
       border-bottom: none;
@@ -49,6 +53,10 @@
     font-weight: lighter;
     text-align: center;
     width: 50%;
+
+    @media screen and (max-width: 750px) {
+      width: 60%;
+    }
   }
 }
 
