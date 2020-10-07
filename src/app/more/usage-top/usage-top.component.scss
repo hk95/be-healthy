@@ -33,6 +33,7 @@ p {
   }
 
   &__card {
+    width: 100%;
     max-width: 300px;
     grid-area: card;
     justify-self: center;
@@ -69,8 +70,8 @@ p {
   &__icons {
     grid-area: icons;
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    justify-content: center;
     gap: 8px;
 
     @media screen and(max-width:750px) {
@@ -101,10 +102,15 @@ p {
   }
 
   &__calendar {
+    width: 100%;
     max-width: 300px;
     display: block;
     margin: 0 auto;
     grid-area: calendar;
+
+    @media screen and(max-width:750px) {
+      margin-bottom: 32px;
+    }
   }
 }
 
