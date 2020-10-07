@@ -1,8 +1,8 @@
 <mat-toolbar>
   <mat-toolbar-row class="header">
-    <div class="logo" routerLink="/">
+    <a class="logo" routerLink="/">
       <img class="logo__image" src="/assets/images/logo.svg" alt="" />
-    </div>
+    </a>
 
     <div class="spacer"></div>
 
@@ -67,7 +67,7 @@
 
     <div class="header__wrap">
       <div class="navs">
-        <button
+        <a
           mat-icon-button
           color="primary"
           matTooltip="グラフ"
@@ -83,8 +83,8 @@
             "
             >insert_chart</mat-icon
           >
-        </button>
-        <button
+        </a>
+        <a
           mat-icon-button
           color="primary"
           matTooltip="マイメニュー"
@@ -100,7 +100,7 @@
             "
             >library_books</mat-icon
           >
-        </button>
+        </a>
       </div>
 
       <div class="mypage">
@@ -116,14 +116,14 @@
             <mat-icon>login</mat-icon>
             <span>ログアウト</span>
           </button>
-          <button mat-menu-item *ngIf="more" routerLink="/more">
+          <a mat-menu-item *ngIf="more" routerLink="/more">
             <mat-icon>more_horiz</mat-icon>
             <span>その他</span>
-          </button>
-          <button mat-menu-item routerLink="/billing">
+          </a>
+          <a mat-menu-item routerLink="/billing">
             <mat-icon>support</mat-icon>
             <span>開発者を応援する</span>
-          </button>
+          </a>
         </mat-menu>
       </div>
     </div>
