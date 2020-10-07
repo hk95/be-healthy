@@ -23,8 +23,7 @@
       </h1>
 
       <div class="navs" *ngIf="(title$ | async) === 'その他'">
-        <button
-          [style.opacity]="(title$ | async) === 'グラフ' ? 1 : 0.3"
+        <a
           mat-icon-button
           color="primary"
           matTooltip="グラフ"
@@ -32,10 +31,16 @@
           class="navs__item"
           routerLink="/graph"
         >
-          <mat-icon>insert_chart</mat-icon>
-        </button>
-        <button
-          [style.opacity]="(title$ | async) === 'マイメニュー' ? 1 : 0.3"
+          <mat-icon
+            [fontSet]="
+              (title$ | async) === 'グラフ'
+                ? 'material-icons'
+                : 'material-icons-outlined'
+            "
+            >insert_chart</mat-icon
+          >
+        </a>
+        <a
           mat-icon-button
           color="primary"
           matTooltip="マイメニュー"
@@ -43,8 +48,15 @@
           class="navs__item"
           routerLink="/menu/set-list"
         >
-          <mat-icon>library_books</mat-icon>
-        </button>
+          <mat-icon
+            [fontSet]="
+              (title$ | async) === 'マイメニュー'
+                ? 'material-icons'
+                : 'material-icons-outlined'
+            "
+            >library_books</mat-icon
+          >
+        </a>
       </div>
       <div class="mypage" *ngIf="(title$ | async) === 'その他'">
         <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -66,14 +78,14 @@
             <mat-icon>login</mat-icon>
             <span>ログアウト</span>
           </button>
-          <button mat-menu-item routerLink="/more">
+          <a mat-menu-item routerLink="/more">
             <mat-icon>more_horiz</mat-icon>
             <span>その他</span>
-          </button>
-          <button mat-menu-item routerLink="/billing">
+          </a>
+          <a mat-menu-item routerLink="/billing">
             <mat-icon>support</mat-icon>
             <span>開発者を応援する</span>
-          </button>
+          </a>
         </mat-menu>
       </div>
     </mat-toolbar-row>
