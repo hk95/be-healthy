@@ -32,9 +32,6 @@ export class RecipeComponent implements OnInit {
     this.getPublicRecipes();
   }
 
-  forwardbackToForm() {
-    this.recipeService.tentativeCreateRecipe();
-  }
   getMyRecipes() {
     this.myRecipeloading = true;
     this.recipeService
@@ -64,6 +61,7 @@ export class RecipeComponent implements OnInit {
         }
       );
   }
+
   getPublicRecipes() {
     this.publicRecipeloading = true;
     this.recipeService

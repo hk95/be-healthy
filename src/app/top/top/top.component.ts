@@ -26,9 +26,7 @@ export class TopComponent implements OnInit, OnDestroy {
   private date: string;
   private isDataList = [];
   private subscription: Subscription;
-
-  minDate = this.getDate(new Date(2018, 0, 1));
-  calendarOptions = {
+  private preCalendarOption = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     weekends: true,
@@ -51,6 +49,9 @@ export class TopComponent implements OnInit, OnDestroy {
     businessHours: false,
     dateClick: this.handleDateClick.bind(this),
   };
+
+  minDate = this.getDate(new Date(2018, 0, 1));
+  calendarOptions = this.preCalendarOption;
   basicInfo$: Observable<BasicInfo>;
 
   constructor(
@@ -82,6 +83,8 @@ export class TopComponent implements OnInit, OnDestroy {
     this.subscription = this.dailyInfoService
       .getDailyInfosOfMonths(this.authService.uid, this.today)
       .subscribe((v: DailyInfoList[]) => {
+        this.calendarOptions = this.preCalendarOption;
+        this.isDataList = [];
         v.forEach((monthData: DailyInfoList) => {
           for (let i = 1; i <= 31; i++) {
             if (monthData.list[i]) {

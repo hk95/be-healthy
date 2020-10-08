@@ -36,8 +36,14 @@
   cursor: text;
   z-index: 30;
 
+  &__icon {
+    align-self: flex-end;
+  }
+
   &--date {
     cursor: pointer;
+    display: flex;
+    align-items: center;
   }
 }
 

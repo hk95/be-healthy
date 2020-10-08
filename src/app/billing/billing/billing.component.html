@@ -29,7 +29,10 @@
       </button>
     </div>
 
-    <div class="billing__wrap billing__wrap--donation">
+    <div
+      class="billing__wrap billing__wrap--donation"
+      [style.opacity]="paymentMethods?.length ? '1' : '0.6'"
+    >
       <h2 class="billing__title">開発者に寄付</h2>
       <p class="billing__text"></p>
       <form class="form" [formGroup]="donationForm">
@@ -51,10 +54,10 @@
             >必須入力です</mat-error
           >
           <mat-error *ngIf="donationAmountControl.hasError('min')"
-            >100円以上での入力をお願いします</mat-error
+            >{{ minAmount }}円以上での入力をお願いします</mat-error
           >
           <mat-error *ngIf="donationAmountControl.hasError('max')"
-            >10万円以下での入力をお願いします</mat-error
+            >{{ maxAmount / 10000 }}万円以下での入力をお願いします</mat-error
           >
         </mat-form-field>
         <button
@@ -62,7 +65,9 @@
           mat-flat-button
           color="primary"
           (click)="openConfirmDialog('donation')"
-          [disabled]="donationForm.invalid"
+          [disabled]="
+            donationForm.invalid || !(paymentMethods && paymentMethods.length)
+          "
         >
           寄付する
         </button>

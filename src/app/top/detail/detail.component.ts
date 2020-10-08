@@ -94,7 +94,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   private getDailyInfo() {
-    this.year = Number(this.date.substr(0, 2));
+    this.year = Number(20 + this.date.substr(0, 2));
     this.month = Number(this.date.substr(3, 2));
     this.lastDay = new Date(this.year, this.month, 0).getDate();
 

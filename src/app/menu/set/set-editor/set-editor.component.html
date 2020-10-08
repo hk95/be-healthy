@@ -149,15 +149,15 @@
                 <p class="no-recipe__text no-recipe__text--end">
                   オリジナルの１品を登録しましょう。
                 </p>
-                <button
+                <a
                   mat-stroked-button
                   color="primary"
                   class="no-recipe__button"
                   type="button"
-                  (click)="forwardbackToForm()"
+                  routerLink="/recipe-editor"
                 >
                   <mat-icon>add</mat-icon><span>登録する</span>
-                </button>
+                </a>
               </div>
             </ng-template>
             <div

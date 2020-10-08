@@ -11,7 +11,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { take } from 'rxjs/operators';
 import { SetService } from 'src/app/services/set.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
 import { FoodInArray } from 'src/app/interfaces/set';
@@ -27,9 +27,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./set-editor.component.scss'],
 })
 export class SetEditorComponent implements OnInit, OnDestroy {
-  private userId = this.authService.uid;
+  private readonly userId = this.authService.uid;
+  private readonly getNumber = 10;
   private query: string;
-  private getNumber = 10;
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
   private subscription: Subscription;
 
@@ -135,7 +135,6 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private location: Location,
-    private router: Router,
     private searchService: SearchService,
     private recipeService: RecipeService,
     private authService: AuthService,
@@ -143,27 +142,29 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {
     this.subscription = this.route.queryParamMap.subscribe((setId) => {
-      this.query = setId.get('id');
-      this.setService
-        .getSetById(this.userId, this.query)
-        .pipe(take(1))
-        .subscribe((set) => {
-          if (set) {
-            this.title = '編集';
-            this.form.patchValue(set);
-            this.breakfast = set.breakfast;
-            this.lunch = set.lunch;
-            this.dinner = set.dinner;
+      if (setId) {
+        this.query = setId.get('id');
+        this.setService
+          .getSetById(this.userId, this.query)
+          .pipe(take(1))
+          .subscribe((set) => {
+            if (set) {
+              this.title = '編集';
+              this.form.patchValue(set);
+              this.breakfast = set.breakfast;
+              this.lunch = set.lunch;
+              this.dinner = set.dinner;
 
-            set.foodsArray.forEach((food) => {
-              if (food.food) {
-                this.createArray(food.amount, food.food);
-              } else {
-                this.createArray(food.amount, null, food.recipe);
-              }
-            });
-          }
-        });
+              set.foodsArray.forEach((food) => {
+                if (food.food) {
+                  this.createArray(food.amount, food.food);
+                } else {
+                  this.createArray(food.amount, null, food.recipe);
+                }
+              });
+            }
+          });
+      }
     });
     this.getMyRecipes();
   }
@@ -366,21 +367,38 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   submit() {
     const formData = this.form.value;
     this.setService.submitted = true;
-    this.setService.updateSet({
-      setId: this.query,
-      userId: this.userId,
-      setTitle: formData.setTitle,
-      breakfast: this.breakfast,
-      lunch: this.lunch,
-      dinner: this.dinner,
-      foodsArray: formData.foodsArray,
-      setCal: formData.setCal,
-      setProtein: formData.setProtein,
-      setFat: formData.setFat,
-      setTotalCarbohydrate: formData.setTotalCarbohydrate,
-      setDietaryFiber: formData.setDietaryFiber,
-      setSugar: formData.setSugar,
-    });
+    if (this.query) {
+      this.setService.updateSet({
+        setId: this.query,
+        userId: this.userId,
+        setTitle: formData.setTitle,
+        breakfast: this.breakfast,
+        lunch: this.lunch,
+        dinner: this.dinner,
+        foodsArray: formData.foodsArray,
+        setCal: formData.setCal,
+        setProtein: formData.setProtein,
+        setFat: formData.setFat,
+        setTotalCarbohydrate: formData.setTotalCarbohydrate,
+        setDietaryFiber: formData.setDietaryFiber,
+        setSugar: formData.setSugar,
+      });
+    } else {
+      this.setService.createSet({
+        userId: this.userId,
+        setTitle: formData.setTitle,
+        breakfast: this.breakfast,
+        lunch: this.lunch,
+        dinner: this.dinner,
+        foodsArray: formData.foodsArray,
+        setCal: formData.setCal,
+        setProtein: formData.setProtein,
+        setFat: formData.setFat,
+        setTotalCarbohydrate: formData.setTotalCarbohydrate,
+        setDietaryFiber: formData.setDietaryFiber,
+        setSugar: formData.setSugar,
+      });
+    }
     this.setService.addingDailyInfo();
   }
 
@@ -389,10 +407,6 @@ export class SetEditorComponent implements OnInit, OnDestroy {
       width: '100%',
       data: recipeId,
     });
-  }
-
-  forwardbackToForm() {
-    this.recipeService.tentativeCreateRecipe();
   }
 
   @HostListener('window:beforeunload', ['$event'])

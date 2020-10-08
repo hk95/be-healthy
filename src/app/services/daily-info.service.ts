@@ -137,7 +137,7 @@ export class DailyInfoService {
       .subscribe((isdoc) => {
         const dateOfPath = this.getDateOfPath(dailyInfo.date);
         const dayOfMonth = this.getDayOfMonth(dailyInfo.date);
-        if (!isdoc) {
+        if (!isdoc?.date) {
           const dailyId = this.db.createId();
           this.db
             .doc(`users/${dailyInfo.authorId}/dailyInfos/${dateOfPath}`)
@@ -150,7 +150,7 @@ export class DailyInfoService {
             );
           return this.db
             .doc(`users/${dailyInfo.authorId}/dailyInfos/${dailyInfo.date}`)
-            .set({ dailyId, ...dailyInfo });
+            .set({ dailyId, ...dailyInfo }, { merge: true });
         }
       });
   }
@@ -245,7 +245,7 @@ export class DailyInfoService {
     const dayOfMonth = this.getDayOfMonth(date);
     this.db
       .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
-      .set({ ...mealContent, mealId })
+      .set({ ...mealContent, mealId, userId, date })
       .then(() => {
         this.snackBar.open('追加しました', null, {
           duration: 2000,
@@ -259,6 +259,7 @@ export class DailyInfoService {
       cal = mealContent.set.setCal;
     }
     const amount = mealContent.amount;
+
     return callable({
       userId,
       date,

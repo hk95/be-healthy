@@ -44,6 +44,25 @@ body {
   flex: 1;
 }
 
+.loading {
+  height: 80%;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  &__spinner {
+    margin: 0 auto;
+  }
+
+  &__title {
+    text-align: center;
+    font-weight: normal;
+    font-size: 18px;
+  }
+}
+
 app-toolbar {
   width: 100%;
   height: auto;
