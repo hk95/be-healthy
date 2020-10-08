@@ -51,6 +51,7 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
 
   getSelectedMeals() {
     this.mainShellService.selectedMeals.subscribe((v) => {
+      this.totalCal = 0;
       if (v) {
         this.selectedFoodsOrSets = v;
         v.forEach((meal: DailyMeal) => {
@@ -61,13 +62,10 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
               return (this.totalCal +=
                 meal.food.foodCalPerAmount * meal.amount);
             }
-          } else {
-            this.totalCal = 0;
           }
         });
         this.loading = false;
       } else {
-        this.totalCal = 0;
         this.loading = false;
       }
     });
@@ -81,6 +79,7 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
       amount,
       cal
     );
+    this.totalCal -= cal * amount;
   }
 
   ngOnInit(): void {}
