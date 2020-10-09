@@ -12,8 +12,8 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./recipe.component.scss'],
 })
 export class RecipeComponent implements OnInit {
-  private userId = this.authService.uid;
-  private getNumber = 10;
+  private readonly userId = this.authService.uid;
+  private readonly getNumber = 10;
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
   private lastPublicRecipeDoc: QueryDocumentSnapshot<Recipe>;
 
