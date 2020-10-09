@@ -15,13 +15,13 @@ import {
   providedIn: 'root',
 })
 export class AverageService {
-  totalCal = 0;
+  private totalCal = 0;
   constructor(
     private db: AngularFirestore,
     private fns: AngularFireFunctions
   ) {}
 
-  getAllDataOfDate(date: string): string {
+  private getAllDataOfDate(date: string): string {
     return date
       .replace(/^/, '20')
       .replace(/\./g, '-')
@@ -94,7 +94,7 @@ export class AverageService {
     date: string,
     currentWeight: number,
     currentFat: number
-  ) {
+  ): Promise<void> {
     const weightOfYear = this.fns.httpsCallable('averageWeightOfYear');
     const fatOfYear = this.fns.httpsCallable('averageFatOfYear');
     const weightOfMonth = this.fns.httpsCallable('averageWeightOfMonth');
