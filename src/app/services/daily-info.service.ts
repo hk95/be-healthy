@@ -14,7 +14,7 @@ import * as moment from 'moment';
   providedIn: 'root',
 })
 export class DailyInfoService {
-  mealSource = new BehaviorSubject<string>('notChange');
+  private readonly mealSource = new BehaviorSubject<string>('notChange');
   whichMeal$ = this.mealSource.asObservable();
   whichMeal: string;
   meal: string;
@@ -155,7 +155,7 @@ export class DailyInfoService {
       });
   }
 
-  createDailyInfosMonth(authorId: string, date: string) {
+  createDailyInfosMonth(authorId: string, date: string): Promise<void> {
     const dateOfPath = this.getDateOfPath(date);
     const dayOfMonth = this.getDayOfMonth(date);
 
@@ -167,7 +167,7 @@ export class DailyInfoService {
     );
   }
 
-  updateDailyInfoBody(
+  async updateDailyInfoBody(
     dailyInfo: Omit<
       DailyInfo,
       'dailyId' | 'breakfast' | 'lunch' | 'dinner' | 'dailyMemo'
@@ -195,7 +195,11 @@ export class DailyInfoService {
       });
   }
 
-  updateDailyInfoMemo(userId: string, date: string, dailyMemo: string) {
+  updateDailyInfoMemo(
+    userId: string,
+    date: string,
+    dailyMemo: string
+  ): Promise<void> {
     const dateOfPath = this.getDateOfPath(date);
     const dayOfMonth = this.getDayOfMonth(date);
     this.db
@@ -227,7 +231,10 @@ export class DailyInfoService {
       .valueChanges();
   }
 
-  getAllSelectedFoodsOrSets(userId: string, date: string) {
+  getAllSelectedFoodsOrSets(
+    userId: string,
+    date: string
+  ): Observable<[DailyMeal[], DailyMeal[], DailyMeal[]]> {
     return combineLatest([
       this.getSelectedFoodsOrSets(userId, date, 'breakfast'),
       this.getSelectedFoodsOrSets(userId, date, 'lunch'),
