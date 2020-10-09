@@ -4,6 +4,7 @@ import {
   ViewChild,
   ElementRef,
   HostListener,
+  OnDestroy,
 } from '@angular/core';
 
 import {
@@ -20,19 +21,28 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
 @Component({
   selector: 'app-recipe-editor',
   templateUrl: './recipe-editor.component.html',
   styleUrls: ['./recipe-editor.component.scss'],
 })
-export class RecipeEditorComponent implements OnInit {
+export class RecipeEditorComponent implements OnInit, OnDestroy {
   @ViewChild('thumbnail') thumbnailInput: ElementRef;
   @ViewChild('processImage') processImageInput: ElementRef;
 
   private readonly userId = this.authService.uid;
+  private subscription = new Subscription();
 
+  readonly maxTitleLength = 50;
+  readonly maxDescriptionLength = 500;
+  readonly maxIngredinetNameLength = 50;
+  readonly maxIngredinetUnitLength = 20;
+  readonly limitIngredientArray = 100;
+  readonly limitProcessArray = 30;
+  readonly maxNutritionAmount = 5000;
+  readonly minNutritionAmount = 0;
   thumbnailURL: string = null;
   processURLs = [];
   query: string;
@@ -41,14 +51,6 @@ export class RecipeEditorComponent implements OnInit {
   public = false;
   loading: boolean;
   isCreating: boolean;
-  maxTitleLength = 50;
-  maxDescriptionLength = 500;
-  maxIngredinetNameLength = 50;
-  maxIngredinetUnitLength = 20;
-  limitIngredientArray = 100;
-  limitProcessArray = 30;
-  maxNutritionAmount = 5000;
-  minNutritionAmount = 0;
 
   form = this.fb.group({
     recipeTitle: [
@@ -152,7 +154,11 @@ export class RecipeEditorComponent implements OnInit {
     private authService: AuthService
   ) {
     this.loading = true;
-    this.route.queryParamMap.subscribe((recipeId) => {
+    this.getRecipe();
+  }
+
+  private getRecipe() {
+    const recipeSub = this.route.queryParamMap.subscribe((recipeId) => {
       if (recipeId.get('id')) {
         this.query = recipeId.get('id');
         this.recipeService
@@ -191,6 +197,7 @@ export class RecipeEditorComponent implements OnInit {
         this.loading = false;
       }
     });
+    this.subscription.add(recipeSub);
   }
 
   addIngredinet() {
@@ -374,4 +381,8 @@ export class RecipeEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
