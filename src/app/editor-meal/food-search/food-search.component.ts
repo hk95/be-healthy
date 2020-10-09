@@ -23,17 +23,16 @@ import { MainShellService } from 'src/app/services/main-shell.service';
 })
 export class FoodSearchComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
+  private date: string;
 
+  readonly maxSelectNum = 50;
+  readonly getNumber = 500;
+  readonly minAmount = 0;
+  readonly maxAmount = 10000;
   selectedMealsNum: number;
-  maxSelectNum = 50;
-  getNumber = 500;
   amount = [].fill(0);
-  date: string;
-  meal: string;
   isLikedlist: string[] = new Array();
   config = this.searchService.config;
-  minAmount = 0;
-  maxAmount = 10000;
   amountForm = this.fb.group({
     amount: [
       0,
@@ -59,7 +58,6 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
   ) {
     const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
-      this.meal = paramMaps.get('meal');
       this.getFavFoods();
     });
 
@@ -75,7 +73,7 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     this.subscription.add(routerSub);
   }
 
-  getFavFoods() {
+  private getFavFoods() {
     this.foodService
       .getFavFoods(this.authService.uid, this.getNumber)
       .pipe(take(1))
@@ -134,7 +132,7 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSelectedMeals() {
+  private getSelectedMeals() {
     this.mainShellService.selectedMeals.subscribe((v) => {
       this.selectedMealsNum = v?.length;
     });
