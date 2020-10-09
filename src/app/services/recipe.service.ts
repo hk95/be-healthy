@@ -21,7 +21,6 @@ import { BasicInfo } from '../interfaces/basic-info';
   providedIn: 'root',
 })
 export class RecipeService {
-  allRecipes$: Observable<Recipe[]>;
   constructor(
     private db: AngularFirestore,
     public storage: AngularFireStorage,
@@ -31,6 +30,7 @@ export class RecipeService {
     private fns: AngularFireFunctions,
     private basicInfoService: BasicInfoService
   ) {}
+
   getMyRecipes(
     userId: string,
     getNumber: number,
@@ -174,7 +174,7 @@ export class RecipeService {
     return this.db.doc<Recipe>(`recipes/${recipeId}`).valueChanges();
   }
 
-  createRecipe(recipe: Omit<Recipe, 'recipeId'>): Promise<void> {
+  async createRecipe(recipe: Omit<Recipe, 'recipeId'>): Promise<void> {
     const recipeId = this.db.createId();
     const updatedAt = firestore.Timestamp.now();
     return this.db
@@ -188,7 +188,7 @@ export class RecipeService {
       });
   }
 
-  updateRecipe(recipe: Recipe): Promise<void> {
+  async updateRecipe(recipe: Recipe): Promise<void> {
     const updatedAt = firestore.Timestamp.now();
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
