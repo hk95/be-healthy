@@ -20,14 +20,14 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   private readonly userId = this.authService.uid;
   private subscription = new Subscription();
 
+  readonly maxWeight = 200;
+  readonly maxFat = 100;
+  readonly minWeightAndFat = 0;
+  readonly maxMemoLength = 500;
   date: string;
   dailyInfo: DailyInfo;
   editingWeight = false;
   editingMemo = false;
-  maxWeight = 200;
-  maxFat = 100;
-  minWeightAndFat = 0;
-  maxMemoLength = 500;
   formBody = this.fb.group({
     currentWeight: [
       '',
@@ -64,11 +64,10 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   mealsOfBreakfast: DailyMeal[] = [];
   mealsOfLunch: DailyMeal[] = [];
   mealsOfDinner: DailyMeal[] = [];
-
   totalCal = 0;
 
-  displayedColumns: string[] = ['name', 'key'];
-  nutritionName = [
+  readonly displayedColumns: string[] = ['name', 'key'];
+  readonly nutritionName = [
     { name: '総摂取カロリー', key: 'cal', unit: 'kcal', percentage: '--' },
     { name: 'タンパク質', key: 'protein', unit: 'g', percentage: 'true' },
     { name: '脂質', key: 'fat', unit: 'g', percentage: 'true' },
@@ -82,19 +81,19 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     { name: '糖質', key: 'sugar', unit: 'g', percentage: 'true' },
   ];
 
-  colorScheme = {
+  readonly colorScheme = {
     domain: ['#D81B60', '#FF9800', '#3f51b5'],
   };
 
+  readonly gradient = false;
+  readonly showLegend = true;
+  readonly showLabels = false;
+  readonly isDoughnut = true;
+  readonly arcWidth = 0.25;
+  readonly legendPosition = 'below';
+  readonly legendTitle = '';
   view: number[];
   data: any[] = [];
-  gradient = false;
-  showLegend = true;
-  showLabels = false;
-  isDoughnut = true;
-  arcWidth = 0.25;
-  legendPosition = 'below';
-  legendTitle = '';
   font: number;
 
   constructor(
@@ -109,12 +108,11 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     const routeSub = this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
       this.getDailyInfo();
+      this.getDailyInfoOfMeal();
       this.mainShellService.setTitle(this.date);
     });
 
     this.subscription.add(routeSub);
-
-    this.getDailyInfoOfMeal();
 
     if (innerWidth < 500) {
       this.font = innerWidth / 28;
@@ -125,7 +123,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDailyInfo() {
+  private getDailyInfo() {
     const dailyInfoSub = this.dailyInfoService
       .getDailyInfo(this.userId, this.date)
       .subscribe((dailyInfo: DailyInfo) => {
@@ -146,13 +144,14 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(dailyInfoSub);
   }
 
-  getDailyInfoOfMeal() {
+  private getDailyInfoOfMeal() {
     const dailyInfoSub = this.dailyInfoService
       .getAllSelectedFoodsOrSets(this.userId, this.date)
       .subscribe((mealList) => {
         this.mealsOfBreakfast = mealList[0];
         this.mealsOfLunch = mealList[1];
         this.mealsOfDinner = mealList[2];
+        this.totalCal = 0;
 
         this.totalCal = this.nutritionPipe.transform(
           this.mealsOfBreakfast,
