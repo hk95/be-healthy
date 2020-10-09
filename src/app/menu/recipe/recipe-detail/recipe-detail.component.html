@@ -5,8 +5,8 @@
     </button>
     <h1>レシピ詳細画面</h1>
     <div class="nav__wrap">
-      <button
-        *ngIf="myRecipe ? true : false"
+      <a
+        *ngIf="recipe.authorId === userId"
         class="update-to-page"
         mat-icon-button
         color="primary"
@@ -14,9 +14,9 @@
         [queryParams]="{ id: recipe.recipeId }"
       >
         <mat-icon>edit</mat-icon>
-      </button>
+      </a>
       <button
-        *ngIf="myRecipe ? true : false"
+        *ngIf="recipe.authorId === userId"
         mat-icon-button
         class="delete"
         color="warn"
