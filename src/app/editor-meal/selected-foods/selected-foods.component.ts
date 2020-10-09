@@ -49,7 +49,7 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     this.subscription.add(mealSub);
   }
 
-  getSelectedMeals() {
+  private getSelectedMeals() {
     this.mainShellService.selectedMeals.subscribe((v) => {
       this.totalCal = 0;
       if (v) {
