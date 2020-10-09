@@ -73,7 +73,7 @@ export class MySetComponent implements OnInit, OnDestroy {
     this.subscription.add(routerSub);
   }
 
-  private getSets() {
+  getSets() {
     this.loading = true;
     this.setService
       .getSets(this.authService.uid, this.getNumber, this.lastDoc, this.meal)
