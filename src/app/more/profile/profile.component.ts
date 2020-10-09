@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OthreShellService } from 'src/app/services/othre-shell.service';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
@@ -6,14 +6,16 @@ import { AuthService } from 'src/app/services/auth.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';
 import { MatDialog } from '@angular/material/dialog';
 import { AvatarComponent } from 'src/app/dialogs/avatar/avatar.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   private readonly userId = this.authService.uid;
+  private subscription = new Subscription();
 
   readonly maxLength = 50;
   readonly maxHeight = 250;
@@ -69,18 +71,23 @@ export class ProfileComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.otherShellService.setTitle('ユーザー情報');
-
-    this.basicInfoService.getBasicInfo(this.userId).subscribe((basicInfo) => {
-      if (basicInfo) {
-        this.basicInfo = basicInfo;
-        this.form.patchValue(basicInfo);
-        this.avatarURL = basicInfo.avatarURL
-          ? basicInfo.avatarURL
-          : 'assets/images/user-avatar.svg';
-      }
-    });
+    this.getBasicInfo();
   }
 
+  private getBasicInfo() {
+    const basicInfoSub = this.basicInfoService
+      .getBasicInfo(this.userId)
+      .subscribe((basicInfo) => {
+        if (basicInfo) {
+          this.basicInfo = basicInfo;
+          this.form.patchValue(basicInfo);
+          this.avatarURL = basicInfo.avatarURL
+            ? basicInfo.avatarURL
+            : 'assets/images/user-avatar.svg';
+        }
+      });
+    this.subscription.add(basicInfoSub);
+  }
   submit() {
     const formData = this.form.value;
     this.basicInfoService.updateBasicInfo({
@@ -113,4 +120,8 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }
