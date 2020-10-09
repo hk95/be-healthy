@@ -20,7 +20,8 @@ export class BasicInfoService {
       .doc<BasicInfo>(`users/${authorId}/basicInfo/${authorId}`)
       .valueChanges();
   }
-  updateBasicInfo(basicInfo: BasicInfo): Promise<void> {
+
+  async updateBasicInfo(basicInfo: BasicInfo): Promise<void> {
     return this.db
       .doc(`users/${basicInfo.userId}/basicInfo/${basicInfo.userId}`)
       .set(basicInfo, { merge: true })
