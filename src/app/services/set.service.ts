@@ -18,6 +18,7 @@ import { Location } from '@angular/common';
 export class SetService {
   submitted: boolean;
   querySetParam: boolean;
+
   constructor(
     private db: AngularFirestore,
     private router: Router,
@@ -25,8 +26,8 @@ export class SetService {
     private location: Location
   ) {}
 
-  addingDailyInfo() {
-    this.querySetParam = this.querySetParam ? false : true;
+  addingDailyInfo(): boolean {
+    return (this.querySetParam = this.querySetParam ? false : true);
   }
 
   getSets(
@@ -100,7 +101,7 @@ export class SetService {
     return this.db.doc<Set>(`users/${userId}/sets/${setId}`).valueChanges();
   }
 
-  createSet(set: Omit<Set, 'setId' | 'updatedAt'>): Promise<void> {
+  async createSet(set: Omit<Set, 'setId' | 'updatedAt'>): Promise<void> {
     const setId = this.db.createId();
     const updatedAt = firestore.Timestamp.now();
     return this.db
@@ -118,17 +119,28 @@ export class SetService {
       });
   }
 
-  updateMeal(userId: string, setId: string, meal: string, bool: boolean) {
+  async updateMeal(
+    userId: string,
+    setId: string,
+    meal: string,
+    bool: boolean
+  ): Promise<void> {
     if (meal === 'breakfast') {
-      this.db.doc(`users/${userId}/sets/${setId}`).update({ breakfast: bool });
+      return this.db
+        .doc(`users/${userId}/sets/${setId}`)
+        .update({ breakfast: bool });
     } else if (meal === 'lunch') {
-      this.db.doc(`users/${userId}/sets/${setId}`).update({ lunch: bool });
+      return this.db
+        .doc(`users/${userId}/sets/${setId}`)
+        .update({ lunch: bool });
     } else {
-      this.db.doc(`users/${userId}/sets/${setId}`).update({ dinner: bool });
+      return this.db
+        .doc(`users/${userId}/sets/${setId}`)
+        .update({ dinner: bool });
     }
   }
 
-  updateSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
+  async updateSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
     const updatedAt = firestore.Timestamp.now();
     return this.db
       .doc(`users/${set.userId}/sets/${set.setId}`)
