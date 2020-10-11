@@ -33,6 +33,9 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
   private subscription: Subscription;
 
+  readonly maxTitleLength = 50;
+  readonly maxNutritionAmount = 5000;
+  readonly minNutritionAmount = 0;
   title: string;
   config = this.searchService.config;
   myRecipes: RecipeWithAuthor[] = new Array();
@@ -47,9 +50,6 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   breakfast = false;
   lunch = false;
   dinner = false;
-  maxTitleLength = 50;
-  maxNutritionAmount = 5000;
-  minNutritionAmount = 0;
 
   arrayLimit = 30;
   form = this.fb.group({

@@ -21,20 +21,20 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   styleUrls: ['./fav-foods.component.scss'],
 })
 export class FavFoodsComponent implements OnInit, OnDestroy {
+  private readonly getNumber = 10;
   private lastDoc: QueryDocumentSnapshot<Food>;
-  private getNumber = 10;
   private subscription = new Subscription();
 
+  readonly maxSelectNum = 50;
+  readonly minAmount = 0;
+  readonly maxAmount = 10000;
   selectedMealsNum: number;
-  maxSelectNum = 50;
   amount = [].fill(0);
   date: string;
   meal: string;
   favFoods: Food[] = new Array();
   loading: boolean;
   isNext: boolean;
-  minAmount = 0;
-  maxAmount = 10000;
   amountForm = this.fb.group({
     amount: [
       0,
@@ -132,7 +132,7 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSelectedMeals() {
+  private getSelectedMeals() {
     this.mainShellService.selectedMeals.subscribe((v) => {
       this.selectedMealsNum = v?.length;
     });

@@ -23,10 +23,7 @@ import { DailyInfoList } from 'src/app/interfaces/daily-info';
 export class TopComponent implements OnInit, OnDestroy {
   private readonly weekList = ['日', '月', '火', '水', '木', '金', '土'];
   private readonly today: string = this.getDate();
-  private date: string;
-  private isDataList = [];
-  private subscription: Subscription;
-  private preCalendarOption = {
+  private readonly preCalendarOption = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     weekends: true,
@@ -49,8 +46,11 @@ export class TopComponent implements OnInit, OnDestroy {
     businessHours: false,
     dateClick: this.handleDateClick.bind(this),
   };
+  private date: string;
+  private isDataList = [];
+  private subscription: Subscription;
 
-  minDate = this.getDate(new Date(2018, 0, 1));
+  readonly minDate = this.getDate(new Date(2018, 0, 1));
   calendarOptions = this.preCalendarOption;
   basicInfo$: Observable<BasicInfo>;
 
@@ -68,7 +68,7 @@ export class TopComponent implements OnInit, OnDestroy {
     this.getDailyInfos();
   }
 
-  isInitLogin() {
+  private isInitLogin() {
     this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
     if (this.authService.isInitialLogin) {
       this.dialog.open(TutorialComponent, {
@@ -79,7 +79,7 @@ export class TopComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDailyInfos() {
+  private getDailyInfos() {
     this.subscription = this.dailyInfoService
       .getDailyInfosOfMonths(this.authService.uid, this.today)
       .subscribe((v: DailyInfoList[]) => {
@@ -111,7 +111,7 @@ export class TopComponent implements OnInit, OnDestroy {
       });
   }
 
-  handleDateClick(arg) {
+  private handleDateClick(arg) {
     const week = this.weekList[arg.dayEl.cellIndex];
     this.date = arg.dateStr
       .slice(2)
@@ -130,7 +130,7 @@ export class TopComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDate(event?: Date): string {
+  private getDate(event?: Date): string {
     if (event) {
       return this.datePipe.transform(event, 'yy.MM.dd(E)');
     } else {

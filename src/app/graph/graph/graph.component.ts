@@ -31,7 +31,9 @@ export class GraphComponent implements OnInit, OnDestroy {
   private goalFatList = new Array();
   private goalTotalCalList = new Array();
 
-  today = new Date();
+  readonly today = new Date();
+  readonly maxDate = new Date();
+  readonly minDate = new Date(2018, 0, 1);
   preWeight = new Array();
   preFat = new Array();
   preTotalCal = new Array();
@@ -44,28 +46,26 @@ export class GraphComponent implements OnInit, OnDestroy {
   fatGraph = false;
   totalCalGraph = false;
   loading: boolean;
-  maxDate = new Date();
-  minDate = new Date(2018, 0, 1);
   noCalData: boolean;
 
-  view = new Array();
-  legend = false;
-  legendPosition = 'below';
-  legendWeight = '体重';
-  legendFat = '体脂肪';
-  legendTotalCal = '摂取カロリー';
-  showLabels = true;
-  animations = true;
-  xAxis = true;
-  yAxis = true;
-  showYAxisLabel = false;
-  showXAxisLabel = false;
-  xAxisLabel = '年';
-  yAxisLabel = '体脂肪（%）';
-  timeline = true;
-  colorScheme = {
+  readonly legendPosition = 'below';
+  readonly legendWeight = '体重';
+  readonly legendFat = '体脂肪';
+  readonly legendTotalCal = '摂取カロリー';
+  readonly showLabels = true;
+  readonly animations = true;
+  readonly xAxis = true;
+  readonly yAxis = true;
+  readonly showYAxisLabel = false;
+  readonly showXAxisLabel = false;
+  readonly xAxisLabel = '年';
+  readonly yAxisLabel = '体脂肪（%）';
+  readonly timeline = true;
+  readonly colorScheme = {
     domain: ['#009688', '#FB8C00'],
   };
+  view = new Array();
+  legend = false;
 
   constructor(
     private mainShellService: MainShellService,
@@ -82,7 +82,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.createGraphOfDay(this.today);
   }
 
-  initResize() {
+  private initResize() {
     this.view = [innerWidth / 1.1, innerWidth / 1.1];
     if (innerWidth > 750) {
       this.view = [300, 300];
@@ -92,7 +92,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  setGoalList() {
+  private setGoalList() {
     this.subscription = this.basicInfoService
       .getBasicInfo(this.userId)
       .subscribe((basicInfo: BasicInfo) => {
@@ -110,7 +110,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDates(date) {
+  private getDates(date) {
     const preDates = new Array();
     for (let i = 0; i <= 6; i++) {
       const mDate = moment(date);

@@ -6,13 +6,14 @@ import { DailyMeal } from '../interfaces/daily-info';
   providedIn: 'root',
 })
 export class MainShellService {
-  titleSource = new ReplaySubject<string>();
+  private readonly titleSource = new ReplaySubject<string>();
+  private readonly titleMealSource = new ReplaySubject<string>();
+  private readonly selectedMealsSource = new ReplaySubject<DailyMeal[]>();
+  private readonly paymentCompletedSource = new ReplaySubject<void>();
+
   title$ = this.titleSource.asObservable();
-  titleMealSource = new ReplaySubject<string>();
   titleMeal$ = this.titleMealSource.asObservable();
-  selectedMealsSource = new ReplaySubject<DailyMeal[]>();
   selectedMeals = this.selectedMealsSource.asObservable();
-  paymentCompletedSource = new ReplaySubject<void>();
   paymentCompleted$ = this.paymentCompletedSource.asObservable();
 
   constructor() {}

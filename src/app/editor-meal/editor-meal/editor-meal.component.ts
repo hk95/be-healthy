@@ -17,8 +17,8 @@ export class EditorMealComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
   private readonly userId = this.authService.uid;
 
+  readonly maxSelectNum = 50;
   selectedFoodsOrSets: DailyMeal[];
-  maxSelectNum = 50;
   date: string;
   meal: string;
 
@@ -39,14 +39,14 @@ export class EditorMealComponent implements OnInit, OnDestroy {
     this.subscription.add(querySub);
   }
 
-  createDailyInfo() {
+  private createDailyInfo() {
     this.dailyInfoService.createDailyInfo({
       authorId: this.userId,
       date: this.date,
     });
   }
 
-  getMeals() {
+  private getMeals() {
     const mealSub = this.dailyInfoService
       .getSelectedFoodsOrSets(this.userId, this.date, this.meal)
       .subscribe((v) => {

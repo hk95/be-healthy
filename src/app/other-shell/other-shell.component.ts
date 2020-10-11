@@ -34,11 +34,11 @@ export class OtherShellComponent implements OnInit, OnDestroy {
     );
   }
 
-  backToPage() {
+  backToPage(): Promise<boolean> {
     if (this.prePageTitle === 'TOP') {
-      this.router.navigateByUrl('');
+      return this.router.navigateByUrl('');
     } else {
-      this.router.navigateByUrl('/more');
+      return this.router.navigateByUrl('/more');
     }
   }
 
@@ -47,6 +47,7 @@ export class OtherShellComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
   ngOnDestroy(): void {
     this.prePageSubscription.unsubscribe();
   }

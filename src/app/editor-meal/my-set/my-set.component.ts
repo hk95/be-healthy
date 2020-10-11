@@ -23,16 +23,16 @@ import { MainShellService } from 'src/app/services/main-shell.service';
 export class MySetComponent implements OnInit, OnDestroy {
   private lastDoc: QueryDocumentSnapshot<Set>;
   private subscription = new Subscription();
+  private date: string;
+  private meal: string;
 
+  readonly maxSelectNum = 50;
+  readonly minAmount = 0;
+  readonly maxAmount = 100;
+  readonly getNumber = 10;
   selectedMealsNum: number;
-  maxSelectNum = 50;
   amount = [].fill(0);
-  date: string;
-  meal: string;
   sets: Set[] = new Array();
-  minAmount = 0;
-  maxAmount = 100;
-  getNumber = 10;
   isNext: boolean;
   loading: boolean;
 
@@ -134,7 +134,7 @@ export class MySetComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSelectedMeals() {
+  private getSelectedMeals() {
     this.mainShellService.selectedMeals.subscribe((v) => {
       this.selectedMealsNum = v?.length;
     });

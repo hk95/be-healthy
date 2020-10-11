@@ -19,9 +19,13 @@ export class DetailComponent implements OnInit, OnDestroy {
   private year: number;
   private month: number;
   private lastDay: number;
-  @Input() minDate: string;
+  @Input() readonly minDate: string;
 
   readonly today: string = this.getDate();
+  readonly maxWeight = 200;
+  readonly maxFat = 100;
+  readonly minWeightAndFat = 0;
+  readonly maxMemoLength = 500;
   date: string = this.today;
   dailyInfo$: Observable<DailyInfo> = this.dailyInfoService.getDailyInfo(
     this.userId,
@@ -33,10 +37,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   prevFat: number;
   editingWeight = false;
   editingMemo = false;
-  maxWeight = 200;
-  maxFat = 100;
-  minWeightAndFat = 0;
-  maxMemoLength = 500;
+
   formBody = this.fb.group({
     currentWeight: [
       '',
@@ -83,7 +84,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.getDailyInfo();
   }
 
-  getDate() {
+  private getDate() {
     const d = new Date();
     if (this.dateDiff !== 0) {
       const transDate = d.setDate(d.getDate() + this.dateDiff);

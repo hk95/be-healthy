@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./set-detail.component.scss'],
 })
 export class SetDetailComponent implements OnInit, OnDestroy {
-  private userId: string = this.authService.uid;
+  private readonly userId: string = this.authService.uid;
   private subscription: Subscription;
 
   set: Set;
@@ -51,6 +51,7 @@ export class SetDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
