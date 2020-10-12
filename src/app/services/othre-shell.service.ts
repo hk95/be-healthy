@@ -1,23 +1,17 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OthreShellService {
-  titleSource = new ReplaySubject<string>();
-  title$ = this.titleSource.asObservable();
-
-  preTitleSource = new ReplaySubject<string>();
-  preTitle$ = this.preTitleSource.asObservable();
+  readonly PAGE_TITLES = {
+    more: 'その他',
+    profile: 'ユーザー情報',
+    legal: '特定商取引法に基づく表示',
+    terms: '利用規約',
+    account: 'アカウント削除',
+  };
+  title: string;
 
   constructor() {}
-
-  setTitle(title: string) {
-    this.titleSource.next(title);
-  }
-
-  setPreTitle(title: string) {
-    this.preTitleSource.next(title);
-  }
 }
