@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./other-shell.component.scss'],
 })
 export class OtherShellComponent implements OnInit {
-  title$: Observable<string> = this.othreShellService.title$;
   basicInfo$: Observable<BasicInfo> = this.basicInfoService.getBasicInfo(
     this.authService.uid
   );
