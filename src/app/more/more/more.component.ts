@@ -12,7 +12,7 @@ export class MoreComponent implements OnInit {
     private othreShellService: OthreShellService,
     private mainShellService: MainShellService
   ) {
-    this.othreShellService.setTitle('その他');
+    this.othreShellService.title = this.othreShellService.PAGE_TITLES.more;
     this.mainShellService.title = this.mainShellService.PAGE_TITLES.more;
   }
 

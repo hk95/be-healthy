@@ -25,7 +25,7 @@ export class AccountComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog
   ) {
-    this.othreShellService.setTitle('アカウント削除');
+    this.othreShellService.title = this.othreShellService.PAGE_TITLES.account;
   }
 
   openDeleteDialog(): void {

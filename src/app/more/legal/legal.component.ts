@@ -8,7 +8,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
 })
 export class LegalComponent implements OnInit {
   constructor(private othreShellService: OthreShellService) {
-    this.othreShellService.setTitle('特定商取引法に基づく表示');
+    this.othreShellService.title = this.othreShellService.PAGE_TITLES.legal;
   }
 
   ngOnInit(): void {}
