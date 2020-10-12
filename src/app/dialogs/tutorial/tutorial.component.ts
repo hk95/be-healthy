@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -9,11 +10,13 @@ import { Router } from '@angular/router';
 })
 export class TutorialComponent implements OnInit {
   constructor(
+    private authService: AuthService,
     private dialogRef: MatDialogRef<TutorialComponent>,
     private router: Router
   ) {}
 
   goToUsage() {
+    this.authService.isInitialLogin = false;
     this.dialogRef.close();
     this.router.navigateByUrl('/more/usage/top');
   }
