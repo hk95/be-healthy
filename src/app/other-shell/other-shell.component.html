@@ -3,7 +3,8 @@
     <mat-toolbar-row class="toolbar__content">
       <ng-container
         *ngIf="
-          othreShellService.title === othreShellService.PAGE_TITLES.more;
+          othreShellService.title === othreShellService.PAGE_TITLES.more ||
+            othreShellService.title === othreShellService.PAGE_TITLES.usage;
           else eachPage
         "
       >
@@ -29,7 +30,10 @@
 
       <div
         class="navs"
-        *ngIf="othreShellService.title === othreShellService.PAGE_TITLES.more"
+        *ngIf="
+          othreShellService.title === othreShellService.PAGE_TITLES.more ||
+          othreShellService.title === othreShellService.PAGE_TITLES.usage
+        "
       >
         <a
           mat-icon-button
@@ -54,7 +58,10 @@
       </div>
       <div
         class="mypage"
-        *ngIf="othreShellService.title === othreShellService.PAGE_TITLES.more"
+        *ngIf="
+          othreShellService.title === othreShellService.PAGE_TITLES.more ||
+          othreShellService.title === othreShellService.PAGE_TITLES.usage
+        "
       >
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <img
@@ -78,6 +85,10 @@
           <a mat-menu-item routerLink="/more">
             <mat-icon>more_horiz</mat-icon>
             <span>その他</span>
+          </a>
+          <a mat-menu-item routerLink="/more/usage/top">
+            <mat-icon>help_outline</mat-icon>
+            <span>使用方法</span>
           </a>
           <a mat-menu-item routerLink="/billing">
             <mat-icon>support</mat-icon>
