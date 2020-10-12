@@ -14,7 +14,7 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private dailyInfoService: DailyInfoService,
     private router: Router,
-    private mainShellService: MainShellService
+    public mainShellService: MainShellService
   ) {
     this.morePage = this.router.url.split('/')[1];
   }
