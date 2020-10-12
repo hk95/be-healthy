@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   avatarURL: string;
   selectedValue: string;
   mealTitle: string;
-  more = false;
   viewX: number;
   maxDate = new Date();
   minDate = new Date(2018, 0, 1);
@@ -40,11 +39,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
 
     const routeSub = this.getParam();
-
-    if (innerWidth > 750) {
-      this.more = true;
-      this.viewX = innerWidth / 2;
-    }
 
     this.subscription.add(basicInfoSub);
     this.subscription.add(routeSub);
