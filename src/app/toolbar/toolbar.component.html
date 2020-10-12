@@ -3,9 +3,9 @@
     <a mat-button class="nav" routerLink="">
       <mat-icon
         [fontSet]="
-          (pageTitle$ | async) !== 'グラフ' &&
-          (pageTitle$ | async) !== 'マイメニュー' &&
-          morePage !== 'more'
+          mainShellService.title !== mainShellService.PAGE_TITLES.graph &&
+          mainShellService.title !== mainShellService.PAGE_TITLES.menu &&
+          morePage !== mainShellService.PAGE_TITLES.more
             ? 'material-icons'
             : 'material-icons-outlined'
         "
@@ -13,20 +13,23 @@
         >home</mat-icon
       >
       <div class="nav__text">
-        <span>TOP</span>
+        <span>{{ mainShellService.PAGE_TITLES.top }}</span>
       </div>
     </a>
     <a mat-button class="nav" routerLink="/graph">
       <mat-icon
         [fontSet]="
-          (pageTitle$ | async) === 'グラフ' && morePage !== 'more'
+          mainShellService.title === mainShellService.PAGE_TITLES.graph &&
+          morePage !== mainShellService.PAGE_TITLES.more
             ? 'material-icons'
             : 'material-icons-outlined'
         "
         class="nav__icon"
         >insert_chart</mat-icon
       >
-      <div class="nav__text"><span>グラフ</span></div>
+      <div class="nav__text">
+        <span>{{ mainShellService.PAGE_TITLES.graph }}</span>
+      </div>
     </a>
     <a
       mat-button
@@ -36,14 +39,17 @@
     >
       <mat-icon
         [fontSet]="
-          (pageTitle$ | async) === 'マイメニュー' && morePage !== 'more'
+          mainShellService.title === mainShellService.PAGE_TITLES.menu &&
+          morePage !== mainShellService.PAGE_TITLES.more
             ? 'material-icons'
             : 'material-icons-outlined'
         "
         class="nav__icon"
         >library_books</mat-icon
       >
-      <div class="nav__text"><span>マイメニュー</span></div>
+      <div class="nav__text">
+        <span>{{ mainShellService.PAGE_TITLES.menu }}</span>
+      </div>
     </a>
   </mat-toolbar-row></mat-toolbar
 >
