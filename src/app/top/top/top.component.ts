@@ -64,7 +64,7 @@ export class TopComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe
   ) {
     this.isInitLogin();
-    this.mainShellService.setTitle('TOP');
+    this.mainShellService.title = this.mainShellService.PAGE_TITLES.top;
     this.getDailyInfos();
   }
 
