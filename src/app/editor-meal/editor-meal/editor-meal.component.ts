@@ -31,10 +31,10 @@ export class EditorMealComponent implements OnInit, OnDestroy {
     const querySub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.meal = paramMaps.get('meal');
-      this.mainShellService.setTitle(this.date);
+      this.mainShellService.title = this.date;
       this.getMeals();
       this.createDailyInfo();
-      this.mainShellService.setTitleMeal(this.meal);
+      this.mainShellService.titleMeal = this.meal;
     });
     this.subscription.add(querySub);
   }
