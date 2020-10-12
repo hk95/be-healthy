@@ -45,7 +45,7 @@ export class BillingComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private mainShellService: MainShellService
   ) {
-    this.mainShellService.setTitle('開発者を支援');
+    this.mainShellService.title = this.mainShellService.PAGE_TITLES.donation;
     this.getCards();
   }
 
