@@ -14,9 +14,9 @@
       </ng-container>
 
       <ng-template #eachPage>
-        <button mat-button (click)="backToPage()" class="toolbar__back">
+        <a mat-button routerLink="/more" class="toolbar__back">
           <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
-        </button>
+        </a>
       </ng-template>
       <h1
         [ngClass]="
