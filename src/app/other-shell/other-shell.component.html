@@ -4,7 +4,7 @@
       <ng-container
         *ngIf="
           othreShellService.title === othreShellService.PAGE_TITLES.more;
-          else other
+          else eachPage
         "
       >
         <a class="logo" routerLink="">
@@ -12,7 +12,7 @@
         </a>
       </ng-container>
 
-      <ng-template #other>
+      <ng-template #eachPage>
         <button mat-button (click)="backToPage()" class="toolbar__back">
           <mat-icon>keyboard_arrow_left</mat-icon><span>戻る</span>
         </button>
