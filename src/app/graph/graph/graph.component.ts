@@ -76,7 +76,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     private averageService: AverageService
   ) {
     this.loading = true;
-    this.mainShellService.setTitle('グラフ');
+    this.mainShellService.title = this.mainShellService.PAGE_TITLES.graph;
     this.initResize();
     this.setGoalList();
     this.createGraphOfDay(this.today);
