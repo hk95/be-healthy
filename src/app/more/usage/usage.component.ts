@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MainShellService } from 'src/app/services/main-shell.service';
 import { OthreShellService } from 'src/app/services/othre-shell.service';
 
 @Component({
@@ -7,9 +8,13 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   styleUrls: ['./usage.component.scss'],
 })
 export class UsageComponent implements OnInit {
-  constructor(private otherShellService: OthreShellService) {
-    this.otherShellService.title = this.otherShellService.PAGE_TITLES.usage;
-  }
+  constructor(
+    private otherShellService: OthreShellService,
+    private mainShellService: MainShellService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.otherShellService.title = this.otherShellService.PAGE_TITLES.usage;
+    this.mainShellService.title = this.otherShellService.PAGE_TITLES.usage;
+  }
 }
