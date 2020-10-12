@@ -1,10 +1,16 @@
 .toolbar {
-  height: 56px;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  justify-items: center;
-  align-items: center;
-  padding: 0;
+  @media screen and(min-width:750px) {
+    display: none;
+  }
+
+  &__row {
+    height: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-items: center;
+    align-items: center;
+    padding: 0;
+  }
 }
 
 .nav {
