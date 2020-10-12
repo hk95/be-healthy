@@ -9,15 +9,10 @@ import { MainShellService } from '../services/main-shell.service';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
-  morePage: string;
-
   constructor(
     private dailyInfoService: DailyInfoService,
-    private router: Router,
     public mainShellService: MainShellService
-  ) {
-    this.morePage = this.router.url.split('/')[1];
-  }
+  ) {}
 
   changeQuery() {
     this.dailyInfoService.queryParams = null;
