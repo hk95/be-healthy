@@ -1,21 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { OthreShellService } from '../services/othre-shell.service';
 import { AuthService } from '../services/auth.service';
 import { BasicInfoService } from '../services/basic-info.service';
 import { BasicInfo } from '../interfaces/basic-info';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-other-shell',
   templateUrl: './other-shell.component.html',
   styleUrls: ['./other-shell.component.scss'],
 })
-export class OtherShellComponent implements OnInit, OnDestroy {
-  private prePageTitle: string;
-  private prePageSubscription: Subscription;
-
+export class OtherShellComponent implements OnInit {
   title$: Observable<string> = this.othreShellService.title$;
   basicInfo$: Observable<BasicInfo> = this.basicInfoService.getBasicInfo(
     this.authService.uid
@@ -26,16 +22,11 @@ export class OtherShellComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private basicInfoService: BasicInfoService,
     private router: Router
-  ) {
-    this.prePageSubscription = this.othreShellService.preTitle$.subscribe(
-      (preTitle) => {
-        return (this.prePageTitle = preTitle);
-      }
-    );
-  }
+  ) {}
 
   backToPage(): Promise<boolean> {
-    if (this.prePageTitle === 'TOP') {
+    if (this.authService.isInitialLogin) {
+      this.authService.isInitialLogin = false;
       return this.router.navigateByUrl('');
     } else {
       return this.router.navigateByUrl('/more');
@@ -47,8 +38,4 @@ export class OtherShellComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.prePageSubscription.unsubscribe();
-  }
 }
