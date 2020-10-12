@@ -1,7 +1,12 @@
 <div>
   <mat-toolbar class="toolbar">
     <mat-toolbar-row class="toolbar__content">
-      <ng-container *ngIf="(title$ | async) === 'その他'; else other">
+      <ng-container
+        *ngIf="
+          othreShellService.title === othreShellService.PAGE_TITLES.more;
+          else other
+        "
+      >
         <a class="logo" routerLink="">
           <img class="logo__image" src="/assets/images/logo.svg" alt="" />
         </a>
@@ -14,15 +19,18 @@
       </ng-template>
       <h1
         [ngClass]="
-          (title$ | async) !== '特定商取引法に基づく表示'
+          othreShellService.title !== othreShellService.PAGE_TITLES.legal
             ? 'toolbar__title'
             : 'toolbar__title toolbar__title--legal'
         "
       >
-        {{ title$ | async }}
+        {{ othreShellService.title }}
       </h1>
 
-      <div class="navs" *ngIf="(title$ | async) === 'その他'">
+      <div
+        class="navs"
+        *ngIf="othreShellService.title === othreShellService.PAGE_TITLES.more"
+      >
         <a
           mat-icon-button
           color="primary"
@@ -31,14 +39,7 @@
           class="navs__item"
           routerLink="/graph"
         >
-          <mat-icon
-            [fontSet]="
-              (title$ | async) === 'グラフ'
-                ? 'material-icons'
-                : 'material-icons-outlined'
-            "
-            >insert_chart</mat-icon
-          >
+          <mat-icon fontSet="material-icons-outlined">insert_chart</mat-icon>
         </a>
         <a
           mat-icon-button
@@ -48,17 +49,13 @@
           class="navs__item"
           routerLink="/menu/set-list"
         >
-          <mat-icon
-            [fontSet]="
-              (title$ | async) === 'マイメニュー'
-                ? 'material-icons'
-                : 'material-icons-outlined'
-            "
-            >library_books</mat-icon
-          >
+          <mat-icon fontSet="material-icons-outlined">library_books</mat-icon>
         </a>
       </div>
-      <div class="mypage" *ngIf="(title$ | async) === 'その他'">
+      <div
+        class="mypage"
+        *ngIf="othreShellService.title === othreShellService.PAGE_TITLES.more"
+      >
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <img
             *ngIf="basicInfo$ | async as basicInfo"

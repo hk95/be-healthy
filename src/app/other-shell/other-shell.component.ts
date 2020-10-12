@@ -18,7 +18,7 @@ export class OtherShellComponent implements OnInit {
   );
 
   constructor(
-    private othreShellService: OthreShellService,
+    public othreShellService: OthreShellService,
     private authService: AuthService,
     private basicInfoService: BasicInfoService,
     private router: Router
