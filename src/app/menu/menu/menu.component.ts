@@ -15,7 +15,7 @@ export class MenuComponent implements OnInit {
     private dailyInfoService: DailyInfoService,
     private mainShellService: MainShellService
   ) {
-    this.mainShellService.setTitle('マイメニュー');
+    this.mainShellService.title = this.mainShellService.PAGE_TITLES.menu;
   }
 
   backToMeal() {
