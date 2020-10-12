@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DailyInfoService } from '../services/daily-info.service';
-import { Router } from '@angular/router';
 import { MainShellService } from '../services/main-shell.service';
 
 @Component({
