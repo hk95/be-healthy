@@ -8,7 +8,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
 })
 export class TermsComponent implements OnInit {
   constructor(private othreShellService: OthreShellService) {
-    this.othreShellService.setTitle('利用規約');
+    this.othreShellService.title = this.othreShellService.PAGE_TITLES.terms;
   }
 
   ngOnInit(): void {}

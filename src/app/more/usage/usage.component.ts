@@ -8,7 +8,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
 })
 export class UsageComponent implements OnInit {
   constructor(private otherShellService: OthreShellService) {
-    this.otherShellService.setTitle('使用方法');
+    this.otherShellService.title = this.otherShellService.PAGE_TITLES.usage;
   }
 
   ngOnInit(): void {}
