@@ -27,7 +27,7 @@ p {
 
 .head {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: sticky;
   top: 0;
@@ -36,6 +36,11 @@ p {
   padding: 8px;
   height: 56px;
   @include mat-elevation(1);
+}
+
+.clear-button {
+  position: absolute;
+  left: 8px;
 }
 
 .title {
@@ -307,4 +312,10 @@ p {
   background: #fff;
   max-width: 700px;
   padding: 8px;
+  margin-bottom: 32px;
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto;
 }

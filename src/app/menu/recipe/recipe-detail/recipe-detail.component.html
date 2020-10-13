@@ -18,8 +18,7 @@
       <button
         *ngIf="recipe.authorId === userId"
         mat-icon-button
-        class="delete"
-        color="warn"
+        class="delete-button"
         (click)="openDeleteDialog()"
       >
         <mat-icon>delete</mat-icon>
@@ -29,12 +28,20 @@
 
   <div class="container">
     <div class="recipe-wrap">
-      <div *ngIf="recipe.recipeThumbnailURL">
-        <img class="thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
-      </div>
-      <div *ngIf="!recipe.recipeThumbnailURL">
-        <span class="no-thumbnail">No Image</span>
-      </div>
+      <figure class="thumbnail">
+        <img
+          [ngClass]="
+            recipe.recipeThumbnailURL
+              ? 'thumbnail__image'
+              : 'thumbnail__image thumbnail__image--no-image'
+          "
+          [src]="recipe.recipeThumbnailURL || '/assets/images/cooking.svg'"
+          alt=""
+        />
+        <p *ngIf="!recipe.recipeThumbnailURL" class="thumbnail__text">
+          No Image
+        </p>
+      </figure>
       <div class="content-head">
         <h2 class="content__name">レシピ名</h2>
         <h4 *ngIf="recipe.public ? true : false">

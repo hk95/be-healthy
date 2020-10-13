@@ -4,14 +4,15 @@
 <div *ngIf="!loading">
   <form [formGroup]="form" (ngSubmit)="updateRecipe()">
     <div class="head">
-      <button type="button" mat-icon-button (click)="back()">
+      <button
+        type="button"
+        mat-icon-button
+        class="clear-button"
+        (click)="back()"
+      >
         <mat-icon>clear</mat-icon>
       </button>
       <h1>レシピ{{ isCreating ? '作成' : '編集' }}画面</h1>
-
-      <button mat-raised-button [disabled]="form.invalid" color="primary">
-        保存
-      </button>
     </div>
     <div class="container">
       <div class="form-wrap">
@@ -25,7 +26,12 @@
               type="text"
               formControlName="recipeTitle"
               required
+              autocomplete="off"
+              #inputTitle
             />
+            <mat-hint align="end"
+              >{{ inputTitle.value.length }}/{{ maxTitleLength }}</mat-hint
+            >
             <mat-error *ngIf="recipeTitle.hasError('required')"
               >必須入力です</mat-error
             >
@@ -66,8 +72,13 @@
               matInput
               rows="5"
               formControlName="recipeDescription"
+              #inputPoint
             ></textarea>
-
+            <mat-hint align="end"
+              >{{ inputPoint.value.length }}/{{
+                maxDescriptionLength
+              }}</mat-hint
+            >
             <mat-error *ngIf="descriptionControl.hasError('maxlength')"
               >{{ maxDescriptionLength }}文字以内で入力してください</mat-error
             >
@@ -83,7 +94,7 @@
             *ngIf="ingredients.length !== 0"
             (click)="editIngredient()"
           >
-            <span *ngIf="!ingredient">編集</span
+            <span *ngIf="!ingredient">材料を削除</span
             ><span *ngIf="ingredient">完了</span>
           </button>
         </div>
@@ -108,7 +119,14 @@
                     class="ingredient__input"
                     type="text"
                     formControlName="name"
+                    autocomplete="off"
+                    #inputIngredinetName
                   />
+                  <mat-hint align="end"
+                    >{{ inputIngredinetName.value.length }}/{{
+                      maxIngredinetNameLength
+                    }}</mat-hint
+                  >
                   <mat-error *ngIf="element.get('name').hasError('required')"
                     >必須入力です</mat-error
                   ><mat-error *ngIf="element.get('name').hasError('maxlength')">
@@ -135,7 +153,13 @@
                     type="text"
                     formControlName="amountAndUnit"
                     autocomplete="off"
+                    #inputIngredinetUnit
                   />
+                  <mat-hint align="end"
+                    >{{ inputIngredinetUnit.value.length }}/{{
+                      maxIngredinetUnitLength
+                    }}</mat-hint
+                  >
                   <mat-error
                     *ngIf="element.get('amountAndUnit').hasError('required')"
                     >必須入力です</mat-error
@@ -212,7 +236,8 @@
             *ngIf="processes.length !== 0"
             (click)="editProcess()"
           >
-            <span *ngIf="!process">編集</span><span *ngIf="process">完了</span>
+            <span *ngIf="!process">材料を削除</span
+            ><span *ngIf="process">完了</span>
           </button>
         </div>
         <div class="process">
@@ -285,16 +310,20 @@
                     formControlName="description"
                     class="process__description"
                     placeholder="りんごを切る"
+                    #inputIngredinetProcess
                   ></textarea>
+                  <mat-hint align="end"
+                    >{{ inputIngredinetProcess.value.length }}/{{
+                      maxDescriptionLength
+                    }}</mat-hint
+                  >
                   <mat-error
                     *ngIf="element.get('description').hasError('required')"
                     >必須入力です</mat-error
                   >
                   <mat-error
                     *ngIf="element.get('description').hasError('maxlength')"
-                    >{{
-                      maxIngredinetUnitLength
-                    }}以内で入力してください</mat-error
+                    >{{ maxDescriptionLength }}以内で入力してください</mat-error
                   >
                 </mat-form-field>
               </mat-cell>
@@ -375,9 +404,9 @@
                   recipeCalControl.hasError('min') ||
                   recipeCalControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
-                }}範囲内で調整してください</mat-error
+                }}の範囲内で調整してください</mat-error
               >
             </mat-form-field>
           </div>
@@ -402,9 +431,9 @@
                   recipeProteinControl.hasError('min') ||
                   recipeProteinControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
-                }}範囲内で調整してください</mat-error
+                }}の範囲内で調整してください</mat-error
               >
             </mat-form-field>
           </div>
@@ -429,9 +458,9 @@
                   recipeFatControl.hasError('min') ||
                   recipeFatControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
-                }}範囲内で調整してください</mat-error
+                }}の範囲内で調整してください</mat-error
               >
             </mat-form-field>
           </div>
@@ -456,9 +485,9 @@
                   recipeSugarControl.hasError('min') ||
                   recipeSugarControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
-                }}範囲内で調整してください</mat-error
+                }}の範囲内で調整してください</mat-error
               >
             </mat-form-field>
           </div>
@@ -483,9 +512,9 @@
                   recipeDietaryFiberControl.hasError('min') ||
                   recipeDietaryFiberControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
-                }}範囲内で調整してください</mat-error
+                }}の範囲内で調整してください</mat-error
               >
             </mat-form-field>
           </div>
@@ -511,9 +540,9 @@
                   recipeTotalCarbohydrateControl.hasError('min') ||
                   recipeTotalCarbohydrateControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
-                }}範囲内で調整してください</mat-error
+                }}の範囲内で調整してください</mat-error
               >
             </mat-form-field>
           </div>
@@ -529,6 +558,14 @@
           >
           </mat-slide-toggle>
         </div>
+        <button
+          class="submit-button"
+          mat-raised-button
+          [disabled]="form.invalid || form.pristine"
+          color="primary"
+        >
+          保存
+        </button>
       </div>
     </div>
   </form>

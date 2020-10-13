@@ -4,11 +4,15 @@
   background: #fff;
   position: sticky;
   top: 0;
-  z-index: 5px;
+  z-index: 20;
   display: flex;
   justify-content: space-between;
   padding: 8px;
   @include mat-elevation(1);
+}
+
+.delete-button {
+  color: rgb(115, 115, 115);
 }
 
 .update-to-page {
@@ -16,24 +20,31 @@
 }
 
 .thumbnail {
-  display: block;
-  margin: 0 auto;
-  border-radius: 4px;
+  position: relative;
   width: 100%;
-  max-width: 450px;
-  background: center/cover;
-  margin-bottom: 32px;
-}
-
-.no-thumbnail {
-  height: 150px;
-  max-width: 300px;
-  background: #c6c6c6;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  margin: 0 auto;
-  margin-bottom: 32px;
+  margin: 0 auto 32px;
+  border-radius: 4px;
+  z-index: 0;
+
+  &__image {
+    width: 100%;
+    max-width: 300px;
+    background: center/cover;
+
+    &--no-image {
+      opacity: 0.5;
+    }
+  }
+
+  &__text {
+    position: absolute;
+    top: 50%;
+    font-size: 22px;
+    font-weight: lighter;
+  }
 }
 
 h1 {
