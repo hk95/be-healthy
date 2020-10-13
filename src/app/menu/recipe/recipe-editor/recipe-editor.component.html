@@ -4,14 +4,15 @@
 <div *ngIf="!loading">
   <form [formGroup]="form" (ngSubmit)="updateRecipe()">
     <div class="head">
-      <button type="button" mat-icon-button (click)="back()">
+      <button
+        type="button"
+        mat-icon-button
+        class="clear-button"
+        (click)="back()"
+      >
         <mat-icon>clear</mat-icon>
       </button>
       <h1>レシピ{{ isCreating ? '作成' : '編集' }}画面</h1>
-
-      <button mat-raised-button [disabled]="form.invalid" color="primary">
-        保存
-      </button>
     </div>
     <div class="container">
       <div class="form-wrap">
@@ -557,6 +558,14 @@
           >
           </mat-slide-toggle>
         </div>
+        <button
+          class="submit-button"
+          mat-raised-button
+          [disabled]="form.invalid || form.pristine"
+          color="primary"
+        >
+          保存
+        </button>
       </div>
     </div>
   </form>
