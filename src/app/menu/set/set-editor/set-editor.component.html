@@ -1,16 +1,14 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <div class="head">
-    <button type="button" mat-icon-button (click)="backToMenu()">
+    <button
+      type="button"
+      class="head__clear-button"
+      mat-icon-button
+      (click)="backToMenu()"
+    >
       <mat-icon>clear</mat-icon>
     </button>
     <h1>マイセット{{ title || '作成' }}画面</h1>
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="form.invalid || preFoods.length === 0"
-    >
-      保存
-    </button>
   </div>
   <div class="container">
     <div class="editor-wrap">
@@ -473,6 +471,14 @@
           </div>
         </div>
       </div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit-button"
+        [disabled]="form.invalid || preFoods?.length === 0 || form.pristine"
+      >
+        保存
+      </button>
     </div>
   </div>
 </form>

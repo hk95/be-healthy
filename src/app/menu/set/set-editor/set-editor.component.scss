@@ -39,7 +39,7 @@ p {
 
 .head {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0 8px;
   height: 56px;
@@ -48,6 +48,11 @@ p {
   position: sticky;
   top: 0;
   background: #fff;
+
+  &__clear-button {
+    position: fixed;
+    left: 8px;
+  }
 }
 
 .title {
@@ -337,4 +342,9 @@ p {
 .more-button {
   display: flex;
   justify-content: center;
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto 32px;
 }
