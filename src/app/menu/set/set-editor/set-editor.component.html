@@ -248,9 +248,12 @@
         *ngIf="preFoods && preFoods.length > 0; else noFood"
         [style.color]="preFoods.length === arrayLimit ? '#E25241' : '#000'"
       >
-        選択中<span
-          class="foods__validation"
-          *ngIf="preFoods.length === arrayLimit"
+        <span
+          [matBadge]="preFoods?.length || ''"
+          [matBadgeColor]="preFoods?.length !== arrayLimit ? 'primary' : 'warn'"
+          matBadgeOverlap="false"
+          >選択中</span
+        ><span class="foods__validation" *ngIf="preFoods?.length === arrayLimit"
           >これ以上選択できません</span
         >
       </h2>
