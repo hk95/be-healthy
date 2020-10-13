@@ -138,6 +138,9 @@
                       </div>
                     </div>
                   </div>
+                  <div *ngIf="hits.length === 0">
+                    該当する食べ物はありません
+                  </div>
                 </ng-template>
               </ais-hits>
             </ais-instantsearch>
