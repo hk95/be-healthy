@@ -8,25 +8,25 @@
       class="wrap__image"
     />
     <div class="wrap-row">
-      <dl class="wrap-row__title wrap-row__title--number">①</dl>
+      <dl class="wrap-row__title">①</dl>
       <dt class="wrap-row__discription">
         単位当たりのカロリー
       </dt>
     </div>
     <div class="wrap-row">
-      <dl class="wrap-row__title wrap-row__title--number">②</dl>
+      <dl class="wrap-row__title">②</dl>
       <dt class="wrap-row__discription">
         ①でカロリーを確認し数量を入力
       </dt>
     </div>
     <div class="wrap-row">
-      <dl class="wrap-row__title wrap-row__title--number">③</dl>
+      <dl class="wrap-row__title">③</dl>
       <dt class="wrap-row__discription">
         ①と②の計算値が表示される
       </dt>
     </div>
     <div class="wrap-row">
-      <dl class="wrap-row__title wrap-row__title--number">④</dl>
+      <dl class="wrap-row__title">④</dl>
       <dt class="wrap-row__discription">
         間違いなければボタンをクリック
       </dt>
@@ -36,29 +36,54 @@
 
   <div class="wrap">
     <h3 class="wrap__title">各タブについて</h3>
-    <div class="wrap-row">
-      <dl class="wrap-row__title">検索</dl>
-      <dt class="wrap-row__discription">食べ物を検索できます。</dt>
-    </div>
-    <div class="wrap-row">
-      <dl class="wrap-row__title">お気に入り</dl>
-      <dt class="wrap-row__discription">
-        検索タブに表示されている食べ物を お気に入り登録できます。
-      </dt>
-    </div>
-    <div class="wrap-row">
-      <dl class="wrap-row__title">マイセット</dl>
-      <dt class="wrap-row__discription">
-        <a routerLink="/menu/set-list" target="_blank" class="link"
-          >マイメニューページ</a
-        >で自分だけのマイセットを登録することができます。
-      </dt>
-    </div>
-    <div class="wrap-row">
-      <dl class="wrap-row__title">選択項目</dl>
-      <dt class="wrap-row__discription">
-        選択した項目と合計カロリーが確認できます。
-      </dt>
+    <div class="tabs">
+      <div class="tabs__tab">
+        <dl class="tabs__title">
+          <img
+            class="tabs__title-image"
+            src="/assets/images/usage/search.png"
+            alt=""
+          />
+        </dl>
+        <dt class="tabs__discription">食べ物を検索できます。</dt>
+      </div>
+      <div class="tabs__tab">
+        <dl class="tabs__title">
+          <img
+            class="tabs__title-image"
+            src="/assets/images/usage/fav.png"
+            alt=""
+          />
+        </dl>
+        <dt class="tabs__discription">
+          検索タブに表示されている食べ物を お気に入り登録できます。
+        </dt>
+      </div>
+      <div class="tabs__tab">
+        <dl class="tabs__title">
+          <img
+            class="tabs__title-image"
+            src="/assets/images/usage/my-set.png"
+            alt=""
+          />
+        </dl>
+        <dt class="tabs__discription">
+          <a routerLink="/menu/set-list" class="link">マイメニューページ</a
+          >で自分だけのマイセットを登録することができます。
+        </dt>
+      </div>
+      <div class="tabs__tab">
+        <dl class="tabs__title">
+          <img
+            class="tabs__title-image"
+            src="/assets/images/usage/select.png"
+            alt=""
+          />
+        </dl>
+        <dt class="tabs__discription">
+          選択した項目と合計カロリーが確認できます。
+        </dt>
+      </div>
     </div>
   </div>
 </div>

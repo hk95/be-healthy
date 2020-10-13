@@ -22,7 +22,7 @@ p {
   padding: 32px 0;
 
   &__discription {
-    margin-bottom: 48px;
+    margin-bottom: 64px;
   }
 
   &__title {
@@ -31,6 +31,15 @@ p {
 
   &__texts {
     margin-bottom: 32px;
+    line-height: 1.8;
+  }
+
+  &__text {
+    line-height: 1.8;
+
+    &--image {
+      margin-bottom: 16px;
+    }
   }
 
   &__emphasis {
@@ -60,17 +69,8 @@ p {
       margin-top: 8px;
     }
   }
-
-  &__buttons {
-    width: 100%;
-    max-width: 500;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 150px 150px;
-    grid-area: 24px;
-  }
 }
 
 .border {
-  margin: 40px auto;
+  margin: 64px auto;
 }

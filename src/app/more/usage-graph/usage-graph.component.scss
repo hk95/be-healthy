@@ -8,17 +8,16 @@ p {
 
 .catergory {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
 
   &__title {
     font-family: 'Yuanti SC';
-    font-weight: lighter;
     text-align: center;
     margin: 0;
-    width: 35%;
-    max-width: 300px;
+    width: 20%;
+    color: #009688;
+    margin-bottom: 16px;
   }
 
   &__discription {
@@ -26,20 +25,39 @@ p {
     font-weight: lighter;
     text-align: center;
     width: 60%;
+    line-height: 1.8;
   }
 }
 
 .graph {
   padding: 32px 0;
 
+  &__wrap {
+    max-width: 700px;
+    margin: 0 auto;
+
+    &--period {
+      display: grid;
+      grid-template-columns: repeat(4, 25%);
+
+      @media screen and (max-width: 750px) {
+        row-gap: 32px;
+        grid-template-columns: repeat(2, 50%);
+      }
+    }
+  }
+
   &__discription {
+    line-height: 1.8;
+
     @media screen and (max-width: 750px) {
       text-align: left;
     }
   }
 
   &__text {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    font-size: 18px;
   }
 
   &__emphasis {
@@ -65,5 +83,5 @@ p {
 }
 
 .border {
-  margin: 40px auto;
+  margin: 64px auto;
 }

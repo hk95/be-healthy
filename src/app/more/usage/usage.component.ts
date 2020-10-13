@@ -11,10 +11,10 @@ export class UsageComponent implements OnInit {
   constructor(
     private otherShellService: OthreShellService,
     private mainShellService: MainShellService
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this.otherShellService.title = this.otherShellService.PAGE_TITLES.usage;
     this.mainShellService.title = this.otherShellService.PAGE_TITLES.usage;
   }
+
+  ngOnInit(): void {}
 }
