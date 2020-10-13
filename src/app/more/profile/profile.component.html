@@ -158,7 +158,7 @@
     </div>
 
     <button
-      [disabled]="form.invalid"
+      [disabled]="form.invalid || form.pristine"
       mat-raised-button
       class="submit-button"
       color="primary"
