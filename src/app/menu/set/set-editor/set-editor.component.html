@@ -105,6 +105,7 @@
                             #amount
                             type="number"
                             autocomplete="off"
+                            #amountInput
                           />
 
                           <span class="nutrition__prefix" matSuffix>{{
@@ -119,6 +120,7 @@
                           type="button"
                           color="primary"
                           (click)="addFood(amount.value, food, null)"
+                          [disabled]="!amountInput.value.length"
                         >
                           <mat-icon>add_box</mat-icon>
                         </button>
