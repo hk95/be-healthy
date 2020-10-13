@@ -20,6 +20,7 @@ import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Food } from 'src/app/interfaces/food';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-set-editor',
@@ -139,7 +140,8 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService,
     private authService: AuthService,
     private setService: SetService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     this.subscription = this.route.queryParamMap.subscribe((setId) => {
       if (setId) {
@@ -283,6 +285,9 @@ export class SetEditorComponent implements OnInit, OnDestroy {
           (this.currentDietaryFiber + recipe.recipeDietaryFiber) * 10
         ) / 10;
     }
+    this.snackBar.open('食べ物を追加しました', null, {
+      duration: 2000,
+    });
   }
 
   removeFood(index: number, food: FoodInArray) {
