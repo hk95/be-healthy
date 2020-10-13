@@ -25,6 +25,7 @@
               type="text"
               formControlName="recipeTitle"
               required
+              autocomplete="off"
               #inputTitle
             />
             <mat-hint align="end"
@@ -117,6 +118,7 @@
                     class="ingredient__input"
                     type="text"
                     formControlName="name"
+                    autocomplete="off"
                     #inputIngredinetName
                   />
                   <mat-hint align="end"
@@ -233,7 +235,8 @@
             *ngIf="processes.length !== 0"
             (click)="editProcess()"
           >
-            <span *ngIf="!process">編集</span><span *ngIf="process">完了</span>
+            <span *ngIf="!process">材料を削除</span
+            ><span *ngIf="process">完了</span>
           </button>
         </div>
         <div class="process">
