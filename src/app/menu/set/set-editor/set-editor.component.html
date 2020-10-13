@@ -25,7 +25,11 @@
             type="text"
             autocomplete="off"
             required
+            #input
           />
+          <mat-hint align="end"
+            >{{ input.value.length }}/{{ maxTitleLength }}</mat-hint
+          >
           <mat-error *ngIf="titleControl.hasError('required')"
             >必須入力です</mat-error
           >
