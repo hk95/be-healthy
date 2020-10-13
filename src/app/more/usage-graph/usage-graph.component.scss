@@ -8,16 +8,16 @@ p {
 
 .catergory {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 24px;
 
   &__title {
     font-family: 'Yuanti SC';
-    font-weight: lighter;
     text-align: center;
     margin: 0;
     width: 20%;
-    margin-right: 16px;
+    color: #009688;
+    margin-bottom: 16px;
   }
 
   &__discription {
@@ -33,8 +33,18 @@ p {
   padding: 32px 0;
 
   &__wrap {
-    max-width: 400px;
+    max-width: 700px;
     margin: 0 auto;
+
+    &--period {
+      display: grid;
+      grid-template-columns: repeat(4, 25%);
+
+      @media screen and (max-width: 750px) {
+        row-gap: 32px;
+        grid-template-columns: repeat(2, 50%);
+      }
+    }
   }
 
   &__discription {
