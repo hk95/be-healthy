@@ -109,7 +109,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       this.date = params.get('date');
       this.getDailyInfo();
       this.getDailyInfoOfMeal();
-      this.mainShellService.setTitle(this.date);
+      this.mainShellService.title = this.date;
     });
 
     this.subscription.add(routeSub);

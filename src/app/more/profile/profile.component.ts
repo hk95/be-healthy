@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private dialog: MatDialog
   ) {
-    this.otherShellService.setTitle('ユーザー情報');
+    this.otherShellService.title = this.otherShellService.PAGE_TITLES.profile;
     this.getBasicInfo();
   }
 

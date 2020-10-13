@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainShellService } from '../services/main-shell.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
@@ -15,19 +15,16 @@ import { BasicInfoService } from '../services/basic-info.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
 
-  title$: Observable<string> = this.mainShellService.title$;
-  titleMeal$: Observable<string> = this.mainShellService.titleMeal$;
   date: string;
   avatarURL: string;
   selectedValue: string;
   mealTitle: string;
-  more = false;
   viewX: number;
   maxDate = new Date();
   minDate = new Date(2018, 0, 1);
 
   constructor(
-    private mainShellService: MainShellService,
+    public mainShellService: MainShellService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private dailyInfoService: DailyInfoService,
@@ -42,11 +39,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
 
     const routeSub = this.getParam();
-
-    if (innerWidth > 750) {
-      this.more = true;
-      this.viewX = innerWidth / 2;
-    }
 
     this.subscription.add(basicInfoSub);
     this.subscription.add(routeSub);

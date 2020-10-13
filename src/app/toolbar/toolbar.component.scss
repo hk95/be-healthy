@@ -1,14 +1,21 @@
 .toolbar {
-  height: 56px;
-  display: grid;
-  grid-template-columns: repeat(4, 25%);
-  justify-items: center;
-  align-items: center;
+  @media screen and(min-width:750px) {
+    display: none;
+  }
+
+  &__row {
+    height: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-items: center;
+    align-items: center;
+    padding: 0;
+  }
 }
 
 .nav {
   line-height: 28px;
-  padding: 0 8px;
+  padding: 0;
 
   &__text {
     font-size: 11px;

@@ -7,15 +7,15 @@
     <div class="spacer"></div>
 
     <ng-container *ngIf="!selectedValue">
-      <h1 class="title" *ngIf="!(title$ | async).includes('2')">
-        {{ title$ | async }}
+      <h1 class="title" *ngIf="!mainShellService.title.includes('2')">
+        {{ mainShellService.title }}
       </h1>
       <h1
-        *ngIf="(title$ | async).includes('2')"
+        *ngIf="mainShellService.title.includes('2')"
         class="title title--date"
         (click)="picker.open()"
       >
-        {{ title$ | async
+        {{ mainShellService.title
         }}<mat-icon class="title__icon">arrow_drop_down</mat-icon>
       </h1>
       <mat-form-field class="example-full-width" style="display: none;">
@@ -34,7 +34,7 @@
     <div class="header__meal" *ngIf="selectedValue">
       <ng-container>
         <h1 class="other-title" (click)="picker.open()">
-          {{ title$ | async }}
+          {{ mainShellService.title }}
         </h1>
         <mat-form-field class="example-full-width" style="display: none;">
           <input
@@ -70,14 +70,14 @@
         <a
           mat-icon-button
           color="primary"
-          matTooltip="グラフ"
+          [matTooltip]="mainShellService.PAGE_TITLES.graph"
           aria-label="Button that displays a tooltip when focused or hovered over"
           class="navs__item"
           routerLink="/graph"
         >
           <mat-icon
             [fontSet]="
-              (title$ | async) === 'グラフ'
+              mainShellService.title === mainShellService.PAGE_TITLES.graph
                 ? 'material-icons'
                 : 'material-icons-outlined'
             "
@@ -87,14 +87,14 @@
         <a
           mat-icon-button
           color="primary"
-          matTooltip="マイメニュー"
+          [matTooltip]="mainShellService.PAGE_TITLES.menu"
           aria-label="Button that displays a tooltip when focused or hovered over"
           class="navs__item"
           routerLink="/menu/set-list"
         >
           <mat-icon
             [fontSet]="
-              (title$ | async) === 'マイメニュー'
+              mainShellService.title === mainShellService.PAGE_TITLES.menu
                 ? 'material-icons'
                 : 'material-icons-outlined'
             "
@@ -116,9 +116,13 @@
             <mat-icon>login</mat-icon>
             <span>ログアウト</span>
           </button>
-          <a mat-menu-item *ngIf="more" routerLink="/more">
+          <a mat-menu-item routerLink="/more">
             <mat-icon>more_horiz</mat-icon>
             <span>その他</span>
+          </a>
+          <a mat-menu-item routerLink="/more/usage/top">
+            <mat-icon>help_outline</mat-icon>
+            <span>使用方法</span>
           </a>
           <a mat-menu-item routerLink="/billing">
             <mat-icon>support</mat-icon>

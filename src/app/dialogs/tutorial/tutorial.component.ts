@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { OthreShellService } from 'src/app/services/othre-shell.service';
 
 @Component({
   selector: 'app-tutorial',
@@ -13,13 +12,11 @@ export class TutorialComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private dialogRef: MatDialogRef<TutorialComponent>,
-    private router: Router,
-    private otherShellService: OthreShellService
+    private router: Router
   ) {}
 
   goToUsage() {
     this.authService.isInitialLogin = false;
-    this.otherShellService.setPreTitle('TOP');
     this.dialogRef.close();
     this.router.navigateByUrl('/more/usage/top');
   }
