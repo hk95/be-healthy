@@ -34,12 +34,16 @@
           formControlName="name"
           class="profile__input"
           type="text"
+          #input
         />
         <mat-error *ngIf="nameControl.hasError('required')"
           >必須入力です</mat-error
         >
         <mat-error *ngIf="nameControl.hasError('maxlength')"
           >{{ maxLength }}以内で入力してください</mat-error
+        >
+        <mat-hint align="end"
+          >{{ input.value.length }}/{{ maxLength }}</mat-hint
         >
       </mat-form-field>
     </div>
@@ -68,7 +72,7 @@
         /><span class="profile__suffix" matSuffix>cm</span>
         <mat-error
           *ngIf="heigtControl.hasError('min') || heigtControl.hasError('max')"
-          >{{ minHeight }}-{{ maxHeight }}の範囲で入力してください</mat-error
+          >不正な値です</mat-error
         ></mat-form-field
       >
     </div>
@@ -87,7 +91,7 @@
         /><span class="profile__suffix" matSuffix>kg</span>
         <mat-error
           *ngIf="weightControl.hasError('min') || weightControl.hasError('max')"
-          >{{ minWeight }}-{{ maxWeight }}の範囲で入力してください</mat-error
+          >不正な値です</mat-error
         >
       </mat-form-field>
     </div>
@@ -106,7 +110,7 @@
         /><span class="profile__suffix" matSuffix>%</span>
         <mat-error
           *ngIf="fatControl.hasError('min') || fatControl.hasError('max')"
-          >{{ minFat }}-{{ maxFat }}の範囲で入力してください</mat-error
+          >不正な値です</mat-error
         >
       </mat-form-field>
     </div>
@@ -125,7 +129,7 @@
         /><span class="profile__suffix" matSuffix>kcal</span>
         <mat-error
           *ngIf="calControl.hasError('min') || calControl.hasError('max')"
-          >{{ minCal }}-{{ maxCal }}の範囲で入力してください</mat-error
+          >{{ minCal }}kcal〜{{ maxCal }}kcalの範囲で入力してください</mat-error
         >
       </mat-form-field>
     </div>
