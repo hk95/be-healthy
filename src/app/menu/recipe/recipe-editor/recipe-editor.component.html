@@ -25,7 +25,11 @@
               type="text"
               formControlName="recipeTitle"
               required
+              #inputTitle
             />
+            <mat-hint align="end"
+              >{{ inputTitle.value.length }}/{{ maxTitleLength }}</mat-hint
+            >
             <mat-error *ngIf="recipeTitle.hasError('required')"
               >必須入力です</mat-error
             >
@@ -66,8 +70,13 @@
               matInput
               rows="5"
               formControlName="recipeDescription"
+              #inputPoint
             ></textarea>
-
+            <mat-hint align="end"
+              >{{ inputPoint.value.length }}/{{
+                maxDescriptionLength
+              }}</mat-hint
+            >
             <mat-error *ngIf="descriptionControl.hasError('maxlength')"
               >{{ maxDescriptionLength }}文字以内で入力してください</mat-error
             >
@@ -108,7 +117,13 @@
                     class="ingredient__input"
                     type="text"
                     formControlName="name"
+                    #inputIngredinetName
                   />
+                  <mat-hint align="end"
+                    >{{ inputIngredinetName.value.length }}/{{
+                      maxIngredinetNameLength
+                    }}</mat-hint
+                  >
                   <mat-error *ngIf="element.get('name').hasError('required')"
                     >必須入力です</mat-error
                   ><mat-error *ngIf="element.get('name').hasError('maxlength')">
@@ -135,7 +150,13 @@
                     type="text"
                     formControlName="amountAndUnit"
                     autocomplete="off"
+                    #inputIngredinetUnit
                   />
+                  <mat-hint align="end"
+                    >{{ inputIngredinetUnit.value.length }}/{{
+                      maxIngredinetUnitLength
+                    }}</mat-hint
+                  >
                   <mat-error
                     *ngIf="element.get('amountAndUnit').hasError('required')"
                     >必須入力です</mat-error
@@ -285,16 +306,20 @@
                     formControlName="description"
                     class="process__description"
                     placeholder="りんごを切る"
+                    #inputIngredinetProcess
                   ></textarea>
+                  <mat-hint align="end"
+                    >{{ inputIngredinetProcess.value.length }}/{{
+                      maxDescriptionLength
+                    }}</mat-hint
+                  >
                   <mat-error
                     *ngIf="element.get('description').hasError('required')"
                     >必須入力です</mat-error
                   >
                   <mat-error
                     *ngIf="element.get('description').hasError('maxlength')"
-                    >{{
-                      maxIngredinetUnitLength
-                    }}以内で入力してください</mat-error
+                    >{{ maxDescriptionLength }}以内で入力してください</mat-error
                   >
                 </mat-form-field>
               </mat-cell>
