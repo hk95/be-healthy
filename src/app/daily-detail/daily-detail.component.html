@@ -163,7 +163,7 @@
       <mat-card class="card card--meal">
         <div class="card__head">
           <div class="card__head-left">
-            <p>
+            <p class="meal-title">
               朝食
               <span
                 ><img
@@ -200,8 +200,8 @@
         >
           <mat-accordion class="mat-accordion">
             <mat-expansion-panel
-              (opened)="panelOpenState = true"
-              (closed)="panelOpenState = false"
+              (opened)="panelOpenStateBreakfast = true"
+              (closed)="panelOpenStateBreakfast = false"
               [expanded]="panelOpenStateBreakfast"
               class="mat-elevation-z0"
             >
@@ -241,7 +241,7 @@
       <mat-card class="card card--meal">
         <div class="card__head">
           <div class="card__head-left">
-            <p>
+            <p class="meal-title">
               昼食<span
                 ><img
                   class="card__icon"
@@ -274,8 +274,8 @@
         <div class="card__content" *ngIf="mealsOfLunch.length > 0; else noMeal">
           <mat-accordion class="mat-accordion">
             <mat-expansion-panel
-              (opened)="panelOpenState = true"
-              (closed)="panelOpenState = false"
+              (opened)="panelOpenStateLunch = true"
+              (closed)="panelOpenStateLunch = false"
               [expanded]="panelOpenStateLunch"
               class="mat-elevation-z0"
             >
@@ -314,7 +314,7 @@
       <mat-card class="card">
         <div class="card__head">
           <div class="card__head-left">
-            <p>
+            <p class="meal-title">
               夕食<span
                 ><img
                   class="card__icon"
@@ -350,8 +350,8 @@
         >
           <mat-accordion class="mat-accordion">
             <mat-expansion-panel
-              (opened)="panelOpenState = true"
-              (closed)="panelOpenState = false"
+              (opened)="panelOpenStateDinner = true"
+              (closed)="panelOpenStateDinner = false"
               [expanded]="panelOpenStateDinner"
               class="mat-elevation-z0"
             >
