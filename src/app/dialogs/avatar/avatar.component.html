@@ -6,12 +6,13 @@
     [aspectRatio]="1 / 1"
     format="png"
     roundCropper="true"
+    class="imafe"
     (imageCropped)="imageCropped($event)"
   ></image-cropper>
 </div>
 <div mat-dialog-actions class="actions">
+  <button mat-stroked-button matDialogClose>キャンセル</button>
   <button mat-stroked-button color="primary" (click)="uploadImage()">
     OK
   </button>
-  <button mat-stroked-button matDialogClose>キャンセル</button>
 </div>
