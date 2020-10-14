@@ -63,16 +63,18 @@
                     [(ngModel)]="amount[i]"
                     type="number"
                   />
+                  <mat-hint align="end">
+                    {{ food.foodCalPerAmount * amount[i] | number: '1.1-1' }}
+                    kcal</mat-hint
+                  >
                   <span matSuffix>{{ food.unit }}</span>
                   <mat-error
                     *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
-                    >{{ maxAmount }}以内で入力してください</mat-error
+                    >{{ minAmount }}〜{{
+                      maxAmount
+                    }}の範囲で入力してください</mat-error
                   >
                 </mat-form-field>
-                <p class="food__cal">
-                  {{ food.foodCalPerAmount * amount[i] | number: '1.1-1' }}
-                  kcal
-                </p>
               </div>
             </form>
 
@@ -92,6 +94,7 @@
               color="primary"
               (click)="addFood(amount[i], food)"
               [disabled]="
+                amount[i] === null ||
                 amount[i] > maxAmount ||
                 amount[i] < minAmount ||
                 selectedMealsNum >= maxSelectNum
