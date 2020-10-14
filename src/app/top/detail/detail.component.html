@@ -19,12 +19,13 @@
 </div>
 
 <a
+  mat-button
   class="detail-anchor"
   routerLink="/daily-detail"
   [queryParams]="{
     date: date
   }"
-  >詳細へ</a
+  >詳細ページへ</a
 >
 <mat-card class="today">
   <div class="today__wrap" *ngIf="!editingWeight">

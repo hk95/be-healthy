@@ -18,17 +18,11 @@ p {
 }
 
 .detail-anchor {
-  width: 100%;
-  margin: 0 auto;
-  display: block;
-  text-align: right;
+  max-width: 100px;
+  display: flex;
+  justify-content: center;
   font-size: 14px;
-  color: #337ab7;
-  text-decoration: none;
-
-  @media screen and (min-width: 750px) {
-    padding: 0;
-  }
+  margin: 0 0 8px auto;
 }
 
 .today {
