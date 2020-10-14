@@ -439,7 +439,15 @@
             appearance="outline"
           >
             <mat-label>体調など記入しましょう</mat-label>
-            <textarea matInput rows="16" formControlName="dailyMemo"></textarea>
+            <textarea
+              matInput
+              rows="16"
+              formControlName="dailyMemo"
+              #input
+            ></textarea>
+            <mat-hint align="end"
+              >{{ input.value.length }}/{{ maxMemoLength }}</mat-hint
+            >
             <mat-error *ngIf="memoControl.hasError('maxlength')"
               >{{ maxMemoLength }}文字以内で入力してください</mat-error
             >
