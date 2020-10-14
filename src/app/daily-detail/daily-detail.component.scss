@@ -114,11 +114,6 @@ p {
     align-items: center;
   }
 
-  &__content {
-    height: 180px;
-    overflow: scroll;
-  }
-
   &__meal {
     display: flex;
     justify-content: space-between;
@@ -226,14 +221,25 @@ ngx-charts-pie-chart {
   align-items: center;
 }
 
-:host ::ng-deep .chart-legend .legend-labels {
-  width: 100%;
-  position: absolute;
-  top: 90%;
-  line-height: 1;
-  left: 0;
-  text-align: center;
-  background: #fafafa;
-  display: flex;
-  justify-content: center;
+:host ::ng-deep {
+  .chart-legend .legend-labels {
+    width: 100%;
+    position: absolute;
+    top: 90%;
+    line-height: 1;
+    left: 0;
+    text-align: center;
+    background: #fafafa;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0 0 16px;
+  }
+}
+
+.mat-expansion-panel-header {
+  padding: 0;
+  padding-right: 8px;
 }

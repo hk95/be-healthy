@@ -24,6 +24,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   readonly maxFat = 100;
   readonly minWeightAndFat = 0;
   readonly maxMemoLength = 500;
+  panelOpenStateBreakfast = false;
+  panelOpenStateLunch = false;
+  panelOpenStateDinner = false;
   date: string;
   dailyInfo: DailyInfo;
   editingWeight = false;
