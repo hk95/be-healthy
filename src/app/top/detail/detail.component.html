@@ -128,8 +128,11 @@
       </div>
 
       <div class="form-body__button">
+        <button (click)="editingWeight = false" mat-stroked-button>
+          キャンセル
+        </button>
         <button
-          (click)="updateWeight(); $event.stopPropagation()"
+          (click)="updateWeight()"
           mat-stroked-button
           color="primary"
           [disabled]="formBody.invalid"
