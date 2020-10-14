@@ -45,8 +45,8 @@
             </div>
             <div class="spacer"></div>
 
-            <form [formGroup]="amountForm">
-              <div class="food__choice" formArrayName="amountArray">
+            <form class="food__choice" [formGroup]="amountForm">
+              <div formArrayName="amountArray">
                 <mat-form-field
                   class="food__choice-form-field"
                   appearance="outline"
