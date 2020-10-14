@@ -8,12 +8,7 @@ import { Food } from 'src/app/interfaces/food';
 import { DailyMeal } from 'src/app/interfaces/daily-info';
 import { Subscription } from 'rxjs';
 import { AverageService } from 'src/app/services/average.service';
-import {
-  FormControl,
-  Validators,
-  FormBuilder,
-  FormArray,
-} from '@angular/forms';
+import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -35,20 +30,11 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
   readonly minAmount = 0;
   readonly maxAmount = 10000;
   selectedMealsNum: number;
-  amount = [].fill(0);
+  amount = new Array(10).fill(0);
   isLikedlist: string[] = new Array();
   config = this.searchService.config;
   amountForm = this.fb.group({
     amountArray: this.fb.array([]),
-    // 1: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 2: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 3: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 4: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 5: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 6: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 7: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 8: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
-    // 9: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
   });
   get amountArray(): FormArray {
     return this.amountForm.get('amountArray') as FormArray;
@@ -136,10 +122,6 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
         this.date,
         'food'
       );
-    } else {
-      this.snackBar.open('数値を入力してください', null, {
-        duration: 2000,
-      });
     }
   }
 
