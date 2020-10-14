@@ -8,11 +8,7 @@
     (imageCropped)="imageCropped($event)"
   ></image-cropper>
 </div>
-<div mat-dialog-actions class="actions">
-  <button mat-raised-button color="primary" (click)="uploadImage()">
-    OK
-  </button>
-  <button mat-button (click)="cancel()">キャンセル</button>
+<div mat-dialog-actions>
   <button
     class="delete"
     *ngIf="data.thumbnailURL"
@@ -21,5 +17,9 @@
     (click)="deleteImage()"
   >
     写真は挿入しない
+  </button>
+  <button mat-button (click)="cancel()">キャンセル</button>
+  <button mat-raised-button color="primary" (click)="uploadImage()">
+    OK
   </button>
 </div>
