@@ -242,51 +242,80 @@
         </mat-tab-group>
       </div>
 
-      <h2
-        *ngIf="preFoods && preFoods.length > 0; else noFood"
-        [style.color]="preFoods.length === arrayLimit ? '#E25241' : '#000'"
+      <ng-template #noFood
+        ><h2 class="foods__no-choice-title">
+          *食べ物を選択してください
+        </h2></ng-template
       >
-        <span
-          [matBadge]="preFoods?.length || ''"
-          [matBadgeColor]="preFoods?.length !== arrayLimit ? 'primary' : 'warn'"
-          matBadgeOverlap="false"
-          >選択中</span
-        ><span class="foods__validation" *ngIf="preFoods?.length === arrayLimit"
-          >これ以上選択できません</span
-        >
-      </h2>
-      <ng-template #noFood><h2>*食べ物を選択してください</h2></ng-template>
-      <div class="foods foods--choice">
-        <div class="food" *ngFor="let food of preFoods; let i = index">
-          <div class="food__name">
-            <p class="food__name--with-amount">
-              {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
-            </p>
-            <span class="food__amountper">
-              {{
-                food.food
-                  ? food.food.foodCalPerAmount
-                  : food.recipe.recipeCal || 0
-              }}kcal/{{ food.food ? food.food.unit : 'セット' }}
-            </span>
-          </div>
-          <div class="food__row">
-            <p>{{ food.amount }}</p>
-            <span>{{ food.food ? food.food.unit : 'セット' }}</span>
-            <p class="spacer"></p>
-            <p class="food__cal"></p>
 
-            <button
-              mat-icon-button
-              color="warn"
-              type="button"
-              (click)="removeFood(i, food)"
+      <mat-accordion
+        class="mat-accordion"
+        *ngIf="preFoods && preFoods.length > 0; else noFood"
+      >
+        <mat-expansion-panel
+          (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false"
+          [expanded]="panelOpenState"
+          class="mat-elevation-z0"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2
+                class="foods__choice-title"
+                [style.color]="
+                  preFoods.length === arrayLimit ? '#E25241' : '#000'
+                "
+              >
+                <span
+                  [matBadge]="preFoods?.length || ''"
+                  [matBadgeColor]="
+                    preFoods?.length !== arrayLimit ? 'primary' : 'warn'
+                  "
+                  matBadgeOverlap="false"
+                  >選択中</span
+                >
+              </h2>
+            </mat-panel-title>
+            <mat-panel-description
+              class="foods__validation"
+              *ngIf="preFoods?.length === arrayLimit"
             >
-              <mat-icon>clear</mat-icon>
-            </button>
+              これ以上選択できません
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="foods foods--choice">
+            <div class="food" *ngFor="let food of preFoods; let i = index">
+              <div class="food__name">
+                <p class="food__name--with-amount">
+                  {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+                </p>
+                <span class="food__amountper">
+                  {{
+                    food.food
+                      ? food.food.foodCalPerAmount
+                      : food.recipe.recipeCal || 0
+                  }}kcal/{{ food.food ? food.food.unit : 'セット' }}
+                </span>
+              </div>
+              <div class="food__row">
+                <p>{{ food.amount }}</p>
+                <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+                <p class="spacer"></p>
+                <p class="food__cal"></p>
+
+                <button
+                  mat-icon-button
+                  color="warn"
+                  type="button"
+                  (click)="removeFood(i, food)"
+                >
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </mat-expansion-panel>
+      </mat-accordion>
 
       <h2>栄養素</h2>
       <div class="nutrition">
