@@ -13,6 +13,7 @@ import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [DailyDetailComponent, NutritionPipe, PfcBalancePipe],
@@ -28,6 +29,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
+    MatExpansionModule,
   ],
 })
 export class DailyDetailModule {}

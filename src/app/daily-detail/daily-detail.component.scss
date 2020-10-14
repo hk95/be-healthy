@@ -28,27 +28,18 @@ p {
   background-color: rgba(#000, 0.2);
 }
 
-.back {
-  height: 40px;
-  width: 100%;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  z-index: 10;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-  position: sticky;
-  top: 0;
-  left: 0;
-}
-
 .dailyInfo {
   margin-top: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.form-body__button {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
 }
 
 .table {
@@ -114,11 +105,6 @@ p {
     align-items: center;
   }
 
-  &__content {
-    height: 180px;
-    overflow: scroll;
-  }
-
   &__meal {
     display: flex;
     justify-content: space-between;
@@ -160,6 +146,11 @@ p {
   &__memo-textarea-field {
     width: 100%;
   }
+}
+
+.meal-title {
+  display: flex;
+  align-items: center;
 }
 
 .form {
@@ -212,6 +203,7 @@ p {
 
   &__text {
     margin-bottom: 32px;
+    margin-top: 8px;
     font-size: 13.5px;
     opacity: 0.87;
     max-width: 500px;
@@ -226,14 +218,25 @@ ngx-charts-pie-chart {
   align-items: center;
 }
 
-:host ::ng-deep .chart-legend .legend-labels {
-  width: 100%;
-  position: absolute;
-  top: 90%;
-  line-height: 1;
-  left: 0;
-  text-align: center;
-  background: #fafafa;
-  display: flex;
-  justify-content: center;
+:host ::ng-deep {
+  .chart-legend .legend-labels {
+    width: 100%;
+    position: absolute;
+    top: 90%;
+    line-height: 1;
+    left: 0;
+    text-align: center;
+    background: #fafafa;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 0 0 16px;
+  }
+}
+
+.mat-expansion-panel-header {
+  padding: 0;
+  padding-right: 8px;
 }

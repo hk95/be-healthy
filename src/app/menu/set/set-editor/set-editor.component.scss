@@ -39,7 +39,7 @@ p {
 
 .head {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0 8px;
   height: 56px;
@@ -48,6 +48,12 @@ p {
   position: sticky;
   top: 0;
   background: #fff;
+
+  &__clear-button {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+  }
 }
 
 .title {
@@ -83,16 +89,25 @@ p {
 
   mat-tab-group {
     background: #fff;
-    max-height: 480px;
+    max-height: 520px;
   }
 
   &__validation {
     margin-left: 8px;
+    display: flex;
+    align-items: center;
   }
 
-  &--choice {
-    max-height: 200px;
-    overflow: auto;
+  &__choice-title {
+    margin-bottom: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &__no-choice-title {
+    margin-bottom: 32px;
   }
 }
 
@@ -337,4 +352,30 @@ p {
 .more-button {
   display: flex;
   justify-content: center;
+}
+
+.submit-button {
+  display: block;
+  margin: 0 auto 32px;
+}
+
+mat-expansion-panel {
+  margin-bottom: 32px;
+}
+
+.mat-expansion-panel-header {
+  padding: 0;
+  padding-right: 8px;
+}
+
+:host ::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 0 0 16px;
+  }
+
+  .mat-badge-medium.mat-badge-after .mat-badge-content {
+    position: absolute;
+    top: 0;
+    right: -24px;
+  }
 }
