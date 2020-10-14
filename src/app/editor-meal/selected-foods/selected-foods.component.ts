@@ -72,12 +72,14 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
   }
 
   deleteMeal(mealId: string, amount: number, cal: number) {
+    const islastMeal = this.selectedFoodsOrSets.length === 1 ? true : false;
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
       this.date,
       mealId,
       amount,
-      cal
+      cal,
+      islastMeal
     );
     this.totalCal -= cal * amount;
   }

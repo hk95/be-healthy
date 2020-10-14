@@ -60,7 +60,7 @@
             }}
           </p>
           <p class="food__selected-amount">
-            {{ foodOrSet.amount
+            {{ foodOrSet.amount | number: '1.1-1'
             }}{{ foodOrSet.food ? foodOrSet.food.unit : 'セット' }}
           </p>
         </div>
