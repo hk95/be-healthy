@@ -28,21 +28,6 @@ p {
   background-color: rgba(#000, 0.2);
 }
 
-.back {
-  height: 40px;
-  width: 100%;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  z-index: 10;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-  position: sticky;
-  top: 0;
-  left: 0;
-}
-
 .dailyInfo {
   margin-top: 16px;
   display: flex;
