@@ -42,6 +42,7 @@ export class SetDetailComponent implements OnInit, OnDestroy {
   openDeleteDialog(): void {
     this.dialog.open(DeleteDialogComponent, {
       width: '80%',
+      maxWidth: '400px',
       data: {
         userId: this.userId,
         setId: this.setId,
