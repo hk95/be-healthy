@@ -26,13 +26,7 @@
   }"
   >詳細へ</a
 >
-<mat-card
-  class="today"
-  [routerLink]="!editingMemo && !editingWeight ? '/daily-detail' : null"
-  [queryParams]="{
-    date: date
-  }"
->
+<mat-card class="today">
   <div class="today__wrap" *ngIf="!editingWeight">
     <div class="today__row">
       <div class="spacer"></div>
@@ -147,7 +141,7 @@
   </div>
   <div class="border"></div>
   <div class="today__wrap">
-    <div class="today__row">
+    <div class="today__row today__row--total-cal">
       <dl class="today__content">
         <dt class="today__title">摂取カロリー</dt>
         <dt>
@@ -158,76 +152,109 @@
         </dt>
       </dl>
     </div>
-    <div class="today__row">
-      <a
-        color="primar"
-        mat-button
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        class="box"
-        (click)="$event.stopPropagation()"
-        routerLink="/editor-meal/search"
-        [queryParams]="{
-          date: date,
-          meal: 'breakfast'
-        }"
-      >
-        <img
-          class="meal-icon meal-icon--breakfast"
-          [src]="
-            dailyInfos[listIndex - 1]?.breakfastCal
-              ? '/assets/images/breakfast.svg'
-              : '/assets/images/breakfast_outline.svg'
-          "
-          alt=""
-        />
-        <span class="box__title">朝食</span>
-      </a>
-      <a
-        mat-button
-        color="primar"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        class="box"
-        (click)="$event.stopPropagation()"
-        routerLink="/editor-meal/search"
-        [queryParams]="{
-          date: date,
-          meal: 'lunch'
-        }"
-      >
-        <img
-          class="meal-icon"
-          [src]="
-            dailyInfos[listIndex - 1]?.lunchCal
-              ? '/assets/images/lunch.svg'
-              : '/assets/images/lunch_outline.svg'
-          "
-          alt=""
-        />
-        <span class="box__title">昼食</span>
-      </a>
-      <a
-        mat-button
-        color="primar"
-        aria-label="Button that displays a tooltip when focused or hovered over"
-        class="box"
-        (click)="$event.stopPropagation()"
-        routerLink="/editor-meal/search"
-        [queryParams]="{
-          date: date,
-          meal: 'dinner'
-        }"
-      >
-        <img
-          class="meal-icon"
-          [src]="
-            dailyInfos[listIndex - 1]?.dinnerCal
-              ? '/assets/images/dinner.svg'
-              : '/assets/images/dinner_outline.svg'
-          "
-          alt=""
-        />
-        <span class="box__title">夕食</span>
-      </a>
+    <div class="today__row today__row--meal">
+      <div class="meal">
+        <a
+          color="primary"
+          mat-button
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="meal__box"
+          (click)="$event.stopPropagation()"
+          routerLink="/editor-meal/search"
+          [queryParams]="{
+            date: date,
+            meal: 'breakfast'
+          }"
+        >
+          <span class="meal__title">朝食</span>
+          <img
+            *ngIf="
+              dailyInfos[listIndex - 1]?.breakfastCal &&
+                dailyInfos[listIndex - 1]?.breakfastCal !== 0;
+              else noBreakfast
+            "
+            class="meal-icon meal-icon--breakfast"
+            src="/assets/images/breakfast.svg"
+            alt=""
+          />
+          <ng-template #noBreakfast>
+            <mat-icon color="primary">add_circle_outline</mat-icon></ng-template
+          >
+        </a>
+        <p class="meal__text">
+          {{
+            (dailyInfos[listIndex - 1]?.breakfastCal | number: '1.1-1') || 0
+          }}kcal
+        </p>
+      </div>
+      <div class="meal">
+        <a
+          mat-button
+          color="primary"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="meal__box"
+          (click)="$event.stopPropagation()"
+          routerLink="/editor-meal/search"
+          [queryParams]="{
+            date: date,
+            meal: 'lunch'
+          }"
+        >
+          <span class="meal__title">昼食</span>
+          <img
+            class="meal-icon"
+            *ngIf="
+              dailyInfos[listIndex - 1]?.lunchCal !== 0 &&
+                dailyInfos[listIndex - 1]?.lunchCal;
+              else noLunch
+            "
+            src="/assets/images/lunch.svg"
+            alt=""
+          />
+          <ng-template #noLunch
+            ><mat-icon color="primary"
+              >add_circle_outline</mat-icon
+            ></ng-template
+          >
+        </a>
+        <p class="meal__text">
+          {{ (dailyInfos[listIndex - 1]?.lunchCal | number: '1.1-1') || 0 }}kcal
+        </p>
+      </div>
+      <div class="meal">
+        <a
+          mat-button
+          color="primary"
+          aria-label="Button that displays a tooltip when focused or hovered over"
+          class="meal__box"
+          (click)="$event.stopPropagation()"
+          routerLink="/editor-meal/search"
+          [queryParams]="{
+            date: date,
+            meal: 'dinner'
+          }"
+        >
+          <span class="meal__title">夕食</span>
+          <img
+            class="meal-icon"
+            *ngIf="
+              dailyInfos[listIndex - 1]?.dinnerCal !== 0 &&
+                dailyInfos[listIndex - 1]?.dinnerCal;
+              else noDinner
+            "
+            src="/assets/images/dinner.svg"
+            alt=""
+          />
+          <ng-template #noDinner>
+            <mat-icon color="primary">add_circle_outline</mat-icon></ng-template
+          >
+        </a>
+        <p class="meal__text">
+          {{
+            (dailyInfos[listIndex - 1]?.dinnerCal | number: '1.1-1') || 0
+          }}kcal
+        </p>
+      </div>
     </div>
   </div>
   <div class="border"></div>
