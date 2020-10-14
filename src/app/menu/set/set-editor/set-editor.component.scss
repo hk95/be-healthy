@@ -51,6 +51,7 @@ p {
 
   &__clear-button {
     position: fixed;
+    top: 8px;
     left: 8px;
   }
 }
@@ -93,11 +94,20 @@ p {
 
   &__validation {
     margin-left: 8px;
+    display: flex;
+    align-items: center;
   }
 
-  &--choice {
-    max-height: 200px;
-    overflow: auto;
+  &__choice-title {
+    margin-bottom: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &__no-choice-title {
+    margin-bottom: 32px;
   }
 }
 
@@ -347,4 +357,25 @@ p {
 .submit-button {
   display: block;
   margin: 0 auto 32px;
+}
+
+mat-expansion-panel {
+  margin-bottom: 32px;
+}
+
+.mat-expansion-panel-header {
+  padding: 0;
+  padding-right: 8px;
+}
+
+:host ::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 0 0 16px;
+  }
+
+  .mat-badge-medium.mat-badge-after .mat-badge-content {
+    position: absolute;
+    top: 0;
+    right: -24px;
+  }
 }
