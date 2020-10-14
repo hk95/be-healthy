@@ -282,7 +282,8 @@ export class DailyInfoService {
     date: string,
     mealId: string,
     amount: number,
-    cal: number
+    cal: number,
+    isLastMeal: boolean
   ): Promise<void> {
     const dayOfMonth = this.getDayOfMonth(date);
     this.db
@@ -296,6 +297,7 @@ export class DailyInfoService {
       meal: this.whichMeal,
       amount,
       cal,
+      isLastMeal,
     }).toPromise();
   }
 }
