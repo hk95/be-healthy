@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [SetEditorComponent],
@@ -31,6 +32,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatInputModule,
     MatCheckboxModule,
     MatBadgeModule,
+    MatExpansionModule,
   ],
 })
 export class SetEditorModule {}
