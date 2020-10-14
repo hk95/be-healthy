@@ -8,7 +8,12 @@ import { Food } from 'src/app/interfaces/food';
 import { DailyMeal } from 'src/app/interfaces/daily-info';
 import { Subscription } from 'rxjs';
 import { AverageService } from 'src/app/services/average.service';
-import { FormControl, Validators, FormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormBuilder,
+  FormArray,
+} from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -34,13 +39,19 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
   isLikedlist: string[] = new Array();
   config = this.searchService.config;
   amountForm = this.fb.group({
-    amount: [
-      0,
-      [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
-    ],
+    amountArray: this.fb.array([]),
+    // 1: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 2: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 3: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 4: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 5: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 6: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 7: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 8: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
+    // 9: [0, [Validators.min(this.minAmount), Validators.max(this.maxAmount)]],
   });
-  get amountControl(): FormControl {
-    return this.amountForm.get('amount') as FormControl;
+  get amountArray(): FormArray {
+    return this.amountForm.get('amountArray') as FormArray;
   }
 
   constructor(
@@ -59,6 +70,7 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
       this.date = paramMaps.get('date');
       this.getFavFoods();
+      this.setFormArray();
     });
 
     const selectedSub = this.getSelectedMeals();
@@ -71,6 +83,17 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     this.subscription.add(routeSub);
     this.subscription.add(selectedSub);
     this.subscription.add(routerSub);
+  }
+  private setFormArray() {
+    for (let i = 0; i < 10; i++) {
+      const amountGroup = this.fb.group({
+        [i]: [
+          0,
+          [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
+        ],
+      });
+      this.amountArray.push(amountGroup);
+    }
   }
 
   private getFavFoods() {
