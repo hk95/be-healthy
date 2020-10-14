@@ -8,6 +8,10 @@
   align-items: center;
 }
 
+.form {
+  margin-bottom: 16px;
+}
+
 .choice-input {
   text-align: right;
 }
@@ -24,14 +28,8 @@
   margin-bottom: 24px;
 }
 
-.food-cal {
-  width: 100%;
+.nav {
   display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-bottom: 24px;
-
-  &__amount {
-    margin: 0;
-  }
+  gap: 8px;
+  margin-bottom: 8px;
 }
