@@ -25,7 +25,7 @@
 
           <button
             class="card__button"
-            (click)="updateWeight()"
+            (click)="this.editingWeight = true"
             mat-icon-button
             color="primary"
           >
@@ -83,6 +83,12 @@
             </div>
 
             <div class="form-body__button">
+              <button
+                (click)="editingWeight = false; $event.stopPropagation()"
+                mat-stroked-button
+              >
+                キャンセル
+              </button>
               <button
                 (click)="updateWeight(); $event.stopPropagation()"
                 mat-stroked-button
@@ -401,36 +407,19 @@
                 />
               </span>
             </p>
+
             <button
-              *ngIf="!editingMemo"
-              mat-icon-button
-              color="primary"
-              (click)="editMemo()"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              *ngIf="editingMemo"
               mat-flat-button
               color="primary"
               (click)="updateMemo()"
-              [disabled]="formMemo.invalid"
+              [disabled]="formMemo.invalid || formMemo.pristine"
             >
               保存
             </button>
           </div>
         </div>
-        <p
-          class="card__memo-textarea"
-          *ngIf="dailyInfo.dailyMemo && !editingMemo"
-        >
-          {{ dailyInfo.dailyMemo }}
-        </p>
-        <form
-          [formGroup]="formMemo"
-          *ngIf="editingMemo"
-          class="card__memo-textarea-editor"
-        >
+
+        <form [formGroup]="formMemo" class="card__memo-textarea-editor">
           <mat-form-field
             class="card__memo-textarea-field"
             appearance="outline"
@@ -450,11 +439,6 @@
             >
           </mat-form-field>
         </form>
-
-        <div *ngIf="!dailyInfo.dailyMemo && !editingMemo">
-          <div class="border"></div>
-          <span>まだメモはありません</span>
-        </div>
       </mat-card>
     </div>
   </div>
