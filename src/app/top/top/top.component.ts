@@ -70,9 +70,9 @@ export class TopComponent implements OnInit, OnDestroy {
 
   private isInitLogin() {
     this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
-    if (this.authService.isInitialLogin) {
+    if (!this.authService.isInitialLogin) {
       this.dialog.open(TutorialComponent, {
-        width: '80%',
+        width: '90%',
         maxWidth: '500px',
       });
       this.authService.isInitialLogin = false;
