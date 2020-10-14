@@ -57,27 +57,33 @@
         <div class="spacer"></div>
 
         <form class="food__choice" [formGroup]="amountForm">
-          <mat-form-field class="food__choice-form-field" appearance="outline">
-            <input
-              matInput
-              class="food__choice-input"
-              autocomplete="off"
-              formControlName="amount"
-              [max]="maxAmount"
-              [min]="minAmount"
-              step="0.1"
-              [(ngModel)]="amount[i]"
-              type="number"
-            />
-            <span matSuffix>セット</span>
-            <mat-error *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
-              >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+          <div formArrayName="amountArray">
+            <mat-form-field
+              class="food__choice-form-field"
+              appearance="outline"
+              [formGroupName]="i"
             >
-          </mat-form-field>
-          <p class="food__cal">
-            {{ set.setCal * amount[i] | number: '1.1-1' }}
-            kcal
-          </p>
+              <input
+                matInput
+                class="food__choice-input"
+                autocomplete="off"
+                [formControlName]="i"
+                [max]="maxAmount"
+                [min]="minAmount"
+                step="0.1"
+                [(ngModel)]="amount[i]"
+                type="number"
+              />
+              <span matSuffix>セット</span>
+              <mat-error *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
+                >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+              >
+            </mat-form-field>
+            <!-- <p class="food__cal">
+              {{ set.setCal * amount[i] | number: '1.1-1' }}
+              kcal
+            </p> -->
+          </div>
         </form>
 
         <button
@@ -95,6 +101,7 @@
           color="primary"
           (click)="addSet(amount[i], set)"
           [disabled]="
+            amount[i] === null ||
             amount[i] > maxAmount ||
             amount[i] < minAmount ||
             selectedMealsNum >= maxSelectNum
