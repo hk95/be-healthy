@@ -118,10 +118,6 @@ export class MySetComponent implements OnInit, OnDestroy {
         this.date,
         'set'
       );
-    } else {
-      this.snackBar.open('数値を入力してください', null, {
-        duration: 2000,
-      });
     }
   }
 
