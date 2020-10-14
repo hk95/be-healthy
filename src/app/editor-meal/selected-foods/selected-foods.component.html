@@ -55,13 +55,10 @@
       <div class="food">
         <div class="food__wrap">
           <p class="food__name">
-            {{
-              foodOrSet.food ? foodOrSet.food.foodName : foodOrSet.set.setTitle
-            }}
+            {{ foodOrSet.food?.foodName || foodOrSet.set.setTitle }}
           </p>
           <p class="food__selected-amount">
-            {{ foodOrSet.amount
-            }}{{ foodOrSet.food ? foodOrSet.food.unit : 'セット' }}
+            {{ foodOrSet.amount || 0 }}{{ foodOrSet.food?.unit || 'セット' }}
           </p>
         </div>
         <div class="spacer"></div>
@@ -69,9 +66,8 @@
           <p class="food__cal">
             {{
               foodOrSet.amount *
-                (foodOrSet.food
-                  ? foodOrSet.food.foodCalPerAmount
-                  : foodOrSet.set.setCal) | number: '1.1-1'
+                (foodOrSet.food?.foodCalPerAmount || foodOrSet.set.setCal)
+                | number: '1.1-1'
             }}
             kcal
           </p>
@@ -84,9 +80,7 @@
             deleteMeal(
               foodOrSet.mealId,
               foodOrSet.amount,
-              foodOrSet.food
-                ? foodOrSet.food.foodCalPerAmount
-                : foodOrSet.set.setCal
+              foodOrSet.food?.foodCalPerAmount || foodOrSet.set.setCal
             )
           "
         >
