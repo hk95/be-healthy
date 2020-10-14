@@ -150,7 +150,10 @@
         <dt class="today__title">摂取カロリー</dt>
         <dt>
           <span class="today__amount">{{
-            (dailyInfos[listIndex - 1]?.totalCal | number: '1.1-1') || 0
+            dailyInfos[listIndex - 1]?.totalCal &&
+            dailyInfos[listIndex - 1]?.totalCal !== 0
+              ? (dailyInfos[listIndex - 1]?.totalCal | number: '1.1-1')
+              : 0
           }}</span>
           kcal
         </dt>
@@ -187,7 +190,10 @@
         </a>
         <p class="meal__text">
           {{
-            (dailyInfos[listIndex - 1]?.breakfastCal | number: '1.1-1') || 0
+            dailyInfos[listIndex - 1]?.breakfastCal &&
+            dailyInfos[listIndex - 1]?.breakfastCal !== 0
+              ? (dailyInfos[listIndex - 1]?.breakfastCal | number: '1.1-1')
+              : 0
           }}kcal
         </p>
       </div>
@@ -222,7 +228,12 @@
           >
         </a>
         <p class="meal__text">
-          {{ (dailyInfos[listIndex - 1]?.lunchCal | number: '1.1-1') || 0 }}kcal
+          {{
+            dailyInfos[listIndex - 1]?.lunchCal &&
+            dailyInfos[listIndex - 1]?.lunchCal !== 0
+              ? (dailyInfos[listIndex - 1]?.lunchCal | number: '1.1-1')
+              : 0
+          }}kcal
         </p>
       </div>
       <div class="meal">
@@ -255,7 +266,10 @@
         </a>
         <p class="meal__text">
           {{
-            (dailyInfos[listIndex - 1]?.dinnerCal | number: '1.1-1') || 0
+            dailyInfos[listIndex - 1]?.dinnerCal &&
+            dailyInfos[listIndex - 1]?.dinnerCal !== 0
+              ? (dailyInfos[listIndex - 1]?.dinnerCal | number: '1.1-1')
+              : 0
           }}kcal
         </p>
       </div>
