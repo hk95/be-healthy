@@ -37,6 +37,8 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   readonly maxTitleLength = 50;
   readonly maxNutritionAmount = 5000;
   readonly minNutritionAmount = 0;
+  readonly arrayLimit = 30;
+  panelOpenState = true;
   title: string;
   config = this.searchService.config;
   myRecipes: RecipeWithAuthor[] = new Array();
@@ -52,7 +54,6 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   lunch = false;
   dinner = false;
 
-  arrayLimit = 30;
   form = this.fb.group({
     setTitle: [
       '',
