@@ -75,14 +75,15 @@
                 type="number"
               />
               <span matSuffix>セット</span>
+              <mat-hint align="end">
+                {{ set.setCal * amount[i] | number: '1.1-1' }} kcal</mat-hint
+              >
               <mat-error *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
-                >入力範囲{{ minAmount }}-{{ maxAmount }}</mat-error
+                >{{ minAmount }}〜{{
+                  maxAmount
+                }}の範囲で入力してください</mat-error
               >
             </mat-form-field>
-            <!-- <p class="food__cal">
-              {{ set.setCal * amount[i] | number: '1.1-1' }}
-              kcal
-            </p> -->
           </div>
         </form>
 
