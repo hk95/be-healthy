@@ -21,8 +21,9 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { ProcessOfRecipe, Recipe } from 'src/app/interfaces/recipe';
+import { map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -35,6 +36,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   private readonly userId = this.authService.uid;
   private subscription = new Subscription();
+  private recipeId$: Observable<string> = this.route.queryParamMap.pipe(
+    map((params) => params.get('id'))
+  );
+  private recipe$: Observable<Recipe> = this.recipeId$.pipe(
+    switchMap((recipeId) => this.recipeService.getRecipeByRecipeId(recipeId))
+  );
 
   readonly maxTitleLength = 50;
   readonly maxDescriptionLength = 500;
@@ -153,51 +160,33 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private recipeService: RecipeService,
     private authService: AuthService
-  ) {
-    this.setRecipeForm();
-  }
+  ) {}
 
-  private setRecipeForm() {
-    const recipeSub = this.route.queryParamMap.subscribe((recipeId) => {
-      if (recipeId.get('id')) {
-        this.query = recipeId.get('id');
-        this.recipeService
-          .getRecipeByRecipeId(this.query)
-          .subscribe((recipe) => {
-            if (recipe) {
-              this.form.patchValue(recipe);
-              this.thumbnailURL = recipe.recipeThumbnailURL;
-              this.public = recipe.public;
-              if (recipe.foods) {
-                recipe.foods.forEach((food) => {
-                  const ingredientFormGroup = this.fb.group({
-                    name: food.name,
-                    amountAndUnit: food.amountAndUnit,
-                  });
-                  this.ingredients.push(ingredientFormGroup);
-                  this.dataSource.next(this.ingredients.controls);
-                });
-              }
-              if (recipe.processes) {
-                recipe.processes.forEach((process) => {
-                  const processFormGroup = this.fb.group({
-                    description: process.description,
-                  });
-                  this.processURLs.push(process.photoURL);
-                  this.processes.push(processFormGroup);
-                  this.processSource.next(this.processes.controls);
-                });
-              }
-            }
-            this.loading = false;
-          });
-      } else {
-        this.addIngredinet();
-        this.isCreating = true;
-        this.loading = false;
-      }
-    });
-    this.subscription.add(recipeSub);
+  private setInitRecipeForm(recipe: Recipe): void {
+    this.form.patchValue(recipe);
+    this.thumbnailURL = recipe.recipeThumbnailURL;
+    this.public = recipe.public;
+    if (recipe.foods) {
+      recipe.foods.forEach((food) => {
+        const ingredientFormGroup = this.fb.group({
+          name: food.name,
+          amountAndUnit: food.amountAndUnit,
+        });
+        this.ingredients.push(ingredientFormGroup);
+        this.dataSource.next(this.ingredients.controls);
+      });
+    }
+    if (recipe.processes) {
+      recipe.processes.forEach((process) => {
+        const processFormGroup = this.fb.group({
+          description: process.description,
+        });
+        this.processURLs.push(process.photoURL);
+        this.processes.push(processFormGroup);
+        this.processSource.next(this.processes.controls);
+      });
+    }
+    this.loading = false;
   }
 
   addIngredinet() {
@@ -372,7 +361,18 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const recipeSub = this.recipe$.subscribe((recipe: Recipe) => {
+      if (recipe) {
+        this.setInitRecipeForm(recipe);
+      } else {
+        this.addIngredinet();
+        this.isCreating = true;
+        this.loading = false;
+      }
+    });
+    this.subscription.add(recipeSub);
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
