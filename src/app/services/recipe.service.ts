@@ -219,7 +219,11 @@ export class RecipeService {
     return imageURL;
   }
 
-  async uploadProcessImage(userId: string, recipeId: string, file: Blob) {
+  async uploadProcessImage(
+    userId: string,
+    recipeId: string,
+    file: Blob
+  ): Promise<string> {
     const imageId = this.db.createId();
     const result = await this.storage
       .ref(`users/${userId}/recipes/${recipeId}/processImages/${imageId}`)
