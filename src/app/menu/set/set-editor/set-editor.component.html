@@ -1,16 +1,14 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <div class="head">
-    <button type="button" mat-icon-button (click)="backToMenu()">
+    <button
+      type="button"
+      class="head__clear-button"
+      mat-icon-button
+      (click)="backToMenu()"
+    >
       <mat-icon>clear</mat-icon>
     </button>
     <h1>マイセット{{ title || '作成' }}画面</h1>
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="form.invalid || preFoods.length === 0"
-    >
-      保存
-    </button>
   </div>
   <div class="container">
     <div class="editor-wrap">
@@ -23,8 +21,13 @@
             formControlName="setTitle"
             class="title__input"
             type="text"
+            autocomplete="off"
             required
+            #input
           />
+          <mat-hint align="end"
+            >{{ input.value.length }}/{{ maxTitleLength }}</mat-hint
+          >
           <mat-error *ngIf="titleControl.hasError('required')"
             >必須入力です</mat-error
           >
@@ -97,9 +100,11 @@
                             max="100"
                             min="0"
                             step="0.1"
+                            value="0"
                             #amount
                             type="number"
                             autocomplete="off"
+                            #amountInput
                           />
 
                           <span class="nutrition__prefix" matSuffix>{{
@@ -114,6 +119,7 @@
                           type="button"
                           color="primary"
                           (click)="addFood(amount.value, food, null)"
+                          [disabled]="!amountInput.value.length"
                         >
                           <mat-icon>add_box</mat-icon>
                         </button>
@@ -129,6 +135,9 @@
                         </ng-template>
                       </div>
                     </div>
+                  </div>
+                  <div *ngIf="hits.length === 0">
+                    該当する食べ物はありません
                   </div>
                 </ng-template>
               </ais-hits>
@@ -233,48 +242,80 @@
         </mat-tab-group>
       </div>
 
-      <h2
-        *ngIf="preFoods && preFoods.length > 0; else noFood"
-        [style.color]="preFoods.length === arrayLimit ? '#E25241' : '#000'"
+      <ng-template #noFood
+        ><h2 class="foods__no-choice-title">
+          *食べ物を選択してください
+        </h2></ng-template
       >
-        選択中<span
-          class="foods__validation"
-          *ngIf="preFoods.length === arrayLimit"
-          >これ以上選択できません</span
-        >
-      </h2>
-      <ng-template #noFood><h2>*食べ物を選択してください</h2></ng-template>
-      <div class="foods foods--choice">
-        <div class="food" *ngFor="let food of preFoods; let i = index">
-          <div class="food__name">
-            <p class="food__name--with-amount">
-              {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
-            </p>
-            <span class="food__amountper">
-              {{
-                food.food
-                  ? food.food.foodCalPerAmount
-                  : food.recipe.recipeCal || 0
-              }}kcal/{{ food.food ? food.food.unit : 'セット' }}
-            </span>
-          </div>
-          <div class="food__row">
-            <p>{{ food.amount }}</p>
-            <span>{{ food.food ? food.food.unit : 'セット' }}</span>
-            <p class="spacer"></p>
-            <p class="food__cal"></p>
 
-            <button
-              mat-icon-button
-              color="warn"
-              type="button"
-              (click)="removeFood(i, food)"
+      <mat-accordion
+        class="mat-accordion"
+        *ngIf="preFoods && preFoods.length > 0; else noFood"
+      >
+        <mat-expansion-panel
+          (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false"
+          [expanded]="panelOpenState"
+          class="mat-elevation-z0"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2
+                class="foods__choice-title"
+                [style.color]="
+                  preFoods.length === arrayLimit ? '#E25241' : '#000'
+                "
+              >
+                <span
+                  [matBadge]="preFoods?.length || ''"
+                  [matBadgeColor]="
+                    preFoods?.length !== arrayLimit ? 'primary' : 'warn'
+                  "
+                  matBadgeOverlap="false"
+                  >選択中</span
+                >
+              </h2>
+            </mat-panel-title>
+            <mat-panel-description
+              class="foods__validation"
+              *ngIf="preFoods?.length === arrayLimit"
             >
-              <mat-icon>clear</mat-icon>
-            </button>
+              これ以上選択できません
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="foods foods--choice">
+            <div class="food" *ngFor="let food of preFoods; let i = index">
+              <div class="food__name">
+                <p class="food__name--with-amount">
+                  {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+                </p>
+                <span class="food__amountper">
+                  {{
+                    food.food
+                      ? food.food.foodCalPerAmount
+                      : food.recipe.recipeCal || 0
+                  }}kcal/{{ food.food ? food.food.unit : 'セット' }}
+                </span>
+              </div>
+              <div class="food__row">
+                <p>{{ food.amount }}</p>
+                <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+                <p class="spacer"></p>
+                <p class="food__cal"></p>
+
+                <button
+                  mat-icon-button
+                  color="warn"
+                  type="button"
+                  (click)="removeFood(i, food)"
+                >
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </mat-expansion-panel>
+      </mat-accordion>
 
       <h2>栄養素</h2>
       <div class="nutrition">
@@ -301,7 +342,7 @@
                   setCalControl.hasError('min') ||
                   setCalControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
                 }}の範囲で調整してください</mat-error
               >
@@ -331,7 +372,7 @@
                   setProteinControl.hasError('min') ||
                   setProteinControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
                 }}の範囲で調整してください</mat-error
               >
@@ -361,7 +402,7 @@
                   setFatControl.hasError('min') ||
                   setFatControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
                 }}の範囲で調整してください</mat-error
               ></mat-form-field
@@ -391,7 +432,7 @@
                   setTotalCarbohydrateControl.hasError('min') ||
                   setTotalCarbohydrateControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
                 }}の範囲で調整してください</mat-error
               ></mat-form-field
@@ -421,7 +462,7 @@
                   setDietaryFiberControl.hasError('min') ||
                   setDietaryFiberControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
                 }}の範囲で調整してください</mat-error
               ></mat-form-field
@@ -451,7 +492,7 @@
                   setSugarControl.hasError('min') ||
                   setSugarControl.hasError('max')
                 "
-                >{{ minNutritionAmount }}-{{
+                >{{ minNutritionAmount }}〜{{
                   maxNutritionAmount
                 }}の範囲で調整してください</mat-error
               ></mat-form-field
@@ -459,6 +500,14 @@
           </div>
         </div>
       </div>
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit-button"
+        [disabled]="form.invalid || preFoods?.length === 0 || form.pristine"
+      >
+        保存
+      </button>
     </div>
   </div>
 </form>

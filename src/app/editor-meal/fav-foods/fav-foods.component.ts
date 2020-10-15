@@ -7,7 +7,7 @@ import { DailyMeal } from 'src/app/interfaces/daily-info';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AverageService } from 'src/app/services/average.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -24,25 +24,23 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
   private readonly getNumber = 10;
   private lastDoc: QueryDocumentSnapshot<Food>;
   private subscription = new Subscription();
+  private count = 0;
 
   readonly maxSelectNum = 50;
   readonly minAmount = 0;
   readonly maxAmount = 10000;
   selectedMealsNum: number;
-  amount = [].fill(0);
+  amount = new Array(10).fill(0);
   date: string;
   meal: string;
   favFoods: Food[] = new Array();
   loading: boolean;
   isNext: boolean;
   amountForm = this.fb.group({
-    amount: [
-      0,
-      [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
-    ],
+    amountArray: this.fb.array([]),
   });
-  get amountControl(): FormControl {
-    return this.amountForm.get('amount') as FormControl;
+  get amountArray(): FormArray {
+    return this.amountForm.get('amountArray') as FormArray;
   }
 
   constructor(
@@ -73,6 +71,20 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
     this.subscription.add(routerSub);
   }
 
+  private setFormArray(count: number) {
+    const minCount = count * 10;
+    for (let i = minCount; i < minCount + 10; i++) {
+      const amountGroup = this.fb.group({
+        [i]: [
+          0,
+          [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
+        ],
+      });
+      this.amountArray.push(amountGroup);
+    }
+    this.count++;
+  }
+
   addFood(amount: number, food: Food) {
     if (amount >= 0) {
       const meal: DailyMeal = { mealId: '', food, amount };
@@ -91,6 +103,7 @@ export class FavFoodsComponent implements OnInit, OnDestroy {
 
   getFoods() {
     this.loading = true;
+    this.setFormArray(this.count);
     this.foodService
       .getFavFoods(this.authService.uid, this.getNumber, this.lastDoc)
       .pipe(take(1))

@@ -24,10 +24,12 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   readonly maxFat = 100;
   readonly minWeightAndFat = 0;
   readonly maxMemoLength = 500;
+  panelOpenStateBreakfast = false;
+  panelOpenStateLunch = false;
+  panelOpenStateDinner = false;
   date: string;
   dailyInfo: DailyInfo;
   editingWeight = false;
-  editingMemo = false;
   formBody = this.fb.group({
     currentWeight: [
       '',
@@ -215,10 +217,6 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  editMemo() {
-    this.editingMemo = true;
-  }
-
   updateWeight() {
     if (this.editingWeight === true) {
       this.dailyInfoService.updateDailyInfoBody({
@@ -228,13 +226,10 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
         currentFat: this.formBody.value.currentFat,
       });
       this.editingWeight = false;
-    } else {
-      this.editingWeight = true;
     }
   }
 
   updateMemo() {
-    this.editingMemo = false;
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
       this.date,

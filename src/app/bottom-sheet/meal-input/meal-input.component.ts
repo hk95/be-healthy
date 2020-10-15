@@ -22,6 +22,7 @@ export class MealInputComponent implements OnInit {
       [
         Validators.min(this.data.minAmount),
         Validators.max(this.data.maxAmount),
+        Validators.required,
       ],
     ],
   });
@@ -40,7 +41,7 @@ export class MealInputComponent implements OnInit {
     },
     private dailyInfoService: DailyInfoService,
     private fb: FormBuilder,
-    private bottomSheetRef: MatBottomSheetRef<MealInputComponent>
+    public bottomSheetRef: MatBottomSheetRef<MealInputComponent>
   ) {}
 
   addFood(amount: number) {

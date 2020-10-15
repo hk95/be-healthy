@@ -46,31 +46,36 @@
             <div class="spacer"></div>
 
             <form class="food__choice" [formGroup]="amountForm">
-              <mat-form-field
-                class="food__choice-form-field"
-                appearance="outline"
-              >
-                <input
-                  matInput
-                  class="food__choice-input"
-                  autocomplete="off"
-                  formControlName="amount"
-                  [max]="maxAmount"
-                  [min]="minAmount"
-                  step="0.1"
-                  [(ngModel)]="amount[i]"
-                  type="number"
-                />
-                <span matSuffix>{{ food.unit }}</span>
-                <mat-error
-                  *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
-                  >{{ maxAmount }}以内で入力してください</mat-error
+              <div formArrayName="amountArray">
+                <mat-form-field
+                  class="food__choice-form-field"
+                  appearance="outline"
+                  [formGroupName]="i"
                 >
-              </mat-form-field>
-              <p class="food__cal">
-                {{ food.foodCalPerAmount * amount[i] | number: '1.1-1' }}
-                kcal
-              </p>
+                  <input
+                    matInput
+                    class="food__choice-input"
+                    autocomplete="off"
+                    [formControlName]="i"
+                    [max]="maxAmount"
+                    [min]="minAmount"
+                    step="0.1"
+                    [(ngModel)]="amount[i]"
+                    type="number"
+                  />
+                  <mat-hint align="end">
+                    {{ food.foodCalPerAmount * amount[i] | number: '1.1-1' }}
+                    kcal</mat-hint
+                  >
+                  <span matSuffix>{{ food.unit }}</span>
+                  <mat-error
+                    *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
+                    >{{ minAmount }}〜{{
+                      maxAmount
+                    }}の範囲で入力してください</mat-error
+                  >
+                </mat-form-field>
+              </div>
             </form>
 
             <button
@@ -89,6 +94,7 @@
               color="primary"
               (click)="addFood(amount[i], food)"
               [disabled]="
+                amount[i] === null ||
                 amount[i] > maxAmount ||
                 amount[i] < minAmount ||
                 selectedMealsNum >= maxSelectNum

@@ -15,15 +15,27 @@
   top: 0;
   z-index: 5;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 56px;
   background: #fff;
   @include mat-elevation(1);
+
+  &__back-to-page {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+  }
+
+  &__buttons {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+  }
 }
 
-.update-to-page {
-  margin-right: 16px;
+.delete-button {
+  color: rgb(115, 115, 115);
 }
 
 h1 {

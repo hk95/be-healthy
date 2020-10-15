@@ -7,7 +7,7 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SetService } from 'src/app/services/set.service';
 import { AverageService } from 'src/app/services/average.service';
-import { Validators, FormControl, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -25,25 +25,23 @@ export class MySetComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
   private date: string;
   private meal: string;
+  private count = 0;
 
   readonly maxSelectNum = 50;
   readonly minAmount = 0;
   readonly maxAmount = 100;
   readonly getNumber = 10;
   selectedMealsNum: number;
-  amount = [].fill(0);
+  amount = new Array(10).fill(0);
   sets: Set[] = new Array();
   isNext: boolean;
   loading: boolean;
 
   amountForm = this.fb.group({
-    amount: [
-      0,
-      [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
-    ],
+    amountArray: this.fb.array([]),
   });
-  get amountControl(): FormControl {
-    return this.amountForm.get('amount') as FormControl;
+  get amountArray(): FormArray {
+    return this.amountForm.get('amountArray') as FormArray;
   }
   constructor(
     private route: ActivatedRoute,
@@ -73,8 +71,23 @@ export class MySetComponent implements OnInit, OnDestroy {
     this.subscription.add(routerSub);
   }
 
+  private setFormArray(count: number) {
+    const minCount = count * 10;
+    for (let i = minCount; i < minCount + 10; i++) {
+      const amountGroup = this.fb.group({
+        [i]: [
+          0,
+          [Validators.min(this.minAmount), Validators.max(this.maxAmount)],
+        ],
+      });
+      this.amountArray.push(amountGroup);
+    }
+    this.count++;
+  }
+
   getSets() {
     this.loading = true;
+    this.setFormArray(this.count);
     this.setService
       .getSets(this.authService.uid, this.getNumber, this.lastDoc, this.meal)
       .pipe(take(1))
@@ -105,10 +118,6 @@ export class MySetComponent implements OnInit, OnDestroy {
         this.date,
         'set'
       );
-    } else {
-      this.snackBar.open('数値を入力してください', null, {
-        duration: 2000,
-      });
     }
   }
 

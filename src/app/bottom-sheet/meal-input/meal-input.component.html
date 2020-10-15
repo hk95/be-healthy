@@ -6,12 +6,8 @@
     }}
   </p>
 
-  <form class="food__choice">
-    <mat-form-field
-      class="food__choice-form-field"
-      [formGroup]="amountForm"
-      appearance="outline"
-    >
+  <form class="form">
+    <mat-form-field [formGroup]="amountForm" appearance="outline">
       <mat-label>数量を入力してください</mat-label>
       <input
         matInput
@@ -28,28 +24,34 @@
         data.food ? data.food.unit : 'セット'
       }}</span>
       <mat-error *ngIf="amount > data.maxAmount || amount < data.minAmount"
-        >{{ data.maxAmount }}以内で入力してください</mat-error
+        >{{ data.minAmount }}〜{{
+          data.maxAmount
+        }}の範囲でで入力してください</mat-error
       >
+      <mat-hint align="end">
+        {{
+          data.food
+            ? (data.food.foodCalPerAmount * amount | number: '1.1-1')
+            : (data.set.setCal * amount | number: '1.1-1')
+        }}kcal</mat-hint
+      >
+      <mat-error *ngIf="amountControl.hasError('required')"
+        >必須入力です
+      </mat-error>
     </mat-form-field>
   </form>
-  <div class="food-cal">
-    <dt class="food-cal__title">暫定カロリー：</dt>
-    <dd class="food-cal__amount">
-      {{
-        data.food
-          ? (data.food.foodCalPerAmount * amount | number: '1.1-1')
-          : (data.set.setCal * amount | number: '1.1-1')
-      }}
-    </dd>
-    kcal
-  </div>
 
-  <button
-    mat-stroked-button
-    color="primary"
-    (click)="addFood(amount)"
-    [disabled]="amountForm.invalid"
-  >
-    OK
-  </button>
+  <div class="nav">
+    <button mat-stroked-button (click)="bottomSheetRef.dismiss()">
+      キャンセル
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="addFood(amount)"
+      [disabled]="amountForm.invalid"
+    >
+      OK
+    </button>
+  </div>
 </div>

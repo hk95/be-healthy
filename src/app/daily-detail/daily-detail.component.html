@@ -1,7 +1,4 @@
 <div class="wrap">
-  <a class="back" routerLink="/" mat-stroked-button>
-    <mat-icon>navigate_before</mat-icon>TOP
-  </a>
   <div class="container">
     <div class="dailyInfo" *ngIf="dailyInfo">
       <h2>体型記録</h2>
@@ -28,7 +25,7 @@
 
           <button
             class="card__button"
-            (click)="updateWeight()"
+            (click)="this.editingWeight = true"
             mat-icon-button
             color="primary"
           >
@@ -86,6 +83,12 @@
             </div>
 
             <div class="form-body__button">
+              <button
+                (click)="editingWeight = false; $event.stopPropagation()"
+                mat-stroked-button
+              >
+                キャンセル
+              </button>
               <button
                 (click)="updateWeight(); $event.stopPropagation()"
                 mat-stroked-button
@@ -163,7 +166,7 @@
       <mat-card class="card card--meal">
         <div class="card__head">
           <div class="card__head-left">
-            <p>
+            <p class="meal-title">
               朝食
               <span
                 ><img
@@ -176,11 +179,6 @@
                   alt=""
                 />
               </span>
-            </p>
-            <p>
-              摂取カロリー：{{
-                mealsOfBreakfast | nutrition: 'breakfast':'cal'
-              }}kcal
             </p>
           </div>
           <div class="card__head-right">
@@ -196,38 +194,57 @@
         </div>
         <p class="border"></p>
 
+        <ng-template #noMeal
+          ><p class="card__no-meal">まだ登録されていません</p></ng-template
+        >
         <div
           class="card__content"
           *ngIf="mealsOfBreakfast.length > 0; else noMeal"
         >
-          <div class="card__meal" *ngFor="let food of mealsOfBreakfast">
-            <p class="card__food-name">
-              {{ food.food ? food.food.foodName : food.set.setTitle }}
-            </p>
+          <mat-accordion class="mat-accordion">
+            <mat-expansion-panel
+              (opened)="panelOpenStateBreakfast = true"
+              (closed)="panelOpenStateBreakfast = false"
+              [expanded]="panelOpenStateBreakfast"
+              class="mat-elevation-z0"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p>
+                    摂取カロリー：{{
+                      mealsOfBreakfast | nutrition: 'breakfast':'cal'
+                    }}kcal
+                  </p>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="card__meal" *ngFor="let food of mealsOfBreakfast">
+                <p class="card__food-name">
+                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                </p>
 
-            <p class="amount">
-              {{ food.amount
-              }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-              ><ng-template #set>セット</ng-template>
-            </p>
-            <p class="card__cal">
-              {{
-                food.food
-                  ? (food.food.foodCalPerAmount * food.amount | number: '1.1-1')
-                  : (food.set.setCal * food.amount | number: '1.1-1')
-              }}kcal
-            </p>
-          </div>
+                <p class="amount">
+                  {{ food.amount
+                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
+                  ><ng-template #set>セット</ng-template>
+                </p>
+                <p class="card__cal">
+                  {{
+                    food.food
+                      ? (food.food.foodCalPerAmount * food.amount
+                        | number: '1.1-1')
+                      : (food.set.setCal * food.amount | number: '1.1-1')
+                  }}kcal
+                </p>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
-        <ng-template #noMeal
-          ><p class="card__no-meal">まだ登録されていません</p></ng-template
-        >
       </mat-card>
 
       <mat-card class="card card--meal">
         <div class="card__head">
           <div class="card__head-left">
-            <p>
+            <p class="meal-title">
               昼食<span
                 ><img
                   class="card__icon"
@@ -239,9 +256,6 @@
                   alt=""
                 />
               </span>
-            </p>
-            <p>
-              摂取カロリー：{{ mealsOfLunch | nutrition: 'lunch':'cal' }}kcal
             </p>
           </div>
           <div class="card__head-right">
@@ -257,34 +271,53 @@
         </div>
         <p class="border"></p>
 
-        <div class="card__content" *ngIf="mealsOfLunch.length > 0; else noMeal">
-          <div class="card__meal" *ngFor="let food of mealsOfLunch">
-            <p class="card__food-name">
-              {{ food.food ? food.food.foodName : food.set.setTitle }}
-            </p>
-
-            <p class="amount">
-              {{ food.amount
-              }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-              ><ng-template #set>セット</ng-template>
-            </p>
-            <p class="card__cal">
-              {{
-                food.food
-                  ? (food.food.foodCalPerAmount * food.amount | number: '1.1-1')
-                  : (food.set.setCal * food.amount | number: '1.1-1')
-              }}kcal
-            </p>
-          </div>
-        </div>
         <ng-template #noMeal
           ><p class="card__no-meal">まだ登録されていません</p></ng-template
         >
+        <div class="card__content" *ngIf="mealsOfLunch.length > 0; else noMeal">
+          <mat-accordion class="mat-accordion">
+            <mat-expansion-panel
+              (opened)="panelOpenStateLunch = true"
+              (closed)="panelOpenStateLunch = false"
+              [expanded]="panelOpenStateLunch"
+              class="mat-elevation-z0"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p>
+                    摂取カロリー：{{
+                      mealsOfLunch | nutrition: 'lunch':'cal'
+                    }}kcal
+                  </p>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="card__meal" *ngFor="let food of mealsOfLunch">
+                <p class="card__food-name">
+                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                </p>
+
+                <p class="amount">
+                  {{ food.amount
+                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
+                  ><ng-template #set>セット</ng-template>
+                </p>
+                <p class="card__cal">
+                  {{
+                    food.food
+                      ? (food.food.foodCalPerAmount * food.amount
+                        | number: '1.1-1')
+                      : (food.set.setCal * food.amount | number: '1.1-1')
+                  }}kcal
+                </p>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
       </mat-card>
       <mat-card class="card">
         <div class="card__head">
           <div class="card__head-left">
-            <p>
+            <p class="meal-title">
               夕食<span
                 ><img
                   class="card__icon"
@@ -296,9 +329,6 @@
                   alt=""
                 />
               </span>
-            </p>
-            <p>
-              摂取カロリー：{{ mealsOfDinner | nutrition: 'dinner':'cal' }}kcal
             </p>
           </div>
           <div class="card__head-right">
@@ -314,32 +344,51 @@
         </div>
         <p class="border"></p>
 
+        <ng-template #noMeal
+          ><p class="card__no-meal">まだ登録されていません</p></ng-template
+        >
         <div
           class="card__content"
           *ngIf="mealsOfDinner.length > 0; else noMeal"
         >
-          <div class="card__meal" *ngFor="let food of mealsOfDinner">
-            <p class="card__food-name">
-              {{ food.food ? food.food.foodName : food.set.setTitle }}
-            </p>
+          <mat-accordion class="mat-accordion">
+            <mat-expansion-panel
+              (opened)="panelOpenStateDinner = true"
+              (closed)="panelOpenStateDinner = false"
+              [expanded]="panelOpenStateDinner"
+              class="mat-elevation-z0"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p>
+                    摂取カロリー：{{
+                      mealsOfDinner | nutrition: 'dinner':'cal'
+                    }}kcal
+                  </p>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="card__meal" *ngFor="let food of mealsOfDinner">
+                <p class="card__food-name">
+                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                </p>
 
-            <p class="amount">
-              {{ food.amount
-              }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-              ><ng-template #set>セット</ng-template>
-            </p>
-            <p class="card__cal">
-              {{
-                food.food
-                  ? (food.food.foodCalPerAmount * food.amount | number: '1.1-1')
-                  : (food.set.setCal * food.amount | number: '1.1-1')
-              }}kcal
-            </p>
-          </div>
+                <p class="amount">
+                  {{ food.amount
+                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
+                  ><ng-template #set>セット</ng-template>
+                </p>
+                <p class="card__cal">
+                  {{
+                    food.food
+                      ? (food.food.foodCalPerAmount * food.amount
+                        | number: '1.1-1')
+                      : (food.set.setCal * food.amount | number: '1.1-1')
+                  }}kcal
+                </p>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
-        <ng-template #noMeal
-          ><p class="card__no-meal">まだ登録されていません</p></ng-template
-        >
       </mat-card>
 
       <mat-card class="card"
@@ -358,52 +407,38 @@
                 />
               </span>
             </p>
+
             <button
-              *ngIf="!editingMemo"
-              mat-icon-button
-              color="primary"
-              (click)="editMemo()"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              *ngIf="editingMemo"
               mat-flat-button
               color="primary"
               (click)="updateMemo()"
-              [disabled]="formMemo.invalid"
+              [disabled]="formMemo.invalid || formMemo.pristine"
             >
               保存
             </button>
           </div>
         </div>
-        <p
-          class="card__memo-textarea"
-          *ngIf="dailyInfo.dailyMemo && !editingMemo"
-        >
-          {{ dailyInfo.dailyMemo }}
-        </p>
-        <form
-          [formGroup]="formMemo"
-          *ngIf="editingMemo"
-          class="card__memo-textarea-editor"
-        >
+
+        <form [formGroup]="formMemo" class="card__memo-textarea-editor">
           <mat-form-field
             class="card__memo-textarea-field"
             appearance="outline"
           >
             <mat-label>体調など記入しましょう</mat-label>
-            <textarea matInput rows="16" formControlName="dailyMemo"></textarea>
+            <textarea
+              matInput
+              rows="16"
+              formControlName="dailyMemo"
+              #input
+            ></textarea>
+            <mat-hint align="end"
+              >{{ input.value.length }}/{{ maxMemoLength }}</mat-hint
+            >
             <mat-error *ngIf="memoControl.hasError('maxlength')"
               >{{ maxMemoLength }}文字以内で入力してください</mat-error
             >
           </mat-form-field>
         </form>
-
-        <div *ngIf="!dailyInfo.dailyMemo && !editingMemo">
-          <div class="border"></div>
-          <span>まだメモはありません</span>
-        </div>
       </mat-card>
     </div>
   </div>
