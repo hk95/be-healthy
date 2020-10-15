@@ -36,11 +36,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   private readonly userId = this.authService.uid;
   private subscription = new Subscription();
-  private recipeId$: Observable<string> = this.route.queryParamMap.pipe(
-    map((params) => params.get('id'))
-  );
-  private recipe$: Observable<Recipe> = this.recipeId$.pipe(
-    switchMap((recipeId) => this.recipeService.getRecipeByRecipeId(recipeId))
+  private recipeId: string;
+  private recipe$: Observable<Recipe> = this.route.queryParamMap.pipe(
+    switchMap((params) => {
+      this.recipeId = params.get('id');
+      return this.recipeService.getRecipeByRecipeId(this.recipeId);
+    })
   );
 
   readonly maxTitleLength = 50;
@@ -53,7 +54,6 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   readonly minNutritionAmount = 0;
   thumbnailURL: string = null;
   processURLs = [];
-  query: string;
   ingredient = false;
   process = false;
   public = false;
@@ -269,7 +269,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         data: {
           imageFile,
           thumbnailURL: this.thumbnailURL,
-          recipeId: this.query,
+          recipeId: this.recipeId,
         },
       });
 
@@ -288,7 +288,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         data: {
           imageFile,
           processImageURL: this.processURLs[index],
-          recipeId: this.query,
+          recipeId: this.recipeId,
         },
       });
 
@@ -336,9 +336,9 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       foods: formData.ingredients,
       processes: sendProcesses,
     };
-    if (this.query) {
+    if (this.recipeId) {
       this.recipeService.updateRecipe({
-        recipeId: this.query,
+        recipeId: this.recipeId,
         ...recipeDataExcludeRecipeId,
       });
     } else {
@@ -350,7 +350,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   deleteImage() {
-    this.recipeService.deleteUpdatedImage(this.userId, this.query);
+    this.recipeService.deleteUpdatedImage(this.userId, this.recipeId);
   }
 
   @HostListener('window:beforeunload', ['$event'])
