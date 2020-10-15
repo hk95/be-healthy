@@ -59,7 +59,6 @@ export class RecipeComponent implements OnInit {
   }
 
   loadPublicRecipes(): void {
-    this.publicRecipeloading = true;
     this.recipeService
       .getPublicRecipes(this.perDocNum, this.lastPublicRecipeDoc)
       .pipe(take(1))
