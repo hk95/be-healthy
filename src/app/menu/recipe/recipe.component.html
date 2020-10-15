@@ -51,7 +51,7 @@
     </div>
   </div>
   <div class="more-button" *ngIf="isMyRecipeNext">
-    <button mat-flat-button color="primary" (click)="getMyRecipes()">
+    <button mat-flat-button color="primary" (click)="loadMyRecipes()">
       もっと見る
     </button>
   </div>
@@ -101,7 +101,7 @@
       mat-flat-button
       type="button"
       color="primary"
-      (click)="getPublicRecipes()"
+      (click)="loadPublicRecipes()"
     >
       もっと見る
     </button>
