@@ -31,7 +31,7 @@ export class RecipeService {
 
   getMyRecipes(
     userId: string,
-    getNumber: number,
+    perDocNum: number,
     lastDoc?: QueryDocumentSnapshot<Recipe>
   ): Observable<{
     data: RecipeWithAuthor[];
@@ -42,9 +42,9 @@ export class RecipeService {
         let query = ref
           .where('authorId', '==', userId)
           .orderBy('updatedAt', 'desc')
-          .limit(getNumber);
+          .limit(perDocNum);
         if (lastDoc) {
-          query = query.startAfter(lastDoc).limit(getNumber);
+          query = query.startAfter(lastDoc).limit(perDocNum);
         }
         return query;
       })
@@ -71,7 +71,7 @@ export class RecipeService {
         data: RecipeWithAuthor[];
         nextLastDoc: QueryDocumentSnapshot<Recipe>;
       } => {
-        if (recipes && recipes.length > 0 && basicInfo) {
+        if (recipes?.length > 0 && basicInfo) {
           const recipeswithAuthor: RecipeWithAuthor[] = recipes.map(
             (recipe: Recipe) => {
               return {
@@ -80,7 +80,6 @@ export class RecipeService {
               };
             }
           );
-
           return {
             data: recipeswithAuthor,
             nextLastDoc,
