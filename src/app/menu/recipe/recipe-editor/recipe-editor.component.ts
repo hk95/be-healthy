@@ -154,10 +154,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService,
     private authService: AuthService
   ) {
-    this.getRecipe();
+    this.setRecipeForm();
   }
 
-  private getRecipe() {
+  private setRecipeForm() {
     const recipeSub = this.route.queryParamMap.subscribe((recipeId) => {
       if (recipeId.get('id')) {
         this.query = recipeId.get('id');
