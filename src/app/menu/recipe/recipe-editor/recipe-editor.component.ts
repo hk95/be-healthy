@@ -189,7 +189,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  addIngredinet() {
+  addIngredinet(): void {
     const ingredientFormGroup = this.fb.group({
       name: [
         '',
@@ -210,7 +210,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.dataSource.next(this.ingredients.controls);
   }
 
-  editIngredient() {
+  editIngredient(): void {
     if (!this.ingredient) {
       this.ingredient = true;
       this.displayedColumns.push('delete');
@@ -220,7 +220,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeIngredinet(index: number) {
+  removeIngredinet(index: number): void {
     this.ingredients.removeAt(index);
     if (this.ingredients.length === 0) {
       this.ingredient = false;
@@ -229,7 +229,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.dataSource.next(this.ingredients.controls);
   }
 
-  addProcess() {
+  addProcess(): void {
     const processFormGroup = this.fb.group({
       description: [
         '',
@@ -241,7 +241,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.processSource.next(this.processes.controls);
   }
 
-  editProcess() {
+  editProcess(): void {
     if (!this.process) {
       this.process = true;
       this.displayedColumnsProcess.push('delete');
@@ -251,7 +251,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeProcess(index: number) {
+  removeProcess(index: number): void {
     this.processes.removeAt(index);
     this.processURLs.splice(index, 1);
     if (this.processes.length === 0) {
@@ -261,7 +261,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.processSource.next(this.processes.controls);
   }
 
-  thumbnailDialog(event) {
+  openThumbnailDialog(event): void {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       const dialogRef = this.dialog.open(RecipeThumbnailComponent, {
@@ -280,7 +280,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.thumbnailInput.nativeElement.value = '';
   }
 
-  processImageDialog(event, index) {
+  openProcessImageDialog(event, index): void {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       const dialogRef = this.dialog.open(RecipeProcessImageComponent, {
@@ -299,14 +299,14 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.processImageInput.nativeElement.value = '';
   }
 
-  back(): void {
+  backToPage(): void {
     if (this.isCreating) {
-      this.deleteImage();
+      this.submitToDeleteImage();
     }
     this.location.back();
   }
 
-  changePublic() {
+  changePublic(): void {
     if (this.public) {
       this.public = false;
     } else {
@@ -314,7 +314,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitRecipe() {
+  submitRecipe(): void {
     const formData = this.form.value;
     const sendProcesses: ProcessOfRecipe[] = this.processURLs.map(
       (v, index) => {
@@ -349,7 +349,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  deleteImage() {
+  submitToDeleteImage(): void {
     this.recipeService.deleteUpdatedImage(this.userId, this.recipeId);
   }
 
