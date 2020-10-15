@@ -39,6 +39,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   openDeleteDialog(): void {
     this.dialog.open(DeleteDialogComponent, {
       width: '80%',
+      maxWidth: '400px',
       data: {
         recipeId: this.query,
         title: 'レシピ',

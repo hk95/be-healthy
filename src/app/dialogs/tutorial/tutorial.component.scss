@@ -23,26 +23,11 @@
 }
 
 .actions {
-  padding: 24px 0;
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-
   @media screen and(max-width:750px) {
+    padding: 24px 0;
+    display: flex;
+    justify-content: center;
     flex-direction: column;
+    gap: 16px;
   }
-
-  &__button {
-    max-width: 150px;
-    justify-self: center;
-
-    @media screen and(max-width:750px) {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-.mat-dialog-actions .mat-button-base + .mat-button-base,
-.mat-dialog-actions .mat-mdc-button-base + .mat-mdc-button-base {
-  margin-left: 0;
 }
