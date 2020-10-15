@@ -23,6 +23,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
+
 @Component({
   selector: 'app-recipe-editor',
   templateUrl: './recipe-editor.component.html',
@@ -325,47 +326,39 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateRecipe() {
+  submitRecipe() {
     const formData = this.form.value;
     const sendProcesses: ProcessOfRecipe[] = this.processURLs.map(
       (v, index) => {
         return { ...formData.processes[index], photoURL: v };
       }
     );
+    const recipeDataExcludeRecipeId = {
+      recipeTitle: formData.recipeTitle,
+      recipeThumbnailURL: this.thumbnailURL,
+      recipeDescription: formData.recipeDescription,
+      recipeCal: formData.recipeCal,
+      recipeProtein: formData.recipeProtein,
+      recipeFat: formData.recipeFat,
+      recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
+      recipeDietaryFiber: formData.recipeDietaryFiber,
+      recipeSugar: formData.recipeSugar,
+      public: this.public,
+      authorId: this.userId,
+      foods: formData.ingredients,
+      processes: sendProcesses,
+    };
     if (this.query) {
       this.recipeService.updateRecipe({
         recipeId: this.query,
-        recipeTitle: formData.recipeTitle,
-        recipeThumbnailURL: this.thumbnailURL,
-        recipeDescription: formData.recipeDescription,
-        recipeCal: formData.recipeCal,
-        recipeProtein: formData.recipeProtein,
-        recipeFat: formData.recipeFat,
-        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
-        recipeDietaryFiber: formData.recipeDietaryFiber,
-        recipeSugar: formData.recipeSugar,
-        public: this.public,
-        authorId: this.userId,
-        foods: formData.ingredients,
-        processes: sendProcesses,
+        ...recipeDataExcludeRecipeId,
       });
     } else {
       this.recipeService.createRecipe({
-        recipeTitle: formData.recipeTitle,
-        recipeThumbnailURL: this.thumbnailURL,
-        recipeDescription: formData.recipeDescription,
-        recipeCal: formData.recipeCal,
-        recipeProtein: formData.recipeProtein,
-        recipeFat: formData.recipeFat,
-        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
-        recipeDietaryFiber: formData.recipeDietaryFiber,
-        recipeSugar: formData.recipeSugar,
-        public: this.public,
-        authorId: this.userId,
-        foods: formData.ingredients,
-        processes: sendProcesses,
+        ...recipeDataExcludeRecipeId,
       });
     }
+    this.location.back();
   }
 
   deleteImage() {
