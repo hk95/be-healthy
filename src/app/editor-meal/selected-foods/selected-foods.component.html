@@ -58,7 +58,8 @@
             {{ foodOrSet.food?.foodName || foodOrSet.set.setTitle }}
           </p>
           <p class="food__selected-amount">
-            {{ foodOrSet.amount || 0 }}{{ foodOrSet.food?.unit || 'セット' }}
+            {{ (foodOrSet.amount | number: '1.1-1') || 0 }}
+            {{ foodOrSet.food?.unit || 'セット' }}
           </p>
         </div>
         <div class="spacer"></div>

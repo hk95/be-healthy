@@ -10,7 +10,7 @@ export const addMeal = functions
   .region('asia-northeast1')
   .https.onCall(async (data) => {
     const increment = admin.firestore.FieldValue.increment(
-      data.amount * data.cal
+      Math.round(data.amount * data.cal * 10) / 10
     );
     const dateOfPath = getDateOfPath(data.date);
     db.doc(`users/${data.userId}/dailyInfos/${dateOfPath}`)
@@ -48,9 +48,10 @@ export const addMeal = functions
 export const removeMeal = functions
   .region('asia-northeast1')
   .https.onCall(async (data) => {
-    const decline = admin.firestore.FieldValue.increment(
-      -data.amount * data.cal
+    const calNum = admin.firestore.FieldValue.increment(
+      Math.round(-data.amount * data.cal * 10) / 10
     );
+    const decline = !data.isLastMeal ? calNum : 0;
     const dateOfPath = getDateOfPath(data.date);
     db.doc(`users/${data.userId}/dailyInfos/${dateOfPath}`)
       .set(
