@@ -19,7 +19,7 @@
         *ngIf="recipe.authorId === userId"
         mat-icon-button
         class="delete-button"
-        (click)="openDeleteDialog()"
+        (click)="openDeleteDialog(recipe.recipeId)"
       >
         <mat-icon>delete</mat-icon>
       </button>
