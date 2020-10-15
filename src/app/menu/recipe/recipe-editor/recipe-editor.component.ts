@@ -23,7 +23,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { ProcessOfRecipe, Recipe } from 'src/app/interfaces/recipe';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-recipe-editor',
