@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
-import { Location } from '@angular/common';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { BasicInfoService } from './basic-info.service';
 import { BasicInfo } from '../interfaces/basic-info';
@@ -26,7 +25,6 @@ export class RecipeService {
     public storage: AngularFireStorage,
     private snackBar: MatSnackBar,
     private router: Router,
-    private location: Location,
     private fns: AngularFireFunctions,
     private basicInfoService: BasicInfoService
   ) {}
