@@ -184,7 +184,6 @@ export class RecipeService {
         this.snackBar.open('レシピを作成しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
@@ -193,12 +192,10 @@ export class RecipeService {
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
       .update({ ...recipe, updatedAt })
-
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
