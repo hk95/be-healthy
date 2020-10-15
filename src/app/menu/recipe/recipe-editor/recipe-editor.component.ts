@@ -50,7 +50,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   ingredient = false;
   process = false;
   public = false;
-  loading: boolean;
+  loading = true;
   isCreating: boolean;
 
   form = this.fb.group({
@@ -154,7 +154,6 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     private recipeService: RecipeService,
     private authService: AuthService
   ) {
-    this.loading = true;
     this.getRecipe();
   }
 
