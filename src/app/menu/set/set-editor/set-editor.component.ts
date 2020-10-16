@@ -359,36 +359,28 @@ export class SetEditorComponent implements OnInit {
   submitSetForm(): void {
     const formData = this.form.value;
     this.setService.submitted = true;
+    const setDataExcludeRecipeId = {
+      userId: this.userId,
+      setTitle: formData.setTitle,
+      breakfast: this.isBreakfast,
+      lunch: this.isLunch,
+      dinner: this.isDinner,
+      foodsArray: formData.foodsArray,
+      setCal: formData.setCal,
+      setProtein: formData.setProtein,
+      setFat: formData.setFat,
+      setTotalCarbohydrate: formData.setTotalCarbohydrate,
+      setDietaryFiber: formData.setDietaryFiber,
+      setSugar: formData.setSugar,
+    };
     if (this.setId) {
       this.setService.updateSet({
         setId: this.setId,
-        userId: this.userId,
-        setTitle: formData.setTitle,
-        breakfast: this.isBreakfast,
-        lunch: this.isLunch,
-        dinner: this.isDinner,
-        foodsArray: formData.foodsArray,
-        setCal: formData.setCal,
-        setProtein: formData.setProtein,
-        setFat: formData.setFat,
-        setTotalCarbohydrate: formData.setTotalCarbohydrate,
-        setDietaryFiber: formData.setDietaryFiber,
-        setSugar: formData.setSugar,
+        ...setDataExcludeRecipeId,
       });
     } else {
       this.setService.createSet({
-        userId: this.userId,
-        setTitle: formData.setTitle,
-        breakfast: this.isBreakfast,
-        lunch: this.isLunch,
-        dinner: this.isDinner,
-        foodsArray: formData.foodsArray,
-        setCal: formData.setCal,
-        setProtein: formData.setProtein,
-        setFat: formData.setFat,
-        setTotalCarbohydrate: formData.setTotalCarbohydrate,
-        setDietaryFiber: formData.setDietaryFiber,
-        setSugar: formData.setSugar,
+        ...setDataExcludeRecipeId,
       });
     }
     this.setService.addingDailyInfo();
