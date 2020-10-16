@@ -21,8 +21,10 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { ProcessOfRecipe } from 'src/app/interfaces/recipe';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { ProcessOfRecipe, Recipe } from 'src/app/interfaces/recipe';
+import { switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-recipe-editor',
   templateUrl: './recipe-editor.component.html',
@@ -34,6 +36,13 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   private readonly userId = this.authService.uid;
   private subscription = new Subscription();
+  private recipeId: string;
+  private recipe$: Observable<Recipe> = this.route.queryParamMap.pipe(
+    switchMap((params) => {
+      this.recipeId = params.get('id');
+      return this.recipeService.getRecipeByRecipeId(this.recipeId);
+    })
+  );
 
   readonly maxTitleLength = 50;
   readonly maxDescriptionLength = 500;
@@ -45,11 +54,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   readonly minNutritionAmount = 0;
   thumbnailURL: string = null;
   processURLs = [];
-  query: string;
   ingredient = false;
   process = false;
   public = false;
-  loading: boolean;
+  loading = true;
   isCreating: boolean;
 
   form = this.fb.group({
@@ -152,55 +160,36 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private recipeService: RecipeService,
     private authService: AuthService
-  ) {
-    this.loading = true;
-    this.getRecipe();
+  ) {}
+
+  private setInitRecipeForm(recipe: Recipe): void {
+    this.form.patchValue(recipe);
+    this.thumbnailURL = recipe.recipeThumbnailURL;
+    this.public = recipe.public;
+    if (recipe.foods) {
+      recipe.foods.forEach((food) => {
+        const ingredientFormGroup = this.fb.group({
+          name: food.name,
+          amountAndUnit: food.amountAndUnit,
+        });
+        this.ingredients.push(ingredientFormGroup);
+        this.dataSource.next(this.ingredients.controls);
+      });
+    }
+    if (recipe.processes) {
+      recipe.processes.forEach((process) => {
+        const processFormGroup = this.fb.group({
+          description: process.description,
+        });
+        this.processURLs.push(process.photoURL);
+        this.processes.push(processFormGroup);
+        this.processSource.next(this.processes.controls);
+      });
+    }
+    this.loading = false;
   }
 
-  private getRecipe() {
-    const recipeSub = this.route.queryParamMap.subscribe((recipeId) => {
-      if (recipeId.get('id')) {
-        this.query = recipeId.get('id');
-        this.recipeService
-          .getRecipeByRecipeId(this.query)
-          .subscribe((recipe) => {
-            if (recipe) {
-              this.form.patchValue(recipe);
-              this.thumbnailURL = recipe.recipeThumbnailURL;
-              this.public = recipe.public;
-              if (recipe.foods) {
-                recipe.foods.forEach((food) => {
-                  const ingredientFormGroup = this.fb.group({
-                    name: food.name,
-                    amountAndUnit: food.amountAndUnit,
-                  });
-                  this.ingredients.push(ingredientFormGroup);
-                  this.dataSource.next(this.ingredients.controls);
-                });
-              }
-              if (recipe.processes) {
-                recipe.processes.forEach((process) => {
-                  const processFormGroup = this.fb.group({
-                    description: process.description,
-                  });
-                  this.processURLs.push(process.photoURL);
-                  this.processes.push(processFormGroup);
-                  this.processSource.next(this.processes.controls);
-                });
-              }
-            }
-            this.loading = false;
-          });
-      } else {
-        this.addIngredinet();
-        this.isCreating = true;
-        this.loading = false;
-      }
-    });
-    this.subscription.add(recipeSub);
-  }
-
-  addIngredinet() {
+  addIngredinet(): void {
     const ingredientFormGroup = this.fb.group({
       name: [
         '',
@@ -221,7 +210,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.dataSource.next(this.ingredients.controls);
   }
 
-  editIngredient() {
+  editIngredient(): void {
     if (!this.ingredient) {
       this.ingredient = true;
       this.displayedColumns.push('delete');
@@ -231,7 +220,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeIngredinet(index: number) {
+  removeIngredinet(index: number): void {
     this.ingredients.removeAt(index);
     if (this.ingredients.length === 0) {
       this.ingredient = false;
@@ -240,7 +229,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.dataSource.next(this.ingredients.controls);
   }
 
-  addProcess() {
+  addProcess(): void {
     const processFormGroup = this.fb.group({
       description: [
         '',
@@ -252,7 +241,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.processSource.next(this.processes.controls);
   }
 
-  editProcess() {
+  editProcess(): void {
     if (!this.process) {
       this.process = true;
       this.displayedColumnsProcess.push('delete');
@@ -262,7 +251,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  removeProcess(index: number) {
+  removeProcess(index: number): void {
     this.processes.removeAt(index);
     this.processURLs.splice(index, 1);
     if (this.processes.length === 0) {
@@ -272,7 +261,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.processSource.next(this.processes.controls);
   }
 
-  thumbnailDialog(event) {
+  openThumbnailDialog(event): void {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       const dialogRef = this.dialog.open(RecipeThumbnailComponent, {
@@ -280,7 +269,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         data: {
           imageFile,
           thumbnailURL: this.thumbnailURL,
-          recipeId: this.query,
+          recipeId: this.recipeId,
         },
       });
 
@@ -291,7 +280,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.thumbnailInput.nativeElement.value = '';
   }
 
-  processImageDialog(event, index) {
+  openProcessImageDialog(event, index): void {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       const dialogRef = this.dialog.open(RecipeProcessImageComponent, {
@@ -299,7 +288,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         data: {
           imageFile,
           processImageURL: this.processURLs[index],
-          recipeId: this.query,
+          recipeId: this.recipeId,
         },
       });
 
@@ -310,14 +299,14 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.processImageInput.nativeElement.value = '';
   }
 
-  back(): void {
+  backToPage(): void {
     if (this.isCreating) {
-      this.deleteImage();
+      this.submitToDeleteImage();
     }
     this.location.back();
   }
 
-  changePublic() {
+  changePublic(): void {
     if (this.public) {
       this.public = false;
     } else {
@@ -325,51 +314,43 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateRecipe() {
+  submitRecipe(): void {
     const formData = this.form.value;
     const sendProcesses: ProcessOfRecipe[] = this.processURLs.map(
       (v, index) => {
         return { ...formData.processes[index], photoURL: v };
       }
     );
-    if (this.query) {
+    const recipeDataExcludeRecipeId = {
+      recipeTitle: formData.recipeTitle,
+      recipeThumbnailURL: this.thumbnailURL,
+      recipeDescription: formData.recipeDescription,
+      recipeCal: formData.recipeCal,
+      recipeProtein: formData.recipeProtein,
+      recipeFat: formData.recipeFat,
+      recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
+      recipeDietaryFiber: formData.recipeDietaryFiber,
+      recipeSugar: formData.recipeSugar,
+      public: this.public,
+      authorId: this.userId,
+      foods: formData.ingredients,
+      processes: sendProcesses,
+    };
+    if (this.recipeId) {
       this.recipeService.updateRecipe({
-        recipeId: this.query,
-        recipeTitle: formData.recipeTitle,
-        recipeThumbnailURL: this.thumbnailURL,
-        recipeDescription: formData.recipeDescription,
-        recipeCal: formData.recipeCal,
-        recipeProtein: formData.recipeProtein,
-        recipeFat: formData.recipeFat,
-        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
-        recipeDietaryFiber: formData.recipeDietaryFiber,
-        recipeSugar: formData.recipeSugar,
-        public: this.public,
-        authorId: this.userId,
-        foods: formData.ingredients,
-        processes: sendProcesses,
+        recipeId: this.recipeId,
+        ...recipeDataExcludeRecipeId,
       });
     } else {
       this.recipeService.createRecipe({
-        recipeTitle: formData.recipeTitle,
-        recipeThumbnailURL: this.thumbnailURL,
-        recipeDescription: formData.recipeDescription,
-        recipeCal: formData.recipeCal,
-        recipeProtein: formData.recipeProtein,
-        recipeFat: formData.recipeFat,
-        recipeTotalCarbohydrate: formData.recipeTotalCarbohydrate,
-        recipeDietaryFiber: formData.recipeDietaryFiber,
-        recipeSugar: formData.recipeSugar,
-        public: this.public,
-        authorId: this.userId,
-        foods: formData.ingredients,
-        processes: sendProcesses,
+        ...recipeDataExcludeRecipeId,
       });
     }
+    this.location.back();
   }
 
-  deleteImage() {
-    this.recipeService.deleteUpdatedImage(this.userId, this.query);
+  submitToDeleteImage(): void {
+    this.recipeService.deleteUpdatedImage(this.userId, this.recipeId);
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -380,7 +361,18 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const recipeSub = this.recipe$.subscribe((recipe: Recipe) => {
+      if (recipe) {
+        this.setInitRecipeForm(recipe);
+      } else {
+        this.addIngredinet();
+        this.isCreating = true;
+        this.loading = false;
+      }
+    });
+    this.subscription.add(recipeSub);
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
