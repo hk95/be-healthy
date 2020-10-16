@@ -19,7 +19,7 @@
         *ngIf="recipe.authorId === userId"
         mat-icon-button
         class="delete-button"
-        (click)="openDeleteDialog()"
+        (click)="openDeleteDialog(recipe.recipeId)"
       >
         <mat-icon>delete</mat-icon>
       </button>
@@ -44,7 +44,7 @@
       </figure>
       <div class="content-head">
         <h2 class="content__name">レシピ名</h2>
-        <h4 *ngIf="recipe.public ? true : false">
+        <h4 *ngIf="recipe.public">
           公開中
         </h4>
       </div>
@@ -89,14 +89,14 @@
         <div class="nutrition__detail">
           <h3 class="nutrition__name">総カロリー</h3>
           <p>
-            {{ recipe.recipeCal ? recipe.recipeCal : '未入力' }}
+            {{ recipe.recipeCal || '未入力' }}
             <span *ngIf="recipe.recipeCal">kcal</span>
           </p>
         </div>
         <div class="nutrition__detail">
           <h3 class="nutrition__name">タンパク質</h3>
           <p>
-            {{ recipe.recipeProtein ? recipe.recipeProtein : '未入力' }}
+            {{ recipe.recipeProtein || '未入力' }}
             <span *ngIf="recipe.recipeProtein">g</span>
           </p>
         </div>
@@ -105,7 +105,7 @@
             脂質
           </h3>
           <p>
-            {{ recipe.recipeFat ? recipe.recipeFat : '未入力' }}
+            {{ recipe.recipeFat || '未入力' }}
             <span *ngIf="recipe.recipeFat">g</span>
           </p>
         </div>
@@ -114,7 +114,7 @@
             糖質
           </h3>
           <p>
-            {{ recipe.recipeSugar ? recipe.recipeSugar : '未入力' }}
+            {{ recipe.recipeSugar || '未入力' }}
             <span *ngIf="recipe.recipeSugar">g</span>
           </p>
         </div>
@@ -123,9 +123,7 @@
             食物繊維
           </h3>
           <p>
-            {{
-              recipe.recipeDietaryFiber ? recipe.recipeDietaryFiber : '未入力'
-            }}
+            {{ recipe.recipeDietaryFiber || '未入力' }}
             <span *ngIf="recipe.recipeDietaryFiber">g</span>
           </p>
         </div>
@@ -134,11 +132,7 @@
             炭水化物
           </h3>
           <p>
-            {{
-              recipe.recipeTotalCarbohydrate
-                ? recipe.recipeTotalCarbohydrate
-                : '未入力'
-            }}
+            {{ recipe.recipeTotalCarbohydrate || '未入力' }}
             <span *ngIf="recipe.recipeTotalCarbohydrate">g</span>
           </p>
         </div>

@@ -2,13 +2,13 @@
   <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
 </div>
 <div *ngIf="!loading">
-  <form [formGroup]="form" (ngSubmit)="updateRecipe()">
+  <form [formGroup]="form" (ngSubmit)="submitRecipe()">
     <div class="head">
       <button
         type="button"
         mat-icon-button
         class="clear-button"
-        (click)="back()"
+        (click)="backToPage()"
       >
         <mat-icon>clear</mat-icon>
       </button>
@@ -45,7 +45,7 @@
             #thumbnail
             class="title__image-form"
             type="file"
-            (change)="thumbnailDialog($event)"
+            (change)="openThumbnailDialog($event)"
             accept=".png, .jpg, .jpeg"
           />
           <button
@@ -269,7 +269,7 @@
               >
                 <input
                   #processImage
-                  (change)="processImageDialog($event, i)"
+                  (change)="openProcessImageDialog($event, i)"
                   class="process__image-form"
                   type="file"
                   accept=".png, .jpg, .jpeg"

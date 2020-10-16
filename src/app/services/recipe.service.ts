@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
-import { Location } from '@angular/common';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { BasicInfoService } from './basic-info.service';
 import { BasicInfo } from '../interfaces/basic-info';
@@ -26,14 +25,13 @@ export class RecipeService {
     public storage: AngularFireStorage,
     private snackBar: MatSnackBar,
     private router: Router,
-    private location: Location,
     private fns: AngularFireFunctions,
     private basicInfoService: BasicInfoService
   ) {}
 
   getMyRecipes(
     userId: string,
-    getNumber: number,
+    perDocNum: number,
     lastDoc?: QueryDocumentSnapshot<Recipe>
   ): Observable<{
     data: RecipeWithAuthor[];
@@ -44,9 +42,9 @@ export class RecipeService {
         let query = ref
           .where('authorId', '==', userId)
           .orderBy('updatedAt', 'desc')
-          .limit(getNumber);
+          .limit(perDocNum);
         if (lastDoc) {
-          query = query.startAfter(lastDoc).limit(getNumber);
+          query = query.startAfter(lastDoc).limit(perDocNum);
         }
         return query;
       })
@@ -73,7 +71,7 @@ export class RecipeService {
         data: RecipeWithAuthor[];
         nextLastDoc: QueryDocumentSnapshot<Recipe>;
       } => {
-        if (recipes && recipes.length > 0 && basicInfo) {
+        if (recipes?.length > 0 && basicInfo) {
           const recipeswithAuthor: RecipeWithAuthor[] = recipes.map(
             (recipe: Recipe) => {
               return {
@@ -82,7 +80,6 @@ export class RecipeService {
               };
             }
           );
-
           return {
             data: recipeswithAuthor,
             nextLastDoc,
@@ -95,8 +92,8 @@ export class RecipeService {
   }
 
   getPublicRecipes(
-    getNumber: number,
-    lastDoc: QueryDocumentSnapshot<Recipe>
+    perDocNum: number,
+    lastDoc?: QueryDocumentSnapshot<Recipe>
   ): Observable<{
     data: RecipeWithAuthor[];
     nextLastDoc: QueryDocumentSnapshot<Recipe>;
@@ -106,9 +103,9 @@ export class RecipeService {
         let query = ref
           .where('public', '==', true)
           .orderBy('updatedAt', 'desc')
-          .limit(getNumber);
+          .limit(perDocNum);
         if (lastDoc) {
-          query = query.startAfter(lastDoc).limit(getNumber);
+          query = query.startAfter(lastDoc).limit(perDocNum);
         }
         return query;
       })
@@ -118,11 +115,6 @@ export class RecipeService {
       switchMap((publicRecipes?: DocumentChangeAction<Recipe>[]) => {
         if (publicRecipes.length > 0) {
           nextLastDoc = publicRecipes[publicRecipes.length - 1].payload.doc;
-
-          const publicRecipesWithoutAuthor: Recipe[] = publicRecipes.map(
-            (recipeOfDoc) => recipeOfDoc.payload.doc.data()
-          );
-
           const authorIds: string[] = [
             ...new Set(
               publicRecipes.map(
@@ -137,23 +129,28 @@ export class RecipeService {
               this.basicInfoService.getBasicInfo(authorId)
             )
           );
+
+          const publicRecipesWithoutAuthor: Recipe[] = publicRecipes.map(
+            (recipeOfDoc) => recipeOfDoc.payload.doc.data()
+          );
+
           if (publicRecipesWithoutAuthor.length) {
             return combineLatest([of(publicRecipesWithoutAuthor), basicInfos$]);
           } else {
-            return combineLatest([of(null), of(null)]);
+            return of([]);
           }
         } else {
-          return combineLatest([of(null), of(null)]);
+          return of([]);
         }
       }),
-      map(([recipes, basicInfos]) => {
-        if (basicInfos && basicInfos.length > 0) {
+      map(([recipes, basicInfos]: [Recipe[], BasicInfo[]]) => {
+        if (basicInfos?.length > 0) {
           const publicRecipes: RecipeWithAuthor[] = recipes.map(
             (recipe: Recipe) => {
               return {
                 ...recipe,
                 author: basicInfos.find(
-                  (basicInfo?) => basicInfo.userId === recipe.authorId
+                  (basicInfo: BasicInfo) => basicInfo.userId === recipe.authorId
                 ),
               };
             }
@@ -184,7 +181,6 @@ export class RecipeService {
         this.snackBar.open('レシピを作成しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
@@ -193,12 +189,10 @@ export class RecipeService {
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
       .update({ ...recipe, updatedAt })
-
       .then(() => {
         this.snackBar.open('レシピを更新しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
@@ -224,7 +218,11 @@ export class RecipeService {
     return imageURL;
   }
 
-  async uploadProcessImage(userId: string, recipeId: string, file: Blob) {
+  async uploadProcessImage(
+    userId: string,
+    recipeId: string,
+    file: Blob
+  ): Promise<string> {
     const imageId = this.db.createId();
     const result = await this.storage
       .ref(`users/${userId}/recipes/${recipeId}/processImages/${imageId}`)

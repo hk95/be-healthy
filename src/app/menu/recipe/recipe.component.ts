@@ -13,12 +13,12 @@ import { take } from 'rxjs/operators';
 })
 export class RecipeComponent implements OnInit {
   private readonly userId = this.authService.uid;
-  private readonly getNumber = 10;
+  private readonly perDocNum = 10;
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
   private lastPublicRecipeDoc: QueryDocumentSnapshot<Recipe>;
 
-  myRecipeloading: boolean;
-  publicRecipeloading: boolean;
+  myRecipeloading = true;
+  publicRecipeloading = true;
   myRecipes: RecipeWithAuthor[] = new Array();
   publicRecipes: RecipeWithAuthor[] = new Array();
   isMyRecipeNext: boolean;
@@ -27,15 +27,11 @@ export class RecipeComponent implements OnInit {
   constructor(
     private recipeService: RecipeService,
     private authService: AuthService
-  ) {
-    this.getMyRecipes();
-    this.getPublicRecipes();
-  }
+  ) {}
 
-  getMyRecipes() {
-    this.myRecipeloading = true;
+  loadMyRecipes(): void {
     this.recipeService
-      .getMyRecipes(this.userId, this.getNumber, this.lastMyRecipeDoc)
+      .getMyRecipes(this.userId, this.perDocNum, this.lastMyRecipeDoc)
       .pipe(take(1))
       .subscribe(
         (doc: {
@@ -47,7 +43,7 @@ export class RecipeComponent implements OnInit {
             if (doc.data && doc.data.length > 0) {
               doc.data.forEach((recipe: RecipeWithAuthor) => {
                 this.myRecipes.push(recipe);
-                if (doc.data.length >= this.getNumber) {
+                if (doc.data.length >= this.perDocNum) {
                   this.isMyRecipeNext = true;
                 } else {
                   this.isMyRecipeNext = false;
@@ -62,10 +58,9 @@ export class RecipeComponent implements OnInit {
       );
   }
 
-  getPublicRecipes() {
-    this.publicRecipeloading = true;
+  loadPublicRecipes(): void {
     this.recipeService
-      .getPublicRecipes(this.getNumber, this.lastPublicRecipeDoc)
+      .getPublicRecipes(this.perDocNum, this.lastPublicRecipeDoc)
       .pipe(take(1))
       .subscribe(
         (doc: {
@@ -77,7 +72,7 @@ export class RecipeComponent implements OnInit {
             if (doc.data && doc.data.length > 0) {
               doc.data.forEach((recipe: RecipeWithAuthor) => {
                 this.publicRecipes.push(recipe);
-                if (doc.data.length >= this.getNumber) {
+                if (doc.data.length >= this.perDocNum) {
                   this.isPublicRecipeNext = true;
                 }
               });
@@ -90,5 +85,8 @@ export class RecipeComponent implements OnInit {
       );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadMyRecipes();
+    this.loadPublicRecipes();
+  }
 }
