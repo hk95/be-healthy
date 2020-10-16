@@ -55,9 +55,9 @@ export class SetEditorComponent implements OnInit {
   currentSugar = 0;
   currentDietaryFiber = 0;
   preFoods: FoodInArray[] = new Array();
-  breakfast = false;
-  lunch = false;
-  dinner = false;
+  isBreakfast = false;
+  isLunch = false;
+  isDinner = false;
 
   form = this.fb.group({
     setTitle: [
@@ -155,9 +155,9 @@ export class SetEditorComponent implements OnInit {
       if (set) {
         this.title = '編集';
         this.form.patchValue(set);
-        this.breakfast = set.breakfast;
-        this.lunch = set.lunch;
-        this.dinner = set.dinner;
+        this.isBreakfast = set.breakfast;
+        this.isLunch = set.lunch;
+        this.isDinner = set.dinner;
 
         set.foodsArray.forEach((food) => {
           if (food.food) {
@@ -345,25 +345,13 @@ export class SetEditorComponent implements OnInit {
   changeMeal(meal: string): void {
     switch (meal) {
       case 'breakfast':
-        if (!this.breakfast) {
-          this.breakfast = true;
-        } else {
-          this.breakfast = false;
-        }
+        this.isBreakfast = !this.isBreakfast ? true : false;
         break;
       case 'lunch':
-        if (!this.lunch) {
-          this.lunch = true;
-        } else {
-          this.lunch = false;
-        }
+        this.isLunch = !this.isLunch ? true : false;
         break;
       case 'dinner':
-        if (!this.dinner) {
-          this.dinner = true;
-        } else {
-          this.dinner = false;
-        }
+        this.isDinner = !this.isDinner ? true : false;
         break;
     }
   }
@@ -376,9 +364,9 @@ export class SetEditorComponent implements OnInit {
         setId: this.setId,
         userId: this.userId,
         setTitle: formData.setTitle,
-        breakfast: this.breakfast,
-        lunch: this.lunch,
-        dinner: this.dinner,
+        breakfast: this.isBreakfast,
+        lunch: this.isLunch,
+        dinner: this.isDinner,
         foodsArray: formData.foodsArray,
         setCal: formData.setCal,
         setProtein: formData.setProtein,
@@ -391,9 +379,9 @@ export class SetEditorComponent implements OnInit {
       this.setService.createSet({
         userId: this.userId,
         setTitle: formData.setTitle,
-        breakfast: this.breakfast,
-        lunch: this.lunch,
-        dinner: this.dinner,
+        breakfast: this.isBreakfast,
+        lunch: this.isLunch,
+        dinner: this.isDinner,
         foodsArray: formData.foodsArray,
         setCal: formData.setCal,
         setProtein: formData.setProtein,

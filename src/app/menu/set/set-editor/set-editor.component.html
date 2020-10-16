@@ -43,18 +43,18 @@
         <div class="meal__buttons">
           <mat-checkbox
             color="primary"
-            [(checked)]="breakfast"
+            [(checked)]="isBreakfast"
             (change)="changeMeal('breakfast')"
             >朝食</mat-checkbox
           >
           <mat-checkbox
             color="primary"
-            [(checked)]="lunch"
+            [(checked)]="isLunch"
             (change)="changeMeal('lunch')"
             >昼食</mat-checkbox
           ><mat-checkbox
             color="primary"
-            [(checked)]="dinner"
+            [(checked)]="isDinner"
             (change)="changeMeal('dinner')"
             >夕食</mat-checkbox
           >
@@ -505,7 +505,7 @@
         mat-raised-button
         color="primary"
         class="submit-button"
-        [disabled]="form.invalid || preFoods?.length === 0 || form.pristine"
+        [disabled]="form.invalid || preFoods?.length === 0"
       >
         保存
       </button>
