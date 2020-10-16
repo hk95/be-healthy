@@ -28,7 +28,9 @@ export class SetComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private dailyInfoService: DailyInfoService
-  ) {}
+  ) {
+    this.loadSets();
+  }
 
   loadSets(): void {
     this.setService
@@ -55,7 +57,5 @@ export class SetComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    this.loadSets();
-  }
+  ngOnInit(): void {}
 }
