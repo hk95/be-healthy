@@ -246,46 +246,51 @@ export class SetEditorComponent implements OnInit {
     }
   }
 
-  addFoodOrRecipe(amount: number, food?: Food, recipe?: Recipe) {
+  /**
+   * 小数第一位まで取得
+   * @param num 計算元の数字
+   */
+  private getRoundNumber(num: number): number {
+    return Math.round(num * 10) / 10;
+  }
+
+  addFoodOrRecipe(amount: number, food?: Food, recipe?: Recipe): void {
     if (food) {
       this.addFoodOrRecipeToArray(amount, food);
-      this.currentCal =
-        Math.round((this.currentCal + food.foodCalPerAmount * amount) * 10) /
-        10;
-      this.currentProtein =
-        Math.round((this.currentProtein + food.foodProtein * amount) * 10) / 10;
-      this.currentFat =
-        Math.round((this.currentFat + food.foodFat * amount) * 10) / 10;
-      this.currentTotalCarbohydrate =
-        Math.round(
-          (this.currentTotalCarbohydrate +
-            food.foodTotalCarbohydrate * amount) *
-            10
-        ) / 10;
-      this.currentSugar =
-        Math.round((this.currentSugar + food.foodSugar * amount) * 10) / 10;
-      this.currentDietaryFiber =
-        Math.round(
-          (this.currentDietaryFiber + food.foodDietaryFiber * amount) * 10
-        ) / 10;
+      this.currentCal = this.getRoundNumber(
+        this.currentCal + food.foodCalPerAmount * amount
+      );
+      this.currentProtein = this.getRoundNumber(
+        this.currentProtein + food.foodProtein * amount
+      );
+      this.currentFat = this.getRoundNumber(
+        this.currentFat + food.foodFat * amount
+      );
+      this.currentTotalCarbohydrate = this.getRoundNumber(
+        this.currentTotalCarbohydrate + food.foodTotalCarbohydrate * amount
+      );
+      this.currentSugar = this.getRoundNumber(
+        this.currentSugar + food.foodSugar * amount
+      );
+      this.currentDietaryFiber = this.getRoundNumber(
+        this.currentDietaryFiber + food.foodDietaryFiber * amount
+      );
     } else {
-      this.addFoodOrRecipeToArray(amount, food, recipe);
-      this.currentCal =
-        Math.round((this.currentCal + recipe.recipeCal) * 10) / 10;
-      this.currentProtein =
-        Math.round((this.currentProtein + recipe.recipeProtein) * 10) / 10;
-      this.currentFat =
-        Math.round((this.currentFat + recipe.recipeFat) * 10) / 10;
-      this.currentTotalCarbohydrate =
-        Math.round(
-          (this.currentTotalCarbohydrate + recipe.recipeTotalCarbohydrate) * 10
-        ) / 10;
-      this.currentSugar =
-        Math.round((this.currentSugar + recipe.recipeSugar) * 10) / 10;
-      this.currentDietaryFiber =
-        Math.round(
-          (this.currentDietaryFiber + recipe.recipeDietaryFiber) * 10
-        ) / 10;
+      this.addFoodOrRecipeToArray(amount, null, recipe);
+      this.currentCal = this.getRoundNumber(this.currentCal + recipe.recipeCal);
+      this.currentProtein = this.getRoundNumber(
+        this.currentProtein + recipe.recipeProtein
+      );
+      this.currentFat = this.getRoundNumber(this.currentFat + recipe.recipeFat);
+      this.currentTotalCarbohydrate = this.getRoundNumber(
+        this.currentTotalCarbohydrate + recipe.recipeTotalCarbohydrate
+      );
+      this.currentSugar = this.getRoundNumber(
+        this.currentSugar + recipe.recipeSugar
+      );
+      this.currentDietaryFiber = this.getRoundNumber(
+        this.currentDietaryFiber + recipe.recipeDietaryFiber
+      );
     }
     this.snackBar.open('食べ物を追加しました', null, {
       duration: 2000,
@@ -296,52 +301,44 @@ export class SetEditorComponent implements OnInit {
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
     if (food.recipe && food.recipe.recipeCal > 0) {
-      this.currentCal =
-        Math.round((this.currentCal - food.recipe.recipeCal) * 10) / 10;
-      this.currentProtein =
-        Math.round((this.currentProtein - food.recipe.recipeProtein) * 10) / 10;
-      this.currentFat =
-        Math.round((this.currentFat - food.recipe.recipeFat) * 10) / 10;
-      this.currentTotalCarbohydrate =
-        Math.round(
-          (this.currentTotalCarbohydrate -
-            food.recipe.recipeTotalCarbohydrate) *
-            10
-        ) / 10;
-      this.currentSugar =
-        Math.round((this.currentSugar - food.recipe.recipeSugar) * 10) / 10;
-      this.currentDietaryFiber =
-        Math.round(
-          (this.currentDietaryFiber - food.recipe.recipeDietaryFiber) * 10
-        ) / 10;
+      this.currentCal = this.getRoundNumber(
+        this.currentCal - food.recipe.recipeCal
+      );
+      this.currentProtein = this.getRoundNumber(
+        this.currentProtein - food.recipe.recipeProtein
+      );
+      this.currentFat = this.getRoundNumber(
+        this.currentFat - food.recipe.recipeFat
+      );
+      this.currentTotalCarbohydrate = this.getRoundNumber(
+        this.currentTotalCarbohydrate - food.recipe.recipeTotalCarbohydrate
+      );
+      this.currentSugar = this.getRoundNumber(
+        this.currentSugar - food.recipe.recipeSugar
+      );
+      this.currentDietaryFiber = this.getRoundNumber(
+        this.currentDietaryFiber - food.recipe.recipeDietaryFiber
+      );
     } else if (food.food.foodCalPerAmount && food.amount > 0) {
-      this.currentCal =
-        Math.round(
-          (this.currentCal - food.food.foodCalPerAmount * food.amount) * 10
-        ) / 10;
-      this.currentProtein =
-        Math.round(
-          (this.currentProtein - food.food.foodProtein * food.amount) * 10
-        ) / 10;
-      this.currentFat =
-        Math.round((this.currentFat - food.food.foodFat * food.amount) * 10) /
-        10;
-      this.currentTotalCarbohydrate =
-        Math.round(
-          (this.currentTotalCarbohydrate -
-            food.food.foodTotalCarbohydrate * food.amount) *
-            10
-        ) / 10;
-      this.currentSugar =
-        Math.round(
-          (this.currentSugar - food.food.foodSugar * food.amount) * 10
-        ) / 10;
-      this.currentDietaryFiber =
-        Math.round(
-          (this.currentDietaryFiber -
-            food.food.foodDietaryFiber * food.amount) *
-            10
-        ) / 10;
+      this.currentCal = this.getRoundNumber(
+        this.currentCal - food.food.foodCalPerAmount * food.amount
+      );
+      this.currentProtein = this.getRoundNumber(
+        this.currentProtein - food.food.foodProtein * food.amount
+      );
+      this.currentFat = this.getRoundNumber(
+        this.currentFat - food.food.foodFat * food.amount
+      );
+      this.currentTotalCarbohydrate = this.getRoundNumber(
+        this.currentTotalCarbohydrate -
+          food.food.foodTotalCarbohydrate * food.amount
+      );
+      this.currentSugar = this.getRoundNumber(
+        this.currentSugar - food.food.foodSugar * food.amount
+      );
+      this.currentDietaryFiber = this.getRoundNumber(
+        this.currentDietaryFiber - food.food.foodDietaryFiber * food.amount
+      );
     }
   }
 
