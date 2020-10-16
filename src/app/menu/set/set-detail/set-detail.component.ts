@@ -1,59 +1,45 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SetService } from 'src/app/services/set.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Set } from 'src/app/interfaces/set';
-import { take } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-set-detail',
   templateUrl: './set-detail.component.html',
   styleUrls: ['./set-detail.component.scss'],
 })
-export class SetDetailComponent implements OnInit, OnDestroy {
+export class SetDetailComponent implements OnInit {
   private readonly userId: string = this.authService.uid;
-  private subscription: Subscription;
 
-  set: Set;
-  setId: string;
-  loading = true;
+  set$: Observable<Set> = this.route.queryParamMap.pipe(
+    switchMap((queryParams) => {
+      return this.setService.getSetById(this.userId, queryParams.get('id'));
+    })
+  );
 
   constructor(
     private route: ActivatedRoute,
     private setService: SetService,
     private authService: AuthService,
     private dialog: MatDialog
-  ) {
-    this.subscription = this.route.queryParamMap.subscribe((query) => {
-      this.setId = query.get('id');
-    });
-    this.setService
-      .getSetById(this.userId, this.setId)
-      .pipe(take(1))
-      .subscribe((set) => {
-        this.set = set;
-        this.loading = false;
-      });
-  }
+  ) {}
 
-  openDeleteDialog(): void {
+  openDeleteDialog(setId: string): void {
     this.dialog.open(DeleteDialogComponent, {
       width: '80%',
       maxWidth: '400px',
       data: {
         userId: this.userId,
-        setId: this.setId,
+        setId,
         title: 'マイセット',
       },
     });
   }
 
   ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 }
