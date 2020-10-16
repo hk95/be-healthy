@@ -118,7 +118,7 @@
                           mat-icon-button
                           type="button"
                           color="primary"
-                          (click)="addFood(amount.value, food, null)"
+                          (click)="addFoodOrRecipe(amount.value, food, null)"
                           [disabled]="!amountInput.value.length"
                         >
                           <mat-icon>add_box</mat-icon>
@@ -209,7 +209,8 @@
                       mat-icon-button
                       color="primary"
                       (click)="
-                        addFood(1, null, recipe); $event.stopPropagation()
+                        addFoodOrRecipe(1, null, recipe);
+                        $event.stopPropagation()
                       "
                     >
                       <mat-icon>add_box</mat-icon>

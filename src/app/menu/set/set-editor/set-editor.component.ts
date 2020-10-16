@@ -199,12 +199,11 @@ export class SetEditorComponent implements OnInit {
       );
   }
 
-  addFoodOrRecipeToArray(
-    preAmount: number,
+  private addFoodOrRecipeToArray(
+    amount: number,
     food?: Food,
     recipe?: Recipe
   ): void {
-    const amount = Number(preAmount ? preAmount : 0);
     if (food) {
       this.preFoods.push({
         food: { ...food },
@@ -247,10 +246,9 @@ export class SetEditorComponent implements OnInit {
     }
   }
 
-  addFood(preAmount: number, food?: Food, recipe?: Recipe) {
-    const amount = Number(preAmount ? preAmount : 0);
+  addFoodOrRecipe(amount: number, food?: Food, recipe?: Recipe) {
     if (food) {
-      this.addFoodOrRecipeToArray(preAmount, food);
+      this.addFoodOrRecipeToArray(amount, food);
       this.currentCal =
         Math.round((this.currentCal + food.foodCalPerAmount * amount) * 10) /
         10;
@@ -271,7 +269,7 @@ export class SetEditorComponent implements OnInit {
           (this.currentDietaryFiber + food.foodDietaryFiber * amount) * 10
         ) / 10;
     } else {
-      this.addFoodOrRecipeToArray(preAmount, food, recipe);
+      this.addFoodOrRecipeToArray(amount, food, recipe);
       this.currentCal =
         Math.round((this.currentCal + recipe.recipeCal) * 10) / 10;
       this.currentProtein =
