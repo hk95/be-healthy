@@ -383,6 +383,7 @@ export class SetEditorComponent implements OnInit {
         ...setDataExcludeRecipeId,
       });
     }
+    this.location.back();
     this.setService.addingDailyInfo();
   }
 

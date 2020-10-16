@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
 import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +21,7 @@ export class SetService {
   constructor(
     private db: AngularFirestore,
     private router: Router,
-    private snackBar: MatSnackBar,
-    private location: Location
+    private snackBar: MatSnackBar
   ) {}
 
   addingDailyInfo(): boolean {
@@ -115,7 +113,6 @@ export class SetService {
         this.snackBar.open('マイセットを作成しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
@@ -152,7 +149,6 @@ export class SetService {
         this.snackBar.open('マイセットを更新しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
