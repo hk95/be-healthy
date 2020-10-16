@@ -199,11 +199,9 @@
                     <h2 class="recipe__title">
                       {{ recipe.recipeTitle }}
                     </h2>
-                    <p class="recipe__cal">
-                      {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
-                    </p>
+                    <p class="recipe__cal">{{ recipe?.recipeCal || 0 }}kcal</p>
                     <button
-                      *ngIf="preFoods.length < arrayLimit; else limit"
+                      *ngIf="preFoods?.length < arrayLimit; else limit"
                       class="recipe__add"
                       type="button"
                       mat-icon-button
@@ -264,7 +262,7 @@
               <h2
                 class="foods__choice-title"
                 [style.color]="
-                  preFoods.length === arrayLimit ? '#E25241' : '#000'
+                  preFoods?.length === arrayLimit ? '#E25241' : '#000'
                 "
               >
                 <span
@@ -288,19 +286,17 @@
             <div class="food" *ngFor="let food of preFoods; let i = index">
               <div class="food__name">
                 <p class="food__name--with-amount">
-                  {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+                  {{ food.food?.foodName || food.recipe?.recipeTitle }}
                 </p>
                 <span class="food__amountper">
                   {{
-                    food.food
-                      ? food.food.foodCalPerAmount
-                      : food.recipe.recipeCal || 0
-                  }}kcal/{{ food.food ? food.food.unit : 'セット' }}
+                    food.food?.foodCalPerAmount || food.recipe?.recipeCal
+                  }}kcal/{{ food.food?.unit || 'セット' }}
                 </span>
               </div>
               <div class="food__row">
                 <p>{{ food.amount }}</p>
-                <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+                <span>{{ food.food?.unit || 'セット' }}</span>
                 <p class="spacer"></p>
                 <p class="food__cal"></p>
 
