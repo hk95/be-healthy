@@ -30,7 +30,7 @@ export class SetService {
 
   getSets(
     userId: string,
-    getNumber: number,
+    perDocNum: number,
     lastDoc?: QueryDocumentSnapshot<Set>,
     meal?: string
   ): Observable<
@@ -41,16 +41,16 @@ export class SetService {
   > {
     const setsDoc$ = this.db
       .collection<Set>(`users/${userId}/sets`, (ref) => {
-        let query = ref.orderBy('updatedAt', 'desc').limit(getNumber);
+        let query = ref.orderBy('updatedAt', 'desc').limit(perDocNum);
         if (lastDoc && !meal) {
-          query = query.startAfter(lastDoc).limit(getNumber);
+          query = query.startAfter(lastDoc).limit(perDocNum);
         } else if (!lastDoc && meal) {
-          query = query.where(meal, '==', true).limit(getNumber);
+          query = query.where(meal, '==', true).limit(perDocNum);
         } else if (lastDoc && meal) {
           query = query
             .where(meal, '==', true)
             .startAfter(lastDoc)
-            .limit(getNumber);
+            .limit(perDocNum);
         }
         return query;
       })
