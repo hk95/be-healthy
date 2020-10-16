@@ -4,7 +4,6 @@ import {
   QueryDocumentSnapshot,
   DocumentChangeAction,
 } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
@@ -18,11 +17,7 @@ export class SetService {
   submitted: boolean;
   querySetParam: boolean;
 
-  constructor(
-    private db: AngularFirestore,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private db: AngularFirestore, private snackBar: MatSnackBar) {}
 
   addingDailyInfo(): boolean {
     return (this.querySetParam = this.querySetParam ? false : true);
@@ -160,13 +155,11 @@ export class SetService {
         this.snackBar.open('マイセットを削除しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/menu/set-list');
       })
       .catch(() => {
-        this.snackBar.open('マイセットの削除にしました', null, {
+        this.snackBar.open('マイセットの削除に失敗しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/menu/set-list');
       });
   }
 }
