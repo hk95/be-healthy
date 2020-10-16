@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -9,17 +9,17 @@ import { Location } from '@angular/common';
 import { SearchService } from 'src/app/services/search.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
-import { FoodInArray } from 'src/app/interfaces/set';
+import { FoodInArray, Set } from 'src/app/interfaces/set';
 
 import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Food } from 'src/app/interfaces/food';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -27,17 +27,22 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './set-editor.component.html',
   styleUrls: ['./set-editor.component.scss'],
 })
-export class SetEditorComponent implements OnInit, OnDestroy {
+export class SetEditorComponent implements OnInit {
   private readonly userId = this.authService.uid;
   private readonly perDocNum = 10;
-  private query: string;
+  private setId: string;
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
-  private subscription: Subscription;
 
   readonly maxTitleLength = 50;
   readonly maxNutritionAmount = 5000;
   readonly minNutritionAmount = 0;
   readonly arrayLimit = 30;
+  set$: Observable<Set> = this.route.queryParamMap.pipe(
+    switchMap((queryParams) => {
+      this.setId = queryParams.get('id');
+      return this.setService.getSetById(this.userId, this.setId);
+    })
+  );
   panelOpenState = true;
   title: string;
   config = this.searchService.config;
@@ -143,30 +148,24 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     private setService: SetService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-    this.subscription = this.route.queryParamMap.subscribe((setId) => {
-      if (setId) {
-        this.query = setId.get('id');
-        this.setService
-          .getSetById(this.userId, this.query)
-          .pipe(take(1))
-          .subscribe((set) => {
-            if (set) {
-              this.title = '編集';
-              this.form.patchValue(set);
-              this.breakfast = set.breakfast;
-              this.lunch = set.lunch;
-              this.dinner = set.dinner;
+  ) {}
 
-              set.foodsArray.forEach((food) => {
-                if (food.food) {
-                  this.addFoodOrRecipeToArray(food.amount, food.food);
-                } else {
-                  this.addFoodOrRecipeToArray(food.amount, null, food.recipe);
-                }
-              });
-            }
-          });
+  ngOnInit(): void {
+    this.set$.pipe(take(1)).subscribe((set) => {
+      if (set) {
+        this.title = '編集';
+        this.form.patchValue(set);
+        this.breakfast = set.breakfast;
+        this.lunch = set.lunch;
+        this.dinner = set.dinner;
+
+        set.foodsArray.forEach((food) => {
+          if (food.food) {
+            this.addFoodOrRecipeToArray(food.amount, food.food);
+          } else {
+            this.addFoodOrRecipeToArray(food.amount, null, food.recipe);
+          }
+        });
       }
     });
     this.loadMyRecipes();
@@ -377,9 +376,9 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   submitSetForm(): void {
     const formData = this.form.value;
     this.setService.submitted = true;
-    if (this.query) {
+    if (this.setId) {
       this.setService.updateSet({
-        setId: this.query,
+        setId: this.setId,
         userId: this.userId,
         setTitle: formData.setTitle,
         breakfast: this.breakfast,
@@ -430,11 +429,5 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   backToMenuPage(): void {
     this.setService.addingDailyInfo();
     this.location.back();
-  }
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }
