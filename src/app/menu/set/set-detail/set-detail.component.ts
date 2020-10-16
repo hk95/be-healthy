@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SetService } from 'src/app/services/set.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Set } from 'src/app/interfaces/set';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { Observable } from 'rxjs';
@@ -26,11 +26,12 @@ export class SetDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private setService: SetService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   openDeleteDialog(setId: string): void {
-    this.dialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       width: '80%',
       maxWidth: '400px',
       data: {
@@ -39,6 +40,15 @@ export class SetDetailComponent implements OnInit {
         title: 'マイセット',
       },
     });
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.setService.deleteSet(this.userId, setId);
+          this.router.navigateByUrl('/menu/set-list');
+        }
+      });
   }
 
   ngOnInit(): void {}
