@@ -1,10 +1,10 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submitSetForm()">
   <div class="head">
     <button
       type="button"
       class="head__clear-button"
       mat-icon-button
-      (click)="backToMenu()"
+      (click)="backToMenuPage()"
     >
       <mat-icon>clear</mat-icon>
     </button>
@@ -177,7 +177,7 @@
                 <div
                   class="recipe"
                   (click)="
-                    openRecipe(recipe.recipeId); $event.stopPropagation()
+                    openRecipeDialog(recipe.recipeId); $event.stopPropagation()
                   "
                 >
                   <figure class="recipe__thumbnail">
@@ -233,7 +233,7 @@
                 type="button"
                 mat-flat-button
                 color="primary"
-                (click)="getMyRecipes()"
+                (click)="loadMyRecipes()"
               >
                 もっと見る
               </button>

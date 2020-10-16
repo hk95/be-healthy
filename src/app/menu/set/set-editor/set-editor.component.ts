@@ -29,7 +29,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SetEditorComponent implements OnInit, OnDestroy {
   private readonly userId = this.authService.uid;
-  private readonly getNumber = 10;
+  private readonly perDocNum = 10;
   private query: string;
   private lastMyRecipeDoc: QueryDocumentSnapshot<Recipe>;
   private subscription: Subscription;
@@ -160,21 +160,21 @@ export class SetEditorComponent implements OnInit, OnDestroy {
 
               set.foodsArray.forEach((food) => {
                 if (food.food) {
-                  this.createArray(food.amount, food.food);
+                  this.addFoodOrRecipeToArray(food.amount, food.food);
                 } else {
-                  this.createArray(food.amount, null, food.recipe);
+                  this.addFoodOrRecipeToArray(food.amount, null, food.recipe);
                 }
               });
             }
           });
       }
     });
-    this.getMyRecipes();
+    this.loadMyRecipes();
   }
 
-  getMyRecipes() {
+  loadMyRecipes(): void {
     this.recipeService
-      .getMyRecipes(this.userId, this.getNumber, this.lastMyRecipeDoc)
+      .getMyRecipes(this.userId, this.perDocNum, this.lastMyRecipeDoc)
       .pipe(take(1))
       .subscribe(
         (doc: {
@@ -186,7 +186,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
             if (doc.data && doc.data.length > 0) {
               doc.data.forEach((recipe: RecipeWithAuthor) => {
                 this.myRecipes.push(recipe);
-                if (doc.data.length >= this.getNumber) {
+                if (doc.data.length >= this.perDocNum) {
                   this.isNext = true;
                 } else {
                   this.isNext = false;
@@ -200,7 +200,11 @@ export class SetEditorComponent implements OnInit, OnDestroy {
       );
   }
 
-  createArray(preAmount: number, food?: Food, recipe?: Recipe) {
+  addFoodOrRecipeToArray(
+    preAmount: number,
+    food?: Food,
+    recipe?: Recipe
+  ): void {
     const amount = Number(preAmount ? preAmount : 0);
     if (food) {
       this.preFoods.push({
@@ -247,7 +251,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
   addFood(preAmount: number, food?: Food, recipe?: Recipe) {
     const amount = Number(preAmount ? preAmount : 0);
     if (food) {
-      this.createArray(preAmount, food);
+      this.addFoodOrRecipeToArray(preAmount, food);
       this.currentCal =
         Math.round((this.currentCal + food.foodCalPerAmount * amount) * 10) /
         10;
@@ -268,7 +272,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
           (this.currentDietaryFiber + food.foodDietaryFiber * amount) * 10
         ) / 10;
     } else {
-      this.createArray(preAmount, food, recipe);
+      this.addFoodOrRecipeToArray(preAmount, food, recipe);
       this.currentCal =
         Math.round((this.currentCal + recipe.recipeCal) * 10) / 10;
       this.currentProtein =
@@ -291,7 +295,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeFood(index: number, food: FoodInArray) {
+  removeFood(index: number, food: FoodInArray): void {
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
     if (food.recipe && food.recipe.recipeCal > 0) {
@@ -344,7 +348,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeMeal(meal: string) {
+  changeMeal(meal: string): void {
     switch (meal) {
       case 'breakfast':
         if (!this.breakfast) {
@@ -370,7 +374,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  submit() {
+  submitSetForm(): void {
     const formData = this.form.value;
     this.setService.submitted = true;
     if (this.query) {
@@ -408,7 +412,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     this.setService.addingDailyInfo();
   }
 
-  openRecipe(recipeId: string): void {
+  openRecipeDialog(recipeId: string): void {
     this.dialog.open(ConfirmRecipeComponent, {
       width: '100%',
       data: recipeId,
@@ -423,7 +427,7 @@ export class SetEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  backToMenu() {
+  backToMenuPage(): void {
     this.setService.addingDailyInfo();
     this.location.back();
   }
