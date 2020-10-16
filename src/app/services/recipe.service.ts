@@ -8,7 +8,6 @@ import {
 import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
@@ -24,7 +23,6 @@ export class RecipeService {
     private db: AngularFirestore,
     public storage: AngularFireStorage,
     private snackBar: MatSnackBar,
-    private router: Router,
     private fns: AngularFireFunctions,
     private basicInfoService: BasicInfoService
   ) {}
@@ -205,7 +203,6 @@ export class RecipeService {
         this.snackBar.open('レシピを削除しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('menu/recipe-list');
       });
   }
 

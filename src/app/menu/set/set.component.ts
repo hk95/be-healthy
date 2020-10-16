@@ -15,12 +15,12 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 export class SetComponent implements OnInit {
   private readonly queryParams = this.dailyInfoService.queryParams;
   private readonly querySetParam = this.setService.querySetParam;
-  private readonly getNumber = 10;
-  private readonly userId = this.authService.uid;
+  private readonly perDocNum = 10;
+  private readonly userId: string = this.authService.uid;
   private lastDoc: QueryDocumentSnapshot<Set>;
 
-  sets: Set[] = new Array();
-  loading: boolean;
+  sets: Set[] = [];
+  loading = true;
   isNext: boolean;
 
   constructor(
@@ -29,23 +29,22 @@ export class SetComponent implements OnInit {
     private authService: AuthService,
     private dailyInfoService: DailyInfoService
   ) {
-    this.getSets();
+    this.loadSets();
   }
 
-  getSets() {
-    this.loading = true;
+  loadSets(): void {
     this.setService
-      .getSets(this.userId, this.getNumber, this.lastDoc)
+      .getSets(this.userId, this.perDocNum, this.lastDoc)
       .pipe(take(1))
       .subscribe((sets) => {
-        if (sets && sets.length > 0) {
+        if (sets?.length > 0) {
           sets.forEach(
             (set: { data: Set; nextLastDoc: QueryDocumentSnapshot<Set> }) => {
               this.sets.push(set.data);
               this.lastDoc = set.nextLastDoc;
             }
           );
-          if (sets.length >= this.getNumber) {
+          if (sets.length >= this.perDocNum) {
             this.isNext = true;
           }
         } else {

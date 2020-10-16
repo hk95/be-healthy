@@ -1,35 +1,15 @@
-<h2 mat-dialog-title *ngIf="title !== 'アカウント削除'">
-  {{ title }}を削除しますか？
+<h2 mat-dialog-title *ngIf="data.setId || data.recipeId">
+  {{ data.title }}を削除しますか？
 </h2>
-<h2 mat-dialog-title *ngIf="title === 'アカウント削除'">
+<h2 mat-dialog-title *ngIf="!data.setId && !data.recipeId">
   アカウント情報は復元できません。よろしいですか？
 </h2>
-
 <mat-dialog-actions>
   <button mat-stroked-button mat-dialog-close>キャンセル</button>
   <button
-    *ngIf="recipeId"
     mat-raised-button
     color="warn"
-    (click)="deleteRecipe()"
-    mat-dialog-close
-  >
-    削除
-  </button>
-  <button
-    *ngIf="setId"
-    mat-raised-button
-    color="warn"
-    (click)="deleteSet()"
-    mat-dialog-close
-  >
-    削除
-  </button>
-  <button
-    *ngIf="title === 'アカウント削除'"
-    mat-raised-button
-    color="warn"
-    (click)="deleteUserAccount()"
+    (click)="deleteAction()"
     mat-dialog-close
   >
     削除

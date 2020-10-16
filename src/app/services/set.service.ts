@@ -4,13 +4,11 @@ import {
   QueryDocumentSnapshot,
   DocumentChangeAction,
 } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
 import { firestore } from 'firebase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
 import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +17,7 @@ export class SetService {
   submitted: boolean;
   querySetParam: boolean;
 
-  constructor(
-    private db: AngularFirestore,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private location: Location
-  ) {}
+  constructor(private db: AngularFirestore, private snackBar: MatSnackBar) {}
 
   addingDailyInfo(): boolean {
     return (this.querySetParam = this.querySetParam ? false : true);
@@ -32,7 +25,7 @@ export class SetService {
 
   getSets(
     userId: string,
-    getNumber: number,
+    perDocNum: number,
     lastDoc?: QueryDocumentSnapshot<Set>,
     meal?: string
   ): Observable<
@@ -43,16 +36,16 @@ export class SetService {
   > {
     const setsDoc$ = this.db
       .collection<Set>(`users/${userId}/sets`, (ref) => {
-        let query = ref.orderBy('updatedAt', 'desc').limit(getNumber);
+        let query = ref.orderBy('updatedAt', 'desc').limit(perDocNum);
         if (lastDoc && !meal) {
-          query = query.startAfter(lastDoc).limit(getNumber);
+          query = query.startAfter(lastDoc).limit(perDocNum);
         } else if (!lastDoc && meal) {
-          query = query.where(meal, '==', true).limit(getNumber);
+          query = query.where(meal, '==', true).limit(perDocNum);
         } else if (lastDoc && meal) {
           query = query
             .where(meal, '==', true)
             .startAfter(lastDoc)
-            .limit(getNumber);
+            .limit(perDocNum);
         }
         return query;
       })
@@ -115,7 +108,6 @@ export class SetService {
         this.snackBar.open('マイセットを作成しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
@@ -152,7 +144,6 @@ export class SetService {
         this.snackBar.open('マイセットを更新しました', null, {
           duration: 2000,
         });
-        this.location.back();
       });
   }
 
@@ -164,13 +155,11 @@ export class SetService {
         this.snackBar.open('マイセットを削除しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/menu/set-list');
       })
       .catch(() => {
-        this.snackBar.open('マイセットの削除にしました', null, {
+        this.snackBar.open('マイセットの削除に失敗しました', null, {
           duration: 2000,
         });
-        this.router.navigateByUrl('/menu/set-list');
       });
   }
 }

@@ -1,10 +1,10 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submitSetForm()">
   <div class="head">
     <button
       type="button"
       class="head__clear-button"
       mat-icon-button
-      (click)="backToMenu()"
+      (click)="backToMenuPage()"
     >
       <mat-icon>clear</mat-icon>
     </button>
@@ -43,18 +43,18 @@
         <div class="meal__buttons">
           <mat-checkbox
             color="primary"
-            [(checked)]="breakfast"
+            [(checked)]="isBreakfast"
             (change)="changeMeal('breakfast')"
             >朝食</mat-checkbox
           >
           <mat-checkbox
             color="primary"
-            [(checked)]="lunch"
+            [(checked)]="isLunch"
             (change)="changeMeal('lunch')"
             >昼食</mat-checkbox
           ><mat-checkbox
             color="primary"
-            [(checked)]="dinner"
+            [(checked)]="isDinner"
             (change)="changeMeal('dinner')"
             >夕食</mat-checkbox
           >
@@ -118,7 +118,7 @@
                           mat-icon-button
                           type="button"
                           color="primary"
-                          (click)="addFood(amount.value, food, null)"
+                          (click)="addFoodOrRecipe(amount.value, food, null)"
                           [disabled]="!amountInput.value.length"
                         >
                           <mat-icon>add_box</mat-icon>
@@ -177,7 +177,7 @@
                 <div
                   class="recipe"
                   (click)="
-                    openRecipe(recipe.recipeId); $event.stopPropagation()
+                    openRecipeDialog(recipe.recipeId); $event.stopPropagation()
                   "
                 >
                   <figure class="recipe__thumbnail">
@@ -199,17 +199,16 @@
                     <h2 class="recipe__title">
                       {{ recipe.recipeTitle }}
                     </h2>
-                    <p class="recipe__cal">
-                      {{ recipe.recipeCal ? recipe.recipeCal : 0 }}kcal
-                    </p>
+                    <p class="recipe__cal">{{ recipe?.recipeCal || 0 }}kcal</p>
                     <button
-                      *ngIf="preFoods.length < arrayLimit; else limit"
+                      *ngIf="preFoods?.length < arrayLimit; else limit"
                       class="recipe__add"
                       type="button"
                       mat-icon-button
                       color="primary"
                       (click)="
-                        addFood(1, null, recipe); $event.stopPropagation()
+                        addFoodOrRecipe(1, null, recipe);
+                        $event.stopPropagation()
                       "
                     >
                       <mat-icon>add_box</mat-icon>
@@ -233,7 +232,7 @@
                 type="button"
                 mat-flat-button
                 color="primary"
-                (click)="getMyRecipes()"
+                (click)="loadMyRecipes()"
               >
                 もっと見る
               </button>
@@ -263,7 +262,7 @@
               <h2
                 class="foods__choice-title"
                 [style.color]="
-                  preFoods.length === arrayLimit ? '#E25241' : '#000'
+                  preFoods?.length === arrayLimit ? '#E25241' : '#000'
                 "
               >
                 <span
@@ -287,19 +286,17 @@
             <div class="food" *ngFor="let food of preFoods; let i = index">
               <div class="food__name">
                 <p class="food__name--with-amount">
-                  {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+                  {{ food.food?.foodName || food.recipe?.recipeTitle }}
                 </p>
                 <span class="food__amountper">
                   {{
-                    food.food
-                      ? food.food.foodCalPerAmount
-                      : food.recipe.recipeCal || 0
-                  }}kcal/{{ food.food ? food.food.unit : 'セット' }}
+                    food.food?.foodCalPerAmount || food.recipe?.recipeCal
+                  }}kcal/{{ food.food?.unit || 'セット' }}
                 </span>
               </div>
               <div class="food__row">
                 <p>{{ food.amount }}</p>
-                <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+                <span>{{ food.food?.unit || 'セット' }}</span>
                 <p class="spacer"></p>
                 <p class="food__cal"></p>
 
@@ -504,7 +501,7 @@
         mat-raised-button
         color="primary"
         class="submit-button"
-        [disabled]="form.invalid || preFoods?.length === 0 || form.pristine"
+        [disabled]="form.invalid || preFoods?.length === 0"
       >
         保存
       </button>

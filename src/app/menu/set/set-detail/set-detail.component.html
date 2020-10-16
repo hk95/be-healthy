@@ -1,30 +1,35 @@
-<div class="nav">
-  <button class="nav__back-to-page" mat-icon-button routerLink="/menu/set-list">
-    <mat-icon>navigate_before</mat-icon>
-  </button>
-  <h1>マイセット詳細画面</h1>
-  <div class="nav__buttons">
-    <a
-      class="update-to-page"
+<div *ngIf="set$ | async as set; else noSetDetail">
+  <div class="nav">
+    <button
+      class="nav__back-to-page"
       mat-icon-button
-      color="primary"
-      routerLink="/set-editor"
-      [queryParams]="{ id: setId }"
+      routerLink="/menu/set-list"
     >
-      <mat-icon>edit</mat-icon>
-    </a>
-    <button mat-icon-button class="delete-button" (click)="openDeleteDialog()">
-      <mat-icon>delete</mat-icon>
+      <mat-icon>navigate_before</mat-icon>
     </button>
+    <h1>マイセット詳細画面</h1>
+    <div class="nav__buttons">
+      <a
+        class="update-to-page"
+        mat-icon-button
+        color="primary"
+        routerLink="/set-editor"
+        [queryParams]="{ id: set.setId }"
+      >
+        <mat-icon>edit</mat-icon>
+      </a>
+      <button
+        mat-icon-button
+        class="delete-button"
+        (click)="openDeleteDialog(set.setId)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
   </div>
-</div>
 
-<div class="loading" *ngIf="loading">
-  <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
-</div>
-<div class="container">
-  <div class="set-detail" *ngIf="!loading">
-    <div *ngIf="set">
+  <div class="container">
+    <div class="set-detail">
       <div class="content__head">
         <h2 class="content__name">セット名</h2>
         <div class="content">
@@ -65,11 +70,11 @@
       <div class="food">
         <div class="food__detail" *ngFor="let food of set.foodsArray">
           <h3 class="food__content">
-            {{ food.food ? food.food.foodName : food.recipe.recipeTitle }}
+            {{ food.food?.foodName || food.recipe?.recipeTitle }}
           </h3>
           <p class="food__content food__content--right">
             {{ food.amount }}
-            <span>{{ food.food ? food.food.unit : 'セット' }}</span>
+            <span>{{ food.food?.unit || 'セット' }}</span>
           </p>
         </div>
       </div>
@@ -113,3 +118,8 @@
     </div>
   </div>
 </div>
+<ng-template #noSetDetail>
+  <div class="loading">
+    <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
+  </div>
+</ng-template>
