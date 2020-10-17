@@ -568,6 +568,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   createGraphByChangingDate(event: MatDatepickerInputEvent<Date>) {
+    this.date = event.value;
     switch (this.typeOfGraph) {
       case 'day':
         this.createGraphOfDay();
