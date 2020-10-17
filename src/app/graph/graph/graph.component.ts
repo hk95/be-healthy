@@ -31,9 +31,9 @@ export class GraphComponent implements OnInit, OnDestroy {
   private goalFatList = new Array();
   private goalTotalCalList = new Array();
 
-  readonly today = new Date();
   readonly maxDate = new Date();
   readonly minDate = new Date(2018, 0, 1);
+  date = new Date();
   preWeight = new Array();
   preFat = new Array();
   preTotalCal = new Array();
@@ -45,7 +45,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   weightGraph = true;
   fatGraph = false;
   totalCalGraph = false;
-  loading: boolean;
+  loading = true;
   noCalData: boolean;
 
   readonly legendPosition = 'below';
@@ -75,11 +75,10 @@ export class GraphComponent implements OnInit, OnDestroy {
     private basicInfoService: BasicInfoService,
     private averageService: AverageService
   ) {
-    this.loading = true;
     this.mainShellService.title = this.mainShellService.PAGE_TITLES.graph;
     this.initResize();
     this.setGoalList();
-    this.createGraphOfDay(this.today);
+    this.createGraphOfDay();
   }
 
   private initResize() {
@@ -122,7 +121,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  createGraphOfDay(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+  createGraphOfDay() {
     this.loading = true;
     this.typeOfGraph = 'day';
     this.dates = new Array();
@@ -133,11 +132,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
 
-    if (event) {
-      this.dates = this.getDates(event.value);
-    } else {
-      this.dates = this.getDates(initialDate);
-    }
+    this.dates = this.getDates(this.date);
 
     this.dailyInfoService
       .getDailyInfosEveryWeek(this.userId, this.dates)
@@ -255,10 +250,9 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  createGraphOfWeek(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+  createGraphOfWeek() {
     this.loading = true;
     this.typeOfGraph = 'week';
-    let date = initialDate;
     this.preWeight = new Array();
     this.preFat = new Array();
     this.preTotalCal = new Array();
@@ -268,13 +262,10 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.dataWeight = new Array();
     this.noCalData = false;
 
-    if (event) {
-      date = event.value;
-    }
     this.subscription = this.averageService
       .getAveragesOfWeek(
         this.userId,
-        this.datePipe.transform(date, 'yy.MM.dd(E)')
+        this.datePipe.transform(this.date, 'yy.MM.dd(E)')
       )
       .subscribe(
         (datasOfWeeks: [AverageOfWeek[], AverageOfWeek[], AverageOfWeek[]]) => {
@@ -364,10 +355,9 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphOfMonth(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+  createGraphOfMonth() {
     this.loading = true;
     this.typeOfGraph = 'month';
-    let date = initialDate;
     this.preWeight = new Array();
     this.preFat = new Array();
     this.preTotalCal = new Array();
@@ -375,13 +365,11 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
     this.noCalData = false;
-    if (event) {
-      date = event.value;
-    }
+
     this.subscription = this.averageService
       .getAveragesOfMonth(
         this.userId,
-        this.datePipe.transform(date, 'yy.MM.dd(E)')
+        this.datePipe.transform(this.date, 'yy.MM.dd(E)')
       )
       .subscribe(
         (
@@ -475,10 +463,9 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphOfYear(initialDate: Date, event?: MatDatepickerInputEvent<Date>) {
+  createGraphOfYear() {
     this.loading = true;
     this.typeOfGraph = 'year';
-    let date = initialDate;
     this.preWeight = new Array();
     this.preFat = new Array();
     this.preTotalCal = new Array();
@@ -486,9 +473,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
     this.noCalData = false;
-    if (event) {
-      date = event.value;
-    }
+
     this.subscription = this.averageService
       .getAveragesOfYear(this.userId)
       .subscribe(
@@ -585,16 +570,16 @@ export class GraphComponent implements OnInit, OnDestroy {
   createGraphByChangingDate(event: MatDatepickerInputEvent<Date>) {
     switch (this.typeOfGraph) {
       case 'day':
-        this.createGraphOfDay(this.today, event);
+        this.createGraphOfDay();
         break;
       case 'week':
-        this.createGraphOfWeek(this.today, event);
+        this.createGraphOfWeek();
         break;
       case 'month':
-        this.createGraphOfMonth(this.today, event);
+        this.createGraphOfMonth();
         break;
       case 'year':
-        this.createGraphOfYear(this.today, event);
+        this.createGraphOfYear();
         break;
     }
   }
