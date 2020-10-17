@@ -1,7 +1,4 @@
-<div class="loading" *ngIf="loading">
-  <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
-</div>
-<div class="content" *ngIf="!loading">
+<div class="content">
   <div class="calendar">
     <mat-form-field>
       <mat-label>日付を選択してください</mat-label>
@@ -20,41 +17,25 @@
   </div>
 
   <h3 *ngIf="!legend">{{ graphTitle }}</h3>
-  <div class="nav nav--date">
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="typeOfGraph === 'day' ? 'primary' : 'black'"
-      (click)="createGraphOfDay()"
+  <mat-button-toggle-group
+    class="button-toggle-group"
+    #group="matButtonToggleGroup"
+    value="日"
+    (change)="changedGraphCycle($event)"
+  >
+    <mat-button-toggle
+      class="mat-button-toggle mat-button-toggle--cycle"
+      *ngFor="let item of toggleCycleOptions"
+      [value]="item"
     >
-      日
-    </button>
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="typeOfGraph === 'week' ? 'primary' : 'black'"
-      (click)="createGraphOfWeek()"
-    >
-      週
-    </button>
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="typeOfGraph === 'month' ? 'primary' : 'black'"
-      (click)="createGraphOfMonth()"
-    >
-      月
-    </button>
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="typeOfGraph === 'year' ? 'primary' : 'black'"
-      (click)="createGraphOfYear()"
-    >
-      年
-    </button>
+      {{ item }}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div class="loading" *ngIf="loading">
+    <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
   </div>
-  <div class="graph">
+  <div class="graph" *ngIf="!loading">
     <ngx-charts-line-chart
       *ngIf="weightGraph && preWeight.length > 0"
       (window:resize)="onResize($event)"
@@ -119,30 +100,21 @@
       摂取カロリーの平均データまだはありません
     </p>
   </div>
-  <div class="nav nav--category" *ngIf="!legend">
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="weightGraph ? 'primary' : 'black'"
-      (click)="changeTitle('weight')"
-    >
+  <mat-button-toggle-group
+    *ngIf="!legend"
+    class="button-toggle-group button-toggle-group--category"
+    #groupCategory="matButtonToggleGroup"
+    value="weight"
+    (change)="changeTitle($event)"
+  >
+    <mat-button-toggle class="mat-button-toggle" value="weight">
       体重
-    </button>
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="fatGraph ? 'primary' : 'black'"
-      (click)="changeTitle('fat')"
-    >
+    </mat-button-toggle>
+    <mat-button-toggle class="mat-button-toggle" value="fat">
       体脂肪
-    </button>
-    <button
-      class="nav__button"
-      mat-stroked-button
-      [color]="totalCalGraph ? 'primary' : 'black'"
-      (click)="changeTitle('totalCal')"
-    >
+    </mat-button-toggle>
+    <mat-button-toggle class="mat-button-toggle" value="totalCal">
       カロリー
-    </button>
-  </div>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </div>

@@ -15,6 +15,7 @@ import {
 } from 'src/app/interfaces/average';
 import { Subscription } from 'rxjs';
 import { DailyInfo } from 'src/app/interfaces/daily-info';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-graph',
@@ -35,6 +36,7 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   readonly maxDate = new Date();
   readonly minDate = new Date(2018, 0, 1);
+  readonly toggleCycleOptions = ['日', '週', '月', '年'];
   date = new Date();
   preWeight = [];
   preFat = [];
@@ -80,6 +82,23 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.initResize();
     this.setGoalList();
     this.createGraphOfDay();
+  }
+
+  changedGraphCycle(event: MatButtonToggleChange): void {
+    switch (event.value) {
+      case '日':
+        this.createGraphOfDay();
+        break;
+      case '週':
+        this.createGraphOfWeek();
+        break;
+      case '月':
+        this.createGraphOfMonth();
+        break;
+      case '年':
+        this.createGraphOfYear();
+        break;
+    }
   }
 
   private initResize(): void {
@@ -233,8 +252,8 @@ export class GraphComponent implements OnInit, OnDestroy {
       });
   }
 
-  changeTitle(category: string): void {
-    switch (category) {
+  changeTitle(event: MatButtonToggleChange): void {
+    switch (event.value) {
       case 'weight':
         this.graphTitle = '体重';
         this.weightGraph = true;
