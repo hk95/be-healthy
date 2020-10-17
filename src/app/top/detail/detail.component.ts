@@ -172,19 +172,21 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   updateWeight() {
     if (this.editingWeight === true) {
+      const currentWeight = this.formBody.value.currentWeight;
+      const currentFat = this.formBody.value.currentFat;
       this.dailyInfoService
         .updateDailyInfoBody({
           authorId: this.userId,
           date: this.date,
-          currentWeight: this.formBody.value.currentWeight,
-          currentFat: this.formBody.value.currentFat,
+          currentWeight,
+          currentFat,
         })
         .then(() => {
           this.averageService.averageWeightAndFat(
             this.userId,
             this.date,
-            this.formBody.value.currentWeight,
-            this.formBody.value.currentFat
+            currentWeight,
+            currentFat
           );
           this.editingWeight = false;
         });
