@@ -14,6 +14,7 @@ import {
   AverageOfWeek,
 } from 'src/app/interfaces/average';
 import { Subscription } from 'rxjs';
+import { DailyInfo } from 'src/app/interfaces/daily-info';
 
 @Component({
   selector: 'app-graph',
@@ -81,7 +82,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.createGraphOfDay();
   }
 
-  private initResize() {
+  private initResize(): void {
     this.view = [innerWidth / 1.1, innerWidth / 1.1];
     if (innerWidth > 750) {
       this.view = [300, 300];
@@ -91,19 +92,19 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setGoalList() {
+  private setGoalList(): void {
     this.subscription = this.basicInfoService
       .getBasicInfo(this.userId)
       .subscribe((basicInfo: BasicInfo) => {
-        if (basicInfo !== undefined) {
-          this.goalWeight = basicInfo.goalWeight ? basicInfo.goalWeight : 0;
-          this.goalFat = basicInfo.goalFat ? basicInfo.goalFat : 0;
-          this.goalCal = basicInfo.goalCal ? basicInfo.goalCal : 0;
+        if (basicInfo) {
+          this.goalWeight = basicInfo.goalWeight || 0;
+          this.goalFat = basicInfo.goalFat || 0;
+          this.goalCal = basicInfo.goalCal || 0;
         }
       });
   }
 
-  onResize(event) {
+  onResize(event): void {
     if (event.target.innerWidth < 500) {
       this.view = [event.target.innerWidth / 1, event.target.innerWidth / 1];
     }
@@ -133,7 +134,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.noCalData = false;
   }
 
-  createGraphOfDay() {
+  createGraphOfDay(): void {
     this.typeOfGraph = 'day';
     this.resetDatasOfGraph();
 
@@ -142,19 +143,19 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.dailyInfoService
       .getDailyInfosEveryWeek(this.userId, this.dates)
       .forEach((dailyInfo$, index) => {
-        this.subscription = dailyInfo$.subscribe((dailyInfo) => {
-          if (dailyInfo !== undefined) {
+        this.subscription = dailyInfo$.subscribe((dailyInfo: DailyInfo) => {
+          if (dailyInfo) {
             this.preWeight.unshift({
               name: this.dates[index],
-              value: dailyInfo.currentWeight ? dailyInfo.currentWeight : 0,
+              value: dailyInfo.currentWeight || 0,
             });
             this.preFat.unshift({
               name: this.dates[index],
-              value: dailyInfo.currentFat ? dailyInfo.currentFat : 0,
+              value: dailyInfo.currentFat || 0,
             });
             this.preTotalCal.unshift({
               name: this.dates[index],
-              value: dailyInfo.totalCal ? dailyInfo.totalCal : 0,
+              value: dailyInfo.totalCal || 0,
             });
             this.goalWeightList.unshift({
               name: this.dates[index],
@@ -232,7 +233,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       });
   }
 
-  changeTitle(category: string) {
+  changeTitle(category: string): void {
     switch (category) {
       case 'weight':
         this.graphTitle = '体重';
@@ -255,7 +256,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  createGraphOfWeek() {
+  createGraphOfWeek(): void {
     this.typeOfGraph = 'week';
     this.resetDatasOfGraph();
 
@@ -352,7 +353,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphOfMonth() {
+  createGraphOfMonth(): void {
     this.typeOfGraph = 'month';
     this.resetDatasOfGraph();
 
@@ -453,7 +454,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphOfYear() {
+  createGraphOfYear(): void {
     this.typeOfGraph = 'year';
     this.resetDatasOfGraph();
 
@@ -550,7 +551,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphByChangingDate(event: MatDatepickerInputEvent<Date>) {
+  createGraphByChangingDate(event: MatDatepickerInputEvent<Date>): void {
     this.date = event.value;
     switch (this.typeOfGraph) {
       case 'day':
