@@ -153,7 +153,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.noCalData = false;
   }
 
-  createGraphOfDay(): void {
+  private createGraphOfDay(): void {
     this.typeOfGraph = 'day';
     this.resetDatasOfGraph();
 
@@ -275,7 +275,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  createGraphOfWeek(): void {
+  private createGraphOfWeek(): void {
     this.typeOfGraph = 'week';
     this.resetDatasOfGraph();
 
@@ -372,7 +372,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphOfMonth(): void {
+  private createGraphOfMonth(): void {
     this.typeOfGraph = 'month';
     this.resetDatasOfGraph();
 
@@ -473,7 +473,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       );
   }
 
-  createGraphOfYear(): void {
+  private createGraphOfYear(): void {
     this.typeOfGraph = 'year';
     this.resetDatasOfGraph();
 
