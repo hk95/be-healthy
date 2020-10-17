@@ -28,20 +28,20 @@ export class GraphComponent implements OnInit, OnDestroy {
   private goalWeight = 0;
   private goalFat = 0;
   private goalCal = 0;
-  private goalWeightList = new Array();
-  private goalFatList = new Array();
-  private goalTotalCalList = new Array();
+  private goalWeightList = [];
+  private goalFatList = [];
+  private goalTotalCalList = [];
   private noCalData: boolean;
 
   readonly maxDate = new Date();
   readonly minDate = new Date(2018, 0, 1);
   date = new Date();
-  preWeight = new Array();
-  preFat = new Array();
-  preTotalCal = new Array();
-  dataWeight: any[] = new Array();
-  dataFat: any[] = new Array();
-  dataTotalCal: any[] = new Array();
+  preWeight = [];
+  preFat = [];
+  preTotalCal = [];
+  dataWeight: any[] = [];
+  dataFat: any[] = [];
+  dataTotalCal: any[] = [];
   graphTitle = '体重';
   typeOfGraph = 'day';
   weightGraph = true;
@@ -65,7 +65,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   readonly colorScheme = {
     domain: ['#009688', '#FB8C00'],
   };
-  view = new Array();
+  view = [];
   legend = false;
 
   constructor(
@@ -111,7 +111,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   private getDates(date) {
-    const preDates = new Array();
+    const preDates = [];
     for (let i = 0; i <= 6; i++) {
       const mDate = moment(date);
       const a = mDate.add(-i, 'day');
@@ -124,13 +124,13 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   private resetDatasOfGraph(): void {
     this.loading = true;
-    this.dates = new Array();
-    this.preWeight = new Array();
-    this.preFat = new Array();
-    this.preTotalCal = new Array();
-    this.goalWeightList = new Array();
-    this.goalFatList = new Array();
-    this.goalTotalCalList = new Array();
+    this.dates = [];
+    this.preWeight = [];
+    this.preFat = [];
+    this.preTotalCal = [];
+    this.goalWeightList = [];
+    this.goalFatList = [];
+    this.goalTotalCalList = [];
     this.noCalData = false;
   }
 
