@@ -104,13 +104,13 @@ export class GraphComponent implements OnInit, OnDestroy {
       });
   }
 
-  onResize(event): void {
-    if (event.target.innerWidth < 500) {
-      this.view = [event.target.innerWidth / 1, event.target.innerWidth / 1];
+  onResize({ target }: { target: Window }): void {
+    if (target.innerWidth < 500) {
+      this.view = [target.innerWidth / 1, target.innerWidth / 1];
     }
   }
 
-  private getDates(date) {
+  private getDates(date: Date) {
     const preDates = [];
     for (let i = 0; i <= 6; i++) {
       const mDate = moment(date);
