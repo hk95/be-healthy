@@ -30,6 +30,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   private goalWeightList = new Array();
   private goalFatList = new Array();
   private goalTotalCalList = new Array();
+  private noCalData: boolean;
 
   readonly maxDate = new Date();
   readonly minDate = new Date(2018, 0, 1);
@@ -46,7 +47,6 @@ export class GraphComponent implements OnInit, OnDestroy {
   fatGraph = false;
   totalCalGraph = false;
   loading = true;
-  noCalData: boolean;
 
   readonly legendPosition = 'below';
   readonly legendWeight = '体重';
@@ -121,9 +121,8 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  createGraphOfDay() {
+  private resetDatasOfGraph(): void {
     this.loading = true;
-    this.typeOfGraph = 'day';
     this.dates = new Array();
     this.preWeight = new Array();
     this.preFat = new Array();
@@ -131,6 +130,12 @@ export class GraphComponent implements OnInit, OnDestroy {
     this.goalWeightList = new Array();
     this.goalFatList = new Array();
     this.goalTotalCalList = new Array();
+    this.noCalData = false;
+  }
+
+  createGraphOfDay() {
+    this.typeOfGraph = 'day';
+    this.resetDatasOfGraph();
 
     this.dates = this.getDates(this.date);
 
@@ -251,16 +256,8 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   createGraphOfWeek() {
-    this.loading = true;
     this.typeOfGraph = 'week';
-    this.preWeight = new Array();
-    this.preFat = new Array();
-    this.preTotalCal = new Array();
-    this.goalWeightList = new Array();
-    this.goalFatList = new Array();
-    this.goalTotalCalList = new Array();
-    this.dataWeight = new Array();
-    this.noCalData = false;
+    this.resetDatasOfGraph();
 
     this.subscription = this.averageService
       .getAveragesOfWeek(
@@ -356,15 +353,8 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   createGraphOfMonth() {
-    this.loading = true;
     this.typeOfGraph = 'month';
-    this.preWeight = new Array();
-    this.preFat = new Array();
-    this.preTotalCal = new Array();
-    this.goalWeightList = new Array();
-    this.goalFatList = new Array();
-    this.goalTotalCalList = new Array();
-    this.noCalData = false;
+    this.resetDatasOfGraph();
 
     this.subscription = this.averageService
       .getAveragesOfMonth(
@@ -464,15 +454,8 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   createGraphOfYear() {
-    this.loading = true;
     this.typeOfGraph = 'year';
-    this.preWeight = new Array();
-    this.preFat = new Array();
-    this.preTotalCal = new Array();
-    this.goalWeightList = new Array();
-    this.goalFatList = new Array();
-    this.goalTotalCalList = new Array();
-    this.noCalData = false;
+    this.resetDatasOfGraph();
 
     this.subscription = this.averageService
       .getAveragesOfYear(this.userId)
