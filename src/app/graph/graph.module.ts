@@ -9,8 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { DatePipe } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 @NgModule({
   declarations: [GraphComponent],
   imports: [
@@ -21,8 +22,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatProgressSpinnerModule,
+    MatButtonToggleModule,
   ],
   providers: [DatePipe],
 })

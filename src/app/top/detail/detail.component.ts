@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { DailyInfo, DailyInfoList } from 'src/app/interfaces/daily-info';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AverageService } from 'src/app/services/average.service';
 
 @Component({
   selector: 'app-detail',
@@ -75,7 +76,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
     private datepipe: DatePipe,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private averageService: AverageService
   ) {
     this.dailyInfoService.createDailyInfo({
       authorId: this.userId,
@@ -170,13 +172,24 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   updateWeight() {
     if (this.editingWeight === true) {
-      this.dailyInfoService.updateDailyInfoBody({
-        authorId: this.userId,
-        date: this.date,
-        currentWeight: this.formBody.value.currentWeight,
-        currentFat: this.formBody.value.currentFat,
-      });
-      this.editingWeight = false;
+      const currentWeight = this.formBody.value.currentWeight;
+      const currentFat = this.formBody.value.currentFat;
+      this.dailyInfoService
+        .updateDailyInfoBody({
+          authorId: this.userId,
+          date: this.date,
+          currentWeight,
+          currentFat,
+        })
+        .then(() => {
+          this.averageService.averageWeightAndFat(
+            this.userId,
+            this.date,
+            currentWeight,
+            currentFat
+          );
+          this.editingWeight = false;
+        });
     } else {
       this.editingWeight = true;
     }

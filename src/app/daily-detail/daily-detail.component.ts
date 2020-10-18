@@ -9,6 +9,7 @@ import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
+import { AverageService } from 'src/app/services/average.service';
 
 @Component({
   selector: 'app-daily-detail',
@@ -105,7 +106,8 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     private mainShellService: MainShellService,
     private nutritionPipe: NutritionPipe,
     private pfcBalancePipe: PfcBalancePipe,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private averageService: AverageService
   ) {
     const routeSub = this.route.queryParamMap.subscribe((params) => {
       this.date = params.get('date');
@@ -219,13 +221,24 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
 
   updateWeight() {
     if (this.editingWeight === true) {
-      this.dailyInfoService.updateDailyInfoBody({
-        authorId: this.userId,
-        date: this.date,
-        currentWeight: this.formBody.value.currentWeight,
-        currentFat: this.formBody.value.currentFat,
-      });
-      this.editingWeight = false;
+      const currentWeight = this.formBody.value.currentWeight;
+      const currentFat = this.formBody.value.currentFat;
+      this.dailyInfoService
+        .updateDailyInfoBody({
+          authorId: this.userId,
+          date: this.date,
+          currentWeight,
+          currentFat,
+        })
+        .then(() => {
+          this.averageService.averageWeightAndFat(
+            this.userId,
+            this.date,
+            currentWeight,
+            currentFat
+          );
+          this.editingWeight = false;
+        });
     }
   }
 
