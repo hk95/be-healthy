@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -9,23 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
-  queryParams = this.dailyInfoService.queryParams;
+  readonly mealCategory = {
+    breakfast: '朝食',
+    lunch: '昼食',
+    dinner: '夕食',
+  };
   constructor(
-    private router: Router,
-    private dailyInfoService: DailyInfoService,
+    public dailyInfoService: DailyInfoService,
     private mainShellService: MainShellService
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.mainShellService.title = this.mainShellService.PAGE_TITLES.menu;
   }
-
-  backToMeal() {
-    this.router.navigate(['/editor-meal/my-set'], {
-      queryParams: {
-        date: this.queryParams[0],
-        meal: this.queryParams[1],
-      },
-    });
-  }
-
-  ngOnInit(): void {}
 }

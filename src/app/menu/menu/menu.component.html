@@ -1,14 +1,20 @@
-<button
-  *ngIf="queryParams"
+<a
+  *ngIf="dailyInfoService.editorMealPageQueryParams"
   mat-stroked-button
-  (click)="backToMeal()"
+  routerLink="/editor-meal/my-set"
+  [queryParams]="{
+    date: dailyInfoService.editorMealPageQueryParams.date,
+    meal: dailyInfoService.editorMealPageQueryParams.meal
+  }"
   class="meal-nav"
 >
   <mat-icon>navigate_before</mat-icon>
-  <span *ngIf="queryParams[1] === 'breakfast'">朝食登録へ戻る</span>
-  <span *ngIf="queryParams[1] === 'lunch'">昼食登録へ戻る</span>
-  <span *ngIf="queryParams[1] === 'dinner'">夕食登録へ戻る</span>
-</button>
+  <span
+    >{{
+      mealCategory[dailyInfoService.editorMealPageQueryParams.meal]
+    }}登録へ戻る</span
+  >
+</a>
 
 <div class="tabs">
   <nav
