@@ -15,12 +15,12 @@ import { switchMap, map } from 'rxjs/operators';
 })
 export class SetService {
   submitted: boolean;
-  querySetParam: boolean;
+  isEditingEditorMeal: boolean;
 
   constructor(private db: AngularFirestore, private snackBar: MatSnackBar) {}
 
-  addingDailyInfo(): boolean {
-    return (this.querySetParam = this.querySetParam ? false : true);
+  changeEditingDailyInfo(): boolean {
+    return (this.isEditingEditorMeal = this.isEditingEditorMeal ? false : true);
   }
 
   getSets(
