@@ -2,6 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { SetService } from 'src/app/services/set.service';
+import { Location } from '@angular/common';
+import { Event, NavigationEnd, Router } from '@angular/router';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu',
@@ -19,7 +22,9 @@ export class MenuComponent implements OnInit, OnDestroy {
   constructor(
     public dailyInfoService: DailyInfoService,
     private mainShellService: MainShellService,
-    private setService: SetService
+    private setService: SetService,
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -27,8 +32,25 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!this.setService.isEditingEditorMeal && this.mealPageQueryParams) {
-      this.dailyInfoService.editorMealPageQueryParams = null;
-    }
+    this.deleteEditorMealPageParams();
+  }
+
+  private deleteEditorMealPageParams(): void {
+    this.router.events
+      .pipe(
+        filter((e: Event): e is NavigationEnd => e instanceof NavigationEnd),
+        take(1)
+      )
+      .subscribe((e: NavigationEnd) => {
+        const nextURL = e.url;
+        if (
+          !this.setService.isEditingEditorMeal &&
+          this.mealPageQueryParams &&
+          nextURL !== '/set-editor' &&
+          nextURL !== '/recipe-editor'
+        ) {
+          this.dailyInfoService.editorMealPageQueryParams = null;
+        }
+      });
   }
 }
