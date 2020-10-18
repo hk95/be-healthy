@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { DailyMeal } from 'src/app/interfaces/daily-info';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
@@ -19,8 +20,7 @@ export class EditorMealComponent implements OnInit, OnDestroy {
 
   readonly maxSelectNum = 50;
   selectedFoodsOrSets: DailyMeal[];
-  date: string;
-  meal: string;
+  linkQuery: { date: string; meal: string };
 
   constructor(
     private route: ActivatedRoute,
@@ -29,12 +29,14 @@ export class EditorMealComponent implements OnInit, OnDestroy {
     private authService: AuthService
   ) {
     const querySub = this.route.queryParamMap.subscribe((paramMaps) => {
-      this.date = paramMaps.get('date');
-      this.meal = paramMaps.get('meal');
-      this.mainShellService.title = this.date;
+      this.linkQuery = {
+        date: paramMaps.get('date'),
+        meal: paramMaps.get('meal'),
+      };
+      this.mainShellService.title = this.linkQuery.date;
+      this.mainShellService.titleMeal = this.linkQuery.meal;
       this.getMeals();
       this.createDailyInfo();
-      this.mainShellService.titleMeal = this.meal;
     });
     this.subscription.add(querySub);
   }
@@ -42,18 +44,22 @@ export class EditorMealComponent implements OnInit, OnDestroy {
   private createDailyInfo() {
     this.dailyInfoService.createDailyInfo({
       authorId: this.userId,
-      date: this.date,
+      date: this.linkQuery.date,
     });
   }
 
   private getMeals() {
-    const mealSub = this.dailyInfoService
-      .getSelectedFoodsOrSets(this.userId, this.date, this.meal)
+    this.dailyInfoService
+      .getSelectedFoodsOrSets(
+        this.userId,
+        this.linkQuery.date,
+        this.linkQuery.meal
+      )
+      .pipe(take(1))
       .subscribe((v) => {
         this.selectedFoodsOrSets = v;
         this.mainShellService.setSelectedMeals(this.selectedFoodsOrSets);
       });
-    this.subscription.add(mealSub);
   }
 
   ngOnInit(): void {}
