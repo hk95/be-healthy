@@ -10,6 +10,7 @@ import Stripe from 'stripe';
 import { Subscription } from 'rxjs';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { ConfirmDialogComponent } from 'src/app/dialogs/confirm-dialog/confirm-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-billing',
@@ -94,7 +95,7 @@ export class BillingComponent implements OnInit, OnDestroy {
 
   private chargePremiumPlan() {
     this.paymentService
-      .chargePremiumPlan('price_1HHq4xEM1ZTRJUunj6AY9MzM', this.authService.uid)
+      .chargePremiumPlan(environment.stripe.price, this.authService.uid)
       .then(() => {
         this.mainShellService.paymentCompleted();
       });
