@@ -128,7 +128,7 @@ export class MySetComponent implements OnInit, OnDestroy {
 
   goToSetPage() {
     this.dailyInfoService.goToSetPage(this.date, this.meal);
-    this.setService.addingDailyInfo();
+    this.setService.changeEditingDailyInfo();
   }
 
   openBottomSheet(set: Set): void {
