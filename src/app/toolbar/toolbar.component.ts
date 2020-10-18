@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DailyInfoService } from '../services/daily-info.service';
 import { MainShellService } from '../services/main-shell.service';
 
 @Component({
@@ -8,14 +7,7 @@ import { MainShellService } from '../services/main-shell.service';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
-  constructor(
-    private dailyInfoService: DailyInfoService,
-    public mainShellService: MainShellService
-  ) {}
-
-  changeQuery() {
-    this.dailyInfoService.queryParams = null;
-  }
+  constructor(public mainShellService: MainShellService) {}
 
   ngOnInit(): void {}
 }
