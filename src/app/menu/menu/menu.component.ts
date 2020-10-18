@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { SetService } from 'src/app/services/set.service';
-import { Location } from '@angular/common';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
 
@@ -23,7 +22,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     public dailyInfoService: DailyInfoService,
     private mainShellService: MainShellService,
     private setService: SetService,
-    private location: Location,
     private router: Router
   ) {}
 
