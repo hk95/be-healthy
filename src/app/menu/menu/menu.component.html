@@ -1,19 +1,15 @@
 <a
-  *ngIf="dailyInfoService.editorMealPageQueryParams"
+  *ngIf="mealPageQueryParams"
   mat-stroked-button
   routerLink="/editor-meal/my-set"
   [queryParams]="{
-    date: dailyInfoService.editorMealPageQueryParams.date,
-    meal: dailyInfoService.editorMealPageQueryParams.meal
+    date: mealPageQueryParams.date,
+    meal: mealPageQueryParams.meal
   }"
   class="meal-nav"
 >
   <mat-icon>navigate_before</mat-icon>
-  <span
-    >{{
-      mealCategory[dailyInfoService.editorMealPageQueryParams.meal]
-    }}登録へ戻る</span
-  >
+  <span>{{ mealCategory[mealPageQueryParams.meal] }}登録へ戻る</span>
 </a>
 
 <div class="tabs">
