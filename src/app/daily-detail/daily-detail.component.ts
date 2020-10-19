@@ -221,7 +221,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateWeight(date: string) {
+  submitWeightAndFat(date: string): void {
     if (this.editingWeight === true) {
       const currentWeight = this.formBody.value.currentWeight;
       const currentFat = this.formBody.value.currentFat;
@@ -241,7 +241,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateMemo(date: string) {
+  submitMemo(date: string): void {
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
       date,

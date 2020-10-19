@@ -83,14 +83,11 @@
             </div>
 
             <div class="form-body__button">
-              <button
-                (click)="editingWeight = false; $event.stopPropagation()"
-                mat-stroked-button
-              >
+              <button (click)="editingWeight = false" mat-stroked-button>
                 キャンセル
               </button>
               <button
-                (click)="updateWeight(dailyInfo.date); $event.stopPropagation()"
+                (click)="submitWeightAndFat(dailyInfo.date)"
                 mat-stroked-button
                 color="primary"
                 [disabled]="formBody.invalid"
@@ -411,7 +408,7 @@
             <button
               mat-flat-button
               color="primary"
-              (click)="updateMemo(dailyInfo.date)"
+              (click)="submitMemo(dailyInfo.date)"
               [disabled]="formMemo.invalid || formMemo.pristine"
             >
               保存
