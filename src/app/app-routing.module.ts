@@ -11,66 +11,6 @@ import { MealGuard } from './guards/meal.guard';
 
 const routes: Routes = [
   {
-    path: 'recipe-detail',
-    loadChildren: () =>
-      import('./menu/recipe/recipe-detail/recipe-detail.module').then(
-        (m) => m.RecipeDetailModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'recipe-editor',
-    loadChildren: () =>
-      import('./menu/recipe/recipe-editor/recipe-editor.module').then(
-        (m) => m.RecipeEditorModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'set-editor',
-    loadChildren: () =>
-      import('./menu/set/set-editor/set-editor.module').then(
-        (m) => m.SetEditorModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'set-detail',
-    loadChildren: () =>
-      import('./menu/set/set-detail/set-detail.module').then(
-        (m) => m.SetDetailModule
-      ),
-    canLoad: [AuthGuard],
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'more',
-    component: OtherShellComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('./more/more.module').then((m) => m.MoreModule),
-      },
-    ],
-  },
-  {
-    path: 'welcome',
-    component: WelcomeShellComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('./welcome/welcome.module').then((m) => m.WelcomeModule),
-        canLoad: [GuestGuard],
-        canActivate: [GuestGuard],
-      },
-    ],
-  },
-  {
     path: '',
     component: MainShellComponent,
     children: [
@@ -119,6 +59,67 @@ const routes: Routes = [
           import('./billing/billing.module').then((m) => m.BillingModule),
         canLoad: [AuthGuard],
         canActivate: [AuthGuard],
+      },
+    ],
+  },
+  {
+    path: 'more',
+    component: OtherShellComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./more/more.module').then((m) => m.MoreModule),
+      },
+    ],
+  },
+  {
+    path: 'recipe-detail',
+    loadChildren: () =>
+      import('./menu/recipe/recipe-detail/recipe-detail.module').then(
+        (m) => m.RecipeDetailModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'recipe-editor',
+    loadChildren: () =>
+      import('./menu/recipe/recipe-editor/recipe-editor.module').then(
+        (m) => m.RecipeEditorModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'set-editor',
+    loadChildren: () =>
+      import('./menu/set/set-editor/set-editor.module').then(
+        (m) => m.SetEditorModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'set-detail',
+    loadChildren: () =>
+      import('./menu/set/set-detail/set-detail.module').then(
+        (m) => m.SetDetailModule
+      ),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'welcome',
+    component: WelcomeShellComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./welcome/welcome.module').then((m) => m.WelcomeModule),
+        canLoad: [GuestGuard],
+        canActivate: [GuestGuard],
       },
     ],
   },
