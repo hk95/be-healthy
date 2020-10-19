@@ -13,8 +13,9 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
   styleUrls: ['./set.component.scss'],
 })
 export class SetComponent implements OnInit {
-  private readonly queryParams = this.dailyInfoService.queryParams;
-  private readonly querySetParam = this.setService.querySetParam;
+  private readonly editorMealPageQueryParams = this.dailyInfoService
+    .editorMealPageQueryParams;
+  private readonly isQuerySetParam = this.setService.isEditingEditorMeal;
   private readonly perDocNum = 10;
   private readonly userId: string = this.authService.uid;
   private lastDoc: QueryDocumentSnapshot<Set>;
@@ -48,7 +49,7 @@ export class SetComponent implements OnInit {
             this.isNext = true;
           }
         } else {
-          if (this.queryParams && this.querySetParam) {
+          if (this.editorMealPageQueryParams && this.isQuerySetParam) {
             this.router.navigateByUrl('/set-editor');
           }
           this.isNext = false;

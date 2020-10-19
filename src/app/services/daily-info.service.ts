@@ -19,7 +19,7 @@ export class DailyInfoService {
   whichMeal: string;
   meal: string;
   date: string;
-  queryParams: string[];
+  editorMealPageQueryParams: { date: string; meal: string };
   constructor(
     private db: AngularFirestore,
     private snackBar: MatSnackBar,
@@ -43,7 +43,7 @@ export class DailyInfoService {
   }
 
   goToSetPage(date: string, meal: string) {
-    this.queryParams = [date, meal];
+    this.editorMealPageQueryParams = { date, meal };
     this.router.navigateByUrl('/menu/set-list');
   }
 

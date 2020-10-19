@@ -1,31 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MainShellService } from 'src/app/services/main-shell.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { Router } from '@angular/router';
+import { SetService } from 'src/app/services/set.service';
+import { Event, NavigationEnd, Router } from '@angular/router';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit {
-  queryParams = this.dailyInfoService.queryParams;
+export class MenuComponent implements OnInit, OnDestroy {
+  readonly mealPageQueryParams = this.dailyInfoService
+    .editorMealPageQueryParams;
+  readonly mealCategory = {
+    breakfast: '朝食',
+    lunch: '昼食',
+    dinner: '夕食',
+  };
   constructor(
-    private router: Router,
-    private dailyInfoService: DailyInfoService,
-    private mainShellService: MainShellService
-  ) {
+    public dailyInfoService: DailyInfoService,
+    private mainShellService: MainShellService,
+    private setService: SetService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
     this.mainShellService.title = this.mainShellService.PAGE_TITLES.menu;
   }
 
-  backToMeal() {
-    this.router.navigate(['/editor-meal/my-set'], {
-      queryParams: {
-        date: this.queryParams[0],
-        meal: this.queryParams[1],
-      },
-    });
+  ngOnDestroy(): void {
+    this.deleteEditorMealPageParams();
   }
 
-  ngOnInit(): void {}
+  private deleteEditorMealPageParams(): void {
+    this.router.events
+      .pipe(
+        filter((e: Event): e is NavigationEnd => e instanceof NavigationEnd),
+        take(1)
+      )
+      .subscribe((e: NavigationEnd) => {
+        const nextURL = e.url;
+        if (
+          !this.setService.isEditingEditorMeal &&
+          this.mealPageQueryParams &&
+          nextURL !== '/set-editor' &&
+          nextURL !== '/recipe-editor'
+        ) {
+          this.dailyInfoService.editorMealPageQueryParams = null;
+        }
+      });
+  }
 }

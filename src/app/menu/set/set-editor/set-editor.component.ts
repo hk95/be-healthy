@@ -384,7 +384,7 @@ export class SetEditorComponent implements OnInit {
       });
     }
     this.location.back();
-    this.setService.addingDailyInfo();
+    this.setService.changeEditingDailyInfo();
   }
 
   openRecipeDialog(recipeId: string): void {
@@ -403,7 +403,7 @@ export class SetEditorComponent implements OnInit {
   }
 
   backToMenuPage(): void {
-    this.setService.addingDailyInfo();
+    this.setService.changeEditingDailyInfo();
     this.location.back();
   }
 }
