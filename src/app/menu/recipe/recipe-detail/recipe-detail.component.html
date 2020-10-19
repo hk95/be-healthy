@@ -76,7 +76,12 @@
           >
             <div class="process__wrapper">
               <p class="process__index">{{ i + 1 }}</p>
-              <img class="process__image" [src]="process.photoURL" alt="" />
+              <img
+                class="process__image"
+                *ngIf="process.photoURL"
+                [src]="process.photoURL"
+                alt=""
+              />
             </div>
             <p class="process__description">{{ process.description }}</p>
           </div>
