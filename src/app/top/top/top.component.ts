@@ -62,11 +62,7 @@ export class TopComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private basicInfoService: BasicInfoService,
     private datePipe: DatePipe
-  ) {
-    this.isInitLogin();
-    this.mainShellService.title = this.mainShellService.PAGE_TITLES.top;
-    this.getDailyInfos();
-  }
+  ) {}
 
   private isInitLogin() {
     this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
@@ -139,7 +135,11 @@ export class TopComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isInitLogin();
+    this.mainShellService.title = this.mainShellService.PAGE_TITLES.top;
+    this.getDailyInfos();
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
