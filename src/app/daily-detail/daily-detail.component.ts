@@ -223,22 +223,19 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     if (this.editingWeight === true) {
       const currentWeight = this.formBody.value.currentWeight;
       const currentFat = this.formBody.value.currentFat;
-      this.dailyInfoService
-        .updateDailyInfoBody({
-          authorId: this.userId,
-          date: this.date,
-          currentWeight,
-          currentFat,
-        })
-        .then(() => {
-          this.averageService.averageWeightAndFat(
-            this.userId,
-            this.date,
-            currentWeight,
-            currentFat
-          );
-          this.editingWeight = false;
-        });
+      this.dailyInfoService.updateDailyInfoBody({
+        authorId: this.userId,
+        date: this.date,
+        currentWeight,
+        currentFat,
+      });
+      this.averageService.averageWeightAndFat(
+        this.userId,
+        this.date,
+        currentWeight,
+        currentFat
+      );
+      this.editingWeight = false;
     }
   }
 

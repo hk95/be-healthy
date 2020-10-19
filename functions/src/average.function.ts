@@ -12,18 +12,16 @@ const setDataOfWeek = (
   date: string,
   dayOfWeek: number
 ) => {
-  return db
-    .doc(`users/${userId}/averagesWeek/${year}年${week}週目${category}`)
-    .set(
-      {
-        [dayOfWeek]: amount,
-        category,
-        date,
-        year,
-        week,
-      },
-      { merge: true }
-    );
+  return db.doc(`users/${userId}/averagesWeek/${year}-${week}${category}`).set(
+    {
+      [dayOfWeek]: amount,
+      category,
+      date,
+      year,
+      week,
+    },
+    { merge: true }
+  );
 };
 
 const setDataOfMonth = (
@@ -36,7 +34,7 @@ const setDataOfMonth = (
   dayOfMonth: number
 ) => {
   return db
-    .doc(`users/${userId}/averagesMonth/${year}年${month}月${category}`)
+    .doc(`users/${userId}/averagesMonth/${year}-${month}${category}`)
     .set(
       {
         [dayOfMonth]: amount,
@@ -57,7 +55,7 @@ const setDataOfYear = (
   date: string,
   dayOfYear: number
 ) => {
-  return db.doc(`users/${userId}/averagesYear/${year}年${category}`).set(
+  return db.doc(`users/${userId}/averagesYear/${year}${category}`).set(
     {
       [dayOfYear]: amount,
       category,
@@ -75,7 +73,7 @@ const aggregateAverageOfYear = (
 ) => {
   let totalCount = 0;
   let totalValue = 0;
-  db.doc(`users/${userId}/averagesYear/${year}年${category}`)
+  db.doc(`users/${userId}/averagesYear/${year}${category}`)
     .get()
     .then((doc) => {
       for (let i = 1; i <= 366; i++) {
@@ -88,11 +86,11 @@ const aggregateAverageOfYear = (
       if (totalCount > 0) {
         const averageOfYear = totalValue / totalCount;
         return db
-          .doc(`users/${userId}/averagesYear/${year}年${category}`)
+          .doc(`users/${userId}/averagesYear/${year}${category}`)
           .set({ averageOfYear }, { merge: true });
       } else {
         return db
-          .doc(`users/${userId}/averagesYear/${year}年${category}`)
+          .doc(`users/${userId}/averagesYear/${year}${category}`)
           .set({ averageOfYear: 0 }, { merge: true });
       }
     })
@@ -108,7 +106,7 @@ const aggregateAverageOfMonth = (
 ) => {
   let totalCount = 0;
   let totalValue = 0;
-  db.doc(`users/${userId}/averagesMonth/${year}年${month}月${category}`)
+  db.doc(`users/${userId}/averagesMonth/${year}-${month}${category}`)
     .get()
     .then((doc) => {
       for (let i = 1; i <= 31; i++) {
@@ -121,11 +119,11 @@ const aggregateAverageOfMonth = (
       if (totalCount > 0) {
         const averageOfMonth = totalValue / totalCount;
         return db
-          .doc(`users/${userId}/averagesMonth/${year}年${month}月${category}`)
+          .doc(`users/${userId}/averagesMonth/${year}-${month}${category}`)
           .set({ averageOfMonth }, { merge: true });
       } else {
         return db
-          .doc(`users/${userId}/averagesMonth/${year}年${month}月${category}`)
+          .doc(`users/${userId}/averagesMonth/${year}-${month}${category}`)
           .set({ averageOfMonth: 0 }, { merge: true });
       }
     })
@@ -141,7 +139,7 @@ const aggregateAverageOfWeek = (
 ) => {
   let totalCount = 0;
   let totalValue = 0;
-  db.doc(`users/${userId}/averagesWeek/${year}年${week}週目${category}`)
+  db.doc(`users/${userId}/averagesWeek/${year}-${week}${category}`)
     .get()
     .then((doc) => {
       for (let i = 0; i <= 6; i++) {
@@ -154,11 +152,11 @@ const aggregateAverageOfWeek = (
       if (totalCount > 0) {
         const averageOfWeek = totalValue / totalCount;
         return db
-          .doc(`users/${userId}/averagesWeek/${year}年${week}週目${category}`)
+          .doc(`users/${userId}/averagesWeek/${year}-${week}${category}`)
           .set({ averageOfWeek }, { merge: true });
       } else {
         return db
-          .doc(`users/${userId}/averagesWeek/${year}年${week}週目${category}`)
+          .doc(`users/${userId}/averagesWeek/${year}-${week}${category}`)
           .set({ averageOfWeek: 0 }, { merge: true });
       }
     })
