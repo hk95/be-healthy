@@ -78,15 +78,9 @@ export class DetailComponent implements OnInit, OnDestroy {
     private datepipe: DatePipe,
     private fb: FormBuilder,
     private averageService: AverageService
-  ) {
-    this.dailyInfoService.createDailyInfo({
-      authorId: this.userId,
-      date: this.today,
-    });
-    this.getDailyInfo();
-  }
+  ) {}
 
-  private getDate() {
+  private getDate(): string {
     const d = new Date();
     if (this.dateDiff !== 0) {
       const transDate = d.setDate(d.getDate() + this.dateDiff);
@@ -96,7 +90,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getDailyInfo() {
+  private loadDailyInfo(): void {
     this.year = Number(20 + this.date.substr(0, 2));
     this.month = Number(this.date.substr(3, 2));
     this.lastDay = new Date(this.year, this.month, 0).getDate();
@@ -166,11 +160,11 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.subscription.add(prevSub);
   }
 
-  editMemo() {
+  editMemo(): void {
     this.editingMemo = true;
   }
 
-  updateWeight() {
+  submitWeightAndFat(): void {
     if (this.editingWeight === true) {
       const currentWeight = this.formBody.value.currentWeight;
       const currentFat = this.formBody.value.currentFat;
@@ -192,7 +186,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateMemo() {
+  submitMemo(): void {
     this.editingMemo = false;
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
@@ -201,14 +195,14 @@ export class DetailComponent implements OnInit, OnDestroy {
     );
   }
 
-  backDate() {
+  backDate(): void {
     this.editingWeight = false;
     this.editingMemo = false;
     this.listIndex--;
     this.dateDiff--;
     this.date = this.getDate();
     if (this.listIndex === 0) {
-      this.getDailyInfo();
+      this.loadDailyInfo();
       this.listIndex = this.lastDay;
     }
 
@@ -239,7 +233,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  nextDate() {
+  nextDate(): void {
     this.editingWeight = false;
     this.editingMemo = false;
     this.listIndex++;
@@ -249,7 +243,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
     if (this.listIndex === this.lastDay + 1) {
       this.listIndex = 1;
-      this.getDailyInfo();
+      this.loadDailyInfo();
     }
     const dailyInfo = this.dailyInfos[this.listIndex - 1];
     const prevInfo = this.dailyInfos[this.listIndex - 2];
@@ -281,7 +275,13 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dailyInfoService.createDailyInfo({
+      authorId: this.userId,
+      date: this.today,
+    });
+    this.loadDailyInfo();
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
