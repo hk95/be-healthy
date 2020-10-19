@@ -50,10 +50,14 @@
       >
         <span
           [matBadge]="
-            selectedFoodsOrSets?.length !== 0 ? selectedFoodsOrSets?.length : ''
+            (selectedFoodsOrSets$ | async)?.length !== 0
+              ? (selectedFoodsOrSets$ | async)?.length
+              : ''
           "
           [matBadgeColor]="
-            selectedFoodsOrSets?.length < maxSelectNum ? 'primary' : 'warn'
+            (selectedFoodsOrSets$ | async)?.length < maxSelectNum
+              ? 'primary'
+              : 'warn'
           "
           matBadgeOverlap="true"
           >選択項目</span
