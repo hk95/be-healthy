@@ -7,6 +7,7 @@ export const environment = {
   stripe: {
     publicKey:
       'pk_test_51HFAJnEM1ZTRJUunMG2SHfDgpSVjRfDwUBzhZZAb8UgfnBUffI6TILmi8lWmLdOTFI0pblEeP7c5KUGXafzmdI7h00QgXo8DZN',
+    price: 'price_1HHq4xEM1ZTRJUunj6AY9MzM',
   },
   algolia: {
     appId: 'BQ4M4PM81E',

@@ -5,7 +5,6 @@
       <ng-container *ngIf="paymentMethods && paymentMethods.length">
         <div class="billing__detail" *ngFor="let method of paymentMethods">
           <p class="billing__text">登録カード</p>
-
           <div class="billing__selected-card">
             <i class="card-logo fab fa-cc-{{ cardBrand }}"></i>**** **** ****
             {{ method.card.last4 }}
@@ -21,11 +20,7 @@
         color="primary"
         (click)="openCreditCardDialog()"
       >
-        {{
-          paymentMethods && paymentMethods.length === 1
-            ? '更新する'
-            : '登録する'
-        }}
+        {{ paymentMethods?.length === 1 ? '更新する' : '登録する' }}
       </button>
     </div>
 
@@ -34,7 +29,6 @@
       [style.opacity]="paymentMethods?.length ? '1' : '0.6'"
     >
       <h2 class="billing__title">開発者に寄付</h2>
-      <p class="billing__text"></p>
       <form class="form" [formGroup]="donationForm">
         <mat-form-field class="donation-input" appearance="legacy">
           <mat-label>金額</mat-label>
@@ -65,9 +59,7 @@
           mat-flat-button
           color="primary"
           (click)="openConfirmDialog('donation')"
-          [disabled]="
-            donationForm.invalid || !(paymentMethods && paymentMethods.length)
-          "
+          [disabled]="donationForm.invalid || !paymentMethods?.length"
         >
           寄付する
         </button>
