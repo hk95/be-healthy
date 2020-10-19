@@ -9,7 +9,7 @@ import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
-import { AverageService } from '../services/average.service';
+import { AverageService } from 'src/app/services/average.service';
 
 @Component({
   selector: 'app-daily-detail',
