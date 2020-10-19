@@ -90,7 +90,7 @@
                 キャンセル
               </button>
               <button
-                (click)="updateWeight(); $event.stopPropagation()"
+                (click)="updateWeight(dailyInfo.date); $event.stopPropagation()"
                 mat-stroked-button
                 color="primary"
                 [disabled]="formBody.invalid"
@@ -186,7 +186,7 @@
               mat-icon-button
               color="primary"
               routerLink="/editor-meal/search"
-              [queryParams]="{ date: date, meal: 'breakfast' }"
+              [queryParams]="{ date: dailyInfo.date, meal: 'breakfast' }"
             >
               <mat-icon>edit</mat-icon>
             </a>
@@ -263,7 +263,7 @@
               mat-icon-button
               color="primary"
               routerLink="/editor-meal/search"
-              [queryParams]="{ date: date, meal: 'lunch' }"
+              [queryParams]="{ date: dailyInfo.date, meal: 'lunch' }"
             >
               <mat-icon>edit</mat-icon>
             </a>
@@ -336,7 +336,7 @@
               mat-icon-button
               color="primary"
               routerLink="/editor-meal/search"
-              [queryParams]="{ date: date, meal: 'dinner' }"
+              [queryParams]="{ date: dailyInfo.date, meal: 'dinner' }"
             >
               <mat-icon>edit</mat-icon>
             </a>
@@ -411,7 +411,7 @@
             <button
               mat-flat-button
               color="primary"
-              (click)="updateMemo()"
+              (click)="updateMemo(dailyInfo.date)"
               [disabled]="formMemo.invalid || formMemo.pristine"
             >
               保存
