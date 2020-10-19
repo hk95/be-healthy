@@ -216,13 +216,12 @@
               </mat-expansion-panel-header>
               <div class="card__meal" *ngFor="let food of mealsOfBreakfast">
                 <p class="card__food-name">
-                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                  {{ food.food?.foodName || food.set?.setTitle }}
                 </p>
 
                 <p class="amount">
                   {{ food.amount
-                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-                  ><ng-template #set>セット</ng-template>
+                  }}<span>{{ food.food?.unit || 'セット' }}</span>
                 </p>
                 <p class="card__cal">
                   {{
@@ -290,13 +289,12 @@
               </mat-expansion-panel-header>
               <div class="card__meal" *ngFor="let food of mealsOfLunch">
                 <p class="card__food-name">
-                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                  {{ food.food?.foodName || food.set.setTitle }}
                 </p>
 
                 <p class="amount">
                   {{ food.amount
-                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-                  ><ng-template #set>セット</ng-template>
+                  }}<span>{{ food.food?.unit || 'セット' }}</span>
                 </p>
                 <p class="card__cal">
                   {{
@@ -366,13 +364,12 @@
               </mat-expansion-panel-header>
               <div class="card__meal" *ngFor="let food of mealsOfDinner">
                 <p class="card__food-name">
-                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                  {{ food.food?.foodName || food.set?.setTitle }}
                 </p>
 
                 <p class="amount">
                   {{ food.amount
-                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-                  ><ng-template #set>セット</ng-template>
+                  }}<span>{{ food.food?.unit || 'セット' }}</span>
                 </p>
                 <p class="card__cal">
                   {{
