@@ -49,7 +49,6 @@ export class TopComponent implements OnInit, OnDestroy {
   private date: string;
   private isDataList = [];
   private subscription: Subscription;
-
   readonly minDate = this.getDate(new Date(2018, 0, 1));
   calendarOptions = this.preCalendarOption;
   basicInfo$: Observable<BasicInfo>;
@@ -64,8 +63,7 @@ export class TopComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe
   ) {}
 
-  private isInitLogin() {
-    this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
+  private confirmInitLogin(): void {
     if (this.authService.isInitialLogin) {
       this.dialog.open(TutorialComponent, {
         width: '90%',
@@ -75,7 +73,7 @@ export class TopComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getDailyInfos() {
+  private loadDailyInfos(): void {
     this.subscription = this.dailyInfoService
       .getDailyInfosOfMonths(this.authService.uid, this.today)
       .subscribe((v: DailyInfoList[]) => {
@@ -136,9 +134,10 @@ export class TopComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isInitLogin();
+    this.basicInfo$ = this.basicInfoService.getBasicInfo(this.authService.uid);
+    this.confirmInitLogin();
     this.mainShellService.title = this.mainShellService.PAGE_TITLES.top;
-    this.getDailyInfos();
+    this.loadDailyInfos();
   }
 
   ngOnDestroy(): void {
