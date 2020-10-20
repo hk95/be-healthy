@@ -112,11 +112,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
           imageFile,
         },
       });
-      dialogRef.afterClosed().subscribe((result) => {
+      const dialogSub = dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           this.avatarURL = result;
         }
       });
+      this.subscription.add(dialogSub);
     }
   }
 
