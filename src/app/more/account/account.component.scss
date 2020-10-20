@@ -2,13 +2,12 @@
   padding: 16px 0;
 
   &__title {
-    margin: 0;
+    font-weight: bold;
     font-size: 19px;
     padding: 16px 8px;
   }
 
   &__text {
-    margin: 0;
     padding: 16px 8px;
     margin-bottom: 24px;
   }
@@ -34,7 +33,6 @@
   }
 
   &__name {
-    margin: 0;
     overflow-wrap: anywhere;
   }
 }
