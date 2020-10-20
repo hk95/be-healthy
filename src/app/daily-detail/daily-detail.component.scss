@@ -85,24 +85,42 @@ p {
     right: 0;
   }
 
-  &__icon-breakfast {
-    margin-left: 8px;
-    width: 30px;
-  }
-
   &__icon {
-    margin-left: 8px;
     width: 20px;
+    display: flex;
+    align-items: center;
+
+    &--breakfast {
+      width: 30px;
+    }
   }
 
   &__memo-title {
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   &__head {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 8px;
+  }
+
+  &__no-meal {
+    padding: 0 8px;
+  }
+
+  &__head-left {
+    display: flex;
+  }
+
+  &__head-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   &__meal {
@@ -151,6 +169,8 @@ p {
 .meal-title {
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-size: 15px;
 }
 
 .form {
@@ -237,6 +257,5 @@ ngx-charts-pie-chart {
 }
 
 .mat-expansion-panel-header {
-  padding: 0;
-  padding-right: 8px;
+  padding: 0 8px 0;
 }
