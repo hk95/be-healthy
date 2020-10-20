@@ -394,6 +394,6 @@ mat-expansion-panel {
   .mat-badge-medium.mat-badge-after .mat-badge-content {
     position: absolute;
     top: 0;
-    right: -24px;
+    right: -24px !important;
   }
 }
