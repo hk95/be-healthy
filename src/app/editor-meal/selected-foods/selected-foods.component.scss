@@ -90,3 +90,19 @@
     overflow-wrap: anywhere;
   }
 }
+
+.no-select {
+  &__title {
+    font-weight: bold;
+    margin-bottom: 32px;
+  }
+
+  &__figure {
+    margin: 0;
+    margin-bottom: 32px;
+  }
+
+  &__text {
+    margin-bottom: 32px;
+  }
+}
