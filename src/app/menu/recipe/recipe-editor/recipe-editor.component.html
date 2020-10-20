@@ -330,7 +330,9 @@
                 >
                 <mat-error
                   *ngIf="element.get('description').hasError('maxlength')"
-                  >{{ maxDescriptionLength }}以内で入力してください</mat-error
+                  >{{
+                    maxDescriptionLength
+                  }}文字以内で入力してください</mat-error
                 >
               </mat-form-field>
             </mat-cell>
