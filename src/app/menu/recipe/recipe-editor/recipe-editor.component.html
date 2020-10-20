@@ -12,7 +12,7 @@
       >
         <mat-icon>clear</mat-icon>
       </button>
-      <h1>レシピ{{ isCreating ? '作成' : '編集' }}画面</h1>
+      <h1 class="head__title">レシピ{{ isCreating ? '作成' : '編集' }}画面</h1>
       <button
         class="head__submit-button"
         mat-raised-button
@@ -266,7 +266,7 @@
               class="process__cell process__cell--index"
               *matCellDef="let element; let i = index"
             >
-              <p>{{ i + 1 }}</p>
+              <p class="process__index">{{ i + 1 }}</p>
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="image">

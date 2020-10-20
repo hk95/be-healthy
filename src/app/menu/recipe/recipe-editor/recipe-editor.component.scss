@@ -1,31 +1,15 @@
 @import '~@angular/material/theming';
 
-h1 {
-  font-size: 20px;
-  font-weight: normal;
-  margin: 0;
-}
-
-h2 {
-  font-size: 14px;
-  font-weight: normal;
-  margin: 0;
-  margin-bottom: 8px;
-}
-
 .title {
   font-size: 14px;
   font-weight: normal;
   margin: 0;
   margin-bottom: 8px;
+  align-self: flex-end;
 
   &--top {
     margin-top: 32px;
   }
-}
-
-p {
-  margin: 0;
 }
 
 .form-wrap {
@@ -51,6 +35,10 @@ p {
     position: fixed;
     top: 8px;
     left: 8px;
+  }
+
+  &__title {
+    font-size: 18px;
   }
 
   &__submit-button {
@@ -124,9 +112,6 @@ p {
   &__title {
     display: flex;
     justify-content: space-between;
-    h2 {
-      align-self: flex-end;
-    }
   }
 
   &__header {
@@ -182,14 +167,9 @@ p {
   &__title {
     display: flex;
     justify-content: space-between;
-
-    h2 {
-      align-self: flex-end;
-    }
   }
 
-  p {
-    margin: 0;
+  &__index {
     color: #767676;
   }
 
