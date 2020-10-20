@@ -5,16 +5,12 @@
   padding: 24px 0;
 }
 
-h1 {
+.title {
   margin: 0;
   margin-bottom: 8px;
   text-align: center;
   font-size: 16px;
   font-weight: normal;
-}
-
-p {
-  margin: 0;
 }
 
 .border {
@@ -121,17 +117,20 @@ p {
   margin: 0 auto;
   display: grid;
   justify-content: center;
-  margin-bottom: 48px;
+  margin-bottom: 60px;
 
   &__image {
     justify-self: center;
-    margin-bottom: 8px;
+    margin-bottom: 24px;
   }
 
   &__text {
     justify-self: center;
     opacity: 0.87;
-    margin-bottom: 8px;
+
+    &--end {
+      margin-bottom: 24px;
+    }
   }
 
   &__button {
