@@ -1,12 +1,8 @@
 <div *ngIf="set$ | async as set; else noSetDetail">
   <div class="nav">
-    <button
-      class="nav__back-to-page"
-      mat-icon-button
-      routerLink="/menu/set-list"
-    >
+    <a class="nav__back-to-page" mat-icon-button routerLink="/menu/set-list">
       <mat-icon>navigate_before</mat-icon>
-    </button>
+    </a>
     <h1>マイセット詳細画面</h1>
     <div class="nav__buttons">
       <a

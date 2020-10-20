@@ -273,9 +273,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         },
       });
 
-      dialogRef.afterClosed().subscribe((result) => {
+      const dialogSub = dialogRef.afterClosed().subscribe((result) => {
         this.thumbnailURL = result;
       });
+      this.subscription.add(dialogSub);
     }
     this.thumbnailInput.nativeElement.value = '';
   }
@@ -292,9 +293,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         },
       });
 
-      dialogRef.afterClosed().subscribe((result) => {
+      const dialogSub = dialogRef.afterClosed().subscribe((result) => {
         this.processURLs.splice(index, 1, result);
       });
+      this.subscription.add(dialogSub);
     }
     this.processImageInput.nativeElement.value = '';
   }

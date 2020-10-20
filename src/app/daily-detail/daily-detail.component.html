@@ -83,14 +83,11 @@
             </div>
 
             <div class="form-body__button">
-              <button
-                (click)="editingWeight = false; $event.stopPropagation()"
-                mat-stroked-button
-              >
+              <button (click)="editingWeight = false" mat-stroked-button>
                 キャンセル
               </button>
               <button
-                (click)="updateWeight(); $event.stopPropagation()"
+                (click)="submitWeightAndFat(dailyInfo.date)"
                 mat-stroked-button
                 color="primary"
                 [disabled]="formBody.invalid"
@@ -182,14 +179,14 @@
             </p>
           </div>
           <div class="card__head-right">
-            <button
+            <a
               mat-icon-button
               color="primary"
               routerLink="/editor-meal/search"
-              [queryParams]="{ date: date, meal: 'breakfast' }"
+              [queryParams]="{ date: dailyInfo.date, meal: 'breakfast' }"
             >
               <mat-icon>edit</mat-icon>
-            </button>
+            </a>
           </div>
         </div>
         <p class="border"></p>
@@ -219,13 +216,12 @@
               </mat-expansion-panel-header>
               <div class="card__meal" *ngFor="let food of mealsOfBreakfast">
                 <p class="card__food-name">
-                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                  {{ food.food?.foodName || food.set?.setTitle }}
                 </p>
 
                 <p class="amount">
                   {{ food.amount
-                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-                  ><ng-template #set>セット</ng-template>
+                  }}<span>{{ food.food?.unit || 'セット' }}</span>
                 </p>
                 <p class="card__cal">
                   {{
@@ -259,14 +255,14 @@
             </p>
           </div>
           <div class="card__head-right">
-            <button
+            <a
               mat-icon-button
               color="primary"
               routerLink="/editor-meal/search"
-              [queryParams]="{ date: date, meal: 'lunch' }"
+              [queryParams]="{ date: dailyInfo.date, meal: 'lunch' }"
             >
               <mat-icon>edit</mat-icon>
-            </button>
+            </a>
           </div>
         </div>
         <p class="border"></p>
@@ -293,13 +289,12 @@
               </mat-expansion-panel-header>
               <div class="card__meal" *ngFor="let food of mealsOfLunch">
                 <p class="card__food-name">
-                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                  {{ food.food?.foodName || food.set.setTitle }}
                 </p>
 
                 <p class="amount">
                   {{ food.amount
-                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-                  ><ng-template #set>セット</ng-template>
+                  }}<span>{{ food.food?.unit || 'セット' }}</span>
                 </p>
                 <p class="card__cal">
                   {{
@@ -332,14 +327,14 @@
             </p>
           </div>
           <div class="card__head-right">
-            <button
+            <a
               mat-icon-button
               color="primary"
               routerLink="/editor-meal/search"
-              [queryParams]="{ date: date, meal: 'dinner' }"
+              [queryParams]="{ date: dailyInfo.date, meal: 'dinner' }"
             >
               <mat-icon>edit</mat-icon>
-            </button>
+            </a>
           </div>
         </div>
         <p class="border"></p>
@@ -369,13 +364,12 @@
               </mat-expansion-panel-header>
               <div class="card__meal" *ngFor="let food of mealsOfDinner">
                 <p class="card__food-name">
-                  {{ food.food ? food.food.foodName : food.set.setTitle }}
+                  {{ food.food?.foodName || food.set?.setTitle }}
                 </p>
 
                 <p class="amount">
                   {{ food.amount
-                  }}<span *ngIf="food.food; else set">{{ food.food.unit }}</span
-                  ><ng-template #set>セット</ng-template>
+                  }}<span>{{ food.food?.unit || 'セット' }}</span>
                 </p>
                 <p class="card__cal">
                   {{
@@ -411,7 +405,7 @@
             <button
               mat-flat-button
               color="primary"
-              (click)="updateMemo()"
+              (click)="submitMemo(dailyInfo.date)"
               [disabled]="formMemo.invalid || formMemo.pristine"
             >
               保存

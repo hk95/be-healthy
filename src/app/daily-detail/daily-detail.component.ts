@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { DailyInfoService } from '../services/daily-info.service';
-import { Subscription } from 'rxjs';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { DailyInfo, DailyMeal } from '../interfaces/daily-info';
 import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { AverageService } from 'src/app/services/average.service';
 
 @Component({
@@ -28,7 +28,13 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   panelOpenStateBreakfast = false;
   panelOpenStateLunch = false;
   panelOpenStateDinner = false;
-  date: string;
+  date$: Observable<string> = this.route.queryParamMap.pipe(
+    switchMap((queryParams: ParamMap) => {
+      const date = queryParams.get('date');
+      this.mainShellService.title = date;
+      return of(date);
+    })
+  );
   dailyInfo: DailyInfo;
   editingWeight = false;
   formBody = this.fb.group({
@@ -108,55 +114,51 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     private pfcBalancePipe: PfcBalancePipe,
     private fb: FormBuilder,
     private averageService: AverageService
-  ) {
-    const routeSub = this.route.queryParamMap.subscribe((params) => {
-      this.date = params.get('date');
-      this.getDailyInfo();
-      this.getDailyInfoOfMeal();
-      this.mainShellService.title = this.date;
-    });
+  ) {}
 
-    this.subscription.add(routeSub);
-
-    if (innerWidth < 500) {
-      this.font = innerWidth / 28;
-      this.view = [innerWidth / 1.3, innerWidth / 2];
-    } else {
-      this.font = 16;
-      this.view = [378, 246];
-    }
-  }
-
-  private getDailyInfo() {
-    const dailyInfoSub = this.dailyInfoService
-      .getDailyInfo(this.userId, this.date)
-      .subscribe((dailyInfo: DailyInfo) => {
+  private loadDailyInfo(): void {
+    const dailyInfoSub = this.date$
+      .pipe(
+        switchMap((date: string) => {
+          return combineLatest([
+            this.dailyInfoService.getDailyInfo(this.userId, date),
+            of(date),
+          ]);
+        })
+      )
+      .subscribe(([dailyInfo, date]: [DailyInfo, string]) => {
+        this.dailyInfo = dailyInfo;
         if (!dailyInfo) {
           this.dailyInfoService.createDailyInfo({
             authorId: this.userId,
-            date: this.date,
+            date,
           });
         } else {
           this.formBody.patchValue(dailyInfo);
           this.formMemo.patchValue(dailyInfo);
           if (!dailyInfo.currentWeight) {
-            this.getPreviuosWeightAndFat();
+            this.loadPreviuosWeightAndFat(date);
           }
         }
-        this.dailyInfo = dailyInfo;
       });
     this.subscription.add(dailyInfoSub);
   }
 
-  private getDailyInfoOfMeal() {
-    const dailyInfoSub = this.dailyInfoService
-      .getAllSelectedFoodsOrSets(this.userId, this.date)
+  private loadDailyInfoOfMeal(): void {
+    const dailyInfoSub = this.date$
+      .pipe(
+        switchMap((date: string) => {
+          return this.dailyInfoService.getAllSelectedFoodsOrSets(
+            this.userId,
+            date
+          );
+        })
+      )
       .subscribe((mealList) => {
         this.mealsOfBreakfast = mealList[0];
         this.mealsOfLunch = mealList[1];
         this.mealsOfDinner = mealList[2];
         this.totalCal = 0;
-
         this.totalCal = this.nutritionPipe.transform(
           this.mealsOfBreakfast,
           'all',
@@ -200,17 +202,17 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     this.subscription.add(dailyInfoSub);
   }
 
-  onResize(event) {
-    if (event.target.innerWidth < 500) {
+  onResize({ target }: { target: Window }): void {
+    if (target.innerWidth < 500) {
       this.font = innerWidth / 28;
-      this.view = [event.target.innerWidth / 1.3, event.target.innerWidth / 2];
+      this.view = [target.innerWidth / 1.3, target.innerWidth / 2];
       this.font = innerWidth / 28;
     }
   }
 
-  private getPreviuosWeightAndFat() {
+  private loadPreviuosWeightAndFat(date: string): void {
     this.dailyInfoService
-      .getPreviousDailyInfo(this.userId, this.date)
+      .getPreviousDailyInfo(this.userId, date)
       .pipe(take(1))
       .subscribe((dailyInfos?: DailyInfo[]) => {
         if (dailyInfos[0]?.currentWeight !== undefined) {
@@ -219,19 +221,19 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateWeight() {
+  submitWeightAndFat(date: string): void {
     if (this.editingWeight === true) {
       const currentWeight = this.formBody.value.currentWeight;
       const currentFat = this.formBody.value.currentFat;
       this.dailyInfoService.updateDailyInfoBody({
         authorId: this.userId,
-        date: this.date,
+        date,
         currentWeight,
         currentFat,
       });
       this.averageService.averageWeightAndFat(
         this.userId,
-        this.date,
+        date,
         currentWeight,
         currentFat
       );
@@ -239,15 +241,25 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateMemo() {
+  submitMemo(date: string): void {
     this.dailyInfoService.updateDailyInfoMemo(
       this.userId,
-      this.date,
+      date,
       this.formMemo.value.dailyMemo
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (innerWidth < 500) {
+      this.font = innerWidth / 28;
+      this.view = [innerWidth / 1.3, innerWidth / 2];
+    } else {
+      this.font = 16;
+      this.view = [378, 246];
+    }
+    this.loadDailyInfo();
+    this.loadDailyInfoOfMeal();
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

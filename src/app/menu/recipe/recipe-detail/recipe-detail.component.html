@@ -1,8 +1,8 @@
 <div class="contents" *ngIf="recipe$ | async as recipe">
   <div class="nav">
-    <button class="back-to-page" mat-icon-button routerLink="/menu/recipe-list">
+    <a class="back-to-page" mat-icon-button routerLink="/menu/recipe-list">
       <mat-icon>navigate_before</mat-icon>
-    </button>
+    </a>
     <h1>レシピ詳細画面</h1>
     <div class="nav__wrap">
       <a
@@ -76,7 +76,12 @@
           >
             <div class="process__wrapper">
               <p class="process__index">{{ i + 1 }}</p>
-              <img class="process__image" [src]="process.photoURL" alt="" />
+              <img
+                class="process__image"
+                *ngIf="process.photoURL"
+                [src]="process.photoURL"
+                alt=""
+              />
             </div>
             <p class="process__description">{{ process.description }}</p>
           </div>

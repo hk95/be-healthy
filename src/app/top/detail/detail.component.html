@@ -64,7 +64,7 @@
         </dt>
       </dl>
       <button
-        (click)="updateWeight(); $event.stopPropagation()"
+        (click)="submitWeightAndFat(); $event.stopPropagation()"
         class="nav-icon"
         mat-icon-button
         color="primary"
@@ -133,7 +133,7 @@
           キャンセル
         </button>
         <button
-          (click)="updateWeight()"
+          (click)="submitWeightAndFat()"
           mat-stroked-button
           color="primary"
           [disabled]="formBody.invalid"
@@ -166,7 +166,6 @@
           mat-button
           aria-label="Button that displays a tooltip when focused or hovered over"
           class="meal__box"
-          (click)="$event.stopPropagation()"
           routerLink="/editor-meal/search"
           [queryParams]="{
             date: date,
@@ -203,7 +202,6 @@
           color="primary"
           aria-label="Button that displays a tooltip when focused or hovered over"
           class="meal__box"
-          (click)="$event.stopPropagation()"
           routerLink="/editor-meal/search"
           [queryParams]="{
             date: date,
@@ -242,7 +240,6 @@
           color="primary"
           aria-label="Button that displays a tooltip when focused or hovered over"
           class="meal__box"
-          (click)="$event.stopPropagation()"
           routerLink="/editor-meal/search"
           [queryParams]="{
             date: date,
@@ -297,7 +294,7 @@
           *ngIf="editingMemo"
           mat-flat-button
           color="primary"
-          (click)="updateMemo(); $event.stopPropagation()"
+          (click)="submitMemo(); $event.stopPropagation()"
           [disabled]="formMemo.invalid"
         >
           保存

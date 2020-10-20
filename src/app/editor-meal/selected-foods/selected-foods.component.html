@@ -9,31 +9,37 @@
           <mat-icon color="primary">info</mat-icon
           >食べ物はまだ選択されていません。
         </h3>
-        <mat-card
-          class="card"
-          routerLink="/editor-meal/search"
-          [queryParams]="{ date: date, meal: meal }"
-        >
-          <p class="card__title card__title--food">食材リストから探す</p>
-          <img
-            class="card__food"
-            mat-card-image
-            src="/assets/images/no-food.png"
-            alt=""
-          />
+
+        <mat-card class="card">
+          <a
+            class="card__anchor-tag"
+            routerLink="/editor-meal/search"
+            [queryParams]="linkQuery"
+          >
+            <p class="card__title">食材リストから探す</p>
+            <img
+              class="card__food-image"
+              mat-card-image
+              src="/assets/images/no-food.png"
+              alt=""
+            />
+          </a>
         </mat-card>
-        <mat-card
-          class="card"
-          routerLink="/editor-meal/my-set"
-          [queryParams]="{ date: date, meal: meal }"
-        >
-          <p class="card__title">マイセットから探す</p>
-          <img
-            class="card__set"
-            mat-card-image
-            src="/assets/images/no-set.png"
-            alt=""
-          />
+
+        <mat-card class="card">
+          <a
+            class="card__anchor-tag"
+            routerLink="/editor-meal/my-set"
+            [queryParams]="linkQuery"
+          >
+            <p class="card__title">マイセットから探す</p>
+            <img
+              class="card__set-image"
+              mat-card-image
+              src="/assets/images/no-set.png"
+              alt=""
+            />
+          </a>
         </mat-card>
       </div>
     </div>
@@ -78,7 +84,7 @@
           mat-icon-button
           color="warn"
           (click)="
-            deleteMeal(
+            submitDeleteData(
               foodOrSet.mealId,
               foodOrSet.amount,
               foodOrSet.food?.foodCalPerAmount || foodOrSet.set.setCal

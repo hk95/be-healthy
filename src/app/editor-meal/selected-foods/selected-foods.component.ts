@@ -16,11 +16,10 @@ import { MainShellService } from 'src/app/services/main-shell.service';
 export class SelectedFoodsComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
-  date: string;
-  meal: string;
+  linkQuery: { date: string; meal: string };
   selectedFoodsOrSets: DailyMeal[];
   totalCal = 0;
-  loading: boolean;
+  loading = true;
 
   constructor(
     private dailyInfoService: DailyInfoService,
@@ -29,28 +28,10 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     private router: Router,
     private averageService: AverageService,
     private mainShellService: MainShellService
-  ) {
-    this.loading = true;
-    const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
-      this.date = paramMaps.get('date');
-      this.meal = paramMaps.get('meal');
-    });
+  ) {}
 
-    const routerSub = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        this.averageService.averageTotalCal(this.authService.uid, this.date);
-      }
-    });
-
-    const mealSub = this.getSelectedMeals();
-
-    this.subscription.add(routeSub);
-    this.subscription.add(routerSub);
-    this.subscription.add(mealSub);
-  }
-
-  private getSelectedMeals() {
-    this.mainShellService.selectedMeals.subscribe((v) => {
+  private loadSelectedMeals() {
+    const mealSub = this.mainShellService.selectedMeals.subscribe((v) => {
       this.totalCal = 0;
       if (v) {
         this.selectedFoodsOrSets = v;
@@ -69,13 +50,14 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
+    this.subscription.add(mealSub);
   }
 
-  deleteMeal(mealId: string, amount: number, cal: number) {
+  submitDeleteData(mealId: string, amount: number, cal: number) {
     const islastMeal = this.selectedFoodsOrSets.length === 1 ? true : false;
     this.dailyInfoService.deleteMeal(
       this.authService.uid,
-      this.date,
+      this.linkQuery.date,
       mealId,
       amount,
       cal,
@@ -84,7 +66,27 @@ export class SelectedFoodsComponent implements OnInit, OnDestroy {
     this.totalCal -= cal * amount;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {
+      this.linkQuery = {
+        date: paramMaps.get('date'),
+        meal: paramMaps.get('meal'),
+      };
+    });
+    this.subscription.add(routeSub);
+
+    const routerSub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.averageService.averageTotalCal(
+          this.authService.uid,
+          this.linkQuery.date
+        );
+      }
+    });
+
+    this.subscription.add(routerSub);
+    this.loadSelectedMeals();
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
