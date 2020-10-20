@@ -2,16 +2,14 @@
 
 .editor-wrap {
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
   background: #ffff;
   padding: 32px 8px 8px 8px;
   @include mat-elevation(1);
-}
 
-h1 {
-  font-size: 20px;
-  font-weight: normal;
-  margin: 0;
+  &__title {
+    margin-top: 32px;
+  }
 }
 
 h2 {
@@ -49,10 +47,22 @@ p {
   top: 0;
   background: #fff;
 
+  &__title {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0;
+  }
+
   &__clear-button {
     position: fixed;
     top: 8px;
     left: 8px;
+  }
+
+  &__submit-button {
+    position: fixed;
+    top: 8px;
+    right: 8px;
   }
 }
 
@@ -84,8 +94,9 @@ p {
 }
 
 .foods {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   border-radius: 4px;
+  @include mat-elevation(1);
 
   mat-tab-group {
     background: #fff;
@@ -96,6 +107,10 @@ p {
     margin-left: 8px;
     display: flex;
     align-items: center;
+  }
+
+  &__choice {
+    margin-bottom: 60px;
   }
 
   &__choice-title {
@@ -172,6 +187,10 @@ p {
 
   &__button {
     margin-bottom: 8px;
+  }
+
+  &__unit {
+    min-width: 42px;
   }
 }
 
@@ -276,6 +295,8 @@ p {
 .nutrition {
   margin-bottom: 48px;
   border-bottom: 1px solid #dbdbdb;
+  background: #fff;
+  @include mat-elevation(1);
 
   &__detail {
     height: 72px;
@@ -364,8 +385,7 @@ mat-expansion-panel {
 }
 
 .mat-expansion-panel-header {
-  padding: 0;
-  padding-right: 8px;
+  padding: 0 8px;
 }
 
 :host ::ng-deep {
