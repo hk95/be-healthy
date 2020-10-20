@@ -460,8 +460,17 @@
                 />
               </span>
             </p>
-
             <button
+              *ngIf="!editingMemo"
+              mat-icon-button
+              class="nav-icon"
+              color="primary"
+              (click)="editingMemo = true; $event.stopPropagation()"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              *ngIf="editingMemo"
               mat-flat-button
               color="primary"
               (click)="submitMemo(dailyInfo.date)"
@@ -472,7 +481,17 @@
           </div>
         </div>
 
-        <form [formGroup]="formMemo" class="card__memo-textarea-editor">
+        <p
+          [ngClass]="dailyInfo.dailyMemo ? 'card__memo-textarea' : ''"
+          *ngIf="!editingMemo"
+        >
+          {{ dailyInfo.dailyMemo || 'まだメモはありません' }}
+        </p>
+        <form
+          [formGroup]="formMemo"
+          *ngIf="editingMemo"
+          class="card__memo-textarea-editor"
+        >
           <mat-form-field
             class="card__memo-textarea-field"
             appearance="outline"

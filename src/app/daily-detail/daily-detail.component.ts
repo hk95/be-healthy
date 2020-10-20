@@ -28,6 +28,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   panelOpenStateBreakfast = false;
   panelOpenStateLunch = false;
   panelOpenStateDinner = false;
+  editingMemo = true;
   date$: Observable<string> = this.route.queryParamMap.pipe(
     switchMap((queryParams: ParamMap) => {
       const date = queryParams.get('date');
@@ -247,6 +248,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       date,
       this.formMemo.value.dailyMemo
     );
+    this.editingMemo = false;
   }
 
   ngOnInit(): void {
