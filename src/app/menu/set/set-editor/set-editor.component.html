@@ -21,14 +21,14 @@
   <div class="container">
     <h2 class="editor-wrap__title">マイセット概要</h2>
     <div class="editor-wrap">
-      <div class="title">
-        <mat-form-field class="title__form-field" appearance="outline">
+      <div class="title-wrap">
+        <mat-form-field class="title-wrap__form-field" appearance="outline">
           <mat-label>セットタイトル</mat-label>
           <input
             matInput
             placeholder="カレー定食"
             formControlName="setTitle"
-            class="title__input"
+            class="title-wrap__input"
             type="text"
             autocomplete="off"
             required
@@ -47,7 +47,7 @@
       </div>
 
       <div class="meal">
-        <h2>登録する食事を選択してください</h2>
+        <h2 class="title">登録する食事を選択してください</h2>
 
         <div class="meal__buttons">
           <mat-checkbox
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <h2>食べ物登録</h2>
+    <h2 class="title">食べ物登録</h2>
     <div class="foods">
       <mat-tab-group
         class="mat-tab-labels"
@@ -322,7 +322,7 @@
       </mat-accordion>
     </div>
 
-    <h2>栄養素</h2>
+    <h2 class="title">栄養素</h2>
     <div class="nutrition">
       <div class="nutrition__detail nutrition__detail--top">
         <p class="nutrition__name">総カロリー</p>

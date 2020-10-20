@@ -8,14 +8,14 @@
   @include mat-elevation(1);
 
   &__title {
-    margin-top: 32px;
+    margin: 32px 0 8px;
+    font-size: 14px;
   }
 }
 
-h2 {
+.title {
   font-size: 14px;
   font-weight: normal;
-  margin: 0;
   margin-bottom: 8px;
 }
 
@@ -24,10 +24,6 @@ input {
   margin: 0;
   justify-self: center;
   border: none;
-}
-
-p {
-  margin: 0;
 }
 
 .validators {
@@ -66,7 +62,7 @@ p {
   }
 }
 
-.title {
+.title-wrap {
   display: flex;
   flex-direction: column;
   margin-bottom: 24px;
@@ -114,6 +110,7 @@ p {
   }
 
   &__choice-title {
+    font-size: 14px;
     margin-bottom: 0;
     height: 30px;
     display: flex;
@@ -122,6 +119,7 @@ p {
   }
 
   &__no-choice-title {
+    font-size: 14px;
     margin-bottom: 32px;
   }
 }
@@ -276,7 +274,6 @@ p {
   }
 
   &__title {
-    margin: 0;
     font-size: 15px;
     font-weight: normal;
     overflow: hidden;
