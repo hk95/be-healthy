@@ -71,10 +71,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {
     this.otherShellService.title = this.otherShellService.PAGE_TITLES.profile;
-    this.getBasicInfo();
+    this.loadBasicInfo();
   }
 
-  private getBasicInfo() {
+  private loadBasicInfo(): void {
     const basicInfoSub = this.basicInfoService
       .getBasicInfo(this.userId)
       .subscribe((basicInfo) => {
@@ -88,7 +88,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
     this.subscription.add(basicInfoSub);
   }
-  submit() {
+
+  submitForm(): void {
     const formData = this.form.value;
     this.basicInfoService.updateBasicInfo({
       name: formData.name,
@@ -102,7 +103,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  openAvatarDialog(event) {
+  openAvatarDialog(event: any): void {
     const imageFile: File = event.target.files[0];
     if (imageFile) {
       const dialogRef = this.dialog.open(AvatarComponent, {
