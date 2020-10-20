@@ -2,22 +2,20 @@
 
 .editor-wrap {
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
   background: #ffff;
   padding: 32px 8px 8px 8px;
   @include mat-elevation(1);
+
+  &__title {
+    margin: 32px 0 8px;
+    font-size: 14px;
+  }
 }
 
-h1 {
-  font-size: 20px;
-  font-weight: normal;
-  margin: 0;
-}
-
-h2 {
+.title {
   font-size: 14px;
   font-weight: normal;
-  margin: 0;
   margin-bottom: 8px;
 }
 
@@ -26,10 +24,6 @@ input {
   margin: 0;
   justify-self: center;
   border: none;
-}
-
-p {
-  margin: 0;
 }
 
 .validators {
@@ -49,14 +43,26 @@ p {
   top: 0;
   background: #fff;
 
+  &__title {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0;
+  }
+
   &__clear-button {
     position: fixed;
     top: 8px;
     left: 8px;
   }
+
+  &__submit-button {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+  }
 }
 
-.title {
+.title-wrap {
   display: flex;
   flex-direction: column;
   margin-bottom: 24px;
@@ -84,12 +90,14 @@ p {
 }
 
 .foods {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   border-radius: 4px;
+  @include mat-elevation(1);
 
   mat-tab-group {
     background: #fff;
     max-height: 520px;
+    padding: 16px 0;
   }
 
   &__validation {
@@ -98,7 +106,12 @@ p {
     align-items: center;
   }
 
+  &__choice {
+    margin-bottom: 60px;
+  }
+
   &__choice-title {
+    font-size: 14px;
     margin-bottom: 0;
     height: 30px;
     display: flex;
@@ -107,6 +120,7 @@ p {
   }
 
   &__no-choice-title {
+    font-size: 14px;
     margin-bottom: 32px;
   }
 }
@@ -172,6 +186,10 @@ p {
 
   &__button {
     margin-bottom: 8px;
+  }
+
+  &__unit {
+    min-width: 42px;
   }
 }
 
@@ -257,7 +275,6 @@ p {
   }
 
   &__title {
-    margin: 0;
     font-size: 15px;
     font-weight: normal;
     overflow: hidden;
@@ -276,6 +293,8 @@ p {
 .nutrition {
   margin-bottom: 48px;
   border-bottom: 1px solid #dbdbdb;
+  background: #fff;
+  @include mat-elevation(1);
 
   &__detail {
     height: 72px;
@@ -364,8 +383,7 @@ mat-expansion-panel {
 }
 
 .mat-expansion-panel-header {
-  padding: 0;
-  padding-right: 8px;
+  padding: 0 8px;
 }
 
 :host ::ng-deep {
@@ -376,6 +394,6 @@ mat-expansion-panel {
   .mat-badge-medium.mat-badge-after .mat-badge-content {
     position: absolute;
     top: 0;
-    right: -24px;
+    right: -24px !important;
   }
 }

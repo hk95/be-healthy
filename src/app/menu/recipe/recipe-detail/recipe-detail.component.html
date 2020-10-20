@@ -1,9 +1,9 @@
 <div class="contents" *ngIf="recipe$ | async as recipe">
   <div class="nav">
-    <a class="back-to-page" mat-icon-button routerLink="/menu/recipe-list">
+    <a class="nav__back-button" mat-icon-button routerLink="/menu/recipe-list">
       <mat-icon>navigate_before</mat-icon>
     </a>
-    <h1>レシピ詳細画面</h1>
+    <h1 class="nav__title">レシピ詳細画面</h1>
     <div class="nav__wrap">
       <a
         *ngIf="recipe.authorId === userId"
@@ -44,12 +44,12 @@
       </figure>
       <div class="content-head">
         <h2 class="content__name">レシピ名</h2>
-        <h4 *ngIf="recipe.public">
+        <h4 class="content__public" *ngIf="recipe.public">
           公開中
         </h4>
       </div>
       <div class="content">
-        <h2>{{ recipe.recipeTitle }}</h2>
+        <h2 class="content__title">{{ recipe.recipeTitle }}</h2>
       </div>
       <ng-container *ngIf="recipe.recipeDescription">
         <h2 class="content__name">ポイント</h2>

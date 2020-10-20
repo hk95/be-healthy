@@ -13,10 +13,6 @@
   margin-bottom: 32px;
 }
 
-p {
-  margin: 0;
-}
-
 .card {
   outline: none;
   max-width: 400px;
@@ -142,6 +138,8 @@ p {
 
   &__title {
     font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 24px;
     display: flex;
     justify-content: center;
   }

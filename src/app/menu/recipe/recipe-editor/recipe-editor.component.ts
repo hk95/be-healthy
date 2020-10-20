@@ -168,38 +168,28 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.public = recipe.public;
     if (recipe.foods) {
       recipe.foods.forEach((food) => {
-        const ingredientFormGroup = this.fb.group({
-          name: food.name,
-          amountAndUnit: food.amountAndUnit,
-        });
-        this.ingredients.push(ingredientFormGroup);
-        this.dataSource.next(this.ingredients.controls);
+        this.addIngredinet(food.name, food.amountAndUnit);
       });
     }
     if (recipe.processes) {
       recipe.processes.forEach((process) => {
-        const processFormGroup = this.fb.group({
-          description: process.description,
-        });
-        this.processURLs.push(process.photoURL);
-        this.processes.push(processFormGroup);
-        this.processSource.next(this.processes.controls);
+        this.addProcess(process.photoURL, process.description);
       });
     }
     this.loading = false;
   }
 
-  addIngredinet(): void {
+  addIngredinet(name?: string, amountAndUnit?: string): void {
     const ingredientFormGroup = this.fb.group({
       name: [
-        '',
+        name || '',
         [
           Validators.required,
           Validators.maxLength(this.maxIngredinetNameLength),
         ],
       ],
       amountAndUnit: [
-        '',
+        amountAndUnit || '',
         [
           Validators.required,
           Validators.maxLength(this.maxIngredinetUnitLength),
@@ -229,15 +219,15 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.dataSource.next(this.ingredients.controls);
   }
 
-  addProcess(): void {
+  addProcess(imageURL?: string, description?: string): void {
     const processFormGroup = this.fb.group({
       description: [
-        '',
+        description || '',
         [Validators.required, Validators.maxLength(this.maxDescriptionLength)],
       ],
     });
     this.processes.push(processFormGroup);
-    this.processURLs.push(null);
+    this.processURLs.push(imageURL || null);
     this.processSource.next(this.processes.controls);
   }
 

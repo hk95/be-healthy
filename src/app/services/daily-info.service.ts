@@ -254,7 +254,7 @@ export class DailyInfoService {
       .doc(`users/${userId}/dailyInfos/${date}/${this.whichMeal}/${mealId}`)
       .set({ ...mealContent, mealId, userId, date })
       .then(() => {
-        this.snackBar.open('追加しました', null, {
+        this.snackBar.open('追加しました', '閉じる', {
           duration: 2000,
         });
       });

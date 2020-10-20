@@ -1,26 +1,21 @@
 @import '~@angular/material/theming';
 
-h1 {
-  font-size: 20px;
-  font-weight: normal;
-  margin: 0;
-}
-
-h2 {
+.title {
   font-size: 14px;
   font-weight: normal;
   margin: 0;
   margin-bottom: 8px;
-}
+  align-self: flex-end;
 
-p {
-  margin: 0;
+  &--top {
+    margin-top: 32px;
+  }
 }
 
 .form-wrap {
   max-width: 700px;
-  margin: 0 auto;
-  padding: 32px 8px;
+  margin: 0 auto 60px;
+  padding: 32px 8px 8px;
   background: #fff;
   @include mat-elevation(1);
 }
@@ -33,17 +28,27 @@ p {
   top: 0;
   z-index: 5;
   background: #ffff;
-  padding: 8px;
   height: 56px;
   @include mat-elevation(1);
+
+  &__clear-button {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+  }
+
+  &__title {
+    font-size: 18px;
+  }
+
+  &__submit-button {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+  }
 }
 
-.clear-button {
-  position: absolute;
-  left: 8px;
-}
-
-.title {
+.overview {
   margin-bottom: 32px;
   display: flex;
   flex-direction: column;
@@ -97,7 +102,7 @@ p {
 }
 
 .ingredient {
-  margin-bottom: 32px;
+  margin-bottom: 60px;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid #dbdbdb;
@@ -107,14 +112,12 @@ p {
   &__title {
     display: flex;
     justify-content: space-between;
-    h2 {
-      align-self: flex-end;
-    }
   }
 
   &__header {
     display: flex;
     justify-content: center;
+    padding: 0;
 
     &--end {
       max-width: 40px;
@@ -130,6 +133,7 @@ p {
     display: flex;
     justify-content: center;
     height: 100%;
+    padding: 0;
 
     &--end {
       max-width: 40px;
@@ -153,7 +157,7 @@ p {
 }
 
 .process {
-  margin-bottom: 32px;
+  margin-bottom: 60px;
   border-bottom: 1px solid #dbdbdb;
   display: flex;
   flex-direction: column;
@@ -163,14 +167,9 @@ p {
   &__title {
     display: flex;
     justify-content: space-between;
-
-    h2 {
-      align-self: flex-end;
-    }
   }
 
-  p {
-    margin: 0;
+  &__index {
     color: #767676;
   }
 
@@ -269,7 +268,7 @@ p {
 }
 
 .nutrition {
-  margin-bottom: 32px;
+  margin-bottom: 60px;
   border-bottom: 1px solid #dbdbdb;
 
   &__detail {
@@ -280,6 +279,11 @@ p {
     justify-content: space-between;
     align-items: center;
     height: 88px;
+    @include mat-elevation(1);
+
+    &--top {
+      border: none;
+    }
   }
 
   &__name {
@@ -311,8 +315,9 @@ p {
   align-items: center;
   background: #fff;
   max-width: 700px;
-  padding: 8px;
-  margin-bottom: 32px;
+  padding: 24px 8px;
+  margin-bottom: 60px;
+  @include mat-elevation(1);
 }
 
 .submit-button {

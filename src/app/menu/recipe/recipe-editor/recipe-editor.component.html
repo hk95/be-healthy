@@ -7,22 +7,31 @@
       <button
         type="button"
         mat-icon-button
-        class="clear-button"
+        class="head__clear-button"
         (click)="backToPage()"
       >
         <mat-icon>clear</mat-icon>
       </button>
-      <h1>レシピ{{ isCreating ? '作成' : '編集' }}画面</h1>
+      <h1 class="head__title">レシピ{{ isCreating ? '作成' : '編集' }}画面</h1>
+      <button
+        class="head__submit-button"
+        mat-raised-button
+        [disabled]="form.invalid || form.pristine"
+        color="primary"
+      >
+        保存
+      </button>
     </div>
     <div class="container">
+      <h2 class="title title--top">レシピ概要</h2>
       <div class="form-wrap">
-        <div class="title">
-          <mat-form-field class="title__name-field" appearance="outline">
+        <div class="overview">
+          <mat-form-field class="overview__name-field" appearance="outline">
             <mat-label>レシピタイトル</mat-label>
             <input
               matInput
               placeholder="カレー"
-              class="title__name-form"
+              class="overview__name-form"
               type="text"
               formControlName="recipeTitle"
               required
@@ -40,10 +49,10 @@
             >
           </mat-form-field>
 
-          <h2>レシピイメージ</h2>
+          <h2 class="title">レシピイメージ</h2>
           <input
             #thumbnail
-            class="title__image-form"
+            class="overview__image-form"
             type="file"
             (change)="openThumbnailDialog($event)"
             accept=".png, .jpg, .jpeg"
@@ -52,7 +61,7 @@
             type="button"
             *ngIf="!thumbnailURL"
             (click)="thumbnail.click()"
-            class="title__thumbnail-button"
+            class="overview__thumbnail-button"
           >
             <mat-icon class="camera-icon">add_photo_alternate</mat-icon>
             <p>写真挿入</p>
@@ -84,489 +93,490 @@
             >
           </mat-form-field>
         </div>
+      </div>
 
-        <div class="ingredient__title">
-          <h2>材料<span>*</span></h2>
+      <div class="ingredient__title">
+        <h2 class="title">材料<span>*</span></h2>
 
-          <button
-            type="button"
-            mat-button
-            *ngIf="ingredients.length !== 0"
-            (click)="editIngredient()"
-          >
-            <span *ngIf="!ingredient">材料を削除</span
-            ><span *ngIf="ingredient">完了</span>
-          </button>
-        </div>
-        <div class="ingredient">
-          <mat-table
-            [dataSource]="dataSource"
-            formArrayName="ingredients"
-            class="mat-elevation-z0 table"
-          >
-            <ng-container matColumnDef="name">
-              <mat-header-cell class="ingredient__header" *matHeaderCellDef>
-                材料名
-              </mat-header-cell>
-              <mat-cell
-                class="ingredient__cell"
-                *matCellDef="let element; let i = index"
-                [formGroupName]="i"
-              >
-                <mat-form-field class="ingredient__form-field">
-                  <input
-                    matInput
-                    class="ingredient__input"
-                    type="text"
-                    formControlName="name"
-                    autocomplete="off"
-                    #inputIngredinetName
-                  />
-                  <mat-hint align="end"
-                    >{{ inputIngredinetName.value.length }}/{{
-                      maxIngredinetNameLength
-                    }}</mat-hint
-                  >
-                  <mat-error *ngIf="element.get('name').hasError('required')"
-                    >必須入力です</mat-error
-                  ><mat-error *ngIf="element.get('name').hasError('maxlength')">
-                    {{
-                      maxIngredinetNameLength
-                    }}文字以内で入力してください</mat-error
-                  ></mat-form-field
-                >
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="amount">
-              <mat-header-cell class="ingredient__header" *matHeaderCellDef>
-                数量
-              </mat-header-cell>
-              <mat-cell
-                class="ingredient__cell"
-                *matCellDef="let element; let i = index"
-                [formGroupName]="i"
-              >
-                <mat-form-field class="ingredient__form-field">
-                  <input
-                    matInput
-                    class="ingredient__input"
-                    type="text"
-                    formControlName="amountAndUnit"
-                    autocomplete="off"
-                    #inputIngredinetUnit
-                  />
-                  <mat-hint align="end"
-                    >{{ inputIngredinetUnit.value.length }}/{{
-                      maxIngredinetUnitLength
-                    }}</mat-hint
-                  >
-                  <mat-error
-                    *ngIf="element.get('amountAndUnit').hasError('required')"
-                    >必須入力です</mat-error
-                  >
-                  <mat-error
-                    *ngIf="element.get('amountAndUnit').hasError('maxlength')"
-                    >{{
-                      maxIngredinetUnitLength
-                    }}文字以内で入力してください</mat-error
-                  >
-                </mat-form-field>
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="delete">
-              <mat-header-cell
-                class="ingredient__header ingredient__header--end"
-                *matHeaderCellDef
-              >
-              </mat-header-cell>
-              <mat-cell
-                class="ingredient__cell ingredient__cell--end"
-                *matCellDef="let element; let i = index"
-              >
-                <button
-                  type="button"
-                  mat-icon-button
-                  *ngIf="ingredient"
-                  (click)="removeIngredinet(i)"
-                >
-                  <mat-icon color="warn">remove_circle_outline</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row
-              *matHeaderRowDef="displayedColumns"
-            ></mat-header-row>
-            <mat-row
-              class="ingredient__row"
-              *matRowDef="let row; columns: displayedColumns"
-            ></mat-row>
-          </mat-table>
-
-          <div class="ingredient__wrap">
-            <button
-              *ngIf="
-                ingredients.length < limitIngredientArray;
-                else limitIngredient
-              "
-              type="button"
-              (click)="addIngredinet()"
-              mat-icon-button
-              color="primary"
-            >
-              <mat-icon>add_circle_outline</mat-icon>
-            </button>
-            <ng-template #limitIngredient>
-              <button type="button" disabled mat-icon-button>
-                <mat-icon>add_circle_outline</mat-icon>
-              </button>
-              <span
-                class="ingredient__validation"
-                *ngIf="ingredients.length === limitIngredientArray"
-                >これ以上項目は増やせません</span
-              >
-            </ng-template>
-          </div>
-        </div>
-        <div class="process__title">
-          <h2>作り方</h2>
-          <button
-            type="button"
-            mat-button
-            *ngIf="processes.length !== 0"
-            (click)="editProcess()"
-          >
-            <span *ngIf="!process">材料を削除</span
-            ><span *ngIf="process">完了</span>
-          </button>
-        </div>
-        <div class="process">
-          <mat-table
-            [dataSource]="processSource"
-            formArrayName="processes"
-            class="mat-elevation-z0 table"
-          >
-            <ng-container matColumnDef="index">
-              <mat-header-cell
-                class="process__header process__header--index"
-                *matHeaderCellDef
-              >
-              </mat-header-cell>
-              <mat-cell
-                class="process__cell process__cell--index"
-                *matCellDef="let element; let i = index"
-              >
-                <p>{{ i + 1 }}</p>
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="image">
-              <mat-header-cell class="process__header" *matHeaderCellDef>
-                手順イメージ
-              </mat-header-cell>
-              <mat-cell
-                class="process__cell process__cell--image-form"
-                *matCellDef="let element; let i = index"
-              >
-                <input
-                  #processImage
-                  (change)="openProcessImageDialog($event, i)"
-                  class="process__image-form"
-                  type="file"
-                  accept=".png, .jpg, .jpeg"
-                />
-                <button
-                  type="button"
-                  *ngIf="!processURLs[i]"
-                  (click)="processImage.click()"
-                  class="process__image"
-                >
-                  <mat-icon>add_photo_alternate</mat-icon>
-                  <p>写真挿入</p>
-                </button>
-                <img
-                  *ngIf="processURLs[i]"
-                  (click)="processImage.click()"
-                  [src]="processURLs[i]"
-                  alt="recipe-process"
-                />
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="description">
-              <mat-header-cell class="process__header" *matHeaderCellDef>
-                ポイント
-              </mat-header-cell>
-              <mat-cell
-                class="process__cell"
-                *matCellDef="let element; let i = index"
-                [formGroupName]="i"
-              >
-                <mat-form-field
-                  class="process__form-field"
-                  appearance="outline"
-                >
-                  <textarea
-                    matInput
-                    rows="3"
-                    formControlName="description"
-                    class="process__description"
-                    placeholder="りんごを切る"
-                    #inputIngredinetProcess
-                  ></textarea>
-                  <mat-hint align="end"
-                    >{{ inputIngredinetProcess.value.length }}/{{
-                      maxDescriptionLength
-                    }}</mat-hint
-                  >
-                  <mat-error
-                    *ngIf="element.get('description').hasError('required')"
-                    >必須入力です</mat-error
-                  >
-                  <mat-error
-                    *ngIf="element.get('description').hasError('maxlength')"
-                    >{{ maxDescriptionLength }}以内で入力してください</mat-error
-                  >
-                </mat-form-field>
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="delete">
-              <mat-header-cell
-                class="ingredient__header ingredient__header--end"
-                *matHeaderCellDef
-              >
-              </mat-header-cell>
-              <mat-cell
-                class="process__cell process__cell--end"
-                *matCellDef="let element; let i = index"
-              >
-                <button
-                  type="button"
-                  mat-icon-button
-                  *ngIf="process"
-                  (click)="removeProcess(i)"
-                >
-                  <mat-icon color="warn">remove_circle_outline</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row
-              *matHeaderRowDef="displayedColumnsProcess"
-            ></mat-header-row>
-            <mat-row
-              class="process__row"
-              *matRowDef="let row; columns: displayedColumnsProcess"
-            ></mat-row>
-          </mat-table>
-          <div class="process__wrap">
-            <button
-              *ngIf="processes.length < limitProcessArray; else limitProcess"
-              type="button"
-              (click)="addProcess()"
-              mat-icon-button
-              color="primary"
-            >
-              <mat-icon>add_circle_outline</mat-icon>
-            </button>
-            <ng-template #limitProcess
-              ><button type="button" mat-icon-button disabled>
-                <mat-icon>add_circle_outline</mat-icon>
-              </button>
-              <span
-                class="process__validation"
-                *ngIf="processes.length === limitProcessArray"
-                >これ以上項目は増やせません</span
-              ></ng-template
-            >
-          </div>
-        </div>
-
-        <div class="nutrition">
-          <h2>栄養素</h2>
-          <div class="nutrition__detail">
-            <p class="nutrition__name">総カロリー</p>
-
-            <mat-form-field class="nutrition__form-fied" appearance="outline">
-              <input
-                matInput
-                class="nutrition__amount"
-                type="number"
-                autocomplete="off"
-                min="0"
-                max="5000"
-                formControlName="recipeCal"
-              />
-              <span class="nutrition__prefix" matSuffix>kcal</span>
-              <mat-error *ngIf="recipeCalControl.hasError('required')"
-                >必須入力です</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  recipeCalControl.hasError('min') ||
-                  recipeCalControl.hasError('max')
-                "
-                >{{ minNutritionAmount }}〜{{
-                  maxNutritionAmount
-                }}の範囲内で調整してください</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <div class="nutrition__detail">
-            <p class="nutrition__name">タンパク質</p>
-            <mat-form-field class="nutrition__form-fied" appearance="outline">
-              <input
-                matInput
-                class="nutrition__amount"
-                type="number"
-                autocomplete="off"
-                min="0"
-                max="5000"
-                formControlName="recipeProtein"
-              />
-              <span class="nutrition__prefix" matSuffix>g</span>
-              <mat-error *ngIf="recipeProteinControl.hasError('required')"
-                >必須入力です</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  recipeProteinControl.hasError('min') ||
-                  recipeProteinControl.hasError('max')
-                "
-                >{{ minNutritionAmount }}〜{{
-                  maxNutritionAmount
-                }}の範囲内で調整してください</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <div class="nutrition__detail">
-            <p class="nutrition__name">脂質</p>
-            <mat-form-field class="nutrition__form-fied" appearance="outline">
-              <input
-                matInput
-                class="nutrition__amount"
-                type="number"
-                autocomplete="off"
-                min="0"
-                max="5000"
-                formControlName="recipeFat"
-              />
-              <span class="nutrition__prefix" matSuffix>g</span>
-              <mat-error *ngIf="recipeFatControl.hasError('required')"
-                >必須入力です</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  recipeFatControl.hasError('min') ||
-                  recipeFatControl.hasError('max')
-                "
-                >{{ minNutritionAmount }}〜{{
-                  maxNutritionAmount
-                }}の範囲内で調整してください</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <div class="nutrition__detail">
-            <p class="nutrition__name">糖質</p>
-            <mat-form-field class="nutrition__form-fied" appearance="outline">
-              <input
-                matInput
-                class="nutrition__amount"
-                type="number"
-                autocomplete="off"
-                min="0"
-                max="5000"
-                formControlName="recipeSugar"
-              />
-              <span class="nutrition__prefix" matSuffix>g</span>
-              <mat-error *ngIf="recipeSugarControl.hasError('required')"
-                >必須入力です</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  recipeSugarControl.hasError('min') ||
-                  recipeSugarControl.hasError('max')
-                "
-                >{{ minNutritionAmount }}〜{{
-                  maxNutritionAmount
-                }}の範囲内で調整してください</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <div class="nutrition__detail">
-            <p class="nutrition__name">食物繊維</p>
-            <mat-form-field class="nutrition__form-fied" appearance="outline">
-              <input
-                matInput
-                class="nutrition__amount"
-                type="number"
-                autocomplete="off"
-                min="0"
-                max="5000"
-                formControlName="recipeDietaryFiber"
-              />
-              <span class="nutrition__prefix" matSuffix>g</span
-              ><mat-error *ngIf="recipeDietaryFiberControl.hasError('required')"
-                >必須入力です</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  recipeDietaryFiberControl.hasError('min') ||
-                  recipeDietaryFiberControl.hasError('max')
-                "
-                >{{ minNutritionAmount }}〜{{
-                  maxNutritionAmount
-                }}の範囲内で調整してください</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <div class="nutrition__detail">
-            <p class="nutrition__name">炭水化物</p>
-            <mat-form-field class="nutrition__form-fied" appearance="outline">
-              <input
-                matInput
-                class="nutrition__amount"
-                type="number"
-                autocomplete="off"
-                min="0"
-                max="5000"
-                formControlName="recipeTotalCarbohydrate"
-              />
-              <span class="nutrition__prefix" matSuffix>g</span>
-              <mat-error
-                *ngIf="recipeTotalCarbohydrateControl.hasError('required')"
-                >必須入力です</mat-error
-              >
-              <mat-error
-                *ngIf="
-                  recipeTotalCarbohydrateControl.hasError('min') ||
-                  recipeTotalCarbohydrateControl.hasError('max')
-                "
-                >{{ minNutritionAmount }}〜{{
-                  maxNutritionAmount
-                }}の範囲内で調整してください</mat-error
-              >
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="public">
-          <p>レシピを公開する</p>
-          <mat-slide-toggle
-            class="example-margin"
-            color="primary"
-            [(checked)]="public"
-            (change)="changePublic()"
-          >
-          </mat-slide-toggle>
-        </div>
         <button
-          class="submit-button"
-          mat-raised-button
-          [disabled]="form.invalid || form.pristine"
-          color="primary"
+          type="button"
+          mat-button
+          *ngIf="ingredients.length !== 0"
+          (click)="editIngredient()"
         >
-          保存
+          <span *ngIf="!ingredient">材料を削除</span
+          ><span *ngIf="ingredient">完了</span>
         </button>
       </div>
+      <div class="ingredient">
+        <mat-table
+          [dataSource]="dataSource"
+          formArrayName="ingredients"
+          class="mat-elevation-z0 table"
+        >
+          <ng-container matColumnDef="name">
+            <mat-header-cell class="ingredient__header" *matHeaderCellDef>
+              材料名
+            </mat-header-cell>
+            <mat-cell
+              class="ingredient__cell"
+              *matCellDef="let element; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field class="ingredient__form-field">
+                <input
+                  matInput
+                  class="ingredient__input"
+                  type="text"
+                  formControlName="name"
+                  autocomplete="off"
+                  #inputIngredinetName
+                />
+                <mat-hint align="end"
+                  >{{ inputIngredinetName.value.length }}/{{
+                    maxIngredinetNameLength
+                  }}</mat-hint
+                >
+                <mat-error *ngIf="element.get('name').hasError('required')"
+                  >必須入力です</mat-error
+                ><mat-error *ngIf="element.get('name').hasError('maxlength')">
+                  {{
+                    maxIngredinetNameLength
+                  }}文字以内で入力してください</mat-error
+                ></mat-form-field
+              >
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="amount">
+            <mat-header-cell class="ingredient__header" *matHeaderCellDef>
+              数量
+            </mat-header-cell>
+            <mat-cell
+              class="ingredient__cell"
+              *matCellDef="let element; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field class="ingredient__form-field">
+                <input
+                  matInput
+                  class="ingredient__input"
+                  type="text"
+                  formControlName="amountAndUnit"
+                  autocomplete="off"
+                  #inputIngredinetUnit
+                />
+                <mat-hint align="end"
+                  >{{ inputIngredinetUnit.value.length }}/{{
+                    maxIngredinetUnitLength
+                  }}</mat-hint
+                >
+                <mat-error
+                  *ngIf="element.get('amountAndUnit').hasError('required')"
+                  >必須入力です</mat-error
+                >
+                <mat-error
+                  *ngIf="element.get('amountAndUnit').hasError('maxlength')"
+                  >{{
+                    maxIngredinetUnitLength
+                  }}文字以内で入力してください</mat-error
+                >
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="delete">
+            <mat-header-cell
+              class="ingredient__header ingredient__header--end"
+              *matHeaderCellDef
+            >
+            </mat-header-cell>
+            <mat-cell
+              class="ingredient__cell ingredient__cell--end"
+              *matCellDef="let element; let i = index"
+            >
+              <button
+                type="button"
+                mat-icon-button
+                *ngIf="ingredient"
+                (click)="removeIngredinet(i)"
+              >
+                <mat-icon color="warn">remove_circle_outline</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row
+            class="ingredient__row"
+            *matRowDef="let row; columns: displayedColumns"
+          ></mat-row>
+        </mat-table>
+
+        <div class="ingredient__wrap">
+          <button
+            *ngIf="
+              ingredients.length < limitIngredientArray;
+              else limitIngredient
+            "
+            type="button"
+            (click)="addIngredinet()"
+            mat-icon-button
+            color="primary"
+          >
+            <mat-icon>add_circle_outline</mat-icon></button
+          ><span *ngIf="ingredients.length < limitIngredientArray"
+            >材料を追加する</span
+          >
+          <ng-template #limitIngredient>
+            <button type="button" disabled mat-icon-button>
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+            <span
+              class="ingredient__validation"
+              *ngIf="ingredients.length === limitIngredientArray"
+              >これ以上項目は増やせません</span
+            >
+          </ng-template>
+        </div>
+      </div>
+      <div class="process__title">
+        <h2 class="title">作り方</h2>
+        <button
+          type="button"
+          mat-button
+          *ngIf="processes.length !== 0"
+          (click)="editProcess()"
+        >
+          <span *ngIf="!process">材料を削除</span
+          ><span *ngIf="process">完了</span>
+        </button>
+      </div>
+      <div class="process">
+        <mat-table
+          [dataSource]="processSource"
+          formArrayName="processes"
+          class="mat-elevation-z0 table"
+        >
+          <ng-container matColumnDef="index">
+            <mat-header-cell
+              class="process__header process__header--index"
+              *matHeaderCellDef
+            >
+            </mat-header-cell>
+            <mat-cell
+              class="process__cell process__cell--index"
+              *matCellDef="let element; let i = index"
+            >
+              <p class="process__index">{{ i + 1 }}</p>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="image">
+            <mat-header-cell class="process__header" *matHeaderCellDef>
+              手順イメージ
+            </mat-header-cell>
+            <mat-cell
+              class="process__cell process__cell--image-form"
+              *matCellDef="let element; let i = index"
+            >
+              <input
+                #processImage
+                (change)="openProcessImageDialog($event, i)"
+                class="process__image-form"
+                type="file"
+                accept=".png, .jpg, .jpeg"
+              />
+              <button
+                type="button"
+                *ngIf="!processURLs[i]"
+                (click)="processImage.click()"
+                class="process__image"
+              >
+                <mat-icon>add_photo_alternate</mat-icon>
+                <p>写真挿入</p>
+              </button>
+              <img
+                *ngIf="processURLs[i]"
+                (click)="processImage.click()"
+                [src]="processURLs[i]"
+                alt="recipe-process"
+              />
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <mat-header-cell class="process__header" *matHeaderCellDef>
+              ポイント
+            </mat-header-cell>
+            <mat-cell
+              class="process__cell"
+              *matCellDef="let element; let i = index"
+              [formGroupName]="i"
+            >
+              <mat-form-field class="process__form-field" appearance="outline">
+                <textarea
+                  matInput
+                  rows="3"
+                  formControlName="description"
+                  class="process__description"
+                  placeholder="りんごを切る"
+                  #inputIngredinetProcess
+                ></textarea>
+                <mat-hint align="end"
+                  >{{ inputIngredinetProcess.value.length }}/{{
+                    maxDescriptionLength
+                  }}</mat-hint
+                >
+                <mat-error
+                  *ngIf="element.get('description').hasError('required')"
+                  >必須入力です</mat-error
+                >
+                <mat-error
+                  *ngIf="element.get('description').hasError('maxlength')"
+                  >{{
+                    maxDescriptionLength
+                  }}文字以内で入力してください</mat-error
+                >
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="delete">
+            <mat-header-cell
+              class="ingredient__header ingredient__header--end"
+              *matHeaderCellDef
+            >
+            </mat-header-cell>
+            <mat-cell
+              class="process__cell process__cell--end"
+              *matCellDef="let element; let i = index"
+            >
+              <button
+                type="button"
+                mat-icon-button
+                *ngIf="process"
+                (click)="removeProcess(i)"
+              >
+                <mat-icon color="warn">remove_circle_outline</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row
+            *matHeaderRowDef="displayedColumnsProcess"
+          ></mat-header-row>
+          <mat-row
+            class="process__row"
+            *matRowDef="let row; columns: displayedColumnsProcess"
+          ></mat-row>
+        </mat-table>
+        <div class="process__wrap">
+          <button
+            *ngIf="processes.length < limitProcessArray; else limitProcess"
+            type="button"
+            (click)="addProcess()"
+            mat-icon-button
+            color="primary"
+          >
+            <mat-icon>add_circle_outline</mat-icon></button
+          ><span *ngIf="processes.length < limitProcessArray"
+            >作り方を追加する</span
+          >
+          <ng-template #limitProcess
+            ><button type="button" mat-icon-button disabled>
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+            <span
+              class="process__validation"
+              *ngIf="processes.length === limitProcessArray"
+              >これ以上項目は増やせません</span
+            ></ng-template
+          >
+        </div>
+      </div>
+
+      <div class="nutrition">
+        <h2 class="title">栄養素<span>*</span></h2>
+        <div class="nutrition__detail nutrition__detail--top">
+          <p class="nutrition__name">総カロリー</p>
+
+          <mat-form-field class="nutrition__form-fied" appearance="outline">
+            <input
+              matInput
+              class="nutrition__amount"
+              type="number"
+              autocomplete="off"
+              min="0"
+              max="5000"
+              formControlName="recipeCal"
+            />
+            <span class="nutrition__prefix" matSuffix>kcal</span>
+            <mat-error *ngIf="recipeCalControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error
+              *ngIf="
+                recipeCalControl.hasError('min') ||
+                recipeCalControl.hasError('max')
+              "
+              >{{ minNutritionAmount }}〜{{
+                maxNutritionAmount
+              }}の範囲内で調整してください</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">タンパク質</p>
+          <mat-form-field class="nutrition__form-fied" appearance="outline">
+            <input
+              matInput
+              class="nutrition__amount"
+              type="number"
+              autocomplete="off"
+              min="0"
+              max="5000"
+              formControlName="recipeProtein"
+            />
+            <span class="nutrition__prefix" matSuffix>g</span>
+            <mat-error *ngIf="recipeProteinControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error
+              *ngIf="
+                recipeProteinControl.hasError('min') ||
+                recipeProteinControl.hasError('max')
+              "
+              >{{ minNutritionAmount }}〜{{
+                maxNutritionAmount
+              }}の範囲内で調整してください</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">脂質</p>
+          <mat-form-field class="nutrition__form-fied" appearance="outline">
+            <input
+              matInput
+              class="nutrition__amount"
+              type="number"
+              autocomplete="off"
+              min="0"
+              max="5000"
+              formControlName="recipeFat"
+            />
+            <span class="nutrition__prefix" matSuffix>g</span>
+            <mat-error *ngIf="recipeFatControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error
+              *ngIf="
+                recipeFatControl.hasError('min') ||
+                recipeFatControl.hasError('max')
+              "
+              >{{ minNutritionAmount }}〜{{
+                maxNutritionAmount
+              }}の範囲内で調整してください</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">糖質</p>
+          <mat-form-field class="nutrition__form-fied" appearance="outline">
+            <input
+              matInput
+              class="nutrition__amount"
+              type="number"
+              autocomplete="off"
+              min="0"
+              max="5000"
+              formControlName="recipeSugar"
+            />
+            <span class="nutrition__prefix" matSuffix>g</span>
+            <mat-error *ngIf="recipeSugarControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error
+              *ngIf="
+                recipeSugarControl.hasError('min') ||
+                recipeSugarControl.hasError('max')
+              "
+              >{{ minNutritionAmount }}〜{{
+                maxNutritionAmount
+              }}の範囲内で調整してください</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">食物繊維</p>
+          <mat-form-field class="nutrition__form-fied" appearance="outline">
+            <input
+              matInput
+              class="nutrition__amount"
+              type="number"
+              autocomplete="off"
+              min="0"
+              max="5000"
+              formControlName="recipeDietaryFiber"
+            />
+            <span class="nutrition__prefix" matSuffix>g</span
+            ><mat-error *ngIf="recipeDietaryFiberControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error
+              *ngIf="
+                recipeDietaryFiberControl.hasError('min') ||
+                recipeDietaryFiberControl.hasError('max')
+              "
+              >{{ minNutritionAmount }}〜{{
+                maxNutritionAmount
+              }}の範囲内で調整してください</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="nutrition__detail">
+          <p class="nutrition__name">炭水化物</p>
+          <mat-form-field class="nutrition__form-fied" appearance="outline">
+            <input
+              matInput
+              class="nutrition__amount"
+              type="number"
+              autocomplete="off"
+              min="0"
+              max="5000"
+              formControlName="recipeTotalCarbohydrate"
+            />
+            <span class="nutrition__prefix" matSuffix>g</span>
+            <mat-error
+              *ngIf="recipeTotalCarbohydrateControl.hasError('required')"
+              >必須入力です</mat-error
+            >
+            <mat-error
+              *ngIf="
+                recipeTotalCarbohydrateControl.hasError('min') ||
+                recipeTotalCarbohydrateControl.hasError('max')
+              "
+              >{{ minNutritionAmount }}〜{{
+                maxNutritionAmount
+              }}の範囲内で調整してください</mat-error
+            >
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="public">
+        <p>レシピを公開する</p>
+        <mat-slide-toggle
+          class="example-margin"
+          color="primary"
+          [(checked)]="public"
+          (change)="changePublic()"
+        >
+        </mat-slide-toggle>
+      </div>
+      <button
+        class="submit-button"
+        mat-raised-button
+        [disabled]="form.invalid || form.pristine"
+        color="primary"
+      >
+        保存
+      </button>
     </div>
   </form>
 </div>

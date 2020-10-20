@@ -22,6 +22,16 @@ body {
   background-color: #fafafafa;
 }
 
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+  font-weight: normal;
+  opacity: 0.87;
+}
+
 .border {
   margin: 0;
   border-top: 1px solid #000;
