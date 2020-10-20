@@ -6,9 +6,22 @@
   top: 0;
   z-index: 20;
   display: flex;
-  justify-content: space-between;
-  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  height: 56px;
   @include mat-elevation(1);
+
+  &__back-link {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+  }
+
+  &__wrap {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+  }
 }
 
 .delete-button {
@@ -16,7 +29,9 @@
 }
 
 .update-to-page {
-  margin-right: 16px;
+  @media screen and (min-width: 750px) {
+    margin-right: 8px;
+  }
 }
 
 .thumbnail {
