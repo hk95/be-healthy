@@ -12,9 +12,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -40,12 +38,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatInputModule } from '@angular/material/input';
 import { CreditCardComponent } from './dialogs/credit-card/credit-card.component';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { AvatarComponent } from './dialogs/avatar/avatar.component';
 import { TutorialComponent } from './dialogs/tutorial/tutorial.component';
 import { MealInputComponent } from './bottom-sheet/meal-input/meal-input.component';
+import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeJa);
 FullCalendarModule.registerPlugins([dayGridPlugin]);
@@ -79,9 +77,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     AngularFireAuthModule,
     MatSnackBarModule,
     MatToolbarModule,
-    MatButtonModule,
     MatSidenavModule,
-    MatIconModule,
     MatMenuModule,
     FullCalendarModule,
     ImageCropperModule,
@@ -94,7 +90,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatInputModule,
+    SharedModule,
   ],
   providers: [
     DatePipe,

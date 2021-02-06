@@ -4,9 +4,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { TopRoutingModule } from './top-routing.module';
 import { TopComponent } from './top/top.component';
 
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -15,7 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [TopComponent, DetailComponent],
@@ -23,9 +21,7 @@ import { MatInputModule } from '@angular/material/input';
   imports: [
     CommonModule,
     TopRoutingModule,
-    MatButtonModule,
     MatCardModule,
-    MatIconModule,
     FullCalendarModule,
     MatTooltipModule,
     MatDialogModule,
@@ -33,7 +29,7 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     ReactiveFormsModule,
     FormsModule,
-    MatInputModule,
+    SharedModule,
   ],
   providers: [DatePipe],
 })
