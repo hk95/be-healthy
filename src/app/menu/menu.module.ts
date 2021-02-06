@@ -4,12 +4,11 @@ import { CommonModule } from '@angular/common';
 import { MenuRoutingModule } from './menu-routing.module';
 import { MenuComponent } from './menu/menu.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 import { SetComponent } from './set/set.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [MenuComponent, SetComponent, RecipeComponent],
@@ -17,9 +16,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     MenuRoutingModule,
     MatTabsModule,
-    MatButtonModule,
-    MatIconModule,
     MatProgressSpinnerModule,
+    SharedModule,
   ],
 })
 export class MenuModule {}
