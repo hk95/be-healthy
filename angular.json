@@ -46,7 +46,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -64,7 +63,8 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -96,7 +96,8 @@
               "apps/my-app/src/styles.scss"
             ],
             "scripts": []
-          }
+          },
+          "outputs": ["coverage/apps/my-app"]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
