@@ -1,0 +1,119 @@
+<div class="loading" *ngIf="loading">
+  <mat-spinner class="loading__spinner" diameter="30"></mat-spinner>
+</div>
+<ng-template #noSet>
+  <div class="tab">
+    <div class="no-select">
+      <h3 class="no-select__title">
+        <span class="mat-icon"
+          ><mat-icon color="primary">bookmark</mat-icon></span
+        >マイセットはまだ登録されていません。
+      </h3>
+
+      <p class="no-select__text">
+        食べる頻度が多い食べ物をまとめて登録できる機能です。
+      </p>
+      <figure class="no-select__figure">
+        <p class="no-select__example">（例）カレーセット</p>
+        <img class="no-select__image" src="/assets/images/ex-set.png" alt="" />
+      </figure>
+      <p class="no-select__text">自分だけのマイセットを登録しましょう！</p>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="goToSetPage()"
+        class="no-select__create"
+      >
+        <mat-icon>add</mat-icon><span>登録する</span>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<div *ngIf="!loading">
+  <div class="tab tab--content" *ngIf="sets && sets.length > 0; else noSet">
+    <p class="selected-max" *ngIf="selectedMealsNum >= maxSelectNum">
+      これ以上追加できません
+    </p>
+    <div *ngFor="let set of sets; index as i">
+      <div class="food">
+        <button
+          class="food__icon"
+          mat-icon-button
+          color="primary"
+          (click)="outSet(set.setId, i)"
+        >
+          <mat-icon>bookmark</mat-icon>
+        </button>
+
+        <div class="food__name">
+          <p class="food__name--with-amount">
+            {{ set.setTitle }}
+          </p>
+          <span class="food__amountper"> {{ set.setCal }}kcal/セット </span>
+        </div>
+        <div class="spacer"></div>
+
+        <form class="food__choice" [formGroup]="amountForm">
+          <div formArrayName="amountArray">
+            <mat-form-field
+              class="food__choice-form-field"
+              appearance="outline"
+              [formGroupName]="i"
+            >
+              <input
+                matInput
+                class="food__choice-input"
+                autocomplete="off"
+                [formControlName]="i"
+                [max]="maxAmount"
+                [min]="minAmount"
+                step="0.1"
+                [(ngModel)]="amount[i]"
+                type="number"
+              />
+              <span matSuffix>セット</span>
+              <mat-hint align="end">
+                {{ set.setCal * amount[i] | number: '1.1-1' }} kcal</mat-hint
+              >
+              <mat-error *ngIf="amount[i] > maxAmount || amount[i] < minAmount"
+                >{{ minAmount }}〜{{
+                  maxAmount
+                }}の範囲で入力してください</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </form>
+
+        <button
+          class="open-sheet"
+          mat-icon-button
+          color="primary"
+          (click)="openBottomSheet(set)"
+          [disabled]="selectedMealsNum >= maxSelectNum"
+        >
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button
+          class="add-meal"
+          mat-icon-button
+          color="primary"
+          (click)="addSet(amount[i], set)"
+          [disabled]="
+            amount[i] === null ||
+            amount[i] > maxAmount ||
+            amount[i] < minAmount ||
+            selectedMealsNum >= maxSelectNum
+          "
+        >
+          <mat-icon>add_box</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="more-button" *ngIf="isNext">
+      <button mat-flat-button color="primary" (click)="getSets()">
+        もっと見る
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<div class="nav">
+  <button
+    class="back-to-page"
+    mat-icon-button
+    mat-raised-button
+    mat-dialog-close
+    type="button"
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
+  <div class="spacer"></div>
+</div>
+<div mat-dialog-content>
+  <div class="contents" *ngIf="recipe">
+    <div *ngIf="recipe.recipeThumbnailURL">
+      <img class="thumbnail" [src]="recipe.recipeThumbnailURL" alt="" />
+    </div>
+    <div *ngIf="!recipe.recipeThumbnailURL">
+      <span class="no-thumbnail">No Image</span>
+    </div>
+    <div class="content-head">
+      <h2 class="content__name">レシピ名</h2>
+      <h4 *ngIf="recipe.public ? true : false">公開中</h4>
+    </div>
+    <div class="content">
+      <h1>{{ recipe.recipeTitle }}</h1>
+    </div>
+    <ng-container *ngIf="recipe.recipeDescription">
+      <h2 class="content__name">ポイント</h2>
+      <div class="content">
+        <p class="content__point">
+          <span>{{ recipe.recipeDescription }}</span>
+        </p>
+      </div>
+    </ng-container>
+    <h2 class="content__name">材料</h2>
+    <div class="ingredients">
+      <div class="ingredient" *ngFor="let food of recipe.foods">
+        <p class="ingredient__name">{{ food.name }}</p>
+        <p class="ingredient__amount">{{ food.amountAndUnit }}</p>
+      </div>
+      <div class="border"></div>
+    </div>
+    <ng-container *ngIf="recipe.processes[0]">
+      <h2 class="content__name">作り方</h2>
+      <div class="processes">
+        <div
+          class="process"
+          *ngFor="let process of recipe.processes; let i = index"
+        >
+          <div class="process__wrapper">
+            <p>{{ i + 1 }}</p>
+            <img [src]="process.photoURL" alt="" />
+          </div>
+          <p class="process__description">{{ process.description }}</p>
+        </div>
+        <div class="border"></div>
+      </div>
+    </ng-container>
+    <h2 class="content__name">栄養素</h2>
+
+    <div class="nutrition">
+      <div class="nutrition__detail">
+        <h3 class="nutrition__name">総カロリー</h3>
+        <p>
+          {{ recipe.recipeProtein ? recipe.recipeProtein : '未入力' }}
+          <span *ngIf="recipe.recipeProtein">g</span>
+        </p>
+      </div>
+      <div class="nutrition__detail">
+        <h3 class="nutrition__name">タンパク質</h3>
+        <p>
+          {{ recipe.recipeProtein ? recipe.recipeProtein : '未入力' }}
+          <span *ngIf="recipe.recipeProtein">g</span>
+        </p>
+      </div>
+      <div class="nutrition__detail">
+        <h3 class="nutrition__name">脂質</h3>
+        <p>
+          {{ recipe.recipeFat ? recipe.recipeFat : '未入力' }}
+          <span *ngIf="recipe.recipeFat">g</span>
+        </p>
+      </div>
+      <div class="nutrition__detail">
+        <h3 class="nutrition__name">糖質</h3>
+        <p>
+          {{ recipe.recipeSugar ? recipe.recipeSugar : '未入力' }}
+          <span *ngIf="recipe.recipeSugar">g</span>
+        </p>
+      </div>
+      <div class="nutrition__detail">
+        <h3 class="nutrition__name">食物繊維</h3>
+        <p>
+          {{ recipe.recipeDietaryFiber ? recipe.recipeDietaryFiber : '未入力' }}
+          <span *ngIf="recipe.recipeDietaryFiber">g</span>
+        </p>
+      </div>
+      <div class="nutrition__detail">
+        <h3 class="nutrition__name">炭水化物</h3>
+        <p>
+          {{
+            recipe.recipeTotalCarbohydrate
+              ? recipe.recipeTotalCarbohydrate
+              : '未入力'
+          }}
+          <span *ngIf="recipe.recipeTotalCarbohydrate">g</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
