@@ -10,8 +10,8 @@ export const environment = {
     price: 'price_1HHq4xEM1ZTRJUunj6AY9MzM',
   },
   algolia: {
-    appId: 'BQ4M4PM81E',
-    searchKey: 'bcf9c772491ea74ff8a8411bfeb182f4',
+    appId: 'RL9IODP1ZN',
+    searchKey: '79da26555e8fb2bf04a659e91d365010',
   },
   firebase: {
     apiKey: 'AIzaSyANR8AypGILHWh4GjLMk0WkpNEukLpn0-8',

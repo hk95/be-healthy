@@ -2,13 +2,17 @@
 
 @include mat-core();
 
-$my-app-primary: mat-palette($mat-teal, 500);
-$my-app-accent: mat-palette($mat-pink, A200, A100, A400);
-$my-app-warn: mat-palette($mat-red, 500);
+$be-healthy-primary: mat-palette($mat-teal, 500);
+$be-healthy-accent: mat-palette($mat-pink, A200, A100, A400);
+$be-healthy-warn: mat-palette($mat-red, 500);
 
-$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+$be-healthy-theme: mat-light-theme(
+  $be-healthy-primary,
+  $be-healthy-accent,
+  $be-healthy-warn
+);
 
-@include angular-material-theme($my-app-theme);
+@include angular-material-theme($be-healthy-theme);
 
 /* You can add global styles to this file, and also import other style files */
 html,
