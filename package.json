@@ -2,12 +2,30 @@
   "name": "be-healthy",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "ng": "nx",
     "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "nx workspace-lint && ng lint",
+    "e2e": "ng e2e",
+    "postinstall": "node ./decorate-angular-cli.js",
+    "nx": "nx",
+    "affected:apps": "nx affected:apps",
+    "affected:libs": "nx affected:libs",
+    "affected:build": "nx affected:build",
+    "affected:e2e": "nx affected:e2e",
+    "affected:test": "nx affected:test",
+    "affected:lint": "nx affected:lint",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "affected": "nx affected",
+    "format": "nx format:write",
+    "format:write": "nx format:write",
+    "format:check": "nx format:check",
+    "update": "ng update @nrwl/workspace",
+    "update:check": "ng update",
+    "dep-graph": "nx dep-graph",
+    "workspace-schematic": "nx workspace-schematic",
+    "help": "nx help"
   },
   "husky": {
     "hooks": {
@@ -44,7 +62,8 @@
     "to": "^0.2.9",
     "tslib": "^1.10.0",
     "update": "^0.7.4",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "@nrwl/angular": "9.8.0"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.900",
@@ -52,6 +71,9 @@
     "@angular/cli": "~9.1.1",
     "@angular/compiler-cli": "~9.1.1",
     "@angular/language-service": "~9.1.1",
+    "@nrwl/cli": "^12.0.8",
+    "@nrwl/tao": "^12.0.8",
+    "@nrwl/workspace": "^9.8.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
