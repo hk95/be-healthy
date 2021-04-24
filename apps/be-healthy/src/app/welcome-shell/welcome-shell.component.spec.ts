@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { WelcomeShellComponent } from './welcome-shell.component';
 
@@ -6,11 +6,13 @@ describe('WelcomeShellComponent', () => {
   let component: WelcomeShellComponent;
   let fixture: ComponentFixture<WelcomeShellComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [WelcomeShellComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [WelcomeShellComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WelcomeShellComponent);

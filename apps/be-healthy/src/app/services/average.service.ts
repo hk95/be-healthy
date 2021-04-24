@@ -179,7 +179,7 @@ export class AverageService {
     const callableOfWeek = this.fns.httpsCallable('averageCalOfWeek');
 
     const allDataOfDate = this.getAllDataOfDate(date);
-    await this.db
+    this.db
       .doc(`users/${userId}/dailyInfos/${date}`)
       .valueChanges()
       .pipe(take(1))

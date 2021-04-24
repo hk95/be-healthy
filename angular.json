@@ -17,6 +17,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "angular-instantsearch",
+              "firebase/app",
+              "firebase",
+              "algoliasearch-helper",
+              "qs",
+              "hogan.js",
+              "'@firebase/auth",
+              "@firebase/functions"
+            ],
             "outputPath": "dist/apps/be-healthy",
             "index": "apps/be-healthy/src/index.html",
             "main": "apps/be-healthy/src/main.ts",
@@ -46,7 +56,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -64,7 +73,8 @@
                 }
               ]
             }
-          }
+          },
+          "outputs": ["{options.outputPath}"]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -99,7 +109,8 @@
               "apps/be-healthy/src/styles.scss"
             ],
             "scripts": []
-          }
+          },
+          "outputs": ["coverage/apps/be-healthy"]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
