@@ -10,7 +10,6 @@ export class MainShellComponent implements OnInit {
   user$ = this.authService.afUser$;
 
   constructor(private authService: AuthService) {}
-  title = 'my-app';
 
   logout() {
     this.authService.logout();
