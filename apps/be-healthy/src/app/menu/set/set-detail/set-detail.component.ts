@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SetService } from 'src/app/services/set.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { Set } from 'src/app/interfaces/set';
 import { switchMap, take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { Observable } from 'rxjs';
+import { Set } from '../../../interfaces/set';
+import { SetService } from '../../../services/set.service';
+import { AuthService } from '../../../services/auth.service';
+import { DeleteDialogComponent } from '../../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-set-detail',

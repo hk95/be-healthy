@@ -1,10 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RecipeService } from 'src/app/services/recipe.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { RecipeService } from '../../services/recipe.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-recipe-thumbnail',

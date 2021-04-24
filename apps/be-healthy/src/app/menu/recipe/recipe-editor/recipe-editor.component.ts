@@ -15,15 +15,15 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { RecipeThumbnailComponent } from 'src/app/dialogs/recipe-thumbnail/recipe-thumbnail.component';
-import { RecipeProcessImageComponent } from 'src/app/dialogs/recipe-process-image/recipe-process-image.component';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { RecipeService } from 'src/app/services/recipe.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { ProcessOfRecipe, Recipe } from 'src/app/interfaces/recipe';
 import { switchMap } from 'rxjs/operators';
+import { ProcessOfRecipe, Recipe } from '../../../interfaces/recipe';
+import { RecipeService } from '../../../services/recipe.service';
+import { AuthService } from '../../../services/auth.service';
+import { RecipeProcessImageComponent } from '../../../dialogs/recipe-process-image/recipe-process-image.component';
+import { RecipeThumbnailComponent } from '../../../dialogs/recipe-thumbnail/recipe-thumbnail.component';
 
 @Component({
   selector: 'app-recipe-editor',

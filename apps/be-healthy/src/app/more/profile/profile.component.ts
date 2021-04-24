@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { OthreShellService } from 'src/app/services/othre-shell.service';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { BasicInfoService } from 'src/app/services/basic-info.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { BasicInfo } from 'src/app/interfaces/basic-info';
 import { MatDialog } from '@angular/material/dialog';
-import { AvatarComponent } from 'src/app/dialogs/avatar/avatar.component';
+
 import { Subscription } from 'rxjs';
+import { AvatarComponent } from '../../dialogs/avatar/avatar.component';
+import { BasicInfo } from '../../interfaces/basic-info';
+import { AuthService } from '../../services/auth.service';
+import { BasicInfoService } from '../../services/basic-info.service';
+import { OthreShellService } from '../../services/othre-shell.service';
 
 @Component({
   selector: 'app-profile',

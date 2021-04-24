@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChargeWithInvoice } from '@interfaces/charge';
-import { PaymentService } from 'src/app/services/payment.service';
 import { Subscription } from 'rxjs';
-import { MainShellService } from 'src/app/services/main-shell.service';
+import { MainShellService } from '../../services/main-shell.service';
+import { PaymentService } from '../../services/payment.service';
 
 @Component({
   selector: 'app-invoice',

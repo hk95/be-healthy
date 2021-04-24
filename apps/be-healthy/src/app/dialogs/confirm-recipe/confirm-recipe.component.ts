@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Recipe } from 'src/app/interfaces/recipe';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RecipeService } from 'src/app/services/recipe.service';
 import { take } from 'rxjs/operators';
+import { Recipe } from '../../interfaces/recipe';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-confirm-recipe',

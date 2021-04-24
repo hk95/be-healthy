@@ -3,17 +3,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import { MainShellService } from 'src/app/services/main-shell.service';
 import { Router } from '@angular/router';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { TutorialComponent } from 'src/app/dialogs/tutorial/tutorial.component';
-import { BasicInfoService } from 'src/app/services/basic-info.service';
-import { BasicInfo } from 'src/app/interfaces/basic-info';
+
 import { Observable, Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { DailyInfoList } from 'src/app/interfaces/daily-info';
+import { BasicInfo } from '../../interfaces/basic-info';
+import { MainShellService } from '../../services/main-shell.service';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { AuthService } from '../../services/auth.service';
+import { BasicInfoService } from '../../services/basic-info.service';
+import { TutorialComponent } from '../../dialogs/tutorial/tutorial.component';
+import { DailyInfoList } from '../../interfaces/daily-info';
 
 @Component({
   selector: 'app-top',

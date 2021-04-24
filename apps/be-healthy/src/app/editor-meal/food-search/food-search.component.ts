@@ -1,20 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FoodService } from 'src/app/services/food.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
+
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { SearchService } from 'src/app/services/search.service';
-import { Food } from 'src/app/interfaces/food';
-import { DailyMeal } from 'src/app/interfaces/daily-info';
+
 import { Subscription } from 'rxjs';
-import { AverageService } from 'src/app/services/average.service';
 import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
-import { MainShellService } from 'src/app/services/main-shell.service';
+import { FoodService } from '../../services/food.service';
+import { AuthService } from '../../services/auth.service';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { SearchService } from '../../services/search.service';
+import { AverageService } from '../../services/average.service';
+import { MainShellService } from '../../services/main-shell.service';
+import { Food } from '../../interfaces/food';
+import { DailyMeal } from '../../interfaces/daily-info';
+import { MealInputComponent } from '../../bottom-sheet/meal-input/meal-input.component';
 
 @Component({
   selector: 'app-food-search',
@@ -48,9 +50,9 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     private searchService: SearchService,
     private router: Router,
     private averageService: AverageService,
-    private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private bottomSheet: MatBottomSheet,
+    private fb: FormBuilder,
     private mainShellService: MainShellService
   ) {
     const routeSub = this.route.queryParamMap.subscribe((paramMaps) => {

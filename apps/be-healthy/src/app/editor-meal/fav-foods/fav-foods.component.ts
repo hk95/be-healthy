@@ -1,19 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FoodService } from 'src/app/services/food.service';
-import { Food } from 'src/app/interfaces/food';
+
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { DailyMeal } from 'src/app/interfaces/daily-info';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
-import { AverageService } from 'src/app/services/average.service';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
-import { MainShellService } from 'src/app/services/main-shell.service';
+import { Food } from '../../interfaces/food';
+import { FoodService } from '../../services/food.service';
+import { AuthService } from '../../services/auth.service';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { AverageService } from '../../services/average.service';
+import { MainShellService } from '../../services/main-shell.service';
+import { MealInputComponent } from '../../bottom-sheet/meal-input/meal-input.component';
+import { DailyMeal } from '../../interfaces/daily-info';
 
 @Component({
   selector: 'app-fav-foods',

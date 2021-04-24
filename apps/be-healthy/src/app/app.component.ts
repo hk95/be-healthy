@@ -3,7 +3,7 @@ import { DOCUMENT, ViewportScroller } from '@angular/common';
 import { Event, Router, Scroll } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',

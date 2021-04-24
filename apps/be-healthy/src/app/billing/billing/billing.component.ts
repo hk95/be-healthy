@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PaymentService } from 'src/app/services/payment.service';
 
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { CreditCardComponent } from 'src/app/dialogs/credit-card/credit-card.component';
 
-import { AuthService } from 'src/app/services/auth.service';
 import Stripe from 'stripe';
 import { Subscription } from 'rxjs';
-import { MainShellService } from 'src/app/services/main-shell.service';
-import { ConfirmDialogComponent } from 'src/app/dialogs/confirm-dialog/confirm-dialog.component';
-import { environment } from 'src/environments/environment';
+import { PaymentService } from '../../services/payment.service';
+import { AuthService } from '../../services/auth.service';
+import { MainShellService } from '../../services/main-shell.service';
+import { CreditCardComponent } from '../../dialogs/credit-card/credit-card.component';
+import { ConfirmDialogComponent } from '../../dialogs/confirm-dialog/confirm-dialog.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-billing',

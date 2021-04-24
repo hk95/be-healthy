@@ -1,12 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
-import { DailyInfo, DailyInfoList } from 'src/app/interfaces/daily-info';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { AverageService } from 'src/app/services/average.service';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { AuthService } from '../../services/auth.service';
+import { AverageService } from '../../services/average.service';
+import { DailyInfo, DailyInfoList } from '../../interfaces/daily-info';
 
 @Component({
   selector: 'app-detail',

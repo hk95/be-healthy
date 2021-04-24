@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { OthreShellService } from 'src/app/services/othre-shell.service';
-import { BasicInfo } from 'src/app/interfaces/basic-info';
+
 import { Observable } from 'rxjs';
-import { BasicInfoService } from 'src/app/services/basic-info.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
+
 import { take } from 'rxjs/operators';
-import { UserService } from 'src/app/services/user.service';
+import { BasicInfo } from '../../interfaces/basic-info';
+import { OthreShellService } from '../../services/othre-shell.service';
+import { BasicInfoService } from '../../services/basic-info.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { DeleteDialogComponent } from '../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-account',

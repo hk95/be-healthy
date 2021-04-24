@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MainShellService } from 'src/app/services/main-shell.service';
-import { OthreShellService } from 'src/app/services/othre-shell.service';
+import { MainShellService } from '../../services/main-shell.service';
+import { OthreShellService } from '../../services/othre-shell.service';
 
 @Component({
   selector: 'app-more',

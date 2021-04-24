@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { RecipeWithAuthor, Recipe } from 'src/app/interfaces/recipe';
-import { RecipeService } from 'src/app/services/recipe.service';
-import { AuthService } from 'src/app/services/auth.service';
 
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
+import { Recipe, RecipeWithAuthor } from '../../interfaces/recipe';
+import { AuthService } from '../../services/auth.service';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-recipe',

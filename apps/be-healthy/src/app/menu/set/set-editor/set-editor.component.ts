@@ -6,21 +6,21 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Location } from '@angular/common';
-import { SearchService } from 'src/app/services/search.service';
-import { RecipeService } from 'src/app/services/recipe.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { switchMap, take } from 'rxjs/operators';
-import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
-import { FoodInArray, Set } from 'src/app/interfaces/set';
 
-import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
-import { Food } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Recipe, RecipeWithAuthor } from '../../../interfaces/recipe';
+import { FoodInArray, Set } from '../../../interfaces/set';
+import { SearchService } from '../../../services/search.service';
+import { RecipeService } from '../../../services/recipe.service';
+import { AuthService } from '../../../services/auth.service';
+import { SetService } from '../../../services/set.service';
+import { Food } from '../../../interfaces/food';
+import { ConfirmRecipeComponent } from '../../../dialogs/confirm-recipe/confirm-recipe.component';
 
 @Component({
   selector: 'app-set-editor',

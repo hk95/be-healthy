@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FormGuard } from '../../../guards/form.guard';
 
-import { FormGuard } from 'src/app/guards/form.guard';
 import { SetEditorComponent } from './set-editor.component';
 
 const routes: Routes = [

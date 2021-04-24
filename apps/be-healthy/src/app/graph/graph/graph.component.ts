@@ -1,21 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MainShellService } from 'src/app/services/main-shell.service';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { BasicInfoService } from 'src/app/services/basic-info.service';
-import { BasicInfo } from 'src/app/interfaces/basic-info';
 import * as moment from 'moment';
-import { AverageService } from 'src/app/services/average.service';
+
+import { Subscription } from 'rxjs';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MainShellService } from '../../services/main-shell.service';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { AuthService } from '../../services/auth.service';
+import { BasicInfoService } from '../../services/basic-info.service';
+import { AverageService } from '../../services/average.service';
+import { BasicInfo } from '../../interfaces/basic-info';
+import { DailyInfo } from '../../interfaces/daily-info';
 import {
   AverageOfMonth,
-  AverageOfYear,
   AverageOfWeek,
-} from 'src/app/interfaces/average';
-import { Subscription } from 'rxjs';
-import { DailyInfo } from 'src/app/interfaces/daily-info';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
+  AverageOfYear,
+} from '../../interfaces/average';
 
 @Component({
   selector: 'app-graph',

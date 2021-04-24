@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OthreShellService } from 'src/app/services/othre-shell.service';
+import { OthreShellService } from '../../services/othre-shell.service';
 
 @Component({
   selector: 'app-legal',

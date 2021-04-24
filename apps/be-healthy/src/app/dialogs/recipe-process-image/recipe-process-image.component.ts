@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from 'src/app/services/auth.service';
 import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
-import { RecipeService } from 'src/app/services/recipe.service';
+import { AuthService } from '../../services/auth.service';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'app-recipe-process-image',

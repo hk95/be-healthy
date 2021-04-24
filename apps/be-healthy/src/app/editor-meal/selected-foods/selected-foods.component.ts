@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
-import { AverageService } from 'src/app/services/average.service';
-import { DailyMeal } from 'src/app/interfaces/daily-info';
-import { MainShellService } from 'src/app/services/main-shell.service';
+import { DailyMeal } from '../../interfaces/daily-info';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { AuthService } from '../../services/auth.service';
+import { AverageService } from '../../services/average.service';
+import { MainShellService } from '../../services/main-shell.service';
 
 @Component({
   selector: 'app-selected-foods',

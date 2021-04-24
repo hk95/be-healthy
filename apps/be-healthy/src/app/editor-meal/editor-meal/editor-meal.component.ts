@@ -3,10 +3,10 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { DailyMeal } from 'src/app/interfaces/daily-info';
-import { AuthService } from 'src/app/services/auth.service';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { MainShellService } from 'src/app/services/main-shell.service';
+import { DailyMeal } from '../../interfaces/daily-info';
+import { AuthService } from '../../services/auth.service';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { MainShellService } from '../../services/main-shell.service';
 
 @Component({
   selector: 'app-editor-meal',

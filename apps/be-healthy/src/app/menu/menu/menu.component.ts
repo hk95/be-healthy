@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MainShellService } from 'src/app/services/main-shell.service';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
-import { SetService } from 'src/app/services/set.service';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { filter, take } from 'rxjs/operators';
+import { DailyInfoService } from '../../services/daily-info.service';
+import { MainShellService } from '../../services/main-shell.service';
+import { SetService } from '../../services/set.service';
 
 @Component({
   selector: 'app-menu',

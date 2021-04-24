@@ -4,10 +4,10 @@ import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
-import { DailyMeal } from 'src/app/interfaces/daily-info';
-import { Food } from 'src/app/interfaces/food';
-import { Set } from 'src/app/interfaces/set';
-import { DailyInfoService } from 'src/app/services/daily-info.service';
+import { DailyMeal } from '../../interfaces/daily-info';
+import { Food } from '../../interfaces/food';
+import { Set } from '../../interfaces/set';
+import { DailyInfoService } from '../../services/daily-info.service';
 
 @Component({
   selector: 'app-meal-input',

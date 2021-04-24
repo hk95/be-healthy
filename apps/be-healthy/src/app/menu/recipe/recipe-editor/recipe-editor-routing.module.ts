@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FormGuard } from '../../../guards/form.guard';
 import { RecipeEditorComponent } from './recipe-editor.component';
-import { FormGuard } from 'src/app/guards/form.guard';
 
 const routes: Routes = [
   {

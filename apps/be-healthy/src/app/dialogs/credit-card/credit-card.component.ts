@@ -7,9 +7,9 @@ import {
 } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PaymentService } from 'src/app/services/payment.service';
 import { StripeCardElement, Stripe as StripeClient } from '@stripe/stripe-js';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PaymentService } from '../../services/payment.service';
 
 @Component({
   selector: 'app-credit-card',

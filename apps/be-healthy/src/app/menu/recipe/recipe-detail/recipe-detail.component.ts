@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RecipeService } from 'src/app/services/recipe.service';
 import { Observable } from 'rxjs';
-import { Recipe } from 'src/app/interfaces/recipe';
-import { AuthService } from 'src/app/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { switchMap, take } from 'rxjs/operators';
+import { Recipe } from '../../../interfaces/recipe';
+import { AuthService } from '../../../services/auth.service';
+import { RecipeService } from '../../../services/recipe.service';
+import { DeleteDialogComponent } from '../../../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-recipe-detail',
