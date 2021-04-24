@@ -10,7 +10,7 @@
     ]
   },
   "hosting": {
-    "public": "dist/be-healthy",
+    "public": "dist/apps/be-healthy",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
