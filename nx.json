@@ -1,0 +1,21 @@
+{
+  "npmScope": "be-healthy",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*",
+    "tsconfig.base.json": "*"
+  },
+  "projects": {
+    "be-healthy": {
+      "tags": []
+    },
+    "be-healthy-e2e": {
+      "tags": []
+    }
+  }
+}
