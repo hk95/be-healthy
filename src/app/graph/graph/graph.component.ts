@@ -133,7 +133,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     const preDates = [];
     for (let i = 0; i <= 6; i++) {
       const mDate = moment(date);
-      const a = mDate.add(-i, 'day');
+      const a = mDate.add(-i, 'day').toString();
       preDates.push(this.datePipe.transform(a, 'yy.MM.dd(E)'));
     }
     if (preDates.length === 7) {
