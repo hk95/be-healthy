@@ -1,3 +1,8 @@
 {
+  "baseBranches": ["master"],
+  "schedule": "before 3am on the first day of the month",
+  "minor": {
+    "groupName": "all dependencies"
+  },
   "extends": ["config:base"]
 }
