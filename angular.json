@@ -17,6 +17,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "angular-instantsearch",
+              "firebase/app",
+              "firebase",
+              "@firebase/functions",
+              "@firebase/auth",
+              "algoliasearch-helper",
+              "hogan.js",
+              "qs"
+            ],
             "outputPath": "dist/be-healthy",
             "index": "src/index.html",
             "main": "src/main.ts",
