@@ -11,7 +11,6 @@ import { AverageService } from 'src/app/services/average.service';
 import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
 import { MainShellService } from 'src/app/services/main-shell.service';
@@ -32,14 +31,21 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
   selectedMealsNum: number;
   amount = new Array(10).fill(0);
   isLikedlist: string[] = new Array();
-  config = this.searchService.config;
+
+  readonly index = this.searchService.index;
   amountForm = this.fb.group({
     amountArray: this.fb.array([]),
   });
   get amountArray(): FormArray {
     return this.amountForm.get('amountArray') as FormArray;
   }
+  loading: boolean;
 
+  hitFoods: Food[] = [];
+
+  readonly form = this.fb.group({
+    query: [''],
+  });
   constructor(
     private foodService: FoodService,
     private authService: AuthService,
@@ -49,7 +55,6 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private averageService: AverageService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
     private bottomSheet: MatBottomSheet,
     private mainShellService: MainShellService
   ) {
@@ -143,7 +148,29 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.search('こめ');
+  }
+
+  submitQuery(): void {
+    this.search(this.form.value.query);
+  }
+
+  private search(query: string): void {
+    this.loading = true;
+    this.index
+      .search(query, {
+        hitsPerPage: 10,
+      })
+      .then(({ hits }) => {
+        this.hitFoods = (hits as unknown) as Food[];
+        this.loading = false;
+      });
+  }
+
+  clearForm() {
+    this.form.reset();
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
