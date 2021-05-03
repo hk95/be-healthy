@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import algoliasearch from 'algoliasearch/lite';
+const algoliasearch = require('algoliasearch');
 import { environment } from 'src/environments/environment';
 
 const searchClient = algoliasearch(

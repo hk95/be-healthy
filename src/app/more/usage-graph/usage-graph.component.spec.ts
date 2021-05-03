@@ -1,4 +1,6 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MoreModule } from '../more.module';
 
 import { UsageGraphComponent } from './usage-graph.component';
 

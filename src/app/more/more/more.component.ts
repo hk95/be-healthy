@@ -8,13 +8,13 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   styleUrls: ['./more.component.scss'],
 })
 export class MoreComponent implements OnInit {
-  constructor(
-    private othreShellService: OthreShellService,
-    private mainShellService: MainShellService
-  ) {
-    this.othreShellService.title = this.othreShellService.PAGE_TITLES.more;
-    this.mainShellService.title = this.mainShellService.PAGE_TITLES.more;
-  }
+  // constructor(
+  //   private othreShellService: OthreShellService,
+  //   private mainShellService: MainShellService
+  // ) {
+  //   this.othreShellService.title = this.othreShellService.PAGE_TITLES.more;
+  //   this.mainShellService.title = this.mainShellService.PAGE_TITLES.more;
+  // }
 
   ngOnInit(): void {}
 }

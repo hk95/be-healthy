@@ -1,21 +1,24 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MoreModule } from '../more.module';
 
 import { MoreComponent } from './more.component';
 
 describe('MoreComponent', () => {
-  let component: MoreComponent;
-  let fixture: ComponentFixture<MoreComponent>;
+  let component: MoreTestComponent;
+  let fixture: ComponentFixture<MoreTestComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MoreComponent],
+        imports: [MoreModule],
+        declarations: [MoreTestComponent],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MoreComponent);
+    fixture = TestBed.createComponent(MoreTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -24,3 +27,9 @@ describe('MoreComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+@Component({
+  template: `<app-more></app-more>`,
+})
+class MoreTestComponent {
+  moreComponent: MoreComponent;
+}

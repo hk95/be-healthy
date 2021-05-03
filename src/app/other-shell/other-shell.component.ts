@@ -23,14 +23,14 @@ export class OtherShellComponent implements OnInit {
     private router: Router
   ) {}
 
-  backToPage(): Promise<boolean> {
-    if (this.authService.isInitialLogin) {
-      this.authService.isInitialLogin = false;
-      return this.router.navigateByUrl('');
-    } else {
-      return this.router.navigateByUrl('/more');
-    }
-  }
+  // backToPage(): Promise<boolean> {
+  //   if (this.authService.isInitialLogin) {
+  //     this.authService.isInitialLogin = false;
+  //     return this.router.navigateByUrl('');
+  //   } else {
+  //     return this.router.navigateByUrl('/more');
+  //   }
+  // }
 
   logout() {
     this.authService.logout();

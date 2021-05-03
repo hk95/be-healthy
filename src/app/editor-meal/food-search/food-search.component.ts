@@ -40,6 +40,10 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
     return this.amountForm.get('amountArray') as FormArray;
   }
 
+  readonly searchForm = this.fb.group({
+    query: [''],
+  });
+
   constructor(
     private foodService: FoodService,
     private authService: AuthService,
@@ -81,7 +85,9 @@ export class FoodSearchComponent implements OnInit, OnDestroy {
       this.amountArray.push(amountGroup);
     }
   }
-
+  submit(): void {
+    console.log('ok');
+  }
   private getFavFoods() {
     this.foodService
       .getFavFoods(this.authService.uid, this.getNumber)

@@ -29,7 +29,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { RecipeThumbnailComponent } from './dialogs/recipe-thumbnail/recipe-thumbnail.component';
 import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/recipe-process-image.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
-import { NgAisModule } from 'angular-instantsearch';
+// import { NgAisModule } from 'angular-instantsearch';
 import { ConfirmRecipeComponent } from './dialogs/confirm-recipe/confirm-recipe.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -82,7 +82,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     FullCalendarModule,
     ImageCropperModule,
     MatDialogModule,
-    NgAisModule.forRoot(),
+    // NgAisModule.forRoot(),
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,

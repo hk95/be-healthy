@@ -77,12 +77,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private basicInfoService: BasicInfoService,
     private averageService: AverageService
-  ) {
-    this.mainShellService.title = this.mainShellService.PAGE_TITLES.graph;
-    this.initResize();
-    this.setGoalList();
-    this.createGraphOfDay();
-  }
+  ) {}
 
   changedGraphCycle(event: MatButtonToggleChange): void {
     switch (event.value) {
@@ -588,7 +583,12 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.mainShellService.title = this.mainShellService.PAGE_TITLES.graph;
+    this.initResize();
+    this.setGoalList();
+    this.createGraphOfDay();
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

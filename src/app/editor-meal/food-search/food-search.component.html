@@ -2,7 +2,10 @@
   <p class="selected-max" *ngIf="selectedMealsNum >= maxSelectNum">
     これ以上追加できません
   </p>
-  <ais-instantsearch [config]="config">
+  <form [formGroup]="searchForm" (ngSubmit)="submit()">
+    <input matInput type="text" formControlName="query" />
+  </form>
+  <!-- <ais-instantsearch [config]="config">
     <div class="search-box">
       <ais-search-box
         class="ais-search-box-input"
@@ -107,5 +110,5 @@
         <div *ngIf="hits.length === 0">該当する食べ物はありません</div>
       </ng-template>
     </ais-hits>
-  </ais-instantsearch>
+  </ais-instantsearch> -->
 </div>

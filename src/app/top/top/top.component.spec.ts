@@ -1,21 +1,23 @@
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { TopComponent } from './top.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 describe('TopComponent', () => {
-  let component: TopComponent;
-  let fixture: ComponentFixture<TopComponent>;
+  let component: TopTestComponent;
+  let fixture: ComponentFixture<TopTestComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [TopComponent],
+        declarations: [TopTestComponent],
+        imports: [FullCalendarModule],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TopComponent);
+    fixture = TestBed.createComponent(TopTestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -24,3 +26,8 @@ describe('TopComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+@Component({
+  template: `<app-top></app-top>`,
+})
+class TopTestComponent {}
