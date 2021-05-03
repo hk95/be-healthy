@@ -7,7 +7,6 @@ import { EditorMealComponent } from './editor-meal/editor-meal.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FoodSearchComponent } from './food-search/food-search.component';
-import { NgAisModule } from 'angular-instantsearch';
 import { MySetComponent } from './my-set/my-set.component';
 import { SelectedFoodsComponent } from './selected-foods/selected-foods.component';
 import { MatCardModule } from '@angular/material/card';
@@ -32,7 +31,6 @@ import { SharedModule } from '../shared/shared.module';
     EditorMealRoutingModule,
     MatTabsModule,
     FormsModule,
-    NgAisModule,
     MatCardModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,

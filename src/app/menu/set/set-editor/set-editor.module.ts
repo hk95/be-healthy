@@ -6,7 +6,6 @@ import { SetEditorComponent } from './set-editor.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NgAisModule } from 'angular-instantsearch';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,7 +21,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
-    NgAisModule,
     MatDialogModule,
     MatFormFieldModule,
     MatCheckboxModule,
