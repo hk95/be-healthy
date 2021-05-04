@@ -1,10 +1,20 @@
 .form {
   position: relative;
+  width: 88%;
+  display: block;
+  margin: 0 auto;
   margin-bottom: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 32px;
+
+  @media screen and(max-width:750px) {
+    width: 76%;
+  }
 
   &__search {
     position: absolute;
-    left: 16px;
+    left: 12px;
     top: 10px;
     font-size: 20px;
   }
@@ -22,13 +32,8 @@
   }
 }
 .search {
-  width: 88%;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  width: 100%;
   background: #fff;
-  padding: 8px 40px 8px 32px;
-  display: block;
-  margin: 0 auto;
   color: rgba(0, 0, 0, 0.87);
   appearance: none;
 }

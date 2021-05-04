@@ -18,9 +18,11 @@
   ></app-food-list-for-set>
 </ng-container>
 
-<div *ngIf="foods?.length === 0 && !loading">
-  該当する食べ物はありません
-</div>
-<div class="loading" *ngIf="loading">
-  <mat-spinner class="loding__spinner" diameter="30"></mat-spinner>
+<div class="container" *ngIf="(foods?.length === 0 && !loading) || loading">
+  <div *ngIf="foods?.length === 0 && !loading">
+    該当する食べ物はありません
+  </div>
+  <div class="loading" *ngIf="loading">
+    <mat-spinner class="loding__spinner" diameter="30"></mat-spinner>
+  </div>
 </div>
