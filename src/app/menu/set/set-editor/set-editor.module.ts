@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { FoodSearchModule } from 'src/app/food-search/food-search.module';
 
 @NgModule({
   declarations: [SetEditorComponent],
@@ -27,6 +28,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatBadgeModule,
     MatExpansionModule,
     SharedModule,
+    FoodSearchModule,
   ],
 })
 export class SetEditorModule {}

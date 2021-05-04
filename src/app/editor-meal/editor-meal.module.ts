@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SharedModule } from '../shared/shared.module';
+import { FoodSearchModule } from '../food-search/food-search.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SharedModule } from '../shared/shared.module';
     MatBottomSheetModule,
     MatBadgeModule,
     SharedModule,
+    FoodSearchModule,
   ],
 })
 export class EditorMealModule {}
