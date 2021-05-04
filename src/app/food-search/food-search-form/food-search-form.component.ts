@@ -13,8 +13,6 @@ export class FoodSearchFormComponent implements OnInit {
   @Output() readonly setFoods = new EventEmitter<Food[]>();
   readonly index = this.searchService.index;
 
-  hitFoods: Food[] = [];
-
   readonly form = this.fb.group({
     query: [''],
   });
@@ -35,8 +33,8 @@ export class FoodSearchFormComponent implements OnInit {
         hitsPerPage: this.pageTitle === 'mealPage' ? 10 : 5,
       })
       .then(({ hits }) => {
-        this.hitFoods = (hits as unknown) as Food[];
-        this.setFoods.emit(this.hitFoods);
+        const hitFoods: Food[] = (hits as unknown) as Food[];
+        this.setFoods.emit(hitFoods);
         this.searchService.loading = false;
       });
   }
