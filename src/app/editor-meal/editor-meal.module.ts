@@ -7,7 +7,6 @@ import { EditorMealComponent } from './editor-meal/editor-meal.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FoodSearchComponent } from './food-search/food-search.component';
-import { NgAisModule } from 'angular-instantsearch';
 import { MySetComponent } from './my-set/my-set.component';
 import { SelectedFoodsComponent } from './selected-foods/selected-foods.component';
 import { MatCardModule } from '@angular/material/card';
@@ -18,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SharedModule } from '../shared/shared.module';
+import { FoodSearchModule } from '../food-search/food-search.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,6 @@ import { SharedModule } from '../shared/shared.module';
     EditorMealRoutingModule,
     MatTabsModule,
     FormsModule,
-    NgAisModule,
     MatCardModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
@@ -40,6 +39,7 @@ import { SharedModule } from '../shared/shared.module';
     MatBottomSheetModule,
     MatBadgeModule,
     SharedModule,
+    FoodSearchModule,
   ],
 })
 export class EditorMealModule {}

@@ -1,0 +1,19 @@
+<form class="form" [formGroup]="form" (ngSubmit)="submitQuery()">
+  <mat-icon class="form__search">search</mat-icon>
+  <input
+    matInput
+    class="search"
+    formControlName="query"
+    #input
+    placeholder="食べ物を入力してください"
+  />
+  <button
+    class="form__close"
+    type="button"
+    mat-icon-button
+    *ngIf="input.value.length > 0"
+    (click)="clearForm()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</form>

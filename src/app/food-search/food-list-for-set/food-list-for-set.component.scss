@@ -1,0 +1,63 @@
+.food {
+  display: flex;
+  background: #fff;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 8px;
+
+  &__name {
+    font-size: 14px;
+    margin: 8px 8px 8px 0;
+    width: 200px;
+    color: rgba(#000000, 0.87);
+
+    &--with-amount {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__amountper {
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 0;
+    color: #009688;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    &--form {
+      max-width: 300px;
+      width: 60%;
+    }
+  }
+
+  &__form-field {
+    font-size: 5px;
+    color: rgba(#000000, 0.87);
+    margin-right: 8px;
+    width: 50%;
+  }
+
+  &__amount-form {
+    font-size: 15px;
+    width: 100%;
+    text-align: right;
+  }
+
+  &__prefix {
+    font-size: 15px;
+    margin: 0 4px;
+  }
+
+  &__button {
+    margin-bottom: 8px;
+  }
+
+  &__unit {
+    min-width: 42px;
+  }
+}

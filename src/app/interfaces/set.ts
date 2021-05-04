@@ -29,3 +29,12 @@ export interface Meal {
   lunch: boolean;
   dinner: boolean;
 }
+
+export interface Nutrition {
+  currentCal: number;
+  currentProtein: number;
+  currentFat: number;
+  currentTotalCarbohydrate: number;
+  currentSugar: number;
+  currentDietaryFiber: number;
+}

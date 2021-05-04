@@ -6,7 +6,6 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Location } from '@angular/common';
-import { SearchService } from 'src/app/services/search.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { switchMap, take } from 'rxjs/operators';
@@ -14,13 +13,14 @@ import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
-import { FoodInArray, Set } from 'src/app/interfaces/set';
+import { FoodInArray, Nutrition, Set } from 'src/app/interfaces/set';
 
 import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
-import { Food } from 'src/app/interfaces/food';
+import { Food, SentFood } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CalculateCNitionService } from './util/calculate-nutrition.service';
 
 @Component({
   selector: 'app-set-editor',
@@ -45,15 +45,18 @@ export class SetEditorComponent implements OnInit {
   );
   panelOpenState = true;
   title: string;
-  config = this.searchService.config;
   myRecipes: RecipeWithAuthor[] = new Array();
   isNext: boolean;
-  currentCal = 0;
-  currentProtein = 0;
-  currentFat = 0;
-  currentTotalCarbohydrate = 0;
-  currentSugar = 0;
-  currentDietaryFiber = 0;
+
+  currentNutrition: Nutrition = {
+    currentCal: 0,
+    currentProtein: 0,
+    currentFat: 0,
+    currentTotalCarbohydrate: 0,
+    currentSugar: 0,
+    currentDietaryFiber: 0,
+  };
+
   preFoods: FoodInArray[] = new Array();
   isBreakfast = false;
   isLunch = false;
@@ -142,12 +145,12 @@ export class SetEditorComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private location: Location,
-    private searchService: SearchService,
     private recipeService: RecipeService,
     private authService: AuthService,
     private setService: SetService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private calculateCNitionService: CalculateCNitionService
   ) {}
 
   ngOnInit(): void {
@@ -246,100 +249,31 @@ export class SetEditorComponent implements OnInit {
     }
   }
 
-  /**
-   * 小数第一位まで取得
-   * @param num 計算元の数字
-   */
-  private getRoundNumber(num: number): number {
-    return Math.round(num * 10) / 10;
-  }
-
   addFoodOrRecipe(amount: number, food?: Food, recipe?: Recipe): void {
-    if (food) {
-      this.addFoodOrRecipeToArray(amount, food);
-      this.currentCal = this.getRoundNumber(
-        this.currentCal + food.foodCalPerAmount * amount
-      );
-      this.currentProtein = this.getRoundNumber(
-        this.currentProtein + food.foodProtein * amount
-      );
-      this.currentFat = this.getRoundNumber(
-        this.currentFat + food.foodFat * amount
-      );
-      this.currentTotalCarbohydrate = this.getRoundNumber(
-        this.currentTotalCarbohydrate + food.foodTotalCarbohydrate * amount
-      );
-      this.currentSugar = this.getRoundNumber(
-        this.currentSugar + food.foodSugar * amount
-      );
-      this.currentDietaryFiber = this.getRoundNumber(
-        this.currentDietaryFiber + food.foodDietaryFiber * amount
-      );
-    } else {
-      this.addFoodOrRecipeToArray(amount, null, recipe);
-      this.currentCal = this.getRoundNumber(this.currentCal + recipe.recipeCal);
-      this.currentProtein = this.getRoundNumber(
-        this.currentProtein + recipe.recipeProtein
-      );
-      this.currentFat = this.getRoundNumber(this.currentFat + recipe.recipeFat);
-      this.currentTotalCarbohydrate = this.getRoundNumber(
-        this.currentTotalCarbohydrate + recipe.recipeTotalCarbohydrate
-      );
-      this.currentSugar = this.getRoundNumber(
-        this.currentSugar + recipe.recipeSugar
-      );
-      this.currentDietaryFiber = this.getRoundNumber(
-        this.currentDietaryFiber + recipe.recipeDietaryFiber
-      );
-    }
+    this.currentNutrition = this.calculateCNitionService.calculateNutrition(
+      this.currentNutrition,
+      amount,
+      food,
+      recipe
+    );
+    this.addFoodOrRecipeToArray(amount, food, recipe);
     this.snackBar.open('食べ物を追加しました', null, {
       duration: 2000,
     });
+  }
+  addFood(event: SentFood): void {
+    this.addFoodOrRecipe(event.amount, event.food);
   }
 
   removeFood(index: number, food: FoodInArray): void {
     this.foodsArray.removeAt(index);
     this.preFoods.splice(index, 1);
-    if (food.recipe && food.recipe.recipeCal > 0) {
-      this.currentCal = this.getRoundNumber(
-        this.currentCal - food.recipe.recipeCal
-      );
-      this.currentProtein = this.getRoundNumber(
-        this.currentProtein - food.recipe.recipeProtein
-      );
-      this.currentFat = this.getRoundNumber(
-        this.currentFat - food.recipe.recipeFat
-      );
-      this.currentTotalCarbohydrate = this.getRoundNumber(
-        this.currentTotalCarbohydrate - food.recipe.recipeTotalCarbohydrate
-      );
-      this.currentSugar = this.getRoundNumber(
-        this.currentSugar - food.recipe.recipeSugar
-      );
-      this.currentDietaryFiber = this.getRoundNumber(
-        this.currentDietaryFiber - food.recipe.recipeDietaryFiber
-      );
-    } else if (food.food.foodCalPerAmount && food.amount > 0) {
-      this.currentCal = this.getRoundNumber(
-        this.currentCal - food.food.foodCalPerAmount * food.amount
-      );
-      this.currentProtein = this.getRoundNumber(
-        this.currentProtein - food.food.foodProtein * food.amount
-      );
-      this.currentFat = this.getRoundNumber(
-        this.currentFat - food.food.foodFat * food.amount
-      );
-      this.currentTotalCarbohydrate = this.getRoundNumber(
-        this.currentTotalCarbohydrate -
-          food.food.foodTotalCarbohydrate * food.amount
-      );
-      this.currentSugar = this.getRoundNumber(
-        this.currentSugar - food.food.foodSugar * food.amount
-      );
-      this.currentDietaryFiber = this.getRoundNumber(
-        this.currentDietaryFiber - food.food.foodDietaryFiber * food.amount
-      );
-    }
+    this.currentNutrition = this.calculateCNitionService.calculateNutrition(
+      this.currentNutrition,
+      -food.amount,
+      food.food,
+      food.recipe
+    );
   }
 
   changeMeal(meal: string): void {

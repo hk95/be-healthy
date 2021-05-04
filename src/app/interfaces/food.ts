@@ -10,3 +10,8 @@ export interface Food {
   foodDietaryFiber: number;
   isLiked?: boolean;
 }
+
+export interface SentFood {
+  amount: number;
+  food: Food;
+}

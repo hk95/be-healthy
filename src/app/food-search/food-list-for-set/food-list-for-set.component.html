@@ -1,0 +1,47 @@
+<div *ngFor="let food of foods">
+  <div class="food">
+    <div class="food__name">
+      <p class="food__name--with-amount">
+        {{ food.foodName }}
+      </p>
+      <span class="food__amountper">
+        {{ food.foodCalPerAmount }}kcal/{{ food.unit }}
+      </span>
+    </div>
+    <p class="spacer"></p>
+    <div class="food__row food__row--form">
+      <mat-form-field class="food__form-field" appearance="outline">
+        <input
+          matInput
+          class="food__amount-form"
+          max="100"
+          min="0"
+          step="0.1"
+          value="0"
+          #amount
+          type="number"
+          autocomplete="off"
+          #amountInput
+        />
+
+        <span class="nutrition__prefix" matSuffix>{{ food.unit }}</span>
+      </mat-form-field>
+
+      <button
+        *ngIf="!isAddable; else limit"
+        class="food__button"
+        mat-icon-button
+        type="button"
+        color="primary"
+        (click)="addFood(amount.value, food)"
+      >
+        <mat-icon>add_box</mat-icon>
+      </button>
+      <ng-template #limit>
+        <button class="food__button" mat-icon-button type="button">
+          <mat-icon>add_box</mat-icon>
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</div>

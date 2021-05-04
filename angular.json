@@ -18,12 +18,10 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "angular-instantsearch",
               "firebase/app",
               "firebase",
               "@firebase/functions",
               "@firebase/auth",
-              "algoliasearch-helper",
               "hogan.js",
               "qs"
             ],
@@ -36,7 +34,6 @@
             "assets": ["src/favicon.svg", "src/favicon-dev.svg", "src/assets"],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/instantsearch.css/themes/algolia.css",
               "src/styles.scss"
             ],
             "scripts": []
