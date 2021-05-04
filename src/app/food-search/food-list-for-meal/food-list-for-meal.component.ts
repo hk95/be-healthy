@@ -47,6 +47,7 @@ export class FoodListForMealComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // 食べ物を登録するフォームにバリデーションを設定している
   private setFormArray() {
     for (let i = 0; i < 10; i++) {
       const amountGroup = this.fb.group({
