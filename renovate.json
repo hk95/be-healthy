@@ -1,8 +1,42 @@
 {
   "baseBranches": ["master"],
   "schedule": "before 3am on the first day of the month",
-  "minor": {
-    "groupName": "all dependencies"
-  },
-  "extends": ["config:base"]
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "groupName": "@angular/core package group (major or minor)",
+      "matchSourceUrlPrefixes": ["https://github.com/angular/angular"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    },
+    {
+      "groupName": "@angular/cli package group (major or minor)",
+      "matchPackageNames": [
+        "@angular/cli",
+        "@angular-devkit/architect",
+        "@angular-devkit/build-angular",
+        "@angular-devkit/build-webpack",
+        "@angular-devkit/core",
+        "@angular-devkit/schematics"
+      ],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    },
+    {
+      "groupName": "@angular/material package group (major or minor)",
+      "matchPackageNames": [
+        "@angular/material",
+        "@angular/cdk",
+        "@angular/material-moment-adapter"
+      ],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    },
+    {
+      "groupName": "typescript (major or minor)",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    }
+  ]
 }
