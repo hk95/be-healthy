@@ -33,8 +33,6 @@ export class FoodListForMealComponent implements OnInit {
     return this.amountForm.get('amountArray') as FormArray;
   }
 
-  hitFoods: Food[] = [];
-
   constructor(
     private foodService: FoodService,
     private authService: AuthService,
