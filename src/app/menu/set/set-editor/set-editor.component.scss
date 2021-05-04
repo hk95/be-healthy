@@ -129,7 +129,7 @@ input {
   background: #fff;
 }
 
-.food {
+.selected-food {
   display: flex;
   background: #fff;
   align-items: center;
@@ -159,33 +159,6 @@ input {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-    &--form {
-      max-width: 300px;
-      width: 60%;
-    }
-  }
-
-  &__form-field {
-    font-size: 5px;
-    color: rgba(#000000, 0.87);
-    margin-right: 8px;
-    width: 50%;
-  }
-
-  &__amount-form {
-    font-size: 15px;
-    width: 100%;
-    text-align: right;
-  }
-
-  &__prefix {
-    font-size: 15px;
-    margin: 0 4px;
-  }
-
-  &__button {
-    margin-bottom: 8px;
   }
 
   &__unit {
@@ -193,10 +166,10 @@ input {
   }
 }
 
-.search-box {
-  margin: 16px auto;
-  padding: 0 8px;
-}
+// .search-box {
+//   margin: 16px auto;
+//   padding: 0 8px;
+// }
 
 .grid {
   overflow: auto;
@@ -389,6 +362,10 @@ mat-expansion-panel {
 :host ::ng-deep {
   .mat-expansion-panel-body {
     padding: 0 0 16px;
+  }
+
+  mat-tab-body {
+    padding-top: 8px;
   }
 
   .mat-badge-medium.mat-badge-after .mat-badge-content {

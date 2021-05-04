@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Food } from 'src/app/interfaces/food';
 import { SearchService } from 'src/app/services/search.service';
@@ -9,6 +9,7 @@ import { SearchService } from 'src/app/services/search.service';
   styleUrls: ['./food-search-form.component.scss'],
 })
 export class FoodSearchFormComponent implements OnInit {
+  @Input() pageTitle: 'mealPage' | 'setPage';
   @Output() readonly setFoods = new EventEmitter<Food[]>();
   readonly index = this.searchService.index;
 
@@ -31,7 +32,7 @@ export class FoodSearchFormComponent implements OnInit {
     this.searchService.loading = true;
     this.index
       .search(query, {
-        hitsPerPage: 10,
+        hitsPerPage: this.pageTitle === 'mealPage' ? 10 : 5,
       })
       .then(({ hits }) => {
         this.hitFoods = (hits as unknown) as Food[];

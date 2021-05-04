@@ -1,4 +1,7 @@
-<app-food-search-form (setFoods)="_setFoods($event)"></app-food-search-form>
+<app-food-search-form
+  [pageTitle]="pageTitle"
+  (setFoods)="_setFoods($event)"
+></app-food-search-form>
 
 <ng-container [ngSwitch]="pageTitle">
   <app-food-list-for-meal
@@ -8,7 +11,11 @@
     [isAddable]="isAddable"
   ></app-food-list-for-meal>
 
-  <app-food-list-for-set *ngSwitchCase="'setPage'"></app-food-list-for-set>
+  <app-food-list-for-set
+    *ngSwitchCase="'setPage'"
+    [foods]="foods"
+    (addFoodEvent)="_addFood($event)"
+  ></app-food-list-for-set>
 </ng-container>
 
 <div *ngIf="foods?.length === 0 && !loading">
