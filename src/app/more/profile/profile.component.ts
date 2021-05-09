@@ -71,7 +71,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private dialog: MatDialog
   ) {
     this.otherShellService.title = this.otherShellService.PAGE_TITLES.profile;
-    this.loadBasicInfo();
   }
 
   private loadBasicInfo(): void {
@@ -121,7 +120,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadBasicInfo();
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
