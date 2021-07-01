@@ -54,7 +54,7 @@
     "@angular/compiler-cli": "~11.2.12",
     "@angular/language-service": "~11.2.12",
     "@types/jest": "26.0.23",
-    "@types/node": "^12.20.11",
+    "@types/node": "14.17.4",
     "codelyzer": "^6.0.0",
     "firebase-tools": "^8.20.0",
     "fuzzy": "^0.1.3",
