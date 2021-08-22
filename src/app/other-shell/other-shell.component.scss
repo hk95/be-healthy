@@ -1,9 +1,9 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .toolbar {
   position: sticky;
   top: 0;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
   z-index: 20;
 
   &__content {

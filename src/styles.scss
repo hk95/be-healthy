@@ -1,18 +1,18 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
-@include mat-core();
+@include mat.core();
 
-$be-healthy-primary: mat-palette($mat-teal, 500);
-$be-healthy-accent: mat-palette($mat-pink, A200, A100, A400);
-$be-healthy-warn: mat-palette($mat-red, 500);
+$be-healthy-primary: mat.define-palette(mat.$teal-palette, 500);
+$be-healthy-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$be-healthy-warn: mat.define-palette(mat.$red-palette, 500);
 
-$be-healthy-theme: mat-light-theme(
+$be-healthy-theme: mat.define-light-theme(
   $be-healthy-primary,
   $be-healthy-accent,
   $be-healthy-warn
 );
 
-@include angular-material-theme($be-healthy-theme);
+@include mat.all-component-themes($be-healthy-theme);
 
 /* You can add global styles to this file, and also import other style files */
 html,

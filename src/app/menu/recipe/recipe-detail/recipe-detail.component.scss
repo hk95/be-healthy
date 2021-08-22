@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .nav {
   background: #fff;
@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   height: 56px;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 
   &__back-button {
     position: fixed;
@@ -75,7 +75,7 @@
   margin: 0 auto;
   padding: 32px 8px;
   background: #fff;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 }
 
 .content-head {
