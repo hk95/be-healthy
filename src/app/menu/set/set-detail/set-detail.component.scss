@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .set-detail {
   margin: 0 auto;
@@ -6,7 +6,7 @@
   max-width: 700px;
   background: #fff;
   padding: 32px 4px;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 }
 
 .nav {
@@ -19,7 +19,7 @@
   align-items: center;
   height: 56px;
   background: #fff;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 
   &__back-to-page {
     position: fixed;

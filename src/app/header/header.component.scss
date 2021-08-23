@@ -1,7 +1,7 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .header {
-  @include mat-elevation(1);
+  @include mat.elevation(1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,7 +63,7 @@
   background: #ffff;
   top: 64px;
   left: 35vw;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 
   @media screen and (max-width: 750px) {
     left: 10vw;

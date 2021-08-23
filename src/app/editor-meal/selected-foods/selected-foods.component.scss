@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .total {
   display: flex;
@@ -25,11 +25,11 @@
   align-items: center;
   transition: 0.2s;
   cursor: pointer;
-  @include mat-elevation(2);
+  @include mat.elevation(2);
   outline: none;
 
   &:hover {
-    @include mat-elevation(4);
+    @include mat.elevation(4);
   }
 
   &__anchor-tag {

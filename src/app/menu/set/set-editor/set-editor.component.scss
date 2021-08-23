@@ -1,11 +1,11 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .editor-wrap {
   max-width: 700px;
   margin: 0 auto 60px;
   background: #ffff;
   padding: 32px 8px 8px 8px;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 
   &__title {
     margin: 32px 0 8px;
@@ -37,7 +37,7 @@ input {
   align-items: center;
   padding: 0 8px;
   height: 56px;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
   z-index: 5;
   position: sticky;
   top: 0;
@@ -92,7 +92,7 @@ input {
 .foods {
   margin-bottom: 16px;
   border-radius: 4px;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 
   mat-tab-group {
     background: #fff;
@@ -191,10 +191,10 @@ input {
   position: relative;
   margin-bottom: 8px;
   cursor: pointer;
-  @include mat-elevation(2);
+  @include mat.elevation(2);
 
   &:hover {
-    @include mat-elevation(4);
+    @include mat.elevation(4);
   }
 
   &__thumbnail {
@@ -262,7 +262,7 @@ input {
   margin-bottom: 48px;
   border-bottom: 1px solid #dbdbdb;
   background: #fff;
-  @include mat-elevation(1);
+  @include mat.elevation(1);
 
   &__detail {
     height: 72px;

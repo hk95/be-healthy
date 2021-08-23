@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 :host {
   display: block;
@@ -28,10 +28,10 @@
     border-radius: 10px;
     transition: 0.2s;
     cursor: pointer;
-    @include mat-elevation(2);
+    @include mat.elevation(2);
 
     &:hover {
-      @include mat-elevation(4);
+      @include mat.elevation(4);
     }
   }
 
