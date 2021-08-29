@@ -275,59 +275,8 @@
   <div class="border"></div>
 
   <div class="today__wrap">
-    <div class="card__memo">
-      <div class="today__row today__row--memo">
-        <p class="card__memo-title">
-          1日のメモ
-        </p>
-        <div class="spacer"></div>
-        <button
-          *ngIf="!editingMemo"
-          mat-icon-button
-          class="nav-icon"
-          color="primary"
-          (click)="editMemo(); $event.stopPropagation()"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button
-          *ngIf="editingMemo"
-          mat-flat-button
-          color="primary"
-          (click)="submitMemo(); $event.stopPropagation()"
-          [disabled]="formMemo.invalid"
-        >
-          保存
-        </button>
-      </div>
-    </div>
-    <p
-      [ngClass]="
-        dailyInfos[listIndex - 1]?.dailyMemo
-          ? 'today__memo-textarea'
-          : 'today__text'
-      "
-      *ngIf="!editingMemo"
-    >
-      {{ dailyInfos[listIndex - 1]?.dailyMemo || 'まだメモはありません' }}
-    </p>
-    <form
-      [formGroup]="formMemo"
-      *ngIf="editingMemo"
-      class="today__memo-textarea-editor"
-    >
-      <mat-form-field class="today__memo-textarea-field" appearance="outline">
-        <mat-label>体調など記入しましょう</mat-label>
-        <textarea
-          class="today__memo-textarea-editor"
-          matInput
-          rows="16"
-          formControlName="dailyMemo"
-        ></textarea>
-        <mat-error *ngIf="memoControl.hasError('maxlength')"
-          >{{ maxMemoLength }}文字以内で入力してください</mat-error
-        >
-      </mat-form-field>
-    </form>
-  </div></mat-card
->
+    <app-daily-memo
+      [dailyInfo]="dailyInfos[listIndex - 1]"
+      [date]="date"
+    ></app-daily-memo></div
+></mat-card>
