@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SharedModule } from '../shared/shared.module';
+import { DailyMemoModule } from '../shared/daily-memo/daily-memo.module';
 
 @NgModule({
   declarations: [TopComponent, DetailComponent],
@@ -30,6 +31,7 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    DailyMemoModule,
   ],
   providers: [DatePipe],
 })

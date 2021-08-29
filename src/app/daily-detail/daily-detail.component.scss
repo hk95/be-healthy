@@ -56,14 +56,15 @@
   }
 }
 
+app-meal-result-list {
+  width: 100%;
+  max-width: 500px;
+}
+
 .card {
   width: 100%;
   max-width: 500px;
   margin-bottom: 32px;
-
-  &--meal {
-    margin-bottom: 16px;
-  }
 
   &__wrap {
     display: flex;
@@ -79,82 +80,6 @@
   &__button {
     position: absolute;
     right: 0;
-  }
-
-  &__icon {
-    width: 20px;
-    display: flex;
-    align-items: center;
-
-    &--breakfast {
-      width: 30px;
-    }
-  }
-
-  &__memo-title {
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  &__head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 8px;
-  }
-
-  &__no-meal {
-    padding: 0 8px;
-  }
-
-  &__head-left {
-    display: flex;
-  }
-
-  &__head-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  &__meal {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-
-  &__food-name {
-    width: 40%;
-    hyphens: auto;
-    overflow-wrap: anywhere;
-  }
-
-  &__memo {
-    margin-top: 0;
-    width: 100%;
-  }
-
-  &__memo-textarea {
-    margin: 0;
-    padding: 8px;
-    border: solid 1px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    white-space: initial;
-    word-break: break-all;
-    height: 100px;
-  }
-
-  &__memo-textarea-editor {
-    width: 100%;
-  }
-
-  &__memo-textarea-field {
-    width: 100%;
   }
 }
 
@@ -190,10 +115,6 @@
   &__button {
     text-align: center;
   }
-}
-
-.border {
-  margin: 8px 0;
 }
 
 .pie-chart {

@@ -4,7 +4,7 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { DailyInfo, DailyInfoList } from 'src/app/interfaces/daily-info';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AverageService } from 'src/app/services/average.service';
 
@@ -26,18 +26,12 @@ export class DetailComponent implements OnInit, OnDestroy {
   readonly maxWeight = 200;
   readonly maxFat = 100;
   readonly minWeightAndFat = 0;
-  readonly maxMemoLength = 500;
   date: string = this.today;
-  dailyInfo$: Observable<DailyInfo> = this.dailyInfoService.getDailyInfo(
-    this.userId,
-    this.today
-  );
   dailyInfos: DailyInfo[] = new Array();
   listIndex = new Date().getDate();
   prevWeight: number;
   prevFat: number;
   editingWeight = false;
-  editingMemo = false;
 
   formBody = this.fb.group({
     currentWeight: [
@@ -58,18 +52,11 @@ export class DetailComponent implements OnInit, OnDestroy {
     ],
   });
 
-  formMemo = this.fb.group({
-    dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-  });
-
   get currentWeightControl(): FormControl {
     return this.formBody.get('currentWeight') as FormControl;
   }
   get currentFatControl(): FormControl {
     return this.formBody.get('currentFat') as FormControl;
-  }
-  get memoControl(): FormControl {
-    return this.formMemo.get('dailyMemo') as FormControl;
   }
 
   constructor(
@@ -120,14 +107,9 @@ export class DetailComponent implements OnInit, OnDestroy {
               if (monthData.list[i]) {
                 if (this.listIndex === 1 && monthData.list[1]) {
                   this.formBody.patchValue(monthData.list[1]);
-                  this.formMemo.patchValue(monthData.list[1]);
                 } else if (this.listIndex === 1 && !monthData.list[1]) {
-                  this.formMemo = this.fb.group({
-                    dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-                  });
                   this.getPreviuosWeightAndFat();
                 } else {
-                  this.formMemo.patchValue(monthData.list[i]);
                   this.formBody.patchValue(monthData.list[i]);
                 }
                 this.dailyInfos.push(monthData.list[i]);
@@ -160,10 +142,6 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.subscription.add(prevSub);
   }
 
-  editMemo(): void {
-    this.editingMemo = true;
-  }
-
   submitWeightAndFat(): void {
     if (this.editingWeight === true) {
       const currentWeight = this.formBody.value.currentWeight;
@@ -186,18 +164,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitMemo(): void {
-    this.editingMemo = false;
-    this.dailyInfoService.updateDailyInfoMemo(
-      this.userId,
-      this.date,
-      this.formMemo.value.dailyMemo
-    );
-  }
-
   backDate(): void {
     this.editingWeight = false;
-    this.editingMemo = false;
     this.listIndex--;
     this.dateDiff--;
     this.date = this.getDate();
@@ -214,28 +182,15 @@ export class DetailComponent implements OnInit, OnDestroy {
     } else {
       this.getPreviuosWeightAndFat(true);
     }
-    if (dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+    if (dailyInfo?.currentWeight) {
       this.formBody.patchValue(dailyInfo);
-      this.formMemo.patchValue(dailyInfo);
-    } else if (!dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
-      this.getPreviuosWeightAndFat();
-      this.formMemo.patchValue(dailyInfo);
-    } else if (dailyInfo?.currentWeight && !dailyInfo?.dailyMemo) {
-      this.formBody.patchValue(dailyInfo);
-      this.formMemo = this.fb.group({
-        dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-      });
     } else {
       this.getPreviuosWeightAndFat();
-      this.formMemo = this.fb.group({
-        dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-      });
     }
   }
 
   nextDate(): void {
     this.editingWeight = false;
-    this.editingMemo = false;
     this.listIndex++;
     this.dateDiff++;
     this.date = this.getDate();
@@ -253,25 +208,12 @@ export class DetailComponent implements OnInit, OnDestroy {
     } else {
       this.getPreviuosWeightAndFat(true);
     }
-    if (dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+    if (dailyInfo?.currentWeight) {
       this.formBody.patchValue(dailyInfo);
-      this.formMemo.patchValue(dailyInfo);
       this.prevWeight = this.dailyInfos[this.listIndex - 2]?.currentWeight;
       this.prevFat = this.dailyInfos[this.listIndex - 2]?.currentFat;
-    } else if (dailyInfo?.currentWeight && !dailyInfo?.dailyMemo) {
-      this.formBody.patchValue(dailyInfo);
-      this.formMemo.patchValue(dailyInfo);
-      this.formMemo = this.fb.group({
-        dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-      });
-    } else if (!dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
-      this.getPreviuosWeightAndFat();
-      this.formMemo.patchValue(dailyInfo);
     } else {
       this.getPreviuosWeightAndFat();
-      this.formMemo = this.fb.group({
-        dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-      });
     }
   }
 

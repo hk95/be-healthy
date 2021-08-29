@@ -1,0 +1,45 @@
+.memo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.memo-icon {
+  width: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.memo-title {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.memo-textarea {
+  margin: 0;
+  padding: 8px;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  white-space: initial;
+  word-break: break-all;
+  height: 100px;
+}
+
+.memo-textarea-editor {
+  width: 100%;
+}
+
+.memo-textarea-field {
+  width: 100%;
+}
