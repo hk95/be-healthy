@@ -182,11 +182,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     } else {
       this.getPreviuosWeightAndFat(true);
     }
-    if (dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
-      this.formBody.patchValue(dailyInfo);
-    } else if (!dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
-      this.getPreviuosWeightAndFat();
-    } else if (dailyInfo?.currentWeight && !dailyInfo?.dailyMemo) {
+    if (dailyInfo?.currentWeight) {
       this.formBody.patchValue(dailyInfo);
     } else {
       this.getPreviuosWeightAndFat();
@@ -212,14 +208,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     } else {
       this.getPreviuosWeightAndFat(true);
     }
-    if (dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
+    if (dailyInfo?.currentWeight) {
       this.formBody.patchValue(dailyInfo);
       this.prevWeight = this.dailyInfos[this.listIndex - 2]?.currentWeight;
       this.prevFat = this.dailyInfos[this.listIndex - 2]?.currentFat;
-    } else if (dailyInfo?.currentWeight && !dailyInfo?.dailyMemo) {
-      this.formBody.patchValue(dailyInfo);
-    } else if (!dailyInfo?.currentWeight && dailyInfo?.dailyMemo) {
-      this.getPreviuosWeightAndFat();
     } else {
       this.getPreviuosWeightAndFat();
     }
