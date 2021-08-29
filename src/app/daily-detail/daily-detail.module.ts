@@ -14,6 +14,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../shared/shared.module';
 import { MealResultListComponent } from './meal-result-list/meal-result-list.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { DailyMemoModule } from '../shared/daily-memo/daily-memo.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatExpansionModule,
     SharedModule,
     MatDividerModule,
+    DailyMemoModule,
   ],
 })
 export class DailyDetailModule {}

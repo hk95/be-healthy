@@ -24,11 +24,9 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
   readonly maxWeight = 200;
   readonly maxFat = 100;
   readonly minWeightAndFat = 0;
-  readonly maxMemoLength = 500;
   panelOpenStateBreakfast = false;
   panelOpenStateLunch = false;
   panelOpenStateDinner = false;
-  editingMemo = true;
   date$: Observable<string> = this.route.queryParamMap.pipe(
     switchMap((queryParams: ParamMap) => {
       const date = queryParams.get('date');
@@ -56,19 +54,12 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       ],
     ],
   });
-  formMemo = this.fb.group({
-    dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
-  });
 
   get currentWeightControl(): FormControl {
     return this.formBody.get('currentWeight') as FormControl;
   }
   get currentFatControl(): FormControl {
     return this.formBody.get('currentFat') as FormControl;
-  }
-
-  get memoControl(): FormControl {
-    return this.formMemo.get('dailyMemo') as FormControl;
   }
 
   mealsOfBreakfast: DailyMeal[] = [];
@@ -136,7 +127,6 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
           });
         } else {
           this.formBody.patchValue(dailyInfo);
-          this.formMemo.patchValue(dailyInfo);
           if (!dailyInfo.currentWeight) {
             this.loadPreviuosWeightAndFat(date);
           }
@@ -240,15 +230,6 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
       );
       this.editingWeight = false;
     }
-  }
-
-  submitMemo(date: string): void {
-    this.dailyInfoService.updateDailyInfoMemo(
-      this.userId,
-      date,
-      this.formMemo.value.dailyMemo
-    );
-    this.editingMemo = false;
   }
 
   ngOnInit(): void {
