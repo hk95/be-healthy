@@ -40,4 +40,4 @@ jobs:
           args: deploy
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          PROJECT_ID: my-app-7e83d
+          PROJECT_ID: prod
