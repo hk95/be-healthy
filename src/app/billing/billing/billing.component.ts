@@ -6,7 +6,7 @@ import {
   Validators,
   UntypedFormControl,
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { CreditCardComponent } from 'src/app/dialogs/credit-card/credit-card.component';
 
 import { AuthService } from 'src/app/services/auth.service';

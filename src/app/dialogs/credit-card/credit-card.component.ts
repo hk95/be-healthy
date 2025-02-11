@@ -10,10 +10,13 @@ import {
   Validators,
   UntypedFormControl,
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { PaymentService } from 'src/app/services/payment.service';
 import { StripeCardElement, Stripe as StripeClient } from '@stripe/stripe-js';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 
 @Component({
   selector: 'app-credit-card',

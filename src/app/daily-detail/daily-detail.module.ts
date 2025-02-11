@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { DailyDetailRoutingModule } from './daily-detail-routing.module';
 import { DailyDetailComponent } from './daily-detail.component';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SharedModule } from '../shared/shared.module';

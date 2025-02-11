@@ -7,7 +7,7 @@ import {
 import Stripe from 'stripe';
 import { environment } from 'src/environments/environment';
 import { AngularFireFunctions } from '@angular/fire/functions';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ChargeWithInvoice } from '@interfaces/charge';
 @Injectable({

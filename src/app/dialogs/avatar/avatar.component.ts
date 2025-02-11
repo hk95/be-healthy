@@ -1,5 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasicInfoService } from 'src/app/services/basic-info.service';

@@ -5,7 +5,7 @@ import {
   DocumentChangeAction,
 } from '@angular/fire/firestore';
 import { firestore } from 'firebase';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Set } from '../interfaces/set';
 import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';

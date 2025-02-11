@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SetDetailRoutingModule } from './set-detail-routing.module';
 import { SetDetailComponent } from './set-detail.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({

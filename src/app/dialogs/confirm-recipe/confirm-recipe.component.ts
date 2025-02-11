@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Recipe } from 'src/app/interfaces/recipe';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { take } from 'rxjs/operators';
 

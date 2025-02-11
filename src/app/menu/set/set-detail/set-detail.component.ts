@@ -4,7 +4,7 @@ import { SetService } from 'src/app/services/set.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Set } from 'src/app/interfaces/set';
 import { switchMap, take } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { Observable } from 'rxjs';
 

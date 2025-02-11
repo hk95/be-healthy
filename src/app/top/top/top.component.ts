@@ -7,7 +7,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
 import { Router } from '@angular/router';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TutorialComponent } from 'src/app/dialogs/tutorial/tutorial.component';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';

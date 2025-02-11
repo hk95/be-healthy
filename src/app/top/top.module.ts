@@ -4,15 +4,15 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { TopRoutingModule } from './top-routing.module';
 import { TopComponent } from './top/top.component';
 
-import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DetailComponent } from './detail/detail.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { SharedModule } from '../shared/shared.module';
 import { DailyMemoModule } from '../shared/daily-memo/daily-memo.module';
 
