@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { FirebaseApp } from '@angular/fire';
+import { FirebaseApp } from '@angular/fire/compat';
 
 @Injectable({
   providedIn: 'root',

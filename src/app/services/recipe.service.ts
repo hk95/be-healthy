@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {
   AngularFirestore,
   QueryDocumentSnapshot,
   DocumentChangeAction,
-} from '@angular/fire/firestore';
+} from '@angular/fire/compat/firestore';
 import { Recipe } from '../interfaces/recipe';
-import { firestore } from 'firebase';
+import { firestore } from 'firebase/compat';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { BasicInfoService } from './basic-info.service';
 import { BasicInfo } from '../interfaces/basic-info';
 

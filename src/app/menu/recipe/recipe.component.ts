@@ -3,7 +3,7 @@ import { RecipeWithAuthor, Recipe } from 'src/app/interfaces/recipe';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import { take } from 'rxjs/operators';
 
 @Component({

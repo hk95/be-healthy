@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import { firestore } from 'firebase/compat';
 import { BasicInfo } from './basic-info';
 
 export interface Recipe {

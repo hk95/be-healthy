@@ -6,9 +6,9 @@ import {
 } from '@stripe/stripe-js';
 import Stripe from 'stripe';
 import { environment } from 'src/environments/environment';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ChargeWithInvoice } from '@interfaces/charge';
 @Injectable({
   providedIn: 'root',

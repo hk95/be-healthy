@@ -3,11 +3,11 @@ import {
   AngularFirestore,
   QueryDocumentSnapshot,
   DocumentChangeAction,
-} from '@angular/fire/firestore';
+} from '@angular/fire/compat/firestore';
 import { Food } from '../interfaces/food';
 import { Observable, of } from 'rxjs';
 import { switchMap, take, map } from 'rxjs/operators';
-import { firestore } from 'firebase';
+import { firestore } from 'firebase/compat';
 
 @Injectable({
   providedIn: 'root',

@@ -16,7 +16,7 @@ import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-r
 import { FoodInArray, Nutrition, Set } from 'src/app/interfaces/set';
 
 import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
-import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import { Food, SentFood } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import {
   UntypedFormArray,
   UntypedFormBuilder,

@@ -3,8 +3,8 @@ import {
   AngularFirestore,
   QueryDocumentSnapshot,
   DocumentChangeAction,
-} from '@angular/fire/firestore';
-import { firestore } from 'firebase';
+} from '@angular/fire/compat/firestore';
+import { firestore } from 'firebase/compat';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
 import { Observable, of } from 'rxjs';

@@ -12,7 +12,7 @@ import {
   UntypedFormBuilder,
   Validators,
 } from '@angular/forms';
-import { QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { QueryDocumentSnapshot } from '@angular/fire/compat/firestore';
 import { take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';

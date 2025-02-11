@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import { firestore } from 'firebase/compat';
 import { Food } from './food';
 import { Recipe } from './recipe';
 
