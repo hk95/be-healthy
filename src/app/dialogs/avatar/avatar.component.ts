@@ -8,6 +8,7 @@ import { BasicInfoService } from 'src/app/services/basic-info.service';
   selector: 'app-avatar',
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.scss'],
+  standalone: false,
 })
 export class AvatarComponent implements OnInit {
   croppedImage: string;

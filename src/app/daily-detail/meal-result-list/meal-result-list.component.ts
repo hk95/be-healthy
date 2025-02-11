@@ -15,6 +15,7 @@ export type MealType = 'breakfast' | 'lunch' | 'dinner';
   templateUrl: './meal-result-list.component.html',
   styleUrls: ['./meal-result-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MealResultListComponent implements OnChanges {
   @Input()

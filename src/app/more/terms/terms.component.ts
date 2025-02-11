@@ -5,6 +5,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   selector: 'app-terms',
   templateUrl: './terms.component.html',
   styleUrls: ['./terms.component.scss'],
+  standalone: false,
 })
 export class TermsComponent implements OnInit {
   constructor(private othreShellService: OthreShellService) {

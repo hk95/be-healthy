@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-recipe-thumbnail',
   templateUrl: './recipe-thumbnail.component.html',
   styleUrls: ['./recipe-thumbnail.component.scss'],
+  standalone: false,
 })
 export class RecipeThumbnailComponent implements OnInit {
   croppedImage: string;

@@ -17,6 +17,7 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
   selector: 'app-meal-input',
   templateUrl: './meal-input.component.html',
   styleUrls: ['./meal-input.component.scss'],
+  standalone: false,
 })
 export class MealInputComponent implements OnInit {
   amount: number;

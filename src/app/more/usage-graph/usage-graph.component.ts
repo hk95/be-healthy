@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-usage-graph',
   templateUrl: './usage-graph.component.html',
   styleUrls: ['./usage-graph.component.scss'],
+  standalone: false,
 })
 export class UsageGraphComponent implements OnInit {
   constructor() {}

@@ -7,6 +7,7 @@ import { SearchService } from 'src/app/services/search.service';
   selector: 'app-food-search-form',
   templateUrl: './food-search-form.component.html',
   styleUrls: ['./food-search-form.component.scss'],
+  standalone: false,
 })
 export class FoodSearchFormComponent implements OnInit {
   @Input() pageTitle: 'mealPage' | 'setPage';

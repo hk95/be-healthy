@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
+  standalone: false,
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   private readonly userId = this.authService.uid;

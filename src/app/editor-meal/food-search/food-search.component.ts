@@ -11,6 +11,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   selector: 'app-food-search',
   templateUrl: './food-search.component.html',
   styleUrls: ['./food-search.component.scss'],
+  standalone: false,
 })
 export class FoodSearchComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

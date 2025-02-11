@@ -8,6 +8,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
   selector: 'app-recipe-process-image',
   templateUrl: './recipe-process-image.component.html',
   styleUrls: ['./recipe-process-image.component.scss'],
+  standalone: false,
 })
 export class RecipeProcessImageComponent implements OnInit {
   croppedImage: string;

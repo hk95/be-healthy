@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
   selector: 'app-set-detail',
   templateUrl: './set-detail.component.html',
   styleUrls: ['./set-detail.component.scss'],
+  standalone: false,
 })
 export class SetDetailComponent implements OnInit {
   private readonly userId: string = this.authService.uid;

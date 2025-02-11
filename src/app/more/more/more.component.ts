@@ -6,6 +6,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   selector: 'app-more',
   templateUrl: './more.component.html',
   styleUrls: ['./more.component.scss'],
+  standalone: false,
 })
 export class MoreComponent implements OnInit {
   constructor(

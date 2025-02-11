@@ -18,6 +18,7 @@ import { FoodService } from 'src/app/services/food.service';
   selector: 'app-food-list-for-meal',
   templateUrl: './food-list-for-meal.component.html',
   styleUrls: ['./food-list-for-meal.component.scss'],
+  standalone: false,
 })
 export class FoodListForMealComponent implements OnInit {
   @Input() date: string;

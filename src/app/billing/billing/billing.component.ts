@@ -20,6 +20,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss'],
+  standalone: false,
 })
 export class BillingComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

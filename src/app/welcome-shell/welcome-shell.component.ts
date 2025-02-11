@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-welcome-shell',
   templateUrl: './welcome-shell.component.html',
   styleUrls: ['./welcome-shell.component.scss'],
+  standalone: false,
 })
 export class WelcomeShellComponent implements OnInit {
   constructor() {}

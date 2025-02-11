@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-other-shell',
   templateUrl: './other-shell.component.html',
   styleUrls: ['./other-shell.component.scss'],
+  standalone: false,
 })
 export class OtherShellComponent implements OnInit {
   basicInfo$: Observable<BasicInfo> = this.basicInfoService.getBasicInfo(

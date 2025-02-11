@@ -12,6 +12,7 @@ import { switchMap, take } from 'rxjs/operators';
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.scss'],
+  standalone: false,
 })
 export class RecipeDetailComponent implements OnInit {
   readonly userId = this.authService.uid;

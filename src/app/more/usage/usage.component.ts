@@ -6,6 +6,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   selector: 'app-usage',
   templateUrl: './usage.component.html',
   styleUrls: ['./usage.component.scss'],
+  standalone: false,
 })
 export class UsageComponent implements OnInit {
   constructor(

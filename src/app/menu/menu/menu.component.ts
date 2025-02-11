@@ -9,6 +9,7 @@ import { filter, take } from 'rxjs/operators';
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
+  standalone: false,
 })
 export class MenuComponent implements OnInit, OnDestroy {
   readonly mealPageQueryParams = this.dailyInfoService

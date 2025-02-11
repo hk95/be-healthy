@@ -8,6 +8,7 @@ import { take } from 'rxjs/operators';
   selector: 'app-confirm-recipe',
   templateUrl: './confirm-recipe.component.html',
   styleUrls: ['./confirm-recipe.component.scss'],
+  standalone: false,
 })
 export class ConfirmRecipeComponent implements OnInit {
   recipe: Recipe;

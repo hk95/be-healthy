@@ -20,6 +20,7 @@ import { AverageService } from 'src/app/services/average.service';
   templateUrl: './daily-detail.component.html',
   styleUrls: ['./daily-detail.component.scss'],
   providers: [NutritionPipe, PfcBalancePipe],
+  standalone: false,
 })
 export class DailyDetailComponent implements OnInit, OnDestroy {
   private readonly userId = this.authService.uid;

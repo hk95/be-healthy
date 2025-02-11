@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
+  standalone: false,
 })
 export class WelcomeComponent implements OnInit {
   constructor(private authService: AuthService) {}

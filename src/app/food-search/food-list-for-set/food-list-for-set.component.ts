@@ -5,6 +5,7 @@ import { Food, SentFood } from 'src/app/interfaces/food';
   selector: 'app-food-list-for-set',
   templateUrl: './food-list-for-set.component.html',
   styleUrls: ['./food-list-for-set.component.scss'],
+  standalone: false,
 })
 export class FoodListForSetComponent implements OnInit {
   @Input() foods: Food[];

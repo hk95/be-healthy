@@ -3,6 +3,7 @@ import { DailyMeal } from '../interfaces/daily-info';
 
 @Pipe({
   name: 'nutrition',
+  standalone: false,
 })
 export class NutritionPipe implements PipeTransform {
   transform(

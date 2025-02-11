@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
+  standalone: false,
 })
 export class AccountComponent implements OnInit {
   private readonly userId = this.authService.uid;

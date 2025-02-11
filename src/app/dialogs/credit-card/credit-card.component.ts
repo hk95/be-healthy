@@ -19,6 +19,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   selector: 'app-credit-card',
   templateUrl: './credit-card.component.html',
   styleUrls: ['./credit-card.component.scss'],
+  standalone: false,
 })
 export class CreditCardComponent implements OnInit {
   @ViewChild('cardElement') private cardElementRef: ElementRef;

@@ -12,6 +12,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   selector: 'app-selected-foods',
   templateUrl: './selected-foods.component.html',
   styleUrls: ['./selected-foods.component.scss'],
+  standalone: false,
 })
 export class SelectedFoodsComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

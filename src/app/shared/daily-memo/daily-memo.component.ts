@@ -12,6 +12,7 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
   selector: 'app-daily-memo',
   templateUrl: './daily-memo.component.html',
   styleUrls: ['./daily-memo.component.scss'],
+  standalone: false,
 })
 export class DailyMemoComponent implements OnChanges {
   @Input()

@@ -21,6 +21,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
   selector: 'app-graph',
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.scss'],
+  standalone: false,
 })
 export class GraphComponent implements OnInit, OnDestroy {
   private readonly userId = this.authService.uid;

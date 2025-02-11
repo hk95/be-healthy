@@ -26,6 +26,7 @@ import { CalculateCNitionService } from './util/calculate-nutrition.service';
   selector: 'app-set-editor',
   templateUrl: './set-editor.component.html',
   styleUrls: ['./set-editor.component.scss'],
+  standalone: false,
 })
 export class SetEditorComponent implements OnInit {
   private readonly userId = this.authService.uid;

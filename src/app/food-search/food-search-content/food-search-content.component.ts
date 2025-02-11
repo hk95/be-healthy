@@ -6,6 +6,7 @@ import { SearchService } from 'src/app/services/search.service';
   selector: 'app-food-search-content',
   templateUrl: './food-search-content.component.html',
   styleUrls: ['./food-search-content.component.scss'],
+  standalone: false,
 })
 export class FoodSearchContentComponent implements OnInit {
   @Input() date: string;

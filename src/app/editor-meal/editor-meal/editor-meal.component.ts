@@ -13,6 +13,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   templateUrl: './editor-meal.component.html',
   styleUrls: ['./editor-meal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class EditorMealComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

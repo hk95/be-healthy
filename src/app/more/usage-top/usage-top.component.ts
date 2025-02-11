@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-usage-top',
   templateUrl: './usage-top.component.html',
   styleUrls: ['./usage-top.component.scss'],
+  standalone: false,
 })
 export class UsageTopComponent implements OnInit {
   constructor() {}

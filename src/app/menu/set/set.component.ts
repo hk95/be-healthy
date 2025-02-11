@@ -11,6 +11,7 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
   selector: 'app-set',
   templateUrl: './set.component.html',
   styleUrls: ['./set.component.scss'],
+  standalone: false,
 })
 export class SetComponent implements OnInit {
   private readonly editorMealPageQueryParams = this.dailyInfoService

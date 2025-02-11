@@ -5,6 +5,7 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   selector: 'app-legal',
   templateUrl: './legal.component.html',
   styleUrls: ['./legal.component.scss'],
+  standalone: false,
 })
 export class LegalComponent implements OnInit {
   constructor(private othreShellService: OthreShellService) {

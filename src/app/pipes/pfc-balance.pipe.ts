@@ -3,6 +3,7 @@ import { DailyMeal } from '../interfaces/daily-info';
 
 @Pipe({
   name: 'pfcBalance',
+  standalone: false,
 })
 export class PfcBalancePipe implements PipeTransform {
   transform(

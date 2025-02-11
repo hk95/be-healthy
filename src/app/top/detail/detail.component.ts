@@ -16,6 +16,7 @@ import { AverageService } from 'src/app/services/average.service';
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
+  standalone: false,
 })
 export class DetailComponent implements OnInit, OnDestroy {
   private readonly userId: string = this.authService.uid;

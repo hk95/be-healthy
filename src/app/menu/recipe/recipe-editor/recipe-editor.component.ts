@@ -29,6 +29,7 @@ import { switchMap } from 'rxjs/operators';
   selector: 'app-recipe-editor',
   templateUrl: './recipe-editor.component.html',
   styleUrls: ['./recipe-editor.component.scss'],
+  standalone: false,
 })
 export class RecipeEditorComponent implements OnInit, OnDestroy {
   @ViewChild('thumbnail') thumbnailInput: ElementRef;

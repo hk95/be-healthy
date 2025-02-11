@@ -23,6 +23,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   selector: 'app-fav-foods',
   templateUrl: './fav-foods.component.html',
   styleUrls: ['./fav-foods.component.scss'],
+  standalone: false,
 })
 export class FavFoodsComponent implements OnInit, OnDestroy {
   private readonly getNumber = 10;

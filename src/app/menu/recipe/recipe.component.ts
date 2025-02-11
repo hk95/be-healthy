@@ -10,6 +10,7 @@ import { take } from 'rxjs/operators';
   selector: 'app-recipe',
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.scss'],
+  standalone: false,
 })
 export class RecipeComponent implements OnInit {
   private readonly userId = this.authService.uid;

@@ -19,6 +19,7 @@ import { DailyInfoList } from 'src/app/interfaces/daily-info';
   selector: 'app-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
+  standalone: false,
 })
 export class TopComponent implements OnInit, OnDestroy {
   private readonly weekList = ['日', '月', '火', '水', '木', '金', '土'];

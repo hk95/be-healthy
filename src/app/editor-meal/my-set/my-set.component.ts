@@ -23,6 +23,7 @@ import { MainShellService } from 'src/app/services/main-shell.service';
   selector: 'app-my-set',
   templateUrl: './my-set.component.html',
   styleUrls: ['./my-set.component.scss'],
+  standalone: false,
 })
 export class MySetComponent implements OnInit, OnDestroy {
   private lastDoc: QueryDocumentSnapshot<Set>;
