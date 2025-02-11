@@ -6,7 +6,7 @@ import {
   DocumentChangeAction,
 } from '@angular/fire/compat/firestore';
 import { Recipe } from '../interfaces/recipe';
-import { firestore } from 'firebase/compat';
+import { Timestamp } from '@angular/fire/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
@@ -171,7 +171,7 @@ export class RecipeService {
 
   async createRecipe(recipe: Omit<Recipe, 'recipeId'>): Promise<void> {
     const recipeId = this.db.createId();
-    const updatedAt = firestore.Timestamp.now();
+    const updatedAt = Timestamp.now();
     return this.db
       .doc<Recipe>(`recipes/${recipeId}`)
       .set({ ...recipe, recipeId, updatedAt })
@@ -183,7 +183,7 @@ export class RecipeService {
   }
 
   async updateRecipe(recipe: Recipe): Promise<void> {
-    const updatedAt = firestore.Timestamp.now();
+    const updatedAt = Timestamp.now();
     return this.db
       .doc<Recipe>(`recipes/${recipe.recipeId}`)
       .update({ ...recipe, updatedAt })

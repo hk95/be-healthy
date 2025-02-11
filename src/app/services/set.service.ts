@@ -4,7 +4,8 @@ import {
   QueryDocumentSnapshot,
   DocumentChangeAction,
 } from '@angular/fire/compat/firestore';
-import { firestore } from 'firebase/compat';
+import { Timestamp } from '@angular/fire/firestore';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Set } from '../interfaces/set';
 import { Observable, of } from 'rxjs';
@@ -96,7 +97,7 @@ export class SetService {
 
   async createSet(set: Omit<Set, 'setId' | 'updatedAt'>): Promise<void> {
     const setId = this.db.createId();
-    const updatedAt = firestore.Timestamp.now();
+    const updatedAt = Timestamp.now();
     return this.db
       .doc<Set>(`users/${set.userId}/sets/${setId}`)
       .set({
@@ -133,7 +134,7 @@ export class SetService {
   }
 
   async updateSet(set: Omit<Set, 'updatedAt'>): Promise<void> {
-    const updatedAt = firestore.Timestamp.now();
+    const updatedAt = Timestamp.now();
     return this.db
       .doc(`users/${set.userId}/sets/${set.setId}`)
       .update({

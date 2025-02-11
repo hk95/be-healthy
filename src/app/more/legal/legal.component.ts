@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { OthreShellService } from 'src/app/services/othre-shell.service';
 
 @Component({
@@ -7,10 +7,8 @@ import { OthreShellService } from 'src/app/services/othre-shell.service';
   styleUrls: ['./legal.component.scss'],
   standalone: false,
 })
-export class LegalComponent implements OnInit {
+export class LegalComponent {
   constructor(private othreShellService: OthreShellService) {
     this.othreShellService.title = this.othreShellService.PAGE_TITLES.legal;
   }
-
-  ngOnInit(): void {}
 }

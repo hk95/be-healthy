@@ -8,7 +8,7 @@
   row-gap: 64px;
   column-gap: 96px;
 
-  @media screen and(max-width:750px) {
+  @media screen and (max-width: 750px) {
     padding-top: 24px;
     grid-template-columns: 1fr;
     grid-template-areas: 'credit-card' 'donation' ' invoice';
@@ -41,7 +41,7 @@
     margin-bottom: 16px;
     max-height: 30px;
 
-    @media screen and(max-width:750px) {
+    @media screen and (max-width: 750px) {
       margin-bottom: 8px;
     }
   }

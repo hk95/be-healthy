@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
+import { base64ToFile } from 'src/app/image-cropper/image-cropper.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 
@@ -11,7 +11,9 @@ import { BasicInfoService } from 'src/app/services/basic-info.service';
   standalone: false,
 })
 export class AvatarComponent implements OnInit {
-  croppedImage: string;
+  croppedImage: string = '';
+
+  private cropper: Cropper;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -23,8 +25,15 @@ export class AvatarComponent implements OnInit {
     private basicInfoService: BasicInfoService
   ) {}
 
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+  cropImage(): void {
+    if (this.cropper) {
+      const canvas = this.cropper.getCroppedCanvas({
+        width: 400, // 必要なサイズを指定
+        height: 400,
+        fillColor: '#fff',
+      });
+      this.croppedImage = canvas.toDataURL('image/png');
+    }
   }
 
   async uploadImage(): Promise<void> {

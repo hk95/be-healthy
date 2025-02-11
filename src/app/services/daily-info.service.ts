@@ -8,7 +8,7 @@ import { map, take } from 'rxjs/operators';
 import { DailyInfo, DailyInfoList, DailyMeal } from '../interfaces/daily-info';
 
 import { AngularFireFunctions } from '@angular/fire/compat/functions';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',

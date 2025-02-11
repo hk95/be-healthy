@@ -13,7 +13,7 @@ p {
   padding: 32px 0;
 
   &__discription {
-    @media screen and(min-width:750px) {
+    @media screen and (min-width: 750px) {
       display: grid;
 
       &--card {
@@ -40,7 +40,7 @@ p {
     display: block;
     margin: 0 auto;
 
-    @media screen and(max-width:750px) {
+    @media screen and (max-width: 750px) {
       margin-bottom: 32px;
     }
   }
@@ -48,7 +48,7 @@ p {
   &__text {
     line-height: 1.7;
 
-    @media screen and(min-width:750px) {
+    @media screen and (min-width: 750px) {
       text-align: center;
 
       &--card {
@@ -75,7 +75,7 @@ p {
     justify-content: center;
     gap: 8px;
 
-    @media screen and(max-width:750px) {
+    @media screen and (max-width: 750px) {
       margin-bottom: 32px;
     }
   }
@@ -109,7 +109,7 @@ p {
     margin: 0 auto;
     grid-area: calendar;
 
-    @media screen and(max-width:750px) {
+    @media screen and (max-width: 750px) {
       margin-bottom: 32px;
     }
   }

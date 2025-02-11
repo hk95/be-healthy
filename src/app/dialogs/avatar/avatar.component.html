@@ -1,14 +1,13 @@
 <h3 mat-dialog-title>トリミング中</h3>
 <div mat-dialog-content>
-  <image-cropper
+  <app-image-cropper
     [imageFile]="data.imageFile"
     [maintainAspectRatio]="true"
     [aspectRatio]="1 / 1"
     format="png"
     roundCropper="true"
     class="imafe"
-    (imageCropped)="imageCropped($event)"
-  ></image-cropper>
+  ></app-image-cropper>
 </div>
 <div mat-dialog-actions class="actions">
   <button mat-stroked-button matDialogClose>キャンセル</button>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireFunctions } from '@angular/fire/compat/functions';
-import * as moment from 'moment';
+import moment from 'moment';
 import { take } from 'rxjs/operators';
 import { DailyInfo } from '../interfaces/daily-info';
 import { combineLatest, Observable } from 'rxjs';

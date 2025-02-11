@@ -106,7 +106,7 @@
     grid-template-columns: 1fr 1fr;
     margin-bottom: 16px;
 
-    @media screen and(max-width:750px) {
+    @media screen and (max-width: 750px) {
       grid-template-columns: 1fr;
     }
   }

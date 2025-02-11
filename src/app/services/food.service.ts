@@ -7,7 +7,7 @@ import {
 import { Food } from '../interfaces/food';
 import { Observable, of } from 'rxjs';
 import { switchMap, take, map } from 'rxjs/operators';
-import { firestore } from 'firebase/compat';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class FoodService {
   constructor(private db: AngularFirestore) {}
 
   likeFavFood(userId: string, food: Food): Promise<void> {
-    const updatedAt = firestore.Timestamp.now();
+    const updatedAt = Timestamp.now();
     return this.db
       .doc(`users/${userId}/favFoods/${food.foodId}`)
       .set({ ...food, updatedAt });

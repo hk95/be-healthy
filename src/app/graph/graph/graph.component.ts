@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AverageService } from 'src/app/services/average.service';
 import {
   AverageOfMonth,

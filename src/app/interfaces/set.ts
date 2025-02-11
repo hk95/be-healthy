@@ -1,4 +1,5 @@
-import { firestore } from 'firebase/compat';
+import { Timestamp } from '@angular/fire/firestore';
+
 import { Food } from './food';
 import { Recipe } from './recipe';
 
@@ -15,7 +16,7 @@ export interface Set {
   setTotalCarbohydrate: number;
   setDietaryFiber: number;
   setSugar: number;
-  updatedAt: firestore.Timestamp;
+  updatedAt: Timestamp;
   foodsArray?: FoodInArray[];
 }
 

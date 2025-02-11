@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { base64ToFile } from 'src/app/image-cropper/image-cropper.component';
 
 @Component({
   selector: 'app-recipe-thumbnail',
@@ -24,10 +24,6 @@ export class RecipeThumbnailComponent implements OnInit {
     private authSerrvice: AuthService,
     private dialogRef: MatDialogRef<RecipeThumbnailComponent>
   ) {}
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
 
   async uploadImage(): Promise<void> {
     const file: Blob = base64ToFile(this.croppedImage);

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { base64ToFile } from 'src/app/image-cropper/image-cropper.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { ImageCroppedEvent, base64ToFile } from 'ngx-image-cropper';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -24,9 +24,7 @@ export class RecipeProcessImageComponent implements OnInit {
     private recipeService: RecipeService,
     private dialogRef: MatDialogRef<RecipeProcessImageComponent>
   ) {}
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
+
   async uploadImage(): Promise<void> {
     const file: Blob = base64ToFile(this.croppedImage);
     const downloadURL: string = await this.recipeService.uploadProcessImage(

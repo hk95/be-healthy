@@ -23,12 +23,10 @@ import localeJa from '@angular/common/locales/ja';
 import { registerLocaleData, DatePipe } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MainShellComponent } from './main-shell/main-shell.component';
 import { OtherShellComponent } from './other-shell/other-shell.component';
 import { WelcomeShellComponent } from './welcome-shell/welcome-shell.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { RecipeThumbnailComponent } from './dialogs/recipe-thumbnail/recipe-thumbnail.component';
 import { RecipeProcessImageComponent } from './dialogs/recipe-process-image/recipe-process-image.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
@@ -46,9 +44,10 @@ import { AvatarComponent } from './dialogs/avatar/avatar.component';
 import { TutorialComponent } from './dialogs/tutorial/tutorial.component';
 import { MealInputComponent } from './bottom-sheet/meal-input/meal-input.component';
 import { SharedModule } from './shared/shared.module';
+import { ImageCropperComponent } from './image-cropper/image-cropper.component';
 
 registerLocaleData(localeJa);
-FullCalendarModule.registerPlugins([dayGridPlugin]);
+FullCalendarModule;
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,7 +81,6 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     MatSidenavModule,
     MatMenuModule,
     FullCalendarModule,
-    ImageCropperModule,
     MatDialogModule,
     MatSelectModule,
     FormsModule,
@@ -92,6 +90,7 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     MatFormFieldModule,
     MatNativeDateModule,
     SharedModule,
+    ImageCropperComponent,
   ],
   providers: [
     DatePipe,

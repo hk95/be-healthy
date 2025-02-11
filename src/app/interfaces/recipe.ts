@@ -1,4 +1,4 @@
-import { firestore } from 'firebase/compat';
+import { Timestamp } from '@angular/fire/firestore';
 import { BasicInfo } from './basic-info';
 
 export interface Recipe {
@@ -14,7 +14,7 @@ export interface Recipe {
   recipeSugar: number;
   public: boolean;
   authorId: string;
-  updatedAt?: firestore.Timestamp;
+  updatedAt?: Timestamp;
   foods?: FoodOfRecipe[];
   processes?: ProcessOfRecipe[];
 }

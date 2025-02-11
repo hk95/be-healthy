@@ -126,7 +126,7 @@
   z-index: 5;
   bottom: 80px;
 
-  @media screen and(max-width:750px) {
+  @media screen and (max-width: 750px) {
     right: 24px;
   }
 }
@@ -149,7 +149,7 @@
     margin-bottom: 32px;
 
     &--long {
-      @media screen and(max-width:750px) {
+      @media screen and (max-width: 750px) {
         text-align: left;
       }
     }

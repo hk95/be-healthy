@@ -74,7 +74,7 @@
 }
 
 .mat-badge-content {
-  @media screen and(min-width:340px) {
+  @media screen and (min-width: 340px) {
     right: -16px !important;
   }
 }
@@ -90,13 +90,13 @@
 }
 
 .open-sheet {
-  @media screen and(min-width:750px) {
+  @media screen and (min-width: 750px) {
     display: none;
   }
 }
 
 .add-meal {
-  @media screen and(max-width:750px) {
+  @media screen and (max-width: 750px) {
     display: none;
   }
 }
