@@ -7,7 +7,11 @@ import { DailyInfoService } from 'src/app/services/daily-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SetService } from 'src/app/services/set.service';
 import { AverageService } from 'src/app/services/average.service';
-import { Validators, FormBuilder, FormArray } from '@angular/forms';
+import {
+  Validators,
+  UntypedFormBuilder,
+  UntypedFormArray,
+} from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
@@ -40,8 +44,8 @@ export class MySetComponent implements OnInit, OnDestroy {
   amountForm = this.fb.group({
     amountArray: this.fb.array([]),
   });
-  get amountArray(): FormArray {
-    return this.amountForm.get('amountArray') as FormArray;
+  get amountArray(): UntypedFormArray {
+    return this.amountForm.get('amountArray') as UntypedFormArray;
   }
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +54,7 @@ export class MySetComponent implements OnInit, OnDestroy {
     private setService: SetService,
     private router: Router,
     private averageService: AverageService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private bottomSheet: MatBottomSheet,
     private mainShellService: MainShellService

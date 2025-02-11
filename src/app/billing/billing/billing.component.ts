@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PaymentService } from 'src/app/services/payment.service';
 
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  Validators,
+  UntypedFormControl,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CreditCardComponent } from 'src/app/dialogs/credit-card/credit-card.component';
 
@@ -36,12 +40,12 @@ export class BillingComponent implements OnInit, OnDestroy {
   });
   noGetList: number[];
   get donationAmountControl() {
-    return this.donationForm.get('donationAmount') as FormControl;
+    return this.donationForm.get('donationAmount') as UntypedFormControl;
   }
 
   constructor(
     private paymentService: PaymentService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dialog: MatDialog,
     private authService: AuthService,
     private mainShellService: MainShellService

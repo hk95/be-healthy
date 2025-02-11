@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Food } from 'src/app/interfaces/food';
 import { SearchService } from 'src/app/services/search.service';
 
@@ -16,7 +16,10 @@ export class FoodSearchFormComponent implements OnInit {
   readonly form = this.fb.group({
     query: [''],
   });
-  constructor(private searchService: SearchService, private fb: FormBuilder) {}
+  constructor(
+    private searchService: SearchService,
+    private fb: UntypedFormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.search('こめ');

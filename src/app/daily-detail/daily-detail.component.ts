@@ -7,7 +7,11 @@ import { AuthService } from '../services/auth.service';
 import { MainShellService } from '../services/main-shell.service';
 import { NutritionPipe } from '../pipes/nutrition.pipe';
 import { PfcBalancePipe } from '../pipes/pfc-balance.pipe';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { switchMap, take } from 'rxjs/operators';
 import { AverageService } from 'src/app/services/average.service';
 
@@ -55,11 +59,11 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     ],
   });
 
-  get currentWeightControl(): FormControl {
-    return this.formBody.get('currentWeight') as FormControl;
+  get currentWeightControl(): UntypedFormControl {
+    return this.formBody.get('currentWeight') as UntypedFormControl;
   }
-  get currentFatControl(): FormControl {
-    return this.formBody.get('currentFat') as FormControl;
+  get currentFatControl(): UntypedFormControl {
+    return this.formBody.get('currentFat') as UntypedFormControl;
   }
 
   mealsOfBreakfast: DailyMeal[] = [];
@@ -104,7 +108,7 @@ export class DailyDetailComponent implements OnInit, OnDestroy {
     private mainShellService: MainShellService,
     private nutritionPipe: NutritionPipe,
     private pfcBalancePipe: PfcBalancePipe,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private averageService: AverageService
   ) {}
 

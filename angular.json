@@ -123,7 +123,6 @@
       }
     }
   },
-  "defaultProject": "be-healthy",
   "cli": {
     "analytics": false
   }

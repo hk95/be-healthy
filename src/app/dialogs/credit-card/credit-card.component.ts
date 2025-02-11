@@ -5,7 +5,11 @@ import {
   ElementRef,
   Inject,
 } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  Validators,
+  UntypedFormControl,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaymentService } from 'src/app/services/payment.service';
 import { StripeCardElement, Stripe as StripeClient } from '@stripe/stripe-js';
@@ -32,7 +36,7 @@ export class CreditCardComponent implements OnInit {
   stripeClient: StripeClient;
   cardElement: StripeCardElement;
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private snackBar: MatSnackBar,
     private paymentService: PaymentService,
     private dialogRef: MatDialogRef<CreditCardComponent>,
@@ -51,10 +55,10 @@ export class CreditCardComponent implements OnInit {
     );
   }
   get formNameControl() {
-    return this.form.get('name') as FormControl;
+    return this.form.get('name') as UntypedFormControl;
   }
   get formEmailControl() {
-    return this.form.get('email') as FormControl;
+    return this.form.get('email') as UntypedFormControl;
   }
 
   createCard() {

@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OthreShellService } from 'src/app/services/othre-shell.service';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  Validators,
+  UntypedFormControl,
+} from '@angular/forms';
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';
@@ -42,20 +46,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
     goalFat: ['', [Validators.min(this.minFat), Validators.max(this.maxFat)]],
     goalCal: ['', [Validators.min(this.minCal), Validators.max(this.maxCal)]],
   });
-  get nameControl(): FormControl {
-    return this.form.get('name') as FormControl;
+  get nameControl(): UntypedFormControl {
+    return this.form.get('name') as UntypedFormControl;
   }
-  get heigtControl(): FormControl {
-    return this.form.get('height') as FormControl;
+  get heigtControl(): UntypedFormControl {
+    return this.form.get('height') as UntypedFormControl;
   }
-  get weightControl(): FormControl {
-    return this.form.get('goalWeight') as FormControl;
+  get weightControl(): UntypedFormControl {
+    return this.form.get('goalWeight') as UntypedFormControl;
   }
-  get fatControl(): FormControl {
-    return this.form.get('goalFat') as FormControl;
+  get fatControl(): UntypedFormControl {
+    return this.form.get('goalFat') as UntypedFormControl;
   }
-  get calControl(): FormControl {
-    return this.form.get('goalCal') as FormControl;
+  get calControl(): UntypedFormControl {
+    return this.form.get('goalCal') as UntypedFormControl;
   }
   genderTypes = [
     { viewValue: '未選択', value: 'other' },
@@ -66,7 +70,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(
     private otherShellService: OthreShellService,
     private basicInfoService: BasicInfoService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authService: AuthService,
     private dialog: MatDialog
   ) {

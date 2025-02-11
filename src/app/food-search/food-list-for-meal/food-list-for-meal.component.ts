@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { take } from 'rxjs/operators';
 import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
@@ -29,8 +33,8 @@ export class FoodListForMealComponent implements OnInit {
   amountForm = this.fb.group({
     amountArray: this.fb.array([]),
   });
-  get amountArray(): FormArray {
-    return this.amountForm.get('amountArray') as FormArray;
+  get amountArray(): UntypedFormArray {
+    return this.amountForm.get('amountArray') as UntypedFormArray;
   }
 
   constructor(
@@ -38,7 +42,7 @@ export class FoodListForMealComponent implements OnInit {
     private authService: AuthService,
     private dailyInfoService: DailyInfoService,
 
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private bottomSheet: MatBottomSheet
   ) {
     this.getFavFoods();

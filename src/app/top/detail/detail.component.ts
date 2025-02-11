@@ -5,7 +5,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe } from '@angular/common';
 import { DailyInfo, DailyInfoList } from 'src/app/interfaces/daily-info';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  Validators,
+} from '@angular/forms';
 import { AverageService } from 'src/app/services/average.service';
 
 @Component({
@@ -52,18 +56,18 @@ export class DetailComponent implements OnInit, OnDestroy {
     ],
   });
 
-  get currentWeightControl(): FormControl {
-    return this.formBody.get('currentWeight') as FormControl;
+  get currentWeightControl(): UntypedFormControl {
+    return this.formBody.get('currentWeight') as UntypedFormControl;
   }
-  get currentFatControl(): FormControl {
-    return this.formBody.get('currentFat') as FormControl;
+  get currentFatControl(): UntypedFormControl {
+    return this.formBody.get('currentFat') as UntypedFormControl;
   }
 
   constructor(
     private dailyInfoService: DailyInfoService,
     private authService: AuthService,
     private datepipe: DatePipe,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private averageService: AverageService
   ) {}
 

@@ -1,5 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  Validators,
+} from '@angular/forms';
 import { DailyInfo } from 'src/app/interfaces/daily-info';
 import { AuthService } from 'src/app/services/auth.service';
 import { DailyInfoService } from 'src/app/services/daily-info.service';
@@ -22,12 +26,12 @@ export class DailyMemoComponent implements OnChanges {
     dailyMemo: ['', [Validators.maxLength(this.maxMemoLength)]],
   });
 
-  get memoControl(): FormControl {
-    return this.formMemo.get('dailyMemo') as FormControl;
+  get memoControl(): UntypedFormControl {
+    return this.formMemo.get('dailyMemo') as UntypedFormControl;
   }
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dailyInfoService: DailyInfoService,
     private authService: AuthService
   ) {}

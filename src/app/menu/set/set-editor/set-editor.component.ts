@@ -1,9 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import {
-  FormBuilder,
+  UntypedFormBuilder,
   Validators,
-  FormArray,
-  FormControl,
+  UntypedFormArray,
+  UntypedFormControl,
 } from '@angular/forms';
 import { Location } from '@angular/common';
 import { RecipeService } from 'src/app/services/recipe.service';
@@ -117,33 +117,33 @@ export class SetEditorComponent implements OnInit {
       ],
     ],
   });
-  get titleControl(): FormControl {
-    return this.form.get('setTitle') as FormControl;
+  get titleControl(): UntypedFormControl {
+    return this.form.get('setTitle') as UntypedFormControl;
   }
-  get setCalControl(): FormControl {
-    return this.form.get('setCal') as FormControl;
+  get setCalControl(): UntypedFormControl {
+    return this.form.get('setCal') as UntypedFormControl;
   }
-  get setProteinControl(): FormControl {
-    return this.form.get('setProtein') as FormControl;
+  get setProteinControl(): UntypedFormControl {
+    return this.form.get('setProtein') as UntypedFormControl;
   }
-  get setFatControl(): FormControl {
-    return this.form.get('setFat') as FormControl;
+  get setFatControl(): UntypedFormControl {
+    return this.form.get('setFat') as UntypedFormControl;
   }
-  get setTotalCarbohydrateControl(): FormControl {
-    return this.form.get('setTotalCarbohydrate') as FormControl;
+  get setTotalCarbohydrateControl(): UntypedFormControl {
+    return this.form.get('setTotalCarbohydrate') as UntypedFormControl;
   }
-  get setDietaryFiberControl(): FormControl {
-    return this.form.get('setDietaryFiber') as FormControl;
+  get setDietaryFiberControl(): UntypedFormControl {
+    return this.form.get('setDietaryFiber') as UntypedFormControl;
   }
-  get setSugarControl(): FormControl {
-    return this.form.get('setSugar') as FormControl;
+  get setSugarControl(): UntypedFormControl {
+    return this.form.get('setSugar') as UntypedFormControl;
   }
-  get foodsArray(): FormArray {
-    return this.form.get('foodsArray') as FormArray;
+  get foodsArray(): UntypedFormArray {
+    return this.form.get('foodsArray') as UntypedFormArray;
   }
   constructor(
     private route: ActivatedRoute,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private location: Location,
     private recipeService: RecipeService,
     private authService: AuthService,

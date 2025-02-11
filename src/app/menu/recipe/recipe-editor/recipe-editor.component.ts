@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 
 import {
-  FormBuilder,
+  UntypedFormBuilder,
   Validators,
-  FormControl,
-  FormArray,
+  UntypedFormControl,
+  UntypedFormArray,
   AbstractControl,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -119,42 +119,42 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   });
   displayedColumns: string[] = ['name', 'amount'];
   displayedColumnsProcess: string[] = ['index', 'image', 'description'];
-  get recipeTitle(): FormControl {
-    return this.form.get('recipeTitle') as FormControl;
+  get recipeTitle(): UntypedFormControl {
+    return this.form.get('recipeTitle') as UntypedFormControl;
   }
-  get descriptionControl(): FormControl {
-    return this.form.get('recipeDescription') as FormControl;
+  get descriptionControl(): UntypedFormControl {
+    return this.form.get('recipeDescription') as UntypedFormControl;
   }
-  get ingredients(): FormArray {
-    return this.form.get('ingredients') as FormArray;
+  get ingredients(): UntypedFormArray {
+    return this.form.get('ingredients') as UntypedFormArray;
   }
-  get processes(): FormArray {
-    return this.form.get('processes') as FormArray;
+  get processes(): UntypedFormArray {
+    return this.form.get('processes') as UntypedFormArray;
   }
-  get recipeCalControl(): FormControl {
-    return this.form.get('recipeCal') as FormControl;
+  get recipeCalControl(): UntypedFormControl {
+    return this.form.get('recipeCal') as UntypedFormControl;
   }
-  get recipeProteinControl(): FormControl {
-    return this.form.get('recipeProtein') as FormControl;
+  get recipeProteinControl(): UntypedFormControl {
+    return this.form.get('recipeProtein') as UntypedFormControl;
   }
-  get recipeFatControl(): FormControl {
-    return this.form.get('recipeFat') as FormControl;
+  get recipeFatControl(): UntypedFormControl {
+    return this.form.get('recipeFat') as UntypedFormControl;
   }
-  get recipeTotalCarbohydrateControl(): FormControl {
-    return this.form.get('recipeTotalCarbohydrate') as FormControl;
+  get recipeTotalCarbohydrateControl(): UntypedFormControl {
+    return this.form.get('recipeTotalCarbohydrate') as UntypedFormControl;
   }
-  get recipeDietaryFiberControl(): FormControl {
-    return this.form.get('recipeDietaryFiber') as FormControl;
+  get recipeDietaryFiberControl(): UntypedFormControl {
+    return this.form.get('recipeDietaryFiber') as UntypedFormControl;
   }
-  get recipeSugarControl(): FormControl {
-    return this.form.get('recipeSugar') as FormControl;
+  get recipeSugarControl(): UntypedFormControl {
+    return this.form.get('recipeSugar') as UntypedFormControl;
   }
 
   dataSource = new BehaviorSubject<AbstractControl[]>([]);
   processSource = new BehaviorSubject<AbstractControl[]>([]);
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dialog: MatDialog,
     private location: Location,
     private route: ActivatedRoute,

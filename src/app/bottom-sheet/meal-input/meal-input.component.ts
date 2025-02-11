@@ -1,5 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  Validators,
+} from '@angular/forms';
 import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
@@ -26,8 +30,8 @@ export class MealInputComponent implements OnInit {
       ],
     ],
   });
-  get amountControl(): FormControl {
-    return this.amountForm.get('amount') as FormControl;
+  get amountControl(): UntypedFormControl {
+    return this.amountForm.get('amount') as UntypedFormControl;
   }
   constructor(
     @Inject(MAT_BOTTOM_SHEET_DATA)
@@ -40,7 +44,7 @@ export class MealInputComponent implements OnInit {
       set: Set;
     },
     private dailyInfoService: DailyInfoService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public bottomSheetRef: MatBottomSheetRef<MealInputComponent>
   ) {}
 
