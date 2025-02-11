@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanDeactivate } from '@angular/router';
+
 import { Observable, of } from 'rxjs';
 import { SetEditorComponent } from '../menu/set/set-editor/set-editor.component';
 import { SetService } from '../services/set.service';
@@ -8,8 +8,7 @@ import { RecipeEditorComponent } from '../menu/recipe/recipe-editor/recipe-edito
 @Injectable({
   providedIn: 'root',
 })
-export class FormGuard
-  implements CanDeactivate<RecipeEditorComponent | SetEditorComponent> {
+export class FormGuard {
   constructor(private setService: SetService) {}
 
   canDeactivate(

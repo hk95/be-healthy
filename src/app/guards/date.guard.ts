@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import {
-  CanActivate,
   UrlSegment,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
@@ -13,7 +12,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class DateGuard implements CanActivate {
+export class DateGuard {
   private readonly pattern = /^\d{2}\.\d{2}\.\d{2}\(.\)$/;
   private readonly checkNum = /^\d{2}$/;
 
