@@ -5,7 +5,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "module": "es2020",
     "moduleResolution": "node",
@@ -15,7 +15,6 @@
     "paths": {
       "@interfaces/*": ["functions/src/interfaces/*"]
     },
-    "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
