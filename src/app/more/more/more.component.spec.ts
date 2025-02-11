@@ -10,6 +10,7 @@ describe('MoreComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [MoreComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

@@ -10,6 +10,7 @@ describe('DailyDetailComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DailyDetailComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

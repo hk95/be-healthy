@@ -6,7 +6,7 @@ describe('GuestGuard', () => {
   let guard: GuestGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     guard = TestBed.inject(GuestGuard);
   });
 

@@ -10,6 +10,7 @@ describe('LegalComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [LegalComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

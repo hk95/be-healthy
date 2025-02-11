@@ -10,6 +10,7 @@ describe('AccountComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AccountComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

@@ -6,7 +6,7 @@ describe('FormGuard', () => {
   let guard: FormGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     guard = TestBed.inject(FormGuard);
   });
 

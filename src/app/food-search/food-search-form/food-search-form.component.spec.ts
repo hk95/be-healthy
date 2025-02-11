@@ -9,6 +9,7 @@ describe('FoodSearchFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FoodSearchFormComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
   });
 

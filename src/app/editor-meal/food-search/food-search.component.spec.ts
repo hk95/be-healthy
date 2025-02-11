@@ -10,6 +10,7 @@ describe('FoodSearchComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FoodSearchComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

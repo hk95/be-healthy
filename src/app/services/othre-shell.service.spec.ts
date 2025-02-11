@@ -6,7 +6,7 @@ describe('OthreShellService', () => {
   let service: OthreShellService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(OthreShellService);
   });
 

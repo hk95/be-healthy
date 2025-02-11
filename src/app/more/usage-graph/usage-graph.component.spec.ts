@@ -10,6 +10,7 @@ describe('UsageGraphComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [UsageGraphComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

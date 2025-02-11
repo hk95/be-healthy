@@ -10,6 +10,7 @@ describe('BillingComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [BillingComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

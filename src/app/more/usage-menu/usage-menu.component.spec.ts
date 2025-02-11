@@ -10,6 +10,7 @@ describe('UsageMenuComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [UsageMenuComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

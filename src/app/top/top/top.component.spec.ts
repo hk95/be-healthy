@@ -10,6 +10,7 @@ describe('TopComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [TopComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

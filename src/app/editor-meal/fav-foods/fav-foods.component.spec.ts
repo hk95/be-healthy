@@ -10,6 +10,7 @@ describe('FavFoodsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FavFoodsComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

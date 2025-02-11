@@ -102,11 +102,5 @@ FullCalendarModule.registerPlugins([dayGridPlugin]);
     },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [
-    RecipeThumbnailComponent,
-    RecipeProcessImageComponent,
-    DeleteDialogComponent,
-    ConfirmRecipeComponent,
-  ],
 })
 export class AppModule {}

@@ -6,7 +6,7 @@ describe('DailyInfoService', () => {
   let service: DailyInfoService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     service = TestBed.inject(DailyInfoService);
   });
 

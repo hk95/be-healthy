@@ -10,6 +10,7 @@ describe('TermsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [TermsComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

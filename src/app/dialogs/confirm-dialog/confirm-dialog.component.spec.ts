@@ -10,6 +10,7 @@ describe('ConfirmDialogComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ConfirmDialogComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

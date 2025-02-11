@@ -10,6 +10,7 @@ describe('ProfileComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ProfileComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

@@ -10,6 +10,7 @@ describe('NotFoundComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [NotFoundComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

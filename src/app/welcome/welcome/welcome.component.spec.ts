@@ -10,6 +10,7 @@ describe('WelcomeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [WelcomeComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

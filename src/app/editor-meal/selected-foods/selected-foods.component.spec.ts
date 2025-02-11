@@ -10,6 +10,7 @@ describe('SelectedFoodsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SelectedFoodsComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

@@ -10,6 +10,7 @@ describe('EditorMealComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [EditorMealComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

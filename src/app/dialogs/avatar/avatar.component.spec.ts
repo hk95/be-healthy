@@ -10,6 +10,7 @@ describe('AvatarComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AvatarComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

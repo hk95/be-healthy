@@ -6,7 +6,7 @@ describe('MealGuard', () => {
   let guard: MealGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ teardown: { destroyAfterEach: false } });
     guard = TestBed.inject(MealGuard);
   });
 

@@ -10,6 +10,7 @@ describe('RecipeProcessImageComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [RecipeProcessImageComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

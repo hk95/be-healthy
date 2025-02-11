@@ -10,6 +10,7 @@ describe('UsageTopComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [UsageTopComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

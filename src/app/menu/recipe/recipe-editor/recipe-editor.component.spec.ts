@@ -10,6 +10,7 @@ describe('RecipeEditorComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [RecipeEditorComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

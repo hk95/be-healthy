@@ -10,6 +10,7 @@ describe('MealInputComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [MealInputComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

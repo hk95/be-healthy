@@ -10,6 +10,7 @@ describe('DeleteDialogComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DeleteDialogComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

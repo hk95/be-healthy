@@ -10,6 +10,7 @@ describe('CreditCardComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CreditCardComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

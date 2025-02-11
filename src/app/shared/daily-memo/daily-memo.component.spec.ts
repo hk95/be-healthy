@@ -9,6 +9,7 @@ describe('DailyMemoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DailyMemoComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
   });
 

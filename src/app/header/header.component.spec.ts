@@ -10,6 +10,7 @@ describe('HeaderComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [HeaderComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

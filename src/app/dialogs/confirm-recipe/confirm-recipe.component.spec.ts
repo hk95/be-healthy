@@ -10,6 +10,7 @@ describe('ConfirmRecipeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ConfirmRecipeComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

@@ -10,6 +10,7 @@ describe('MainShellComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [MainShellComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

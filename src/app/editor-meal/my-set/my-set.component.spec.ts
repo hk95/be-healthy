@@ -10,6 +10,7 @@ describe('MySetComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [MySetComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

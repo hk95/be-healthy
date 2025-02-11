@@ -10,6 +10,7 @@ describe('ToolbarComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ToolbarComponent],
+        teardown: { destroyAfterEach: false },
       }).compileComponents();
     })
   );

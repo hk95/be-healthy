@@ -9,6 +9,7 @@ describe('FoodListForSetComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FoodListForSetComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
   });
 
