@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { RecipeDetailRoutingModule } from './recipe-detail-routing.module';
 import { RecipeDetailComponent } from './recipe-detail.component';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({

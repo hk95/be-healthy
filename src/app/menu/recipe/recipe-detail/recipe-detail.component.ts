@@ -4,7 +4,7 @@ import { RecipeService } from 'src/app/services/recipe.service';
 import { Observable } from 'rxjs';
 import { Recipe } from 'src/app/interfaces/recipe';
 import { AuthService } from 'src/app/services/auth.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { switchMap, take } from 'rxjs/operators';
 

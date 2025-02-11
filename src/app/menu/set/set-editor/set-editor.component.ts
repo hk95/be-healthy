@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { switchMap, take } from 'rxjs/operators';
 import { SetService } from 'src/app/services/set.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmRecipeComponent } from 'src/app/dialogs/confirm-recipe/confirm-recipe.component';
 import { FoodInArray, Nutrition, Set } from 'src/app/interfaces/set';
 
@@ -19,7 +19,7 @@ import { Recipe, RecipeWithAuthor } from 'src/app/interfaces/recipe';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { Food, SentFood } from 'src/app/interfaces/food';
 import { Observable } from 'rxjs';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CalculateCNitionService } from './util/calculate-nutrition.service';
 
 @Component({

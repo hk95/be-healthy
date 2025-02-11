@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { take } from 'rxjs/operators';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MealInputComponent } from 'src/app/bottom-sheet/meal-input/meal-input.component';
 import { MainShellService } from 'src/app/services/main-shell.service';

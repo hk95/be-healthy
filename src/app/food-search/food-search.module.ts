@@ -7,7 +7,7 @@ import { FoodSearchContentComponent } from './food-search-content/food-search-co
 import { FoodListForMealComponent } from './food-list-for-meal/food-list-for-meal.component';
 import { FoodListForSetComponent } from './food-list-for-set/food-list-for-set.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [

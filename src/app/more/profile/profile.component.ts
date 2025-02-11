@@ -8,7 +8,7 @@ import {
 import { BasicInfoService } from 'src/app/services/basic-info.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasicInfo } from 'src/app/interfaces/basic-info';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AvatarComponent } from 'src/app/dialogs/avatar/avatar.component';
 import { Subscription } from 'rxjs';
 

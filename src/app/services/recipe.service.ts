@@ -7,7 +7,7 @@ import {
 } from '@angular/fire/firestore';
 import { Recipe } from '../interfaces/recipe';
 import { firestore } from 'firebase';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { RecipeWithAuthor } from '../interfaces/recipe';
