@@ -34,7 +34,7 @@
     "@fullcalendar/interaction": "^5.6.0",
     "@stripe/stripe-js": "1.17.1",
     "@swimlane/ngx-charts": "19.0.0",
-    "algoliasearch": "4.10.3",
+    "algoliasearch": "4.27.0",
     "events": "3.3.0",
     "firebase": "7.24.0",
     "moment": "2.29.1",
