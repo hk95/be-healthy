@@ -36,7 +36,7 @@
     "@swimlane/ngx-charts": "19.0.0",
     "algoliasearch": "4.10.3",
     "events": "3.3.0",
-    "firebase": "7.24.0",
+    "firebase": "10.9.0",
     "moment": "2.29.1",
     "ngx-image-cropper": "4.0.1",
     "rxjs": "6.5.5",
